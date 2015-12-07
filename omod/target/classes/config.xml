@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module configVersion="1.2">
+
+	<!-- Module Properties -->
+	<id>patientdashboardui</id>
+	<name>patientdashboardui Module</name>
+	<version>1.0-SNAPSHOT</version>
+	<package>org.openmrs.module.patientdashboardui</package>
+	<author>Francis</author>
+	<description>
+		Depends on openmrs core version 1.9.8
+	</description>
+	<updateURL>https://modules.openmrs.org/modules/download/patientdashboardui/update.rdf</updateURL>
+	<require_version>1.9.8</require_version>
+	<!-- / Module Properties -->
+
+	
+	<!-- Required Modules -->
+	<require_modules>
+																											
+		<require_module version="3.3.1">
+			org.openmrs.module.uiframework
+		</require_module>
+																											
+		<require_module version="2.0.4">
+			org.openmrs.module.uilibrary
+		</require_module>
+			
+	</require_modules>
+	<!-- / Required Modules -->
+	
+	<!-- Module Activator -->
+	<activator>org.openmrs.module.patientdashboardui.patientdashboarduiActivator</activator>
+	
+	
+	<!-- Maps hibernate file's, if present -->
+	<mappingFiles>
+				
+	</mappingFiles>
+
+	<!-- Internationalization -->
+	<!-- All message codes should start with patientdashboardui. -->
+	<messages>
+		<lang>en</lang>
+		<file>messages.properties</file>
+	</messages>
+	<messages>
+		<lang>fr</lang>
+		<file>messages_fr.properties</file>
+	</messages>
+	<messages>
+		<lang>es</lang>
+		<file>messages_es.properties</file>
+	</messages>
+	<!-- /Internationalization -->
+
+</module>
+
