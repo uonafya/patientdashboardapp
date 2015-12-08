@@ -35,7 +35,7 @@ public class OpdEntryPageController {
 			@RequestParam("opdId") Integer opdId,
 			@RequestParam(value = "queueId", required = false) Integer queueId,
 			@RequestParam(value = "opdLogId", required = false) Integer opdLogId,
-			@RequestParam("referralId") Integer referralId, PageModel model) {
+			PageModel model) {
 
 		Concept opdWardConcept = Context.getConceptService().getConceptByName(
 				Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_OPDWARD));

@@ -61,14 +61,14 @@
 		<select id="internalReferral" name="internalReferral">
 			<option value="">Select Referral</option>
 			<% listInternalReferral.each { %>
-				<option value="${it.answerConcept.id}">${it.answerConceptId.name}</option>
+				<option value="${it.answerConcept.id}">${it.answerConcept.name}</option>
 			<% } %>
 		</select>
 		<label for="externalReferral">External Referral</label>
 		<select id="externalReferral" name="externalReferral">
 			<option value="">Select Referral</option>
 			<% listExternalReferral.each { %>
-				<option value="${it.answerConcept.id}">${it.answerConceptId.name}</option>
+				<option value="${it.answerConcept.id}">${it.answerConcept.name}</option>
 			<% } %>
 		</select>
 		

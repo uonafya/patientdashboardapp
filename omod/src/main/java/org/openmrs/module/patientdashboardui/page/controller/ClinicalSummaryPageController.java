@@ -1,4 +1,4 @@
-package org.openmrs.module.patientdashboardui.controller.page;
+package org.openmrs.module.patientdashboardui.page.controller;
 
 import java.util.ArrayList;
 import java.util.List;
