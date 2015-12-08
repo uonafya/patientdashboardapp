@@ -1,5 +1,62 @@
 <h2>Clinical Notes</h2>
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<script>
+jq = jQuery;
+jq(function() {
+    jq( "#symptom" ).autocomplete({
+         source: function( request, response ) {
+          jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getSymptoms") }',
+              {
+                  q: request.term
+              }
+          ).success(function(data) {
+   			  var results = [];
+			  for (var i in data) {
+				 var result = { label: data[i].name, value: data[i].id};
+				 results.push(result);
+			  }
+			  console.log(data);
+			  response(results);
+          });
+         },
+         minLength: 3,
+         select: function( event, ui ) {
+           var selectedSymptom = document.createElement('option');
+		   selectedSymptom.value = ui.item.value;
+		   selectedSymptom.text = ui.item.label;
+		   var selectedSymptomList = document.getElementById("selectedSymptomList");
+		   //check if the item already exist before appending
+		   var exists = false;
+
+		   for (var i = 0; i < selectedSymptomList.length; i++) {
+               if(selectedSymptomList.options[i].value==ui.item.value)
+               {
+               		exists = true;
+               }
+           }
+
+			if(exists == false)
+			   selectedSymptomList.appendChild(selectedSymptom);
+
+           log( ui.item ?
+             "Selected: " + ui.item.id :
+             "Nothing selected, input was " + this.name);
+         },
+         open: function() {
+           jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+         },
+         close: function() {
+           jq( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+         }
+       });
+  });
+</script>
+
+
 <form method="post">
 	<div class="container">
 		<input type="hidden" name="patientId" value="${patientId }" />
@@ -13,8 +70,11 @@
 		<label for="symptom">Symptom</label>
 		<input id="symptom" title="${opd.conceptId}" name="symptom" />
 		<select id="selectedSymptomList" name="selectedSymptomList" multiple="multiple" >
+
 		</select>
-		<div id="selected-symptoms"></div>
+		<div id="selected-symptoms">
+
+		</div>
 		
 		<input type="radio" name="radio_dia" value="prov_dia" id="prov_dia" onclick="loadSelectedDiagnosisList();"/><strong>Provisional</strong>
 		<input type="radio" name="radio_dia" value="final_dia" id="final_dia" onclick="removeSelectedDia();"/><strong>Final</strong>&nbsp;&nbsp;
