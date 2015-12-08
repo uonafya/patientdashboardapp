@@ -9,19 +9,31 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.ConceptName;
+import org.openmrs.Encounter;
+import org.openmrs.EncounterType;
+import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
+import org.openmrs.User;
+import org.openmrs.api.AdministrationService;
+import org.openmrs.api.ConceptService;
+import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.InventoryCommonService;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.DepartmentConcept;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmission;
+import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.util.ConceptComparator;
@@ -147,6 +159,140 @@ public class OpdEntryPageController {
 		if (ipdPatientAdmission != null) {
 			model.addAttribute("ipdPatientAdmission", ipdPatientAdmission.getId());
 		}
+	}
+	
+	public void post(@RequestParam("patientId") Integer patientId,
+			@RequestParam(value = "opdLogId", required = false) Integer opdLogId,
+			@RequestParam(value = "selectedSymptomList", required = false)Integer[] selectedSymptomList,
+			@RequestParam(value = "selectedDiagnosisList", required = false)Integer[] selectedDiagnosisList,
+			HttpServletRequest request) throws Exception {
+		User user = Context.getAuthenticatedUser();
+		AdministrationService administrationService = Context.getAdministrationService();
+		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+		PatientService ps = Context.getPatientService();
+		PatientQueueService queueService = Context.getService(PatientQueueService.class);
+		IpdService ipdService = Context.getService(IpdService.class);
+		ConceptService conceptService = Context.getConceptService();
+		
+		Date date = new Date();
+		Obs obsGroup = null;
+		obsGroup = hcs.getObsGroupCurrentDate(patientId);
+		
+		EncounterType encounterType = Context.getEncounterService().getEncounterType(administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_OPD_ENCOUTNER_TYPE));
+		Encounter encounter = new Encounter();
+		Location location = new Location(1);
+		Patient patient = ps.getPatient(patientId);
+		
+		if (opdLogId != null) {
+			OpdPatientQueueLog opdPatientQueueLog = queueService
+					.getOpdPatientQueueLogById(opdLogId);
+			IpdPatientAdmissionLog ipdPatientAdmissionLog=ipdService.getIpdPatientAdmissionLog(opdPatientQueueLog);
+			encounter = ipdPatientAdmissionLog.getIpdEncounter();
+		} else {
+			encounter.setPatient(patient);
+			encounter.setCreator(user);
+			encounter.setProvider(user);
+			encounter.setEncounterDatetime(date);
+			encounter.setEncounterType(encounterType);
+			encounter.setLocation(location);
+		}
+		
+		String symptomProperty = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_SYMPTOM);
+		if (symptomProperty != null) {
+			Concept cSymptom = conceptService.getConceptByName(symptomProperty);
+			if (cSymptom == null) {
+				throw new Exception("Symptom concept not set");
+			}
+			// symptom
+			for (Integer cId : selectedSymptomList) {
+				Obs obsSymptom = new Obs();
+				obsSymptom.setObsGroup(obsGroup);
+				obsSymptom.setConcept(cSymptom);
+				obsSymptom.setValueCoded(conceptService.getConcept(cId));
+				obsSymptom.setCreator(user);
+				obsSymptom.setDateCreated(date);
+				obsSymptom.setEncounter(encounter);
+				obsSymptom.setPatient(patient);
+				encounter.addObs(obsSymptom);
+			}
+		}
+		
+		Concept cDiagnosis = conceptService.getConceptByName(administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS));
+		Concept cFinalDiagnosis = conceptService.getConcept("FINAL DIAGNOSIS");
+		
+		if (cDiagnosis == null) {
+			throw new Exception("Diagnosis concept not defined");
+		}
+		if (cFinalDiagnosis == null) {
+			throw new Exception("Final Diagnosis concept not defined");
+		}
+		String selectedDia = request.getParameter("radio_dia");
+		for (Integer cId : selectedDiagnosisList) {
+			
+			Obs obsDiagnosis = new Obs();
+			obsDiagnosis.setObsGroup(obsGroup);
+			if(selectedDia.equals("prov_dia")){
+				obsDiagnosis.setConcept(cDiagnosis);
+			}
+			else{
+				obsDiagnosis.setConcept(cFinalDiagnosis);
+			}
+			obsDiagnosis.setValueCoded(conceptService.getConcept(cId));
+			obsDiagnosis.setCreator(user);
+			obsDiagnosis.setDateCreated(date);
+			obsDiagnosis.setEncounter(encounter);
+			obsDiagnosis.setPatient(patient);
+			encounter.addObs(obsDiagnosis);
+		}
+		
+		//TODO: 
+		//create investigation/procedure obs
+		//create internal/external referrals obs
+		//create illness history obs
+		//handle dead patients
+		
+		Concept cOtherInstructions = conceptService.getConceptByName("OTHER INSTRUCTIONS");
+		
+		// note
+		if (StringUtils.isNotBlank(request.getParameter("note"))) {
+
+			Obs obsDiagnosis = new Obs();
+			obsDiagnosis.setObsGroup(obsGroup);
+			// ghanshyam 8-july-2013 New Requirement #1963 Redesign
+			// patientdashboard
+			obsDiagnosis.setConcept(cOtherInstructions);
+			obsDiagnosis.setValueText(request.getParameter("note"));
+			obsDiagnosis.setCreator(user);
+			obsDiagnosis.setDateCreated(date);
+			obsDiagnosis.setEncounter(encounter);
+			obsDiagnosis.setPatient(patient);
+			encounter.addObs(obsDiagnosis);
+		}
+		
+		Concept cOutcome = conceptService.getConceptByName(administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_VISIT_OUTCOME));
+		if (cOutcome == null) {
+			throw new Exception("Visit Outcome concept =  null");
+		}
+		Obs obsOutcome = new Obs();
+		obsOutcome.setObsGroup(obsGroup);
+		obsOutcome.setConcept(cOutcome);
+		obsOutcome.setValueText(request.getParameter("radio_f"));
+		
+		if (StringUtils.equalsIgnoreCase(request.getParameter("radio_f"), "Follow-up")) {
+			obsOutcome.setValueDatetime(Context.getDateFormat().parse(request.getParameter("dateFollowUp")));
+		}
+
+		if (StringUtils.equalsIgnoreCase(request.getParameter("radio_f"), "admit")) {
+			obsOutcome.setValueCoded(conceptService.getConcept(Integer.getInteger(request.getParameter("ipdWard"))));
+		}
+		
+		obsOutcome.setCreator(user);
+		obsOutcome.setDateCreated(date);
+		obsOutcome.setPatient(patient);
+		obsOutcome.setEncounter(encounter);
+		encounter.addObs(obsOutcome);
+		Context.getEncounterService().saveEncounter(encounter);
+		
 	}
 
 }
