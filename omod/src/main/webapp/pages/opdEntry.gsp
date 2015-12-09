@@ -6,102 +6,146 @@
 jq = jQuery;
 jq(function() {
     jq( "#symptom" ).autocomplete({
-         source: function( request, response ) {
-          jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getSymptoms") }',
-              {
-                  q: request.term
-              }
-          ).success(function(data) {
-   			  var results = [];
-			  for (var i in data) {
-				 var result = { label: data[i].name, value: data[i].id};
-				 results.push(result);
-			  }
-			  console.log(data);
-			  response(results);
-          });
-         },
-         minLength: 3,
-           select: function( event, ui ) {
-           var selectedSymptom = document.createElement('option');
-		   selectedSymptom.value = ui.item.value;
-		   selectedSymptom.text = ui.item.label;
-		   var selectedSymptomList = document.getElementById("selectedSymptomList");
+        source: function( request, response ) {
+            jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getSymptoms") }',
+                { q: request.term })
+            .success(function(data) {
+                var results = [];
+                for (var i in data) {
+                    var result = { label: data[i].name, value: data[i].id};
+                    results.push(result);
+                }
+                response(results);
+            });
+        },
+        minLength: 3,
+        select: function( event, ui ) {
+            var selectedSymptom = document.createElement('option');
+            selectedSymptom.value = ui.item.value;
+            selectedSymptom.text = ui.item.label;
+            var selectedSymptomList = document.getElementById("selectedSymptomList");
 
 
-		   //adds the selected symptoms to the div
-		   var selectedSymptomP = document.createElement("P");
-           var selectedSymptomT = document.createTextNode(ui.item.label);
-           selectedSymptomP.id = ui.item.value;
-           selectedSymptomP.appendChild(selectedSymptomT);
-           var btnselectedSymptom = document.createElement("BUTTON");
-           var selectedSymptomButtonT = document.createTextNode("Remove");
-           btnselectedSymptom.appendChild(selectedSymptomButtonT);
-           selectedSymptomP.appendChild(btnselectedSymptom);
-           var selectedSymptomDiv = document.getElementById("selected-symptoms");
+            //adds the selected symptoms to the div
+            var selectedSymptomP = document.createElement("P");
+            var selectedSymptomT = document.createTextNode(ui.item.label);
+            selectedSymptomP.id = ui.item.value;
+            selectedSymptomP.appendChild(selectedSymptomT);
+            var btnselectedSymptom = document.createElement("BUTTON");
+            var selectedSymptomButtonT = document.createTextNode("Remove");
+            btnselectedSymptom.appendChild(selectedSymptomButtonT);
+            selectedSymptomP.appendChild(btnselectedSymptom);
+            var selectedSymptomDiv = document.getElementById("selected-symptoms");
 
-           //check if the item already exist before appending
-           var exists = false;
-		   for (var i = 0; i < selectedSymptomList.length; i++) {
-               if(selectedSymptomList.options[i].value==ui.item.value)
-               {
-               		exists = true;
-               }
-           }
+            //check if the item already exist before appending
+            var exists = false;
+            for (var i = 0; i < selectedSymptomList.length; i++) {
+                if(selectedSymptomList.options[i].value==ui.item.value) {
+                    exists = true;
+                }
+            }
 
-			if(exists == false)
-			{
-			   selectedSymptomList.appendChild(selectedSymptom);
-			   selectedSymptomDiv.appendChild(selectedSymptomP);
-			}
-         },
-         open: function() {
-           jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
-         },
-         close: function() {
-           jq( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
-         }
-       });
-  });
-  </script>
-  <script>
-  jq = jQuery;
+            //if(exists == false) {
+                selectedSymptomList.appendChild(selectedSymptom);
+                selectedSymptomDiv.appendChild(selectedSymptomP);
+           // }
+        },
+        open: function() {
+            jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+        },
+        close: function() {
+            jq( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+        }
+    });
 
-   jq( "#diagnosis" ).autocomplete({
+    jq( "#diagnosis" ).autocomplete({
+        source: function( request, response ) {
+            jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getDiagnosis") }',
+                { q: request.term })
+            .success(function(dataD) {
+                var results = [];
+                for (var i in dataD) {
+                    var result = { label: dataD[i].name, value: dataD[i].id};
+                    results.push(result);
+                }
+                response(results);
+            });
+        },
+        minLength: 3,
+        select: function( event, ui ) {
+            var selectedDiagnosis = document.createElement('option');
+            selectedDiagnosis.value = ui.item.value;
+            selectedDiagnosis.text = ui.item.label;
+            var selectedDiagnosisList = document.getElementById("selectedDiagnosisList");
+
+
+            //adds the selected diagnosis to the div
+            var selectedDiagnosisP = document.createElement("P");
+            var selectedDiagnosisT = document.createTextNode(ui.item.label);
+            selectedDiagnosisP.id = ui.item.value;
+            selectedDiagnosisP.appendChild(selectedDiagnosisT);
+            var selectedDiagnosisDiv = document.getElementById("selected-diagnosis");
+
+            //check if the item already exist before appending
+            var exists = false;
+            for (var i = 0; i < selectedDiagnosisList.length; i++) {
+                if(selectedDiagnosisList.options[i].value==ui.item.value) {
+                    exists = true;
+                }
+            }
+
+            if(exists == false) {
+                selectedDiagnosisList.appendChild(selectedDiagnosis);
+                selectedDiagnosisDiv.appendChild(selectedDiagnosisP);
+            }
+        },
+        open: function() {
+            jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+        },
+        close: function() {
+            jq( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+        }
+    });
+    jq(function() {
+        jq( "#procedure" ).autocomplete({
              source: function( request, response ) {
-              jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getDiagnosis") }',
+              jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getProcedures") }',
                   {
                       q: request.term
                   }
-              ).success(function(dataD) {
+              ).success(function(data) {
        			  var results = [];
-    			  for (var i in dataD) {
-    				 var result = { label: dataD[i].name, value: dataD[i].id};
+    			  for (var i in data) {
+    				 var result = { label: data[i].name, value: data[i].id};
     				 results.push(result);
     			  }
-    			  console.log(dataD);
+    			  console.log(data);
     			  response(results);
               });
              },
              minLength: 3,
-             select: function( event, ui ) {
-             var selectedDiagnosis = document.createElement('option');
-    		   selectedSDiagnosis.value = ui.item.value;
-    		   selectedDiagnosis.text = ui.item.label;
-    		   var selectedDiagnosisList = document.getElementById("selectedDiagnosisList");
+               select: function( event, ui ) {
+               var selectedProcedure = document.createElement('option');
+    		   selectedProcedure.value = ui.item.value;
+    		   selectedProcedure.text = ui.item.label;
+    		   var selectedProcedureList = document.getElementById("selectedProcedureList");
 
 
-    		   //adds the selected diagnosis to the div
-    		   var selectedDiagnosisP = document.createElement("P");
-               var selectedDiagnosisT = document.createTextNode(ui.item.label);
-               selectedDiagnosisP.id = ui.item.value;
-               selectedDiagnosisP.appendChild(selectedSymptomT);
-               var selectedDiagnosisDiv = document.getElementById("selected-diagnosis");
+    		   //adds the selected procedures to the div
+    		   var selectedProcedureP = document.createElement("P");
+               var selectedProcedureT = document.createTextNode(ui.item.label);
+               selectedProcedureP.id = ui.item.value;
+               selectedProcedureP.appendChild(selectedProcedureT);
+               var btnselectedProcedure = document.createElement("BUTTON");
+               var selectedProcedureButtonT = document.createTextNode("Remove");
+               btnselectedProcedure.appendChild(selectedProcedureButtonT);
+               selectedProcedureP.appendChild(btnselectedProcedure);
+               var selectedProcedureDiv = document.getElementById("selected-procedures");
 
                //check if the item already exist before appending
                var exists = false;
-    		   for (var i = 0; i < selectedDiagnosisList.length; i++) {
-                   if(selectedDiagnosisList.options[i].value==ui.item.value)
+    		   for (var i = 0; i < selectedProcedureList.length; i++) {
+                   if(selectedProcedureList.options[i].value==ui.item.value)
                    {
                    		exists = true;
                    }
@@ -109,80 +153,74 @@ jq(function() {
 
     			if(exists == false)
     			{
-    			   selectedDiagnosisList.appendChild(selectedDiagnosis);
-    			   selectedDiagnosisDiv.appendChild(selectedDiagnosisP);
+    			   selectedProcedureList.appendChild(selectedProcedure);
+    			   selectedProcedureDiv.appendChild(selectedProcedureP);
     			}
-            },
+             },
              open: function() {
                jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
              },
              close: function() {
                jq( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
              }
+           });
       });
-</script>
-<script>
-jq = jQuery;
-jq(function() {
-    jq( "#procedure" ).autocomplete({
-         source: function( request, response ) {
-          jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getProcedures") }',
-              {
-                  q: request.term
+
+      jq( "#investigation" ).autocomplete({
+              source: function( request, response ) {
+                  jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getInvestigations") }',
+                      { q: request.term })
+                  .success(function(data) {
+                      var results = [];
+                      for (var i in data) {
+                          var result = { label: data[i].name, value: data[i].id};
+                          results.push(result);
+                      }
+                      response(results);
+                  });
+              },
+              minLength: 3,
+              select: function( event, ui ) {
+                  var selectedInvestigation = document.createElement('option');
+                  selectedInvestigation.value = ui.item.value;
+                  selectedInvestigation.text = ui.item.label;
+                  var selectedInvestigationList = document.getElementById("selectedInvestigationList");
+
+
+                  //adds the selected investigations to the div
+                  var selectedInvestigationP = document.createElement("P");
+                  var selectedInvestigationT = document.createTextNode(ui.item.label);
+                  selectedInvestigationP.id = ui.item.value;
+                  selectedInvestigationP.appendChild(selectedInvestigationT);
+                  var btnselectedInvestigation = document.createElement("BUTTON");
+                  var selectedInvestigationButtonT = document.createTextNode("Remove");
+                  btnselectedInvestigation.appendChild(selectedInvestigationButtonT);
+                  selectedInvestigationP.appendChild(btnselectedInvestigation);
+                  var selectedInvestigationDiv = document.getElementById("selected-investigations");
+
+                  //check if the item already exist before appending
+                  var exists = false;
+                  for (var i = 0; i < selectedInvestigationList.length; i++) {
+                      if(selectedInvestigationList.options[i].value==ui.item.value) {
+                          exists = true;
+                      }
+                  }
+
+                  if(exists == false) {
+                      selectedInvestigationList.appendChild(selectedInvestigation);
+                      selectedInvestigationDiv.appendChild(selectedInvestigationP);
+                  }
+              },
+              open: function() {
+                  jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+              },
+              close: function() {
+                  jq( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
               }
-          ).success(function(data) {
-   			  var results = [];
-			  for (var i in data) {
-				 var result = { label: data[i].name, value: data[i].id};
-				 results.push(result);
-			  }
-			  console.log(data);
-			  response(results);
           });
-         },
-         minLength: 3,
-           select: function( event, ui ) {
-           var selectedProcedure = document.createElement('option');
-		   selectedProcedure.value = ui.item.value;
-		   selectedProcedure.text = ui.item.label;
-		   var selectedProcedureList = document.getElementById("selectedProcedureList");
 
-
-		   //adds the selected procedures to the div
-		   var selectedProcedureP = document.createElement("P");
-           var selectedProcedureT = document.createTextNode(ui.item.label);
-           selectedProcedureP.id = ui.item.value;
-           selectedProcedureP.appendChild(selectedProcedureT);
-           var btnselectedProcedure = document.createElement("BUTTON");
-           var selectedProcedureButtonT = document.createTextNode("Remove");
-           btnselectedProcedure.appendChild(selectedProcedureButtonT);
-           selectedProcedureP.appendChild(btnselectedProcedure);
-           var selectedProcedureDiv = document.getElementById("selected-procedures");
-
-           //check if the item already exist before appending
-           var exists = false;
-		   for (var i = 0; i < selectedProcedureList.length; i++) {
-               if(selectedProcedureList.options[i].value==ui.item.value)
-               {
-               		exists = true;
-               }
-           }
-
-			if(exists == false)
-			{
-			   selectedSymptomList.appendChild(selectedProcedure);
-			   selectedSymptomDiv.appendChild(selectedProcedureP);
-			}
-         },
-         open: function() {
-           jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
-         },
-         close: function() {
-           jq( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
-         }
-       });
   });
-  </script>
+</script>
 
 <form method="post">
 	<fieldset>
@@ -225,7 +263,7 @@ jq(function() {
 		<p class="input-position-class">
 			<label for="procedure">Post for Procedure:</label>
 			<input title="${opd.conceptId }" id="procedure" name="procedure" />
-			<select size="4" name="selectedProcedureList" multiple="multiple" onclick="moveSelectedById( 'selectedProcedureList', 'availableProcedureList' );">
+			<select size="4" id="selectedProcedureList" name="selectedProcedureList" multiple="multiple" onclick="moveSelectedById( 'selectedProcedureList', 'availableProcedureList' );">
 			</select>
 			<div id="selected-procedures"></div>
 		</p>
