@@ -269,10 +269,10 @@ public class OpdEntryPageController {
 			}
 		}
 
+
 		//TODO: 
-		//create investigation/procedure obs
+
 		//create internal/external referrals obs
-		//create illness history obs
 		//handle dead patients
 		
 		Concept cOtherInstructions = conceptService.getConceptByName("OTHER INSTRUCTIONS");
@@ -285,6 +285,62 @@ public class OpdEntryPageController {
 			// ghanshyam 8-july-2013 New Requirement #1963 Redesign
 			// patientdashboard
 			obsDiagnosis.setConcept(cOtherInstructions);
+			obsDiagnosis.setValueText(request.getParameter("note"));
+			obsDiagnosis.setCreator(user);
+			obsDiagnosis.setDateCreated(date);
+			obsDiagnosis.setEncounter(encounter);
+			obsDiagnosis.setPatient(patient);
+			encounter.addObs(obsDiagnosis);
+		}
+
+		//dead patients
+		// harsh 14/6/2012 setting death date to today's date and dead variable
+		// to true when "died" is selected
+		if (StringUtils.equalsIgnoreCase(request.getParameter("died"), "died")) {
+
+			ConceptService conceptService = Context.getConceptService();
+			Concept causeOfDeath = conceptService.getConceptByName("NONE");
+
+			patient.setDead(true);
+			patient.setDeathDate(new Date());
+			patient.setCauseOfDeath(causeOfDeath);
+			ps.savePatient(patient);
+			patientSearch.setDead(true);
+			hcs.savePatientSearch(patientSearch);
+		}
+
+
+		GlobalProperty externalReferral = administrationService
+				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL);
+
+		// external referral
+		if (StringUtils.isNotBlank(request.getParameter("externalReferral"))) {
+			Concept cExternalReferral = conceptService
+					.getConceptByName(externalReferral.getPropertyValue());
+			if (cExternalReferral == null) {
+				throw new Exception("ExternalReferral concept null");
+			}
+			Obs obsExternalReferral = new Obs();
+			obsExternalReferral.setObsGroup(obsGroup);
+			obsExternalReferral.setConcept(cExternalReferral);
+			obsExternalReferral.setValueCoded(conceptService.getConcept(request.getParameter("externalReferral")));
+			obsExternalReferral.setCreator(user);
+			obsExternalReferral.setDateCreated(date);
+			obsExternalReferral.setEncounter(encounter);
+			obsExternalReferral.setPatient(patient);
+			encounter.addObs(obsExternalReferral);
+		}
+
+
+
+		Concept illnessHistory = conceptService.getConceptByName("History of Present Illness");
+
+		// illness history
+		if (StringUtils.isNotBlank(request.getParameter("note"))) {
+
+			Obs obsDiagnosis = new Obs();
+			obsDiagnosis.setObsGroup(obsGroup);
+			obsDiagnosis.setConcept(illnessHistory);
 			obsDiagnosis.setValueText(request.getParameter("note"));
 			obsDiagnosis.setCreator(user);
 			obsDiagnosis.setDateCreated(date);
