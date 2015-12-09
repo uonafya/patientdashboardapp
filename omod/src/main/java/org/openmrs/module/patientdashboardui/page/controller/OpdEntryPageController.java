@@ -165,6 +165,7 @@ public class OpdEntryPageController {
 			@RequestParam(value = "opdLogId", required = false) Integer opdLogId,
 			@RequestParam(value = "selectedSymptomList", required = false)Integer[] selectedSymptomList,
 			@RequestParam(value = "selectedDiagnosisList", required = false)Integer[] selectedDiagnosisList,
+			@RequestParam(value = "selectedProcedureList", required = false)Integer[] selectedProcedureList,
 			HttpServletRequest request) throws Exception {
 		User user = Context.getAuthenticatedUser();
 		AdministrationService administrationService = Context.getAdministrationService();
@@ -196,7 +197,8 @@ public class OpdEntryPageController {
 			encounter.setEncounterType(encounterType);
 			encounter.setLocation(location);
 		}
-		
+
+		//selected symptoms post
 		String symptomProperty = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_SYMPTOM);
 		if (symptomProperty != null) {
 			Concept cSymptom = conceptService.getConceptByName(symptomProperty);
@@ -216,7 +218,8 @@ public class OpdEntryPageController {
 				encounter.addObs(obsSymptom);
 			}
 		}
-		
+
+		//selected diagnosis post
 		Concept cDiagnosis = conceptService.getConceptByName(administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS));
 		Concept cFinalDiagnosis = conceptService.getConcept("FINAL DIAGNOSIS");
 		
@@ -226,6 +229,7 @@ public class OpdEntryPageController {
 		if (cFinalDiagnosis == null) {
 			throw new Exception("Final Diagnosis concept not defined");
 		}
+
 		String selectedDia = request.getParameter("radio_dia");
 		for (Integer cId : selectedDiagnosisList) {
 			
@@ -244,7 +248,27 @@ public class OpdEntryPageController {
 			obsDiagnosis.setPatient(patient);
 			encounter.addObs(obsDiagnosis);
 		}
-		
+
+		//selected procedures post
+		String procedureProperty = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_PROCEDURE);
+		if (procedureProperty != null) {
+			Concept cProcedure = conceptService.getConceptByName(procedureProperty);
+			if (cProcedure == null) {
+				throw new Exception("Post for procedure concept null");
+			}
+			for (Integer pId : selectedProcedureList) {
+				Obs obsDiagnosis = new Obs();
+				obsDiagnosis.setObsGroup(obsGroup);
+				obsDiagnosis.setConcept(pDiagnosis);
+				obsDiagnosis.setValueCoded(conceptService.getConcept(pId));
+				obsDiagnosis.setCreator(user);
+				obsDiagnosis.setDateCreated(date);
+				obsDiagnosis.setEncounter(encounter);
+				obsDiagnosis.setPatient(patient);
+				encounter.addObs(obsDiagnosis);
+			}
+		}
+
 		//TODO: 
 		//create investigation/procedure obs
 		//create internal/external referrals obs
