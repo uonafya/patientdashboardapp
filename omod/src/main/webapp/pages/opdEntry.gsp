@@ -45,10 +45,11 @@ jq(function() {
                 }
             }
 
-            //if(exists == false) {
+           if(exists == false) {
                 selectedSymptomList.appendChild(selectedSymptom);
                 selectedSymptomDiv.appendChild(selectedSymptomP);
-           // }
+            }
+            jq(this).val() = "";
         },
         open: function() {
             jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -98,6 +99,7 @@ jq(function() {
                 selectedDiagnosisList.appendChild(selectedDiagnosis);
                 selectedDiagnosisDiv.appendChild(selectedDiagnosisP);
             }
+            jq(this).val() = "";
         },
         open: function() {
             jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -156,6 +158,7 @@ jq(function() {
     			   selectedProcedureList.appendChild(selectedProcedure);
     			   selectedProcedureDiv.appendChild(selectedProcedureP);
     			}
+    			jq(this).val() = "";
              },
              open: function() {
                jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -210,6 +213,7 @@ jq(function() {
                       selectedInvestigationList.appendChild(selectedInvestigation);
                       selectedInvestigationDiv.appendChild(selectedInvestigationP);
                   }
+                  jq(this).val() = "";
               },
               open: function() {
                   jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
