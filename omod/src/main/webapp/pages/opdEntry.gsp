@@ -23,17 +23,21 @@ jq(function() {
             var selectedSymptom = document.createElement('option');
             selectedSymptom.value = ui.item.value;
             selectedSymptom.text = ui.item.label;
+            selectedSymptom.id = ui.item.value;
             var selectedSymptomList = document.getElementById("selectedSymptomList");
 
 
             //adds the selected symptoms to the div
             var selectedSymptomP = document.createElement("P");
+
             var selectedSymptomT = document.createTextNode(ui.item.label);
             selectedSymptomP.id = ui.item.value;
             selectedSymptomP.appendChild(selectedSymptomT);
-            var btnselectedSymptom = document.createElement("BUTTON");
-            var selectedSymptomButtonT = document.createTextNode("Remove");
-            btnselectedSymptom.appendChild(selectedSymptomButtonT);
+            var btnselectedSymptom = document.createElement("input");
+            btnselectedSymptom.id = "remove";
+            btnselectedSymptom.type = "button";
+            btnselectedSymptom.value = "Remove";
+
             selectedSymptomP.appendChild(btnselectedSymptom);
             var selectedSymptomDiv = document.getElementById("selected-symptoms");
 
@@ -49,7 +53,7 @@ jq(function() {
                 selectedSymptomList.appendChild(selectedSymptom);
                 selectedSymptomDiv.appendChild(selectedSymptomP);
             }
-            jq(this).val() = "";
+
         },
         open: function() {
             jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -58,6 +62,21 @@ jq(function() {
             jq( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
         }
     });
+
+    //removes symptom from the selected list upon clicking the remove button
+     jq("#selected-symptoms").on("click", "#remove",function(){
+        var symptomId = jq(this).parent("p").attr("id");
+        var symptomP = jq(this).parent("p");
+
+        var divSymptom = symptomP.parent("div");
+        var selectInputPosition = divSymptom.siblings("p");
+        var selectedSymptom = selectInputPosition.find("select");
+        var removeSymptom = selectedSymptom.find("#" + symptomId);
+
+        symptomP.remove();
+        removeSymptom.remove();
+
+        });
 
     jq( "#diagnosis" ).autocomplete({
         source: function( request, response ) {
@@ -77,15 +96,25 @@ jq(function() {
             var selectedDiagnosis = document.createElement('option');
             selectedDiagnosis.value = ui.item.value;
             selectedDiagnosis.text = ui.item.label;
+            selectedDiagnosis.id = ui.item.value;
             var selectedDiagnosisList = document.getElementById("selectedDiagnosisList");
 
 
             //adds the selected diagnosis to the div
             var selectedDiagnosisP = document.createElement("P");
-            var selectedDiagnosisT = document.createTextNode(ui.item.label);
-            selectedDiagnosisP.id = ui.item.value;
-            selectedDiagnosisP.appendChild(selectedDiagnosisT);
+             var selectedDiagnosisT = document.createTextNode(ui.item.label);
+               selectedDiagnosisP.id = ui.item.value;
+               selectedDiagnosisP.appendChild(selectedDiagnosisT);
+               var btnselectedDiagnosis = document.createElement("input");
+               btnselectedDiagnosis.id = "remove";
+               btnselectedDiagnosis.type = "button";
+               btnselectedDiagnosis.value = "Remove";
+
+             selectedDiagnosisP.appendChild(btnselectedDiagnosis);
             var selectedDiagnosisDiv = document.getElementById("selected-diagnosis");
+
+
+
 
             //check if the item already exist before appending
             var exists = false;
@@ -99,7 +128,7 @@ jq(function() {
                 selectedDiagnosisList.appendChild(selectedDiagnosis);
                 selectedDiagnosisDiv.appendChild(selectedDiagnosisP);
             }
-            jq(this).val() = "";
+
         },
         open: function() {
             jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -108,6 +137,23 @@ jq(function() {
             jq( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
         }
     });
+
+    //removes diagnosis from the selected list upon clicking the remove button
+         jq("#selected-diagnosis").on("click", "#remove",function(){
+            var diagnosisId = jq(this).parent("p").attr("id");
+            var diagnosisP = jq(this).parent("p");
+
+            var divDiagnosis = diagnosisP.parent("div");
+            var selectInputPosition = divDiagnosis.siblings("p");
+            var selectedDiagnosis = selectInputPosition.find("select");
+            var removeDiagnosis = selectedDiagnosis.find("#" + diagnosisId);
+
+            diagnosisP.remove();
+            removeDiagnosis.remove();
+
+            });
+
+
     jq(function() {
         jq( "#procedure" ).autocomplete({
              source: function( request, response ) {
@@ -130,17 +176,21 @@ jq(function() {
                var selectedProcedure = document.createElement('option');
     		   selectedProcedure.value = ui.item.value;
     		   selectedProcedure.text = ui.item.label;
+    		   selectedProcedure.id = ui.item.value;
     		   var selectedProcedureList = document.getElementById("selectedProcedureList");
 
 
     		   //adds the selected procedures to the div
     		   var selectedProcedureP = document.createElement("P");
+
                var selectedProcedureT = document.createTextNode(ui.item.label);
                selectedProcedureP.id = ui.item.value;
                selectedProcedureP.appendChild(selectedProcedureT);
-               var btnselectedProcedure = document.createElement("BUTTON");
-               var selectedProcedureButtonT = document.createTextNode("Remove");
-               btnselectedProcedure.appendChild(selectedProcedureButtonT);
+               var btnselectedProcedure = document.createElement("input");
+               btnselectedProcedure.id = "remove";
+               btnselectedProcedure.type = "button";
+               btnselectedProcedure.value = "Remove";
+
                selectedProcedureP.appendChild(btnselectedProcedure);
                var selectedProcedureDiv = document.getElementById("selected-procedures");
 
@@ -158,7 +208,7 @@ jq(function() {
     			   selectedProcedureList.appendChild(selectedProcedure);
     			   selectedProcedureDiv.appendChild(selectedProcedureP);
     			}
-    			jq(this).val() = "";
+
              },
              open: function() {
                jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -168,6 +218,21 @@ jq(function() {
              }
            });
       });
+
+       //removes procedures from the selected list upon clicking the remove button
+       jq("#selected-procedures").on("click", "#remove",function(){
+          var procedureId = jq(this).parent("p").attr("id");
+          var procedureP = jq(this).parent("p");
+
+          var divProcedure = procedureP.parent("div");
+          var selectInputPosition = divProcedure.siblings("p");
+          var selectedProcedure = selectInputPosition.find("select");
+          var removeProcedure = selectedProcedure.find("#" + procedureId);
+
+          procedureP.remove();
+          removeProcedure.remove();
+
+          });
 
       jq( "#investigation" ).autocomplete({
               source: function( request, response ) {
@@ -184,22 +249,27 @@ jq(function() {
               },
               minLength: 3,
               select: function( event, ui ) {
-                  var selectedInvestigation = document.createElement('option');
-                  selectedInvestigation.value = ui.item.value;
-                  selectedInvestigation.text = ui.item.label;
-                  var selectedInvestigationList = document.getElementById("selectedInvestigationList");
+                    var selectedInvestigation = document.createElement('option');
+                     selectedInvestigation.value = ui.item.value;
+                     selectedInvestigation.text = ui.item.label;
+                     selectedInvestigation.id = ui.item.value;
+                     var selectedInvestigationList = document.getElementById("selectedInvestigationList");
 
 
-                  //adds the selected investigations to the div
-                  var selectedInvestigationP = document.createElement("P");
-                  var selectedInvestigationT = document.createTextNode(ui.item.label);
-                  selectedInvestigationP.id = ui.item.value;
-                  selectedInvestigationP.appendChild(selectedInvestigationT);
-                  var btnselectedInvestigation = document.createElement("BUTTON");
-                  var selectedInvestigationButtonT = document.createTextNode("Remove");
-                  btnselectedInvestigation.appendChild(selectedInvestigationButtonT);
-                  selectedInvestigationP.appendChild(btnselectedInvestigation);
-                  var selectedInvestigationDiv = document.getElementById("selected-investigations");
+                     //adds the selected symptoms to the div
+                     var selectedInvestigationP = document.createElement("P");
+
+                     var selectedInvestigationT = document.createTextNode(ui.item.label);
+                     selectedInvestigationP.id = ui.item.value;
+                     selectedInvestigationP.appendChild(selectedInvestigationT);
+                     var btnselectedInvestigation = document.createElement("input");
+                     btnselectedInvestigation.id = "remove";
+                     btnselectedInvestigation.type = "button";
+                     btnselectedInvestigation.value = "Remove";
+
+                     selectedInvestigationP.appendChild(btnselectedInvestigation);
+                     var selectedInvestigationDiv = document.getElementById("selected-investigations");
+
 
                   //check if the item already exist before appending
                   var exists = false;
@@ -213,7 +283,7 @@ jq(function() {
                       selectedInvestigationList.appendChild(selectedInvestigation);
                       selectedInvestigationDiv.appendChild(selectedInvestigationP);
                   }
-                  jq(this).val() = "";
+
               },
               open: function() {
                   jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -222,6 +292,20 @@ jq(function() {
                   jq( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
               }
           });
+           //removes Investigation from the selected list upon clicking the remove button
+               jq("#selected-investigations").on("click", "#remove",function(){
+                  var investigationId = jq(this).parent("p").attr("id");
+                  var investigationP = jq(this).parent("p");
+
+                  var divInvestigation = investigationP.parent("div");
+                  var selectInputPosition = divInvestigation.siblings("p");
+                  var selectedInvestigation = selectInputPosition.find("select");
+                  var removeInvestigation = selectedInvestigation.find("#" + investigationId);
+
+                  investigationP.remove();
+                  removeInvestigation.remove();
+
+                  });
 
   });
 </script>
