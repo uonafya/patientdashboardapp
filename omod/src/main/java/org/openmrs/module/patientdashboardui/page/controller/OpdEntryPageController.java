@@ -13,15 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.openmrs.Concept;
-import org.openmrs.ConceptAnswer;
-import org.openmrs.ConceptName;
-import org.openmrs.Encounter;
-import org.openmrs.EncounterType;
-import org.openmrs.Location;
-import org.openmrs.Obs;
-import org.openmrs.Patient;
-import org.openmrs.User;
+import org.openmrs.*;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.PatientService;
@@ -250,7 +242,8 @@ public class OpdEntryPageController {
 		}
 
 		//selected procedures post
-		String procedureProperty = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_PROCEDURE);
+
+		String procedureProperty = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
 		if (procedureProperty != null) {
 			Concept cProcedure = conceptService.getConceptByName(procedureProperty);
 			if (cProcedure == null) {
@@ -259,7 +252,7 @@ public class OpdEntryPageController {
 			for (Integer pId : selectedProcedureList) {
 				Obs obsDiagnosis = new Obs();
 				obsDiagnosis.setObsGroup(obsGroup);
-				obsDiagnosis.setConcept(pDiagnosis);
+				//obsDiagnosis.setConcept(pDiagnosis);
 				obsDiagnosis.setValueCoded(conceptService.getConcept(pId));
 				obsDiagnosis.setCreator(user);
 				obsDiagnosis.setDateCreated(date);
@@ -298,15 +291,15 @@ public class OpdEntryPageController {
 		// to true when "died" is selected
 		if (StringUtils.equalsIgnoreCase(request.getParameter("died"), "died")) {
 
-			ConceptService conceptService = Context.getConceptService();
+			conceptService = Context.getConceptService();
 			Concept causeOfDeath = conceptService.getConceptByName("NONE");
 
 			patient.setDead(true);
 			patient.setDeathDate(new Date());
 			patient.setCauseOfDeath(causeOfDeath);
 			ps.savePatient(patient);
-			patientSearch.setDead(true);
-			hcs.savePatientSearch(patientSearch);
+			//patientSearch.setDead(true);
+			//hcs.savePatientSearch(patientSearch);
 		}
 
 

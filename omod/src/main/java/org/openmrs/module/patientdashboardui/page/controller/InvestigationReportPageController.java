@@ -19,6 +19,8 @@ import java.util.*;
  */
 public class InvestigationReportPageController {
     public void get(@RequestParam("patientId") Integer patientId,@RequestParam(value="date", required=false) String date, PageModel model){
+        model.addAttribute("patientId",patientId);
+
         PatientDashboardService dashboardService =  Context.getService(PatientDashboardService.class);
         String orderLocationId = "1";
         Location location = StringUtils.hasText(orderLocationId) ? Context.getLocationService().getLocation(Integer.parseInt(orderLocationId)) : null;
@@ -73,7 +75,9 @@ public class InvestigationReportPageController {
             }
 
         }
+        model.addAttribute("investigations", nodes);
     }
+
     private Node  addNode(Node node, Set<Node>  nodes , Concept concept, Set<Concept> listParent) {
 
         for( Concept pa : listParent ){
