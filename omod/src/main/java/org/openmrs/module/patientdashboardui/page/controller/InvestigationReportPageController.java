@@ -12,6 +12,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -139,7 +141,7 @@ public class InvestigationReportPageController {
         }
         return null;
     }
-    public void post(){
+    public void post(@RequestParam("patientId") Integer patientId,	@RequestParam(value = "tests", required = false)Integer[] tests,HttpServletRequest request, PageModel model){
         //ghanshyam 10-july-2013 Bug #1936 [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added below line)
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
         try{
@@ -157,16 +159,19 @@ public class InvestigationReportPageController {
                 }
             }
 
-            Patient patient = Context.getPatientService().getPatient(investigationCommand.getPatientId());
+
+            Patient patient = Context.getPatientService().getPatient(patientId);
 
             String gpLabEncType = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_LAB_ENCOUTNER_TYPE);
             EncounterType labEncType = Context.getEncounterService().getEncounterType(gpLabEncType);
 
-            if( "all".equalsIgnoreCase(investigationCommand.getDate())){
-                investigationCommand.setDate(null);
-            }
+            String date = request.getParameter("date");
+//            //DONT'T FORGET THIS
+//            if( "all".equalsIgnoreCase(date)){
+//                investigationCommand.setDate(null);
+ //           }
 
-            List<Encounter> encounters = dashboardService.getEncounter(patient, location, labEncType, investigationCommand.getDate());
+            List<Encounter> encounters = dashboardService.getEncounter(patient, location, labEncType, date);
             Set<String> dates = new TreeSet<String>(); // tree for dates
             if( encounters != null ){
                 Set<Obs> listObs = null;
@@ -183,7 +188,8 @@ public class InvestigationReportPageController {
                             // result
                             obsConcept = obs.getConcept();
                             // loop the the end
-                            if(!checkSubmitTest(obsConcept.getConceptId(), investigationCommand.getTests())){
+
+                            if(!checkSubmitTest(obsConcept.getConceptId(), tests)){
                                 continue;
                             }
 //						System.out.println("con: "+obsConcept.getDisplayString()+"=======================================================");
@@ -238,6 +244,22 @@ public class InvestigationReportPageController {
             }
         }
         return false;
+    }
+    public static String getUnitStringFromConcept(Concept con) {
+        String unit = null;
+        ConceptDatatype dt = con.getDatatype();
+        if (dt.isNumeric()) {
+            ConceptNumeric cn = Context.getConceptService().getConceptNumeric( con.getConceptId());
+            if(cn.getUnits()!=null)
+                unit = cn.getUnits();
+            else
+                unit = "";
+        }
+        else
+        {
+            unit = "";
+        }
+        return unit;
     }
 }
 

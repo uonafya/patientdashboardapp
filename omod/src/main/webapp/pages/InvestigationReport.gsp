@@ -1,4 +1,4 @@
-<form id="investigationForm" action="investigationReportPage.htm" method="post">
+<form id="investigationForm"  method="post">
     <input type="hidden" name="patientId" value="${patientId }"/>
     <table width="100%" >
         <tr valign="top">
