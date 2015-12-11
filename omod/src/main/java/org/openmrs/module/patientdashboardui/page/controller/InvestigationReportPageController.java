@@ -139,6 +139,106 @@ public class InvestigationReportPageController {
         }
         return null;
     }
+    public void post(){
+        //ghanshyam 10-july-2013 Bug #1936 [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added below line)
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+        try{
+            // get list encounter
+            PatientDashboardService dashboardService =  Context.getService(PatientDashboardService.class);
+            String orderLocationId = "1";
+            Location location = StringUtils.hasText(orderLocationId) ? Context.getLocationService().getLocation(Integer.parseInt(orderLocationId)) : null;
+            LabService labService = Context.getService(LabService.class);
+            List<Lab> labs = labService.getAllActivelab();
+
+            Set<Concept> listParent = new HashSet<Concept>();
+            if ( labs != null && !labs.isEmpty() ){
+                for( Lab lab : labs ){
+                    listParent.addAll(lab.getInvestigationsToDisplay());
+                }
+            }
+
+            Patient patient = Context.getPatientService().getPatient(investigationCommand.getPatientId());
+
+            String gpLabEncType = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_LAB_ENCOUTNER_TYPE);
+            EncounterType labEncType = Context.getEncounterService().getEncounterType(gpLabEncType);
+
+            if( "all".equalsIgnoreCase(investigationCommand.getDate())){
+                investigationCommand.setDate(null);
+            }
+
+            List<Encounter> encounters = dashboardService.getEncounter(patient, location, labEncType, investigationCommand.getDate());
+            Set<String> dates = new TreeSet<String>(); // tree for dates
+            if( encounters != null ){
+                Set<Obs> listObs = null;
+                //ghanshyam 10-july-2013 Bug #1936 [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added below two line)
+                Set<Node> nodes1 = new TreeSet<Node>(); // tree of node <conceptId, conceptName>
+                Set<Node> nodes2 = new TreeSet<Node>(); // tree of node <conceptId, conceptName>
+                Concept orderConcept = null;
+                Concept obsConcept  = null;
+                for( Encounter enc : encounters)
+                {
+                    listObs = enc.getAllObs(false);
+                    if( listObs != null && !listObs.isEmpty() ){
+                        for( Obs obs : listObs ){
+                            // result
+                            obsConcept = obs.getConcept();
+                            // loop the the end
+                            if(!checkSubmitTest(obsConcept.getConceptId(), investigationCommand.getTests())){
+                                continue;
+                            }
+//						System.out.println("con: "+obsConcept.getDisplayString()+"=======================================================");
+                            // matched the concept
+                            orderConcept = obs.getOrder().getConcept();
+//						System.out.println("orderConcept: "+orderConcept.getDisplayString() + " - "+orderConcept.getConceptId());
+						/*23/06 /2012 Kesavulu:Investigations of patients in OPD patient dashboard values are comeing now Bug #233, Bug #144, Bug #122 */
+                            String value = "";
+                            if( obs.getValueCoded() == null)
+                                value = obs.getValueText();
+                            else
+                                value = obs.getValueAsString(Context.getLocale());
+                            if( orderConcept.getConceptClass().getName().equalsIgnoreCase("Test")){
+                                //ghanshyam 10-july-2013 Bug #1936 [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added fresh code in if condition)
+                                Node resultNode = new Node(obsConcept.getName().getName(), formatter.format(obs.getDateCreated()),
+                                        value +"  " + getUnitStringFromConcept(obsConcept));
+
+                                Node childNode = new Node(obsConcept.getId(), obsConcept.getName().getName());
+
+                                nodes1 = addNodeAndChild(nodes1, orderConcept, childNode, resultNode, listParent, true);
+                            }else if( orderConcept.getConceptClass().getName().equalsIgnoreCase("Labset")){
+							/*23/06 /2012 Kesavulu:Investigations of patients in OPD patient dashboard values are comeing now Bug #233, Bug #144, Bug #122 */
+                                //ghanshyam 10-july-2013 Bug #1936 [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added date formatting)
+                                Node resultNode = new Node(obsConcept.getName().getName(), formatter.format(obs.getDateCreated()),
+                                        value +"  " + getUnitStringFromConcept(obsConcept));
+
+                                Node childNode = new Node(obsConcept.getId(), obsConcept.getName().getName());
+
+                                nodes2 = addNodeAndChild(nodes2, orderConcept, childNode, resultNode, listParent, true);
+                            }
+//						 add date
+                            dates.add(Context.getDateFormat().format(obs.getDateCreated())); // datecreatedOn in to dateTree
+                        }
+                    }
+                }// end for encounter
+
+                //ghanshyam 10-july-2013 Bug #1936 [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added below two line)
+                model.addAttribute("nodes1", nodes1);
+                model.addAttribute("nodes2", nodes2);
+        }
+        }catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+
+    }
+
+    public boolean checkSubmitTest(Integer conceptId, Integer[] conIds){
+        for( Integer id : conIds ){
+            if( id.equals(conceptId) ){
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 
