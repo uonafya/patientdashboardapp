@@ -29,6 +29,16 @@
                        <% }  %>
                     </ul>
                 </div>
+                <div>
+                    <select name="date">
+                        <option value="all">--All--</option>
+                        <option value="recent">--Recent--</option>
+                        <% dates.each { date -> %>
+                             <option value="${date}">${date }</option>
+                        <% } %>
+                    </select>
+                    <input type="submit" class="ui-button ui-widget ui-state-default ui-corner-all" value="View"/>
+                </div>
             </td>
         </tr>
     </table>
