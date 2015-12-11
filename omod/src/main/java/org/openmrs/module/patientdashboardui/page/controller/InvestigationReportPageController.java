@@ -6,7 +6,7 @@ import org.openmrs.module.hospitalcore.LabService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.Lab;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
-import org.openmrs.module.patientdashboardui.gobal.Node;
+import org.openmrs.module.patientdashboardui.global.Node;
 import org.openmrs.ui.framework.page.PageModel;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -76,6 +76,7 @@ public class InvestigationReportPageController {
 
         }
         model.addAttribute("investigations", nodes);
+        model.addAttribute("dates", dates);
     }
 
     private Node  addNode(Node node, Set<Node>  nodes , Concept concept, Set<Concept> listParent) {

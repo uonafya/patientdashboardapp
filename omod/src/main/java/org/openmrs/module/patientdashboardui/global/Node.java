@@ -1,4 +1,4 @@
-package org.openmrs.module.patientdashboardui.gobal;
+package org.openmrs.module.patientdashboardui.global;
 
 import java.util.*;
 
