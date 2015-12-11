@@ -1,4 +1,4 @@
-<form id="investigationForm"  method="post">
+<form id="investigationForm" action=""  method="post">
     <input type="hidden" name="patientId" value="${patientId }"/>
     <table width="100%" >
         <tr valign="top">
@@ -9,13 +9,13 @@
                 <div style="overflow: hidden;border: 1px solid #8FABC7; " >
                     <ul class="tree">
 
-                        <% investigations.each { investigation -> %>
+                        <% nodes.each { node -> %>
                             <li>
-                                <% if(investigation.children==null || investigation.children==""){ %>
-                                     <input type="checkbox"  value="${investigation.id}"/>
-                                     <label>${investigation.name }</label>
+                                <% if(node.children==null || node.children==""){ %>
+                                     <input type="checkbox"  value="${node.id}"/>
+                                     <label>${node.name }</label>
                                      <ul class="tree">
-                                         <% investigation.children.each { leaf -> %>
+                                         <% node.children.each { leaf -> %>
                                              <li>
                                                 <input type="checkbox" name="tests"  value="${leaf.id}"/>
                                                 <label>${leaf.name }</label>
@@ -23,7 +23,7 @@
                                          <% }  %>
                                      </ul>
                                 <%}else{%>
-                                    <input type="checkbox"  name="tests" value="${investigation.id}"/><label>${investigation.name }</label>
+                                    <input type="checkbox"  name="tests" value="${node.id}"/><label>${node.name }</label>
                                 <% } %>
                             </li>
                        <% }  %>
