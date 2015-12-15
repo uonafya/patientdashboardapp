@@ -142,12 +142,13 @@ public class InvestigationReportPageController {
         }
         return null;
     }
-    public void post(@RequestParam("patientId") Integer patientId,@RequestParam(value = "all_dates", required = false)String[] all_dates,@RequestParam(value = "nodes", required = false)Node nodes, @RequestParam(value = "tests", required = false)Integer[] tests, HttpServletRequest request, PageModel model){
+    public void post(@RequestParam("patientId") Integer patientId,@RequestParam(value = "all_dates", required = false)String[] all_dates, @RequestParam(value = "tests", required = false)Integer[] tests, HttpServletRequest request, PageModel model){
 
         model.addAttribute("patientId",patientId);
-        model.addAttribute("nodes",nodes);
+
         model.addAttribute("tests",tests);
         model.addAttribute("all_dates", all_dates);
+
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
         try{
@@ -181,6 +182,7 @@ public class InvestigationReportPageController {
                 //ghanshyam 10-july-2013 Bug #1936 [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added below two line)
                 Set<Node> nodes1 = new TreeSet<Node>(); // tree of node <conceptId, conceptName>
                 Set<Node> nodes2 = new TreeSet<Node>(); // tree of node <conceptId, conceptName>
+                Set<Node> nodes = new TreeSet<Node>();
                 Concept orderConcept = null;
                 Concept obsConcept  = null;
                 for( Encounter enc : encounters)
@@ -191,7 +193,7 @@ public class InvestigationReportPageController {
                             // result
                             obsConcept = obs.getConcept();
 
-                            // loop the the end: Commented out on 15-12-2015 to fix bug
+                            // loop the end: Commented out on 15-12-2015 to fix bug
                            /* if(!checkSubmitTest(obsConcept.getConceptId(), tests)){
                                 continue;
                             }*/
@@ -222,12 +224,22 @@ public class InvestigationReportPageController {
                                 nodes2 = addNodeAndChild(nodes2, orderConcept, childNode, resultNode, listParent, true);
                             }
 
+                            //Create the nodes
+                            if( orderConcept.getConceptClass().getName().equalsIgnoreCase("Test")){
+                                Node node = new Node(obsConcept.getConceptId(), obsConcept.getName().toString());
+                                addNode(node, nodes, obsConcept, listParent);
+                            }else if( orderConcept.getConceptClass().getName().equalsIgnoreCase("Labset")){
+                                Node node = new Node(obsConcept.getConceptId(), obsConcept.getName().toString());
+                                nodes = addNodeAndChild(nodes, orderConcept, node, null, listParent, false);
+
+                            }
+
 //						 add date
                             dates.add(Context.getDateFormat().format(obs.getDateCreated())); // datecreatedOn in to dateTree
                         }
                     }
                 }
-
+                model.addAttribute("nodes",nodes);
                 model.addAttribute("nodes1", nodes1);
                 model.addAttribute("nodes2", nodes2);
                 model.addAttribute("dates",dates);
