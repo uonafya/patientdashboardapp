@@ -77,8 +77,9 @@ public class InvestigationReportPageController {
             }
 
         }
-        model.addAttribute("investigations", nodes);
-        model.addAttribute("dates", dates);
+        model.addAttribute("nodes", nodes);
+        model.addAttribute("all_dates", dates);
+        model.addAttribute("button_clicked",false);
     }
 
     private Node  addNode(Node node, Set<Node>  nodes , Concept concept, Set<Concept> listParent) {
@@ -141,8 +142,13 @@ public class InvestigationReportPageController {
         }
         return null;
     }
-    public void post(@RequestParam("patientId") Integer patientId,	@RequestParam(value = "tests", required = false)Integer[] tests,HttpServletRequest request, PageModel model){
-        //ghanshyam 10-july-2013 Bug #1936 [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added below line)
+    public void post(@RequestParam("patientId") Integer patientId,@RequestParam(value = "all_dates", required = false)String[] all_dates,@RequestParam(value = "nodes", required = false)Node nodes, @RequestParam(value = "tests", required = false)Integer[] tests, HttpServletRequest request, PageModel model){
+
+        model.addAttribute("patientId",patientId);
+        model.addAttribute("nodes",nodes);
+        model.addAttribute("tests",tests);
+        model.addAttribute("all_dates", all_dates);
+
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
         try{
             // get list encounter
@@ -151,7 +157,6 @@ public class InvestigationReportPageController {
             Location location = StringUtils.hasText(orderLocationId) ? Context.getLocationService().getLocation(Integer.parseInt(orderLocationId)) : null;
             LabService labService = Context.getService(LabService.class);
             List<Lab> labs = labService.getAllActivelab();
-
             Set<Concept> listParent = new HashSet<Concept>();
             if ( labs != null && !labs.isEmpty() ){
                 for( Lab lab : labs ){
@@ -159,20 +164,18 @@ public class InvestigationReportPageController {
                 }
             }
 
-
             Patient patient = Context.getPatientService().getPatient(patientId);
-
             String gpLabEncType = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_LAB_ENCOUTNER_TYPE);
             EncounterType labEncType = Context.getEncounterService().getEncounterType(gpLabEncType);
 
             String date = request.getParameter("date");
-//            //DONT'T FORGET THIS
-//            if( "all".equalsIgnoreCase(date)){
-//                investigationCommand.setDate(null);
- //           }
+            if( "all".equalsIgnoreCase(date)){
+                date = null;
+            }
 
             List<Encounter> encounters = dashboardService.getEncounter(patient, location, labEncType, date);
             Set<String> dates = new TreeSet<String>(); // tree for dates
+
             if( encounters != null ){
                 Set<Obs> listObs = null;
                 //ghanshyam 10-july-2013 Bug #1936 [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added below two line)
@@ -187,16 +190,14 @@ public class InvestigationReportPageController {
                         for( Obs obs : listObs ){
                             // result
                             obsConcept = obs.getConcept();
-                            // loop the the end
 
-                            if(!checkSubmitTest(obsConcept.getConceptId(), tests)){
+                            // loop the the end: Commented out on 15-12-2015 to fix bug
+                           /* if(!checkSubmitTest(obsConcept.getConceptId(), tests)){
                                 continue;
-                            }
-//						System.out.println("con: "+obsConcept.getDisplayString()+"=======================================================");
+                            }*/
                             // matched the concept
                             orderConcept = obs.getOrder().getConcept();
-//						System.out.println("orderConcept: "+orderConcept.getDisplayString() + " - "+orderConcept.getConceptId());
-						/*23/06 /2012 Kesavulu:Investigations of patients in OPD patient dashboard values are comeing now Bug #233, Bug #144, Bug #122 */
+                            /*23/06 /2012 Kesavulu:Investigations of patients in OPD patient dashboard values are comeing now Bug #233, Bug #144, Bug #122 */
                             String value = "";
                             if( obs.getValueCoded() == null)
                                 value = obs.getValueText();
@@ -220,22 +221,26 @@ public class InvestigationReportPageController {
 
                                 nodes2 = addNodeAndChild(nodes2, orderConcept, childNode, resultNode, listParent, true);
                             }
+
 //						 add date
                             dates.add(Context.getDateFormat().format(obs.getDateCreated())); // datecreatedOn in to dateTree
                         }
                     }
-                }// end for encounter
+                }
 
-                //ghanshyam 10-july-2013 Bug #1936 [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added below two line)
                 model.addAttribute("nodes1", nodes1);
                 model.addAttribute("nodes2", nodes2);
+                model.addAttribute("dates",dates);
+                model.addAttribute("button_clicked",true);
+
+            }
         }
-        }catch (Exception e) {
+        catch(Exception e) {
             // TODO: handle exception
             e.printStackTrace();
         }
-
     }
+
 
     public boolean checkSubmitTest(Integer conceptId, Integer[] conIds){
         for( Integer id : conIds ){
