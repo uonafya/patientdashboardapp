@@ -3,14 +3,15 @@ package org.openmrs.module.patientdashboardui.fragment.controller;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.Concept;
+import org.openmrs.ConceptAnswer;
 import org.openmrs.module.hospitalcore.InventoryCommonService;
 import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
 import org.openmrs.ui.framework.SimpleObject;
-import org.openmrs.module.hospitalcore.model.Symptom;
+import org.openmrs.module.patientdashboardui.model.Note;
+import org.openmrs.module.patientdashboardui.model.Qualifier;
 import org.openmrs.ui.framework.UiUtils;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -22,6 +23,24 @@ import java.util.List;
  */
 public class ClinicalNotesFragmentController {
     public void controller() {}
+    
+    public SimpleObject getNote(@RequestParam("patientId") Integer patientId, 
+			@RequestParam("opdId") Integer opdId,
+			@RequestParam(value = "queueId", required = false) Integer queueId,
+			@RequestParam(value = "opdLogId", required = false) Integer opdLogId, UiUtils ui) {
+    	Note note = new Note(patientId, queueId, opdId, opdLogId);
+    	return SimpleObject.fromObject(note, ui, "signs", "diagnoses", "investigations", "procedures", "patientId", "queueId", "opdId", "opdLogId", "availableOutcomes.id", "availableOutcomes.label", "inpatientWards.id", "inpatientWards.label", "admitted");
+    }
+    
+    public List<SimpleObject> getQualifiers(@RequestParam("signId") Integer signId, UiUtils ui) {
+    	Concept signConcept = Context.getConceptService().getConcept(signId);
+    	List<Qualifier> qualifiers = new ArrayList<Qualifier>();
+    	for (ConceptAnswer conceptAnswer : signConcept.getAnswers()) {
+    		qualifiers.add(new Qualifier(conceptAnswer.getAnswerConcept()));
+    	}
+    	return SimpleObject.fromCollection(qualifiers, ui, "id", "label", "options.id", "options.label");
+    }
+    
     public List<SimpleObject> getSymptoms(@RequestParam(value="q") String name,UiUtils ui)
     {
         List<Concept> symptoms = Context.getService(PatientDashboardService.class).searchSymptom(name);

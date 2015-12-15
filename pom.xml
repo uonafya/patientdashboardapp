@@ -89,6 +89,13 @@
 				<scope>provided</scope>
 
 			</dependency>
+			
+			<dependency>
+				<groupId>org.openmrs.module</groupId>
+				<artifactId>hospitalcore-omod</artifactId>
+				<version>1.5.1</version>
+				<scope>test</scope>
+			</dependency>
 						
 			<!-- End OpenMRS modules -->
 			

@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+  <concept concept_id="9990" retired="false" datatype_id="2" class_id="12" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="66e1603e-a235-11e5-bf7f-feff819cdc9f"/>
+  <concept concept_id="9991" retired="false" datatype_id="2" class_id="5" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="66e162b4-a235-11e5-bf7f-feff819cdc9f"/>
+  <concept concept_id="9992" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="66e16688-a235-11e5-bf7f-feff819cdc9f"/>
+  <concept_answer concept_answer_id="9090" concept_id="9990" answer_concept="9991" creator="1" date_created="2008-08-18 12:34:26.0" uuid="66e16778-a235-11e5-bf7f-feff819cdc9f"/>
+  <concept_answer concept_answer_id="9091" concept_id="9991" answer_concept="9992" creator="1" date_created="2008-08-18 12:34:26.0" uuid="66e16854-a235-11e5-bf7f-feff819cdc9f"/>
+  
+  <patient_identifier_type patient_identifier_type_id="1" name="Test Identifier Type" description="Test description" check_digit="false" creator="1" date_created="2005-01-01 00:00:00.0" required="false" retired="false"  uuid="66e16926-a235-11e5-bf7f-feff819cdc9f"/>
+  <person person_id="3" dead="false" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" gender="F"  uuid="b29e64f4-a235-11e5-bf7f-feff819cdc9f"/>
+  <person_name person_id="3" person_name_id="3" preferred="1" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" given_name="John3" middle_name=" " family_name="Doe"  uuid="b29e68aa-a235-11e5-bf7f-feff819cdc9f"/>
+  <patient patient_id="3" creator="1" date_created="2005-01-01 00:00:00.0" voided="false"/>
+  <patient_identifier patient_identifier_id="4" patient_id="3" identifier="12345" identifier_type="1" preferred="1" location_id="1" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="b29e6a4e-a235-11e5-bf7f-feff819cdc9f"/>
+</dataset>
