@@ -23,11 +23,7 @@ import org.openmrs.module.hospitalcore.InventoryCommonService;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
-import org.openmrs.module.hospitalcore.model.DepartmentConcept;
-import org.openmrs.module.hospitalcore.model.IpdPatientAdmission;
-import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
-import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
-import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
+import org.openmrs.module.hospitalcore.model.*;
 import org.openmrs.module.hospitalcore.util.ConceptComparator;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.openmrs.ui.framework.page.PageModel;
@@ -290,6 +286,8 @@ public class OpdEntryPageController {
 		//dead patients
 		// harsh 14/6/2012 setting death date to today's date and dead variable
 		// to true when "died" is selected
+		PatientSearch patientSearch = hcs.getPatient(patientId);
+
 		if (StringUtils.equalsIgnoreCase(request.getParameter("died"), "died")) {
 
 				conceptService = Context.getConceptService();
@@ -299,8 +297,8 @@ public class OpdEntryPageController {
 				patient.setDeathDate(new Date());
 				patient.setCauseOfDeath(causeOfDeath);
 				ps.savePatient(patient);
-				//patientSearch.setDead(true);
-				//hcs.savePatientSearch(patientSearch);
+				patientSearch.setDead(true);
+				hcs.savePatientSearch(patientSearch);
 		}
 
 
