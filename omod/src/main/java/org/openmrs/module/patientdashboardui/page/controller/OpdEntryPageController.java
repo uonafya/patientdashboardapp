@@ -242,23 +242,24 @@ public class OpdEntryPageController {
 		}
 
 		//selected procedures post
-
-		String procedureProperty = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
-		if (procedureProperty != null) {
-			Concept cProcedure = conceptService.getConceptByName(procedureProperty);
-			if (cProcedure == null) {
-				throw new Exception("Post for procedure concept null");
-			}
-			for (Integer pId : selectedProcedureList) {
-				Obs obsDiagnosis = new Obs();
-				obsDiagnosis.setObsGroup(obsGroup);
-				//obsDiagnosis.setConcept(pDiagnosis);
-				obsDiagnosis.setValueCoded(conceptService.getConcept(pId));
-				obsDiagnosis.setCreator(user);
-				obsDiagnosis.setDateCreated(date);
-				obsDiagnosis.setEncounter(encounter);
-				obsDiagnosis.setPatient(patient);
-				encounter.addObs(obsDiagnosis);
+		if (selectedProcedureList != null) {
+			String procedureProperty = administrationService.getGlobalProperty(PatientDashboardConstants.CONCEPT_CLASS_NAME_PROCEDURE);
+			if (procedureProperty != null) {
+				Concept cProcedure = conceptService.getConceptByName(procedureProperty);
+				if (cProcedure == null) {
+					throw new Exception("Post for procedure concept null");
+				}
+				for (Integer pId : selectedProcedureList) {
+					Obs obsDiagnosis = new Obs();
+					obsDiagnosis.setObsGroup(obsGroup);
+					obsDiagnosis.setConcept(cProcedure);
+					obsDiagnosis.setValueCoded(conceptService.getConcept(pId));
+					obsDiagnosis.setCreator(user);
+					obsDiagnosis.setDateCreated(date);
+					obsDiagnosis.setEncounter(encounter);
+					obsDiagnosis.setPatient(patient);
+					encounter.addObs(obsDiagnosis);
+				}
 			}
 		}
 
@@ -291,15 +292,15 @@ public class OpdEntryPageController {
 		// to true when "died" is selected
 		if (StringUtils.equalsIgnoreCase(request.getParameter("died"), "died")) {
 
-			conceptService = Context.getConceptService();
-			Concept causeOfDeath = conceptService.getConceptByName("NONE");
+				conceptService = Context.getConceptService();
+				Concept causeOfDeath = conceptService.getConceptByName("NONE");
 
-			patient.setDead(true);
-			patient.setDeathDate(new Date());
-			patient.setCauseOfDeath(causeOfDeath);
-			ps.savePatient(patient);
-			//patientSearch.setDead(true);
-			//hcs.savePatientSearch(patientSearch);
+				patient.setDead(true);
+				patient.setDeathDate(new Date());
+				patient.setCauseOfDeath(causeOfDeath);
+				ps.savePatient(patient);
+				//patientSearch.setDead(true);
+				//hcs.savePatientSearch(patientSearch);
 		}
 
 
