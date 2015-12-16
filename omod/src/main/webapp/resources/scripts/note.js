@@ -30,8 +30,8 @@ function Note(noteObj) {
     };
 
     this.addDiagnosis = function (diagnosis) {
-        if (self.diagnosis.indexOf(diagnosis)) {
-            diagnoses.push(diagnosis);
+        if (self.diagnoses.indexOf(diagnosis)) {
+            self.diagnoses.push(diagnosis);
         }
     };
 
