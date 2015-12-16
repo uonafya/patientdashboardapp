@@ -56,6 +56,9 @@ public class Note {
 	private Outcome outcome;
 	private List<Option> availableOutcomes;
 	private List<Option> inpatientWards;
+	private String illnessHistory;
+
+	private String otherInstructions;
 
 	public int getPatientId() {
 		return patientId;
@@ -167,6 +170,22 @@ public class Note {
 
 	public void setInpatientWards(List<Option> inpatientWards) {
 		this.inpatientWards = inpatientWards;
+	}
+
+	public String getIllnessHistory() {
+		return illnessHistory;
+	}
+
+	public void setIllnessHistory(String illnessHistory) {
+		this.illnessHistory = illnessHistory;
+	}
+
+	public String getOtherInstructions() {
+		return otherInstructions;
+	}
+
+	public void setOtherInstructions(String otherInstructions) {
+		this.otherInstructions = otherInstructions;
 	}
 
 	private void loadSigns(Integer patientId) {

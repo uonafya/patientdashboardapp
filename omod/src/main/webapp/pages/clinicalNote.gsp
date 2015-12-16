@@ -224,7 +224,7 @@ jq(function() {
         </legend>
         <p class="input-position-class">
             <label for="history">History of Presenting illness</label>
-            <textarea id="history" name="history" rows="1" cols="15"></textarea>
+            <textarea data-bind="value: \$root.illnessHistory" id="history" name="history" rows="1" cols="15"></textarea>
         </p>
         
         <div>
@@ -330,7 +330,7 @@ jq(function() {
         
         <p class="input-position-class">
             <label for="note">Other Instructions</label>
-            <input type="text" id="note" name="note" />
+            <input  data-bind="value: \$root.otherInstructions" type="text" id="note" name="note" />
         </p>
         
         <p class="input-position-class left">

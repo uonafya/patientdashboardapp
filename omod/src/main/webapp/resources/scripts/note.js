@@ -12,6 +12,9 @@ function Note(noteObj) {
 	self.frequencyOpts = ko.observableArray([]);
 	self.formulationOpts = ko.observableArray();
 	self.admitted = noteObj.admitted;
+    self.illnessHistory = noteObj.illnessHistory;
+    self.otherInstructions = noteObj.otherInstructions;
+
     self.availableOutcomes = jq.map(noteObj.availableOutcomes, function(outcome) {
         return new Option(outcome.id, outcome.label);
     });

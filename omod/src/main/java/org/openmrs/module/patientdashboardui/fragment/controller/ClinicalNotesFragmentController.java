@@ -29,7 +29,7 @@ public class ClinicalNotesFragmentController {
 			@RequestParam(value = "queueId", required = false) Integer queueId,
 			@RequestParam(value = "opdLogId", required = false) Integer opdLogId, UiUtils ui) {
     	Note note = new Note(patientId, queueId, opdId, opdLogId);
-    	return SimpleObject.fromObject(note, ui, "signs", "diagnoses", "investigations", "procedures", "patientId", "queueId", "opdId", "opdLogId", "availableOutcomes.id", "availableOutcomes.label", "inpatientWards.id", "inpatientWards.label", "admitted");
+    	return SimpleObject.fromObject(note, ui, "signs", "diagnoses", "investigations", "procedures", "patientId", "queueId", "opdId", "opdLogId", "availableOutcomes.id", "availableOutcomes.label", "inpatientWards.id", "inpatientWards.label", "admitted","illnessHistory","otherInstructions");
     }
     
     public List<SimpleObject> getQualifiers(@RequestParam("signId") Integer signId, UiUtils ui) {
