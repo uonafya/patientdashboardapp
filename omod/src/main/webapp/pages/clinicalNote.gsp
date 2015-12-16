@@ -287,12 +287,16 @@ jq(function() {
             	<span data-bind="if: !(\$root.admitted !== false && \$data.id !== 2)">
                 <input type="radio" data-bind="checkedValue: \$data, checked: \$root.outcome, click: display" >
                 <label data-bind="text: label"></label>
+                <span data-bind="if: \$data.id === 1 && \$root.outcome() && \$root.outcome().id === 1">
+                    <input data-bind="value : FollowUpDate" type="date">
+                </span>
                 <span data-bind="if: \$data.id === 2 && \$root.outcome() && \$root.outcome().id === 2">
                     <select data-bind="options: \$root.inpatientWards, optionsText: 'label', value: \$root.referredWard" ></select>
                 </span>
                 </span>
             </span>
         </p>
+
     </fieldset>
     <div>
         <h2>Debug Vals</h2>
