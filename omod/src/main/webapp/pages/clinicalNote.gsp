@@ -127,9 +127,9 @@ jq(function() {
       });
     });
 
-    jq("#procedure").autocomplete({
+    jq("#diagnosis").autocomplete({
       source: function( request, response ) {
-        jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getProcedures") }',
+        jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getDiagnosis") }',
           {
             q: request.term
           }
@@ -146,7 +146,7 @@ jq(function() {
       select: function( event, ui ) {
         event.preventDefault();
         jq(this).val(ui.item.label);
-        note.addProcedure(new Procedure({id: ui.item.value, label: ui.item.label}));
+        note.addDiagnosis(new Diagnosis({id: ui.item.value, label: ui.item.label}));
       },
       open: function() {
         jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -155,6 +155,38 @@ jq(function() {
         jq( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
       }
     });
+
+    jq("#procedure").autocomplete({
+        source: function( request, response ) {
+            jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getProcedures") }',
+                    {
+                        q: request.term
+                    }
+            ).success(function(data) {
+                        var results = [];
+                        for (var i in data) {
+                            var result = { label: data[i].name, value: data[i].id};
+                            results.push(result);
+                        }
+                        response(results);
+                    });
+        },
+        minLength: 3,
+        select: function( event, ui ) {
+            event.preventDefault();
+            jq(this).val(ui.item.label);
+            note.addProcedure(new Procedure({id: ui.item.value, label: ui.item.label}));
+        },
+        open: function() {
+            jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+        },
+        close: function() {
+            jq( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+        }
+    });
+
+
+
   });
 </script>
 
@@ -203,13 +235,17 @@ jq(function() {
             <input type="radio" name="radio_dia" value="final_dia" id="final_dia" onclick="removeSelectedDia();"/>
             <label for="final_dia">Final</label>
         </p>
-        <p class="input-position-class">
-            <label for="diagnosis">Diagnosis:</label><em>(Required)</em>
-            <input id="diagnosis" name="diagnosis" />
-            <select id="selectedDiagnosisList" name="selectedDiagnosisList" multiple="multiple" onclick="moveSelectedById( 'selectedDiagnosisList', 'availableDiagnosisList' );">
-            </select>
-            <div id="selected-diagnosis"></div>
-        </p>
+
+        <div>
+            <p class="input-position-class">
+                <label for="diagnosis">Diagnosis:</label>
+                <input type="text" id="diagnosis" name="diagnosis" />
+            </p>
+            <div data-bind="foreach: diagnoses">
+                <p data-bind="text: label"></p>
+                <button data-bind="click: \$root.removeDiagnosis">Remove</button>
+            </div>
+        </div>
         
         <div>
             <p class="input-position-class">
@@ -221,14 +257,8 @@ jq(function() {
                 <button data-bind="click: \$root.removeProcedure">Remove</button>
             </div>
         </div>
-        
-        <p class="input-position-class">
-            <label for="investigation">Investigation:</label>
-            <input id="investigation" name="investigation" />
-            <select id="selectedInvestigationList" name="selectedInvestigationList" multiple="multiple" onclick="moveSelectedById( 'selectedInvestigationList', 'availableInvestigationList' )">
-            <select>
-            <div id="selected-investigations"></div>
-        </p>
+
+       
         
         <p class="input-position-class prescription">
             <label>Prescription</label>
