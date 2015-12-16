@@ -185,7 +185,34 @@ jq(function() {
         }
     });
 
-
+    jq("#investigation").autocomplete({
+        source: function( request, response ) {
+            jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getInvestigations") }',
+                    {
+                        q: request.term
+                    }
+            ).success(function(data) {
+                        var results = [];
+                        for (var i in data) {
+                            var result = { label: data[i].name, value: data[i].id};
+                            results.push(result);
+                        }
+                        response(results);
+                    });
+        },
+        minLength: 3,
+        select: function( event, ui ) {
+            event.preventDefault();
+            jq(this).val(ui.item.label);
+            note.addInvestigation(new Investigation({id: ui.item.value, label: ui.item.label}));
+        },
+        open: function() {
+            jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+        },
+        close: function() {
+            jq( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+        }
+    });
 
   });
 </script>
@@ -258,7 +285,16 @@ jq(function() {
             </div>
         </div>
 
-       
+        <div>
+            <p class="input-position-class">
+                <label for="investigation">Investigation:</label>
+                <input type="text" id="investigation" name="investigation" />
+            </p>
+            <div data-bind="foreach: investigations">
+                <p data-bind="text: label"></p>
+                <button data-bind="click: \$root.removeInvestigation">Remove</button>
+            </div>
+        </div>
         
         <p class="input-position-class prescription">
             <label>Prescription</label>
