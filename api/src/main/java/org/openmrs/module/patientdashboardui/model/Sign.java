@@ -58,7 +58,7 @@ public class Sign {
 
 	public void addObs(Encounter encounter, Obs obsGroup) {
 		String symptomConceptId = Context.getAdministrationService()
-				.getGlobalPropertyValue(PatientDashboardConstants.PROPERTY_SYMPTOM, "");
+				.getGlobalProperty(PatientDashboardConstants.PROPERTY_SYMPTOM);
 		Obs obsSymptom = new Obs();
 		obsSymptom.setConcept(Context.getConceptService().getConcept(Integer.parseInt(symptomConceptId)));
 		obsSymptom.setValueCoded(getSymtomConcept());

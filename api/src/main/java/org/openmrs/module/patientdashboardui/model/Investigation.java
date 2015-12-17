@@ -75,8 +75,5 @@ public class Investigation {
 		encounter.addObs(obsInvestigation);
 	}
 
-	public void save(Encounter encounter) {
-
-	}
 
 }

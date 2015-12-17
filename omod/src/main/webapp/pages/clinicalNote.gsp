@@ -214,7 +214,25 @@ jq(function() {
         }
     });
 
-  });
+    jq("#symptoms-qualifiers").on("click", ".showquestions",function(){
+
+        if (jq(this).attr("value") == "less")
+        {
+            jq(this).attr("value","more");
+        }
+        else
+        {
+            jq(this).attr("value","less");
+        };
+
+        var symptom = jq(this).parent("div");
+        var qualifiers = symptom.siblings(".qualifier");
+        qualifiers.toggle();
+    });
+
+
+
+});
 </script>
 
 <form method="post">
@@ -232,12 +250,14 @@ jq(function() {
                 <label for="symptom">Symptom</label>
                 <input type="text" id="symptom" name="symptom" />
             </p>
+
             <div id="symptoms-qualifiers" data-bind="foreach: signs" >
                 <div class="symptom">
                     <p data-bind="text: label"></p>
+                    <input value="more" type="button" class="showquestions">
                     <button data-bind="click: \$parent.removeSign">Remove</button>
                 </div>
-                <div class="qualifier" data-bind="foreach: qualifiers">
+                <div class="qualifier" data-bind="foreach: qualifiers" style="display: none;" >
                     <label data-bind="text: label"></label>
                     <div data-bind="if: options().length >= 1">
                         <p data-bind="foreach: options">
