@@ -23,7 +23,12 @@ function Note(noteObj) {
     self.referredWard = ko.observable();
 
     this.addSign = function (symptom) {
-        if (this.signs.indexOf(symptom) < 0) {
+        //check if the item has already been added
+        var match = ko.utils.arrayFirst(self.signs(), function(item) {
+            return symptom.id === item.id;
+        });
+
+        if (!match) {
             this.signs.push(symptom);
         }
     };
@@ -33,7 +38,12 @@ function Note(noteObj) {
     };
 
     this.addDiagnosis = function (diagnosis) {
-        if (self.diagnoses.indexOf(diagnosis)) {
+        //check if the item has already been added
+        var match = ko.utils.arrayFirst(self.diagnoses(), function(item) {
+            return diagnosis.id === item.id;
+        });
+
+        if (!match) {
             self.diagnoses.push(diagnosis);
         }
     };
@@ -43,7 +53,12 @@ function Note(noteObj) {
     };
 
     this.addProcedure = function (procedure) {
-        if (self.procedures.indexOf(procedure)) {
+        //check if the item has already been added
+        var match = ko.utils.arrayFirst(self.procedures(), function(item) {
+            return procedure.id === item.id;
+        });
+
+        if (!match) {
             self.procedures.push(procedure);
         }
     };
@@ -53,7 +68,12 @@ function Note(noteObj) {
     };
 
     this.addInvestigation = function (investigation) {
-        if (self.investigations.indexOf(investigation)) {
+        //check if the item has already been added
+        var match = ko.utils.arrayFirst(self.investigations(), function(item) {
+            return investigation.id === item.id;
+        });
+
+        if (!match) {
             self.investigations.push(investigation);
         }
     };
