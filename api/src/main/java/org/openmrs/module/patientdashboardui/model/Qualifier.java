@@ -77,7 +77,7 @@ public class Qualifier {
 		Concept questionConcept = Context.getConceptService().getConcept(this.id);
 		question.setQuestionConcept(questionConcept);
 		PatientDashboardService patientDashboardService = Context.getService(PatientDashboardService.class);
-		patientDashboardService.saveQuestion(question);
+		question = patientDashboardService.saveQuestion(question);
 
 		Answer answer = new Answer();
 		if (questionConcept.getDatatype().isCoded()) {
