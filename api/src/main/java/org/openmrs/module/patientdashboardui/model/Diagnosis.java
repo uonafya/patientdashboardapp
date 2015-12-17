@@ -1,6 +1,9 @@
 package org.openmrs.module.patientdashboardui.model;
 
 import org.openmrs.Concept;
+import org.openmrs.Encounter;
+import org.openmrs.Obs;
+import org.openmrs.api.context.Context;
 
 public class Diagnosis {
 
@@ -25,4 +28,14 @@ public class Diagnosis {
 	private Integer id;
 	private String label;
 
+	public void addObs(Encounter encounter, Obs obsGroup) {
+		Obs obsDiagnosis = new Obs();
+		obsDiagnosis.setObsGroup(obsGroup);
+		obsDiagnosis.setValueCoded(Context.getConceptService().getConcept(this.id));
+		obsDiagnosis.setCreator(encounter.getCreator());
+		obsDiagnosis.setDateCreated(encounter.getDateCreated());
+		obsDiagnosis.setEncounter(encounter);
+		obsDiagnosis.setPatient(encounter.getPatient());
+		encounter.addObs(obsDiagnosis);
+	}
 }
