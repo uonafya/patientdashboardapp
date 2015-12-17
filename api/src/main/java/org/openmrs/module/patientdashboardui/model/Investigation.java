@@ -1,7 +1,7 @@
 package org.openmrs.module.patientdashboardui.model;
 
-import org.openmrs.Concept;
-import org.openmrs.Encounter;
+import org.openmrs.*;
+import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
@@ -9,6 +9,10 @@ import org.openmrs.module.hospitalcore.model.BillableService;
 import org.openmrs.module.hospitalcore.model.DepartmentConcept;
 import org.openmrs.module.hospitalcore.model.OpdTestOrder;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
+import org.openmrs.api.AdministrationService;
+import org.openmrs.api.ConceptService;
+
+import java.util.Date;
 
 public class Investigation {
 
@@ -31,6 +35,7 @@ public class Investigation {
 	private Integer id;
 	private String label;
 
+
 	public void save(Encounter encounter, String departmentName) throws Exception {
 		Concept investigationConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalPropertyValue(PatientDashboardConstants.PROPERTY_FOR_INVESTIGATION, null).toString());
 		if (investigationConcept == null) {
@@ -49,6 +54,29 @@ public class Investigation {
 		opdTestOrder.setScheduleDate(encounter.getDateCreated());
 		opdTestOrder.setFromDept(departmentName);
 		Context.getService(PatientDashboardService.class).saveOrUpdateOpdOrder(opdTestOrder);
+	}
+	public void addObs(Encounter encounter, Obs obsGroup) {
+		AdministrationService administrationService = Context
+				.getAdministrationService();
+		GlobalProperty investigationn = administrationService
+				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_FOR_INVESTIGATION);
+		ConceptService conceptService = Context.getConceptService();
+
+		Concept investigationConceptId = conceptService.getConceptByName(investigationn
+				.getPropertyValue());
+		Obs obsInvestigation = new Obs();
+		obsInvestigation.setObsGroup(obsGroup);
+		obsInvestigation.setConcept(investigationConceptId);
+		obsInvestigation.setValueCoded(Context.getConceptService().getConcept(this.id));
+		obsInvestigation.setCreator(encounter.getCreator());
+		obsInvestigation.setDateCreated(encounter.getDateCreated());
+		obsInvestigation.setEncounter(encounter);
+		obsInvestigation.setPatient(encounter.getPatient());
+		encounter.addObs(obsInvestigation);
+	}
+
+	public void save(Encounter encounter) {
+
 	}
 
 }
