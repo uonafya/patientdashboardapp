@@ -9,11 +9,15 @@
   <concept concept_id="9996" retired="false" datatype_id="2" class_id="7" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="17a83f95-49d9-473c-9aeb-c20c874fa5a1"/>
   <concept concept_id="9997" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="f062f4c0-20cd-460b-984f-1e1db4242630"/>
   <concept concept_id="9999" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="122b36a4-9c07-4dfa-81ae-e6a4fe823077"/>
+  <concept concept_id="9980" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="54ee1058-e852-4ee7-912f-2ba48d1da8ad"/>
+  <concept concept_id="9981" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="a075d13e-de60-4f30-97d6-fc5bfe09677f"/>
 
   <concept_answer concept_answer_id="9090" concept_id="9990" answer_concept="9991" creator="1" date_created="2008-08-18 12:34:26.0" uuid="66e16778-a235-11e5-bf7f-feff819cdc9f"/>
   <concept_answer concept_answer_id="9091" concept_id="9991" answer_concept="9992" creator="1" date_created="2008-08-18 12:34:26.0" uuid="66e16854-a235-11e5-bf7f-feff819cdc9f"/>
   <concept_name concept_id="9997" name="Post for procedure" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4003" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="38c3a61f-820b-4cd4-b677-1a9515e338a2"/>
-  <concept_name concept_id="9999" name="Investigations" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4003" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="bea3b7c3-cf29-431e-b98d-69e00d4e13c0"/>
+  <concept_name concept_id="9999" name="Investigations" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4004" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="bea3b7c3-cf29-431e-b98d-69e00d4e13c0"/>
+  <concept_name concept_id="9980" name="MAJOR OPERATION" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4005" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="dfc104ab-1ec7-44f9-927d-a48baf83c467"/>
+  <concept_name concept_id="9981" name="MINOR OPERATION" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4006" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="ee0abbb6-5ae8-416b-bdf2-6f416be5b2f7"/>
 
 
   <patient_identifier_type patient_identifier_type_id="1009" name="Test Identifier Type" description="Test description" check_digit="false" creator="1" date_created="2005-01-01 00:00:00.0" required="false" retired="false"  uuid="66e16926-a235-11e5-bf7f-feff819cdc9f"/>

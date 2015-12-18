@@ -8,6 +8,7 @@ import org.openmrs.module.hospitalcore.InventoryCommonService;
 import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
+import org.openmrs.module.patientdashboardui.model.Procedure;
 import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.module.patientdashboardui.model.Note;
 import org.openmrs.module.patientdashboardui.model.Qualifier;
@@ -58,8 +59,12 @@ public class ClinicalNotesFragmentController {
     public List<SimpleObject> getProcedures(@RequestParam(value="q") String name,UiUtils ui)
     {
         List<Concept> procedures = Context.getService(PatientDashboardService.class).searchProcedure(name);
+        List<Procedure> proceduresPriority = new ArrayList<Procedure>();
+        for(Concept myConcept: procedures){
+            proceduresPriority.add(new Procedure(myConcept));
+        }
 
-        List<SimpleObject> proceduresList = SimpleObject.fromCollection(procedures, ui, "id", "name");
+        List<SimpleObject> proceduresList = SimpleObject.fromCollection(proceduresPriority, ui, "id", "label", "schedulable");
         return proceduresList;
     }
 

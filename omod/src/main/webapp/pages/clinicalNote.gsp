@@ -11,7 +11,7 @@
 <script>
 jq = jQuery;
 jq(function() {
-
+    var procedureMatches = [];
     jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getNote") }',
         {
             'patientId': ${patientId},
@@ -163,19 +163,22 @@ jq(function() {
                         q: request.term
                     }
             ).success(function(data) {
-                        var results = [];
+                        procedureMatches = [];
                         for (var i in data) {
-                            var result = { label: data[i].name, value: data[i].id};
-                            results.push(result);
+                            var result = { label: data[i].label, value: data[i].id, schedulable: data[i].schedulable };
+                            procedureMatches.push(result);
                         }
-                        response(results);
+                        response(procedureMatches);
                     });
         },
         minLength: 3,
         select: function( event, ui ) {
             event.preventDefault();
             jq(this).val(ui.item.label);
-            note.addProcedure(new Procedure({id: ui.item.value, label: ui.item.label}));
+            var procedure = procedureMatches.find(function (procedureMatch) {
+               return procedureMatch.value === ui.item.value;
+            });
+            note.addProcedure(new Procedure({id: procedure.value, label: procedure.label, schedulable: procedure.schedulable}));
         },
         open: function() {
             jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -301,6 +304,7 @@ jq(function() {
             </p>
             <div data-bind="foreach: procedures">
                 <p data-bind="text: label"></p>
+                <span data-bind="if: schedulable">Schedule:<input type="date"></span>
                 <button data-bind="click: \$root.removeProcedure">Remove</button>
             </div>
         </div>
