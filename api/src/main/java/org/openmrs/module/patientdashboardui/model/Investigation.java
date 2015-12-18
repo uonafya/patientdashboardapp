@@ -16,6 +16,11 @@ import java.util.Date;
 
 public class Investigation {
 
+	public Investigation(Integer id, String label) {
+		this.id = id;
+		this.label = label;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -37,7 +42,7 @@ public class Investigation {
 
 
 	public void save(Encounter encounter, String departmentName) throws Exception {
-		Concept investigationConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalPropertyValue(PatientDashboardConstants.PROPERTY_FOR_INVESTIGATION, null).toString());
+		Concept investigationConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_FOR_INVESTIGATION));
 		if (investigationConcept == null) {
 			throw new Exception("Investigation concept null");
 		}
@@ -58,12 +63,13 @@ public class Investigation {
 	public void addObs(Encounter encounter, Obs obsGroup) {
 		AdministrationService administrationService = Context
 				.getAdministrationService();
-		GlobalProperty investigationn = administrationService
+		GlobalProperty investigationConceptName = administrationService
 				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_FOR_INVESTIGATION);
 		ConceptService conceptService = Context.getConceptService();
 
-		Concept investigationConceptId = conceptService.getConceptByName(investigationn
+		Concept investigationConceptId = conceptService.getConceptByName(investigationConceptName
 				.getPropertyValue());
+
 		Obs obsInvestigation = new Obs();
 		obsInvestigation.setObsGroup(obsGroup);
 		obsInvestigation.setConcept(investigationConceptId);
@@ -71,9 +77,9 @@ public class Investigation {
 		obsInvestigation.setCreator(encounter.getCreator());
 		obsInvestigation.setDateCreated(encounter.getDateCreated());
 		obsInvestigation.setEncounter(encounter);
-		obsInvestigation.setPatient(encounter.getPatient());
 		encounter.addObs(obsInvestigation);
 	}
+
 
 
 }

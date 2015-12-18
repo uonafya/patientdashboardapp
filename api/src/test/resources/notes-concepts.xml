@@ -8,10 +8,14 @@
   <concept concept_id="9995" retired="false" datatype_id="2" class_id="7" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="97b0b281-d42f-4550-8f1b-998644f193f6"/>
   <concept concept_id="9996" retired="false" datatype_id="2" class_id="7" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="17a83f95-49d9-473c-9aeb-c20c874fa5a1"/>
   <concept concept_id="9997" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="f062f4c0-20cd-460b-984f-1e1db4242630"/>
+  <concept concept_id="9999" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="122b36a4-9c07-4dfa-81ae-e6a4fe823077"/>
+
   <concept_answer concept_answer_id="9090" concept_id="9990" answer_concept="9991" creator="1" date_created="2008-08-18 12:34:26.0" uuid="66e16778-a235-11e5-bf7f-feff819cdc9f"/>
   <concept_answer concept_answer_id="9091" concept_id="9991" answer_concept="9992" creator="1" date_created="2008-08-18 12:34:26.0" uuid="66e16854-a235-11e5-bf7f-feff819cdc9f"/>
   <concept_name concept_id="9997" name="Post for procedure" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4003" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="38c3a61f-820b-4cd4-b677-1a9515e338a2"/>
-  
+  <concept_name concept_id="9999" name="Investigations" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4003" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="bea3b7c3-cf29-431e-b98d-69e00d4e13c0"/>
+
+
   <patient_identifier_type patient_identifier_type_id="1009" name="Test Identifier Type" description="Test description" check_digit="false" creator="1" date_created="2005-01-01 00:00:00.0" required="false" retired="false"  uuid="66e16926-a235-11e5-bf7f-feff819cdc9f"/>
   <person person_id="3009" dead="false" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" gender="F"  uuid="b29e64f4-a235-11e5-bf7f-feff819cdc9f"/>
   <person_name person_id="3009" person_name_id="3009" preferred="1" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" given_name="John3" middle_name=" " family_name="Doe"  uuid="b29e68aa-a235-11e5-bf7f-feff819cdc9f"/>
@@ -19,7 +23,10 @@
   <patient_identifier patient_identifier_id="4009" patient_id="3009" identifier="12345" identifier_type="1009" preferred="1" location_id="1" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="b29e6a4e-a235-11e5-bf7f-feff819cdc9f"/>
   
   <global_property property="patientdashboard.postForProcedureConcept" property_value="Post for procedure" uuid="0a73db5c-9cc5-470c-b9e2-705a77ad17b1"/>
+  <global_property property="patientdashboard.investigationConcept" property_value="Investigations" uuid="8d7a5104-7809-441d-9e51-673450c8cb15"/>
   
   <billing_billable_service service_id="1" concept_id="9993" name="Allergy Shots" short_name="" price="50" disable="false" category="9995" />
   <billing_billable_service service_id="2" concept_id="9994" name="LAPAROTOMY" short_name="" price="500" disable="false" category="9996" />
+  <billing_billable_service service_id="3" concept_id="9996" name="Maralia Tests" short_name="" price="100" disable="false" category="9996" />
+
 </dataset>
