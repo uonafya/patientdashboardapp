@@ -9,8 +9,9 @@
 	<script src="/openmrs/ms/uiframework/resource/patientdashboardui/scripts/note.js"></script>
 </head>
 <script>
-jq = jQuery;
+var jq = jQuery;
 jq(function() {
+    var note;
     var procedureMatches = [];
     jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getNote") }',
         {
@@ -233,8 +234,12 @@ jq(function() {
         qualifiers.toggle();
     });
 
-
-
+    jq(".submit").on("click", function(){
+        jq.ajax({
+            method: "POST",
+            data: JSON.stringify(ko.toJSON(note))
+        });
+    });
 });
 </script>
 
@@ -386,6 +391,8 @@ jq(function() {
                 </span>
             </span>
         </p>
+
+        <p><button class="submit">Submit</button></p>
 
     </fieldset>
     <div>

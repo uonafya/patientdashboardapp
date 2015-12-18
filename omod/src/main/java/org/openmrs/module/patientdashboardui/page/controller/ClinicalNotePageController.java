@@ -31,7 +31,9 @@ import org.openmrs.module.patientdashboardui.model.Note;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 public class ClinicalNotePageController {
 
@@ -48,121 +50,8 @@ public class ClinicalNotePageController {
 		
 	}
 	
-	public String post(@RequestParam("patientId") Integer patientId,
-			@RequestParam(value = "opdLogId", required = false) Integer opdLogId,
-			@RequestParam(value = "selectedSymptomList", required = false)Integer[] selectedSymptomList,
-			@RequestParam(value = "selectedDiagnosisList", required = false)Integer[] selectedDiagnosisList,
-			@RequestParam(value = "selectedProcedureList", required = false)Integer[] selectedProcedureList,
-			HttpServletRequest request, UiUtils ui) throws Exception {
-		User user = Context.getAuthenticatedUser();
-		AdministrationService administrationService = Context.getAdministrationService();
-		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
-		PatientService ps = Context.getPatientService();
-		PatientQueueService queueService = Context.getService(PatientQueueService.class);
-		IpdService ipdService = Context.getService(IpdService.class);
-		ConceptService conceptService = Context.getConceptService();
-		
-		Obs obsGroup = null;
-		Date date = new Date();
-		obsGroup = hcs.getObsGroupCurrentDate(patientId);
-		Patient patient = ps.getPatient(patientId);
-		Encounter encounter = getEncounter(opdLogId, patient);
-
-		//selected procedures post
-		if (selectedProcedureList != null) {
-			String procedureProperty = administrationService.getGlobalProperty(PatientDashboardConstants.CONCEPT_CLASS_NAME_PROCEDURE);
-			if (procedureProperty != null) {
-				Concept cProcedure = conceptService.getConceptByName(procedureProperty);
-				if (cProcedure == null) {
-					throw new Exception("Post for procedure concept null");
-				}
-				for (Integer pId : selectedProcedureList) {
-					Obs obsDiagnosis = new Obs();
-					obsDiagnosis.setObsGroup(obsGroup);
-					obsDiagnosis.setConcept(cProcedure);
-					obsDiagnosis.setValueCoded(conceptService.getConcept(pId));
-					obsDiagnosis.setCreator(user);
-					obsDiagnosis.setDateCreated(date);
-					obsDiagnosis.setEncounter(encounter);
-					obsDiagnosis.setPatient(patient);
-					encounter.addObs(obsDiagnosis);
-				}
-			}
-		}
-
-		handleSymptoms(selectedSymptomList, obsGroup, patient, encounter);
-		
-		handleDiagnosis(selectedDiagnosisList, request, obsGroup, patient, encounter);
-		//TODO: 
-
-		//create internal/external referrals obs
-		//handle dead patients
-		//dead patients
-		// harsh 14/6/2012 setting death date to today's date and dead variable
-		// to true when "died" is selected
-		PatientSearch patientSearch = hcs.getPatient(patientId);
-
-		if (StringUtils.equalsIgnoreCase(request.getParameter("died"), "died")) {
-
-				conceptService = Context.getConceptService();
-				Concept causeOfDeath = conceptService.getConceptByName("NONE");
-
-				patient.setDead(true);
-				patient.setDeathDate(new Date());
-				patient.setCauseOfDeath(causeOfDeath);
-				ps.savePatient(patient);
-				patientSearch.setDead(true);
-				hcs.savePatientSearch(patientSearch);
-		}
-
-
-		GlobalProperty externalReferral = administrationService
-				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL);
-
-		// external referral
-		if (StringUtils.isNotBlank(request.getParameter("externalReferral"))) {
-			Concept cExternalReferral = conceptService
-					.getConceptByName(externalReferral.getPropertyValue());
-			if (cExternalReferral == null) {
-				throw new Exception("ExternalReferral concept null");
-			}
-			Obs obsExternalReferral = new Obs();
-			obsExternalReferral.setObsGroup(obsGroup);
-			obsExternalReferral.setConcept(cExternalReferral);
-			obsExternalReferral.setValueCoded(conceptService.getConcept(request.getParameter("externalReferral")));
-			obsExternalReferral.setCreator(user);
-			obsExternalReferral.setDateCreated(date);
-			obsExternalReferral.setEncounter(encounter);
-			obsExternalReferral.setPatient(patient);
-			encounter.addObs(obsExternalReferral);
-		}
-
-
-
-		Concept illnessHistory = conceptService.getConceptByName("History of Present Illness");
-
-		// illness history
-		if (StringUtils.isNotBlank(request.getParameter("note"))) {
-
-			Obs obsDiagnosis = new Obs();
-			obsDiagnosis.setObsGroup(obsGroup);
-			obsDiagnosis.setConcept(illnessHistory);
-			obsDiagnosis.setValueText(request.getParameter("note"));
-			obsDiagnosis.setCreator(user);
-			obsDiagnosis.setDateCreated(date);
-			obsDiagnosis.setEncounter(encounter);
-			obsDiagnosis.setPatient(patient);
-			encounter.addObs(obsDiagnosis);
-		}
-		
-		handleOtherInstructions(request, obsGroup, patient, encounter);
-		
-		handleOutcome(request, obsGroup, patient, encounter);
-		
-		Context.getEncounterService().saveEncounter(encounter);
-		
-		return "redirect:" + ui.pageLink("patientqueueui", "chooseOpd");
-		
+	public void post(@RequestBody Note note){
+		System.out.println(note);
 	}
 
 	private void handleOtherInstructions(HttpServletRequest request, Obs obsGroup, Patient patient, Encounter encounter) {
