@@ -35,7 +35,7 @@ public class Diagnosis {
 		obsDiagnosis.setCreator(encounter.getCreator());
 		obsDiagnosis.setDateCreated(encounter.getDateCreated());
 		obsDiagnosis.setEncounter(encounter);
-		obsDiagnosis.setPatient(encounter.getPatient());
+		obsDiagnosis.setPerson(encounter.getPatient());
 		encounter.addObs(obsDiagnosis);
 	}
 }

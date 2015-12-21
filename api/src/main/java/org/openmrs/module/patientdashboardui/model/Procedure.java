@@ -99,6 +99,7 @@ public class Procedure {
 		obsProcedure.setCreator(encounter.getCreator());
 		obsProcedure.setDateCreated(encounter.getDateCreated());
 		obsProcedure.setEncounter(encounter);
+		obsProcedure.setPerson(encounter.getPatient());
 		encounter.addObs(obsProcedure);
 	}
 }

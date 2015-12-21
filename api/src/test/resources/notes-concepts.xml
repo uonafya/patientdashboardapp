@@ -14,6 +14,8 @@
   <concept concept_id="9950" retired="false" datatype_id="4" class_id="3" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="0bef0d62-46c0-4a14-a0ed-c9106c8af7fe"/>
   <concept concept_id="9960" retired="false" datatype_id="4" class_id="20" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="17daa17b-47ae-4a93-8e89-8d7b1eae41b6"/>
   <concept_class concept_class_id="20" name="Frequency" description="Drug frequency" creator="1" date_created="2008-08-15 13:56:55.0" retired="false" uuid="0fd33d76-8b4b-445f-899e-161c5e85d36c"/>
+  <concept concept_id="9982" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="83540343-e16a-4a7d-970a-8680e77da8ce"/>
+
 
   <concept_answer concept_answer_id="9090" concept_id="9990" answer_concept="9991" creator="1" date_created="2008-08-18 12:34:26.0" uuid="66e16778-a235-11e5-bf7f-feff819cdc9f"/>
   <concept_answer concept_answer_id="9091" concept_id="9991" answer_concept="9992" creator="1" date_created="2008-08-18 12:34:26.0" uuid="66e16854-a235-11e5-bf7f-feff819cdc9f"/>
@@ -22,7 +24,7 @@
   <concept_name concept_id="9980" name="MAJOR OPERATION" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4005" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="dfc104ab-1ec7-44f9-927d-a48baf83c467"/>
   <concept_name concept_id="9981" name="MINOR OPERATION" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4006" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="ee0abbb6-5ae8-416b-bdf2-6f416be5b2f7"/>
   <concept_name concept_id="9950" name="AMOX" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4007" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="5951924c-23fc-43df-bf68-2f090c37984b"/>
-
+  <concept_name concept_id="9982" name="OBS GROUP" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4007" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="cf2b438a-a06a-4918-845f-bbc31856bb63"/>
 
   <patient_identifier_type patient_identifier_type_id="1009" name="Test Identifier Type" description="Test description" check_digit="false" creator="1" date_created="2005-01-01 00:00:00.0" required="false" retired="false"  uuid="66e16926-a235-11e5-bf7f-feff819cdc9f"/>
   <person person_id="3009" dead="false" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" gender="F"  uuid="b29e64f4-a235-11e5-bf7f-feff819cdc9f"/>
@@ -32,6 +34,7 @@
   
   <global_property property="patientdashboard.postForProcedureConcept" property_value="Post for procedure" uuid="0a73db5c-9cc5-470c-b9e2-705a77ad17b1"/>
   <global_property property="patientdashboard.investigationConcept" property_value="Investigations" uuid="8d7a5104-7809-441d-9e51-673450c8cb15"/>
+  <global_property property="hospitalcore.obsGroup" property_value="OBS GROUP" uuid="fe3e129d-82aa-45a0-b14c-b9cb339d7706"/>
   
   <billing_billable_service service_id="1" concept_id="9993" name="Allergy Shots" short_name="" price="50" disable="false" category="9995" />
   <billing_billable_service service_id="2" concept_id="9994" name="LAPAROTOMY" short_name="" price="500" disable="false" category="9996" />

@@ -16,6 +16,7 @@ import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
+import org.openmrs.module.hospitalcore.util.HospitalCoreConstants;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,15 +51,15 @@ public class Note {
 	private Integer opdId;
 	private boolean admitted;
 	private Integer opdLogId;
-	private List<Sign> signs;
-	private List<Diagnosis> diagnoses;
-	private List<Investigation> investigations;
-	private List<Procedure> procedures;
-	private List<Drug> drugs;
+	private List<Sign> signs = new ArrayList<Sign>() ;
+	private List<Diagnosis> diagnoses = new ArrayList<Diagnosis>();
+	private List<Investigation> investigations = new ArrayList<Investigation>();
+	private List<Procedure> procedures = new ArrayList<Procedure>();
+	private List<Drug> drugs = new ArrayList<Drug>();
 	private Referral referral;
 	private Outcome outcome;
-	private List<Option> availableOutcomes;
-	private List<Option> inpatientWards;
+	private List<Option> availableOutcomes = new ArrayList<Option>();
+	private List<Option> inpatientWards = new ArrayList<Option>();
 	private String illnessHistory;
 
 	private String otherInstructions;
@@ -210,6 +211,8 @@ public class Note {
 	public Encounter save() {
 		Patient patient = Context.getPatientService().getPatient(this.patientId);
 		Obs obsGroup = Context.getService(HospitalCoreService.class).getObsGroupCurrentDate(patient.getPersonId());
+
+
 		Encounter encounter = createEncounter(patient);
 		addObs(obsGroup, encounter);
 		Context.getEncounterService().saveEncounter(encounter);
@@ -220,8 +223,8 @@ public class Note {
 	private Encounter createEncounter(Patient patient) {
 		Encounter encounter = new Encounter();
 		User user = Context.getAuthenticatedUser();
-		EncounterType encounterType = Context.getAdministrationService()
-				.getGlobalPropertyValue(PatientDashboardConstants.PROPERTY_OPD_ENCOUTNER_TYPE, null);
+		String encounterTypeName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_OPD_ENCOUTNER_TYPE);
+		EncounterType encounterType = Context.getEncounterService().getEncounterType(encounterTypeName);
 		Location location = new Location(1);
 		if (this.opdLogId != null) {
 			OpdPatientQueueLog opdPatientQueueLog = Context.getService(PatientQueueService.class)

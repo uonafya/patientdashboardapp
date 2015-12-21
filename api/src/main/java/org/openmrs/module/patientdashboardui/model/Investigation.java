@@ -77,6 +77,7 @@ public class Investigation {
 		obsInvestigation.setCreator(encounter.getCreator());
 		obsInvestigation.setDateCreated(encounter.getDateCreated());
 		obsInvestigation.setEncounter(encounter);
+		obsInvestigation.setPerson(encounter.getPatient());
 		encounter.addObs(obsInvestigation);
 	}
 

@@ -66,6 +66,7 @@ public class Sign {
 		obsSymptom.setCreator(encounter.getCreator());
 		obsSymptom.setDateCreated(encounter.getDateCreated());
 		obsSymptom.setEncounter(encounter);
+		obsSymptom.setPerson(encounter.getPatient());
 		encounter.addObs(obsSymptom);
 	}
 
