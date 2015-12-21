@@ -1,15 +1,11 @@
 package org.openmrs.module.patientdashboardui.model;
 
-import java.util.Date;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.openmrs.Encounter;
-import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
-import org.openmrs.test.BaseModuleContextSensitiveTest;
 
-public class ProcedureComponentTest extends BaseModuleContextSensitiveTest {
+public class ProcedureModelTest extends AbstractModelTest {
 
 	@Test
 	public void save_shouldSaveProcedureOrders() throws Exception {
@@ -20,7 +16,7 @@ public class ProcedureComponentTest extends BaseModuleContextSensitiveTest {
 		
 		procedure.save(encounter);
 	}
-
+	
 	@Test
 	public void addobs_shouldAddObstoEncounter() throws Exception {
 		executeDataSet("notes-concepts.xml");
@@ -33,18 +29,6 @@ public class ProcedureComponentTest extends BaseModuleContextSensitiveTest {
 		Assert.assertEquals(1,encounter.getObs().size());
 
 		Context.getEncounterService().saveEncounter(encounter);
-	}
-	
-	private Encounter createEncounter() {
-		Encounter enc = new Encounter();
-		enc.setLocation(Context.getLocationService().getLocation(1));
-		enc.setEncounterType(Context.getEncounterService().getEncounterType(1));
-		enc.setEncounterDatetime(new Date());
-		Patient patient = Context.getPatientService().getPatient(3009);
-		enc.setPatient(patient);
-		enc.addProvider(Context.getEncounterService().getEncounterRole(1), Context.getProviderService().getProvider(1));
-		Context.getEncounterService().saveEncounter(enc);
-		return enc;
 	}
 
 }
