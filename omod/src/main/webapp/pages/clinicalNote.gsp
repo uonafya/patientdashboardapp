@@ -245,7 +245,7 @@ jq(function() {
         jq.ajax({
           type: 'POST',
           url: '${ ui.actionLink("patientdashboardui", "clinicalNoteProcessor", "processNote") }',
-          data :{ note: ko.toJSON(note, ["signs", "label", "id", "admitted"]) }
+          data :{ note: ko.toJSON(note, ["label", "id", "admitted","availableOutcomes", "diagnoses", "illnessHistory", "inpatientWarads", "investigations", "opdId", "opdLogId", "otherInstructions", "patientId", "procedures", "queueId", "signs"]) }
         });
     });
 });
