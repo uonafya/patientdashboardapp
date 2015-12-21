@@ -51,11 +51,7 @@ public class ClinicalNotePageController {
 		
 	}
 	
-	public void post(@BindParams("note") Note note, HttpServletRequest request){
-		System.out.println("Post called");
-		System.out.println(note);
-		System.out.println(request.getAttribute("note"));
-	}
+
 
 	private void handleOtherInstructions(HttpServletRequest request, Obs obsGroup, Patient patient, Encounter encounter) {
 		ConceptService conceptService = Context.getConceptService();

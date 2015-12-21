@@ -21,6 +21,10 @@ public class Investigation {
 		this.label = label;
 	}
 
+	public Investigation(){
+
+	}
+
 	public Integer getId() {
 		return id;
 	}

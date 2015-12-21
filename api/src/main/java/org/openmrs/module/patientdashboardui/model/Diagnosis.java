@@ -12,6 +12,10 @@ public class Diagnosis {
 		this.label = concept.getName().getName();
 	}
 
+	public Diagnosis(){
+
+	}
+
 	public Integer getId() {
 		return id;
 	}

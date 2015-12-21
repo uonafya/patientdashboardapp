@@ -17,6 +17,9 @@ import java.util.Collection;
 import java.util.List;
 
 public class Procedure {
+	public Procedure(){
+
+	}
 
 	public Procedure(Integer id, String label) {
 		this.id = id;
