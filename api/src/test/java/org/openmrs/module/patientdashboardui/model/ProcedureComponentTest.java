@@ -2,6 +2,7 @@ package org.openmrs.module.patientdashboardui.model;
 
 import java.util.Date;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.openmrs.Encounter;
 import org.openmrs.Patient;
@@ -18,6 +19,20 @@ public class ProcedureComponentTest extends BaseModuleContextSensitiveTest {
 		procedure.setScheduledDate("18/12/2015");
 		
 		procedure.save(encounter);
+	}
+
+	@Test
+	public void addobs_shouldAddObstoEncounter() throws Exception {
+		executeDataSet("notes-concepts.xml");
+		Encounter encounter = createEncounter();
+
+		Assert.assertEquals(0, encounter.getObs().size());
+		Procedure procedure = new Procedure(9993, "Allergy Shots");
+		procedure.setScheduledDate("18/12/2015");
+		procedure.addObs(encounter,null);
+		Assert.assertEquals(1,encounter.getObs().size());
+
+		Context.getEncounterService().saveEncounter(encounter);
 	}
 	
 	private Encounter createEncounter() {
