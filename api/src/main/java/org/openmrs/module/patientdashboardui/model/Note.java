@@ -243,6 +243,18 @@ public class Note {
 		for (Sign sign : this.signs) {
 			sign.addObs(encounter, obsGroup);
 		}
+		for (Procedure procedure : this.procedures)
+		{
+			procedure.addObs(encounter,obsGroup);
+		}
+		for(Investigation investigation : this.investigations)
+		{
+			investigation.addObs(encounter,obsGroup);
+		}
+		for (Diagnosis diagnosis : this.diagnoses)
+		{
+			diagnosis.addObs(encounter,obsGroup);
+		}
 	}
 
 	private void saveNoteDetails(Encounter encounter) {
