@@ -16,7 +16,6 @@ import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
-import org.openmrs.module.hospitalcore.util.HospitalCoreConstants;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -211,8 +210,6 @@ public class Note {
 	public Encounter save() {
 		Patient patient = Context.getPatientService().getPatient(this.patientId);
 		Obs obsGroup = Context.getService(HospitalCoreService.class).getObsGroupCurrentDate(patient.getPersonId());
-
-
 		Encounter encounter = createEncounter(patient);
 		addObs(obsGroup, encounter);
 		Context.getEncounterService().saveEncounter(encounter);
@@ -266,7 +263,6 @@ public class Note {
 					.getReferralConceptName();
 			drug.save(encounter, referralWardName);
 		}
-		this.outcome.save(encounter);
 		for (Investigation investigation : this.investigations) {
 			String departmentName = Context.getService(PatientQueueService.class).getOpdPatientQueueById(this.opdId).getOpdConceptName();
 			try {
@@ -274,6 +270,9 @@ public class Note {
 			} catch (Exception e) {
 				logger.error("Error saving investigation {}({}): {}", new Object[] { investigation.getId(), investigation.getLabel(), e.getMessage() });
 			}
+		}
+		if (this.outcome != null) {
+			this.outcome.save(encounter);
 		}
 	}
 }

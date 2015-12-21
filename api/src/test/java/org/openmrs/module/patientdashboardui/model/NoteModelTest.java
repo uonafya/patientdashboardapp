@@ -1,6 +1,5 @@
 package org.openmrs.module.patientdashboardui.model;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
@@ -11,14 +10,18 @@ import java.util.List;
  * Created by Francis on 12/21/2015.
  */
 public class NoteModelTest extends BaseModuleContextSensitiveTest {
-    @Ignore
-    public void saveNote_shouldSaveNote() throws Exception {
-        executeDataSet("notes-concepts.xml");
-        Note note = new Note();
-        note.setPatientId(3009);
-        note.setPatientId(3009);
-        List<Procedure> procedures = new ArrayList<Procedure>();
-        note.setProcedures(procedures);
-        note.save();
-    }
+
+	@Test
+	public void saveNote_shouldSaveNoteWithProcedures() throws Exception {
+		executeDataSet("notes-concepts.xml");
+		Note note = new Note();
+		note.setPatientId(3009);
+		note.setPatientId(3009);
+		List<Procedure> procedures = new ArrayList<Procedure>();
+		Procedure procedure = new Procedure(9993, "Allergy Shots");
+		procedure.setScheduledDate("18/12/2015");
+		procedures.add(procedure);
+		note.setProcedures(procedures);
+		note.save();
+	}
 }

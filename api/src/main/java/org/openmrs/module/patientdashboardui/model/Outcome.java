@@ -18,12 +18,12 @@ import org.slf4j.LoggerFactory;
 
 public class Outcome {
 
-	private static final int CURED_OPTION = 5;
-	private static final int REVIEWED_OPTION = 4;
-	private static final int DIED_OPTION = 3;
-	private static Logger logger = LoggerFactory.getLogger(Outcome.class);
-	private static final int ADMIT_OPTION = 2;
-	private static final int FOLLOW_UP_OPTION = 1;
+	static final int FOLLOW_UP_OPTION = 1;
+	static final int ADMIT_OPTION = 2;
+	static final int DIED_OPTION = 3;
+	static final int REVIEWED_OPTION = 4;
+	static final int CURED_OPTION = 5;
+	private static Logger logger = LoggerFactory.getLogger(Outcome.class);	
 	private Option option;
 	private String followUpDate;
 	private Option admitTo;
@@ -72,7 +72,7 @@ public class Outcome {
 	}
 
 	public void addObs(Encounter encounter, Obs obsGroup) {
-		String outcomeConceptName = Context.getAdministrationService().getGlobalPropertyValue(PatientDashboardConstants.PROPERTY_VISIT_OUTCOME, null);
+		String outcomeConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_VISIT_OUTCOME);
 		Concept outcomeConcept = Context.getConceptService().getConceptByName(outcomeConceptName);
 		Obs obsOutcome = new Obs();
 		obsOutcome.setObsGroup(obsGroup);
