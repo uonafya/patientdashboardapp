@@ -3,6 +3,7 @@ package org.openmrs.module.patientdashboardui.model;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Encounter;
+import org.openmrs.Obs;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
@@ -88,5 +89,16 @@ public class Procedure {
 		opdTestOrder.setScheduleDate(Context.getDateFormat().parse(this.getScheduledDate()));
 		
 		Context.getService(PatientDashboardService.class).saveOrUpdateOpdOrder(opdTestOrder);
+	}
+
+	public void addObs(Encounter encounter, Obs obsGroup) {
+		Obs obsProcedure = new Obs();
+		obsProcedure.setObsGroup(obsGroup);
+		obsProcedure.setConcept(Context.getConceptService().getConcept(this.id));
+		obsProcedure.setValueCoded(Context.getConceptService().getConcept(this.id));
+		obsProcedure.setCreator(encounter.getCreator());
+		obsProcedure.setDateCreated(encounter.getDateCreated());
+		obsProcedure.setEncounter(encounter);
+		encounter.addObs(obsProcedure);
 	}
 }
