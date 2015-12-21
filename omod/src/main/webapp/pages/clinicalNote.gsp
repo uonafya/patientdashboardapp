@@ -6,6 +6,7 @@
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-debug.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout.mapping/2.4.1/knockout.mapping.min.js"></script>
 	<script src="/openmrs/ms/uiframework/resource/patientdashboardui/scripts/note.js"></script>
 </head>
 <script>
@@ -234,10 +235,12 @@ jq(function() {
         qualifiers.toggle();
     });
 
-    jq(".submit").on("click", function(){
+    jq(".submit").on("click", function(event){
+        event.preventDefault();
         jq.ajax({
-            method: "POST",
-            data: JSON.stringify(ko.toJSON(note))
+          type: 'POST',
+          url: '${ ui.actionLink("patientdashboardui", "clinicalNoteProcessor", "processNote") }',
+          data :{ note: ko.toJSON(note, ["signs","availableOutcomes", "label", "id"]) }
         });
     });
 });

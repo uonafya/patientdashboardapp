@@ -29,6 +29,7 @@ import org.openmrs.module.hospitalcore.util.ConceptComparator;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.openmrs.module.patientdashboardui.model.Note;
 import org.openmrs.ui.framework.UiUtils;
+import org.openmrs.ui.framework.annotation.BindParams;
 import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,8 +51,10 @@ public class ClinicalNotePageController {
 		
 	}
 	
-	public void post(@RequestBody Note note){
+	public void post(@BindParams("note") Note note, HttpServletRequest request){
+		System.out.println("Post called");
 		System.out.println(note);
+		System.out.println(request.getAttribute("note"));
 	}
 
 	private void handleOtherInstructions(HttpServletRequest request, Obs obsGroup, Patient patient, Encounter encounter) {

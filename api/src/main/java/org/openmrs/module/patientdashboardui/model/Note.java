@@ -23,6 +23,9 @@ import org.slf4j.LoggerFactory;
 public class Note {
 
 	private static Logger logger = LoggerFactory.getLogger(Note.class);
+	
+	public Note () {
+	}
 
 	public Note(int patientId, Integer queueId, Integer opdId, Integer opdLogId) {
 		super();
