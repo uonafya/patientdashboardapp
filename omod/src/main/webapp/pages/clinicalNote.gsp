@@ -109,6 +109,11 @@ jq(function() {
         select: function( event, ui ) {
           event.preventDefault();
           jq(selectedInput).val(ui.item.label);
+        },
+        change: function (event, ui) {
+          event.preventDefault();
+          jq(selectedInput).val(ui.item.label);
+          console.log(ui.item.label);
           jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getFormulationByDrugName") }',
             {
               "drugName": ui.item.label
@@ -117,7 +122,7 @@ jq(function() {
             var formulations = jq.map(data, function (formulation) {
               return new Formulation({ id: formulation.id, label: formulation.name});
             });
-            note.formulationOpts(formulations);
+            note.getDrug(ui.item.label).formulationOpts(formulations);
           });
         },
         open: function() {
@@ -337,13 +342,14 @@ jq(function() {
                     <th>Frequency</th>
                     <th>Number of Days</th>
                     <th>Comment</th>
+                    <th></th>
                 </thead>
                 <tbody data-bind="foreach: drugs">
                     <td>
-                        <input class="drug-name" type="text" data-bind="value: name" >
+                        <input class="drug-name" type="text" data-bind="value: name, valueUpdate: 'blur'" >
                     </td>
                     <td>
-                        <select data-bind="options: \$root.formulationOpts, value: formulation, optionsText: 'label'"></select>
+                        <select data-bind="options: formulationOpts, value: formulation, optionsText: 'label'"></select>
                     </td>
                     <td>
                         <select data-bind="options: \$root.frequencyOpts, value: frequency, optionsText: 'label'"></select>
@@ -354,10 +360,12 @@ jq(function() {
                     <td>
                         <textarea data-bind="value: comment"></textarea>
                     </td>
+                    <td>
+                        <button data-bind="click: \$root.removeDrug">Remove</button>
+                    </td>
                 </tbody>
             </table>
             <button data-bind="click: addDrug">Add</button>
-            <select data-bind="options: formulationOpts, optionsText: 'label'"></select>
         </p>
         
         <p class="input-position-class">

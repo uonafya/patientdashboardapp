@@ -10,7 +10,6 @@ function Note(noteObj) {
     self.investigations = ko.observableArray([]);
     self.drugs = ko.observableArray([]);
 	self.frequencyOpts = ko.observableArray([]);
-	self.formulationOpts = ko.observableArray();
 	self.admitted = noteObj.admitted;
     self.illnessHistory = noteObj.illnessHistory;
     self.otherInstructions = noteObj.otherInstructions;
@@ -82,6 +81,13 @@ function Note(noteObj) {
         self.investigations.remove(investigation);
     };
 
+    self.getDrug = function (drugName) {
+        var match = ko.utils.arrayFirst(self.drugs(), function(drug) {
+            return drug.name().toLowerCase() === drugName.toLowerCase();
+        });
+        return match;
+    }
+
     this.addDrug = function () {
         self.drugs.push(new Drug());
     };
@@ -137,6 +143,7 @@ function Procedure (procedureObj) {
 function Drug () {
 	this.name = ko.observable(); 
 	this.frequency = ko.observable();
+	this.formulationOpts = ko.observableArray([]);
 	this.formulation = ko.observable();
 	this.comment = ko.observable();
 	this.numberOfDays = ko.observable(0);
