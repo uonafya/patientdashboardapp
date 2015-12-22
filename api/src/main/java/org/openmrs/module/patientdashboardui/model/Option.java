@@ -10,14 +10,18 @@ public class Option {
 	public Option() {
 	}
 
+	public Option(int id, String label){
+		this.id = id;
+		this.label = label;
+	}
+
 	public Option(Concept answerConcept) {
 		this.id = answerConcept.getConceptId();
 		this.label = answerConcept.getDisplayString();
 	}
 
-	public Option(Integer id, String label) {
+	public Option(Integer id) {
 		this.id = id;
-		this.label = label;
 	}
 
 	public Integer getId() {

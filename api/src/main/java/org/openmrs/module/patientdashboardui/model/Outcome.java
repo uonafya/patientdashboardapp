@@ -78,7 +78,7 @@ public class Outcome {
 		obsOutcome.setObsGroup(obsGroup);
 		obsOutcome.setConcept(outcomeConcept);
 		try {
-			obsOutcome.setValueAsString(this.option.getLabel());
+			obsOutcome.setValueText(this.option.getLabel());
 			if (this.option.getId() == FOLLOW_UP_OPTION) {
 				obsOutcome.setValueDatetime(Context.getDateFormat().parse(this.followUpDate));
 			} else if (this.option.getId() == ADMIT_OPTION) {
@@ -102,8 +102,11 @@ public class Outcome {
 			patient.setCauseOfDeath(causeOfDeath);
 			Context.getPatientService().savePatient(patient);
 			PatientSearch patientSearch = Context.getService(HospitalCoreService.class).getPatient(encounter.getPatient().getId());
-			patientSearch.setDead(true);
-			Context.getService(HospitalCoreService.class).savePatientSearch(patientSearch);
+			if(patientSearch != null)			{
+				patientSearch.setDead(true);
+				Context.getService(HospitalCoreService.class).savePatientSearch(patientSearch);
+			}
+
 		}
 	}
 }

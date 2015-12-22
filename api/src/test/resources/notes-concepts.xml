@@ -16,6 +16,14 @@
   <concept concept_id="9982" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="83540343-e16a-4a7d-970a-8680e77da8ce"/>
   <concept concept_id="9983" retired="false" datatype_id="3" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="1318932a-a438-4566-8bc8-330a6a18e9d0"/>
 
+  <concept concept_id="9983" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="23634dc8-e5a3-4c08-8b48-58a12ff980ec"/>
+  <concept concept_id="9984" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="e8a7936b-832d-4824-9ec6-c1f34b8869b9"/>
+  <concept concept_id="9985" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="529f5cae-e7f4-448a-9431-80f8cc26ae91"/>
+
+
+  <concept_class concept_class_id="20" name="Frequency" description="Drug frequency" creator="1" date_created="2008-08-15 13:56:55.0" retired="false" uuid="0fd33d76-8b4b-445f-899e-161c5e85d36c"/>
+
+
   <concept_class concept_class_id="20" name="Frequency" description="Drug frequency" creator="1" date_created="2008-08-15 13:56:55.0" retired="false" uuid="0fd33d76-8b4b-445f-899e-161c5e85d36c"/>
   
   <concept_answer concept_answer_id="9090" concept_id="9990" answer_concept="9991" creator="1" date_created="2008-08-18 12:34:26.0" uuid="66e16778-a235-11e5-bf7f-feff819cdc9f"/>
@@ -27,6 +35,9 @@
   <concept_name concept_id="9950" name="AMOX" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4007" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="5951924c-23fc-43df-bf68-2f090c37984b"/>
   <concept_name concept_id="9982" name="OBS GROUP" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4008" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="cf2b438a-a06a-4918-845f-bbc31856bb63"/>
   <concept_name concept_id="9983" name="Outcome" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4009" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="90bf71f1-8330-41ad-a436-856a56fddab2"/>
+  <concept_name concept_id="9982" name="OBS GROUP" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4007" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="cf2b438a-a06a-4918-845f-bbc31856bb63"/>
+  <concept_name concept_id="9983" name="NONE" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4008" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="7686b7c5-aaa4-4a23-8699-bd525329247c"/>
+  <concept_name concept_id="9984" name="Visit Outcome" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4009" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="6a0037ac-2ae8-4585-a965-280d0431416b"/>
 
   <patient_identifier_type patient_identifier_type_id="1009" name="Test Identifier Type" description="Test description" check_digit="false" creator="1" date_created="2005-01-01 00:00:00.0" required="false" retired="false"  uuid="66e16926-a235-11e5-bf7f-feff819cdc9f"/>
   <person person_id="3009" dead="false" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" gender="F"  uuid="b29e64f4-a235-11e5-bf7f-feff819cdc9f"/>
@@ -38,7 +49,8 @@
   <global_property property="patientdashboard.investigationConcept" property_value="Investigations" uuid="8d7a5104-7809-441d-9e51-673450c8cb15"/>
   <global_property property="hospitalcore.obsGroup" property_value="OBS GROUP" uuid="fe3e129d-82aa-45a0-b14c-b9cb339d7706"/>
   <global_property property="patientdashboard.visitOutcomeConcept" property_value="Outcome" uuid="40d38b69-9f55-43e8-b2e3-fa9f44c5d053"/>
-  
+  <global_property property="patientdashboard.visitOutcomeConcept" property_value="Visit Outcome" uuid="df455a2b-7131-4298-bb7e-809033ccd700"/>
+
   <billing_billable_service service_id="1" concept_id="9993" name="Allergy Shots" short_name="" price="50" disable="false" category="9995" />
   <billing_billable_service service_id="2" concept_id="9994" name="LAPAROTOMY" short_name="" price="500" disable="false" category="9996" />
   <billing_billable_service service_id="3" concept_id="9996" name="Maralia Tests" short_name="" price="100" disable="false" category="9996" />
