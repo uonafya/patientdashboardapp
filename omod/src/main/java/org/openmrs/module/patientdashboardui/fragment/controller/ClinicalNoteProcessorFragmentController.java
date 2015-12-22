@@ -15,12 +15,12 @@ public class ClinicalNoteProcessorFragmentController {
 
 	private static Logger log = LoggerFactory.getLogger(ClinicalNoteProcessorFragmentController.class);
 
-	public void processNote(HttpServletRequest request) {
+	public String processNote(HttpServletRequest request) {
 		String noteJSON = request.getParameter("note");
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			Note note = mapper.readValue(noteJSON, Note.class);
-			System.out.println(note);
+			note.save();
 		} catch (JsonParseException e) {
 			log.error("Unable to parse JSON string: {}.\n Error: {}", new Object[] { noteJSON, e.getMessage() });
 		} catch (JsonMappingException e) {
@@ -28,6 +28,7 @@ public class ClinicalNoteProcessorFragmentController {
 		} catch (IOException e) {
 			log.error(e.getMessage());
 		}
+		return "redirect:/index.htm";
 	}
 
 }

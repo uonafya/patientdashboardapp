@@ -235,6 +235,7 @@ public class Note {
 			encounter.setEncounterDatetime(new Date());
 			encounter.setEncounterType(encounterType);
 			encounter.setLocation(location);
+			encounter.setDateCreated(new Date());
 		}
 		return encounter;
 	}
