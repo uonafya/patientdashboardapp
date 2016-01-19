@@ -13,7 +13,11 @@ import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.module.patientdashboardui.model.Note;
 import org.openmrs.module.patientdashboardui.model.Qualifier;
 import org.openmrs.ui.framework.UiUtils;
+import org.openmrs.ui.framework.fragment.FragmentConfiguration;
+import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.springframework.web.bind.annotation.RequestParam;
+
+
 
 
 import java.util.ArrayList;
@@ -23,16 +27,34 @@ import java.util.List;
  * Created by Francis on 12/7/2015.
  */
 public class ClinicalNotesFragmentController {
-    public void controller() {}
-    
-    public SimpleObject getNote(@RequestParam("patientId") Integer patientId, 
-			@RequestParam("opdId") Integer opdId,
-			@RequestParam(value = "queueId", required = false) Integer queueId,
-			@RequestParam(value = "opdLogId", required = false) Integer opdLogId, UiUtils ui) {
-    	Note note = new Note(patientId, queueId, opdId, opdLogId);
-    	return SimpleObject.fromObject(note, ui, "signs", "diagnoses", "investigations", "procedures", "patientId", "queueId", "opdId", "opdLogId", "availableOutcomes.id", "availableOutcomes.label", "inpatientWards.id", "inpatientWards.label", "admitted","illnessHistory","otherInstructions");
-    }
-    
+
+	public void controller(FragmentConfiguration config, FragmentModel model,
+			UiUtils ui) {
+		config.require("patientId");
+		config.require("opdId");
+
+		Integer patientId = Integer
+				.parseInt(config.get("patientId").toString());
+		Integer opdId = Integer.parseInt(config.get("opdId").toString());
+		Integer queueId = null;
+		if (config.containsKey("queueId")) {
+			queueId = Integer.parseInt(config.get("queueId").toString());
+		}
+		Integer opdLogId = null;
+		if (config.containsKey("opdLogId")) {
+			opdLogId = Integer.parseInt(config.get("opdLogId").toString());
+		}
+		Note note = new Note(patientId, queueId, opdId, opdLogId);
+		model.addAttribute(
+				"note",
+				SimpleObject.fromObject(note, ui, "signs", "diagnoses",
+						"investigations", "procedures", "patientId", "queueId",
+						"opdId", "opdLogId", "availableOutcomes.id",
+						"availableOutcomes.label", "inpatientWards.id",
+						"inpatientWards.label", "admitted", "illnessHistory",
+						"otherInstructions").toJson());
+	}
+
     public List<SimpleObject> getQualifiers(@RequestParam("signId") Integer signId, UiUtils ui) {
     	Concept signConcept = Context.getConceptService().getConcept(signId);
     	List<Qualifier> qualifiers = new ArrayList<Qualifier>();

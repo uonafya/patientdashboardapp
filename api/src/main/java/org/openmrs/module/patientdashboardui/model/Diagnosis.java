@@ -7,6 +7,8 @@ import org.openmrs.api.context.Context;
 
 public class Diagnosis {
 
+	private static final String FINAL_DIAGNOSIS_CONCEPT_NAME = "FINAL DIAGNOSIS";
+
 	public Diagnosis(Concept concept) {
 		this.id = concept.getConceptId();
 		this.label = concept.getName().getName();
@@ -33,7 +35,9 @@ public class Diagnosis {
 	private String label;
 
 	public void addObs(Encounter encounter, Obs obsGroup) {
+		Concept cFinalDiagnosis = Context.getConceptService().getConcept(FINAL_DIAGNOSIS_CONCEPT_NAME);
 		Obs obsDiagnosis = new Obs();
+		obsDiagnosis.setConcept(cFinalDiagnosis);
 		obsDiagnosis.setObsGroup(obsGroup);
 		obsDiagnosis.setValueCoded(Context.getConceptService().getConcept(this.id));
 		obsDiagnosis.setCreator(encounter.getCreator());

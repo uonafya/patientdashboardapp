@@ -4,144 +4,144 @@ function Note(noteObj) {
 	self.queueId = noteObj.queueId;
 	self.opdId = noteObj.opdId;
 	self.opdLogId = noteObj.opdLogId;
-    self.signs = ko.observableArray([]);
-    self.diagnoses = ko.observableArray([]);
-    self.procedures = ko.observableArray([]);
-    self.investigations = ko.observableArray([]);
-    self.drugs = ko.observableArray([]);
+	self.signs = ko.observableArray([]);
+	self.diagnoses = ko.observableArray([]);
+	self.procedures = ko.observableArray([]);
+	self.investigations = ko.observableArray([]);
+	self.drugs = ko.observableArray([]);
 	self.frequencyOpts = ko.observableArray([]);
 	self.admitted = noteObj.admitted;
-    self.illnessHistory = noteObj.illnessHistory;
-    self.otherInstructions = noteObj.otherInstructions;
+	self.illnessHistory = noteObj.illnessHistory;
+	self.otherInstructions = noteObj.otherInstructions;
 
-    self.availableOutcomes = jq.map(noteObj.availableOutcomes, function(outcome) {
-        return new Option(outcome.id, outcome.label);
-    });
-    self.outcome = ko.observable();
-    self.inpatientWards = noteObj.inpatientWards;
-    self.referredWard = ko.observable();
+	self.availableOutcomes = jq.map(noteObj.availableOutcomes,
+			function(outcome) {
+				return new Outcome(outcome);
+			});
+	self.outcome = ko.observable();
+	self.inpatientWards = noteObj.inpatientWards;
+	self.referredWard = ko.observable();
 
-    this.addSign = function (symptom) {
-        //check if the item has already been added
-        var match = ko.utils.arrayFirst(self.signs(), function(item) {
-            return symptom.id === item.id;
-        });
+	this.addSign = function(symptom) {
+		//check if the item has already been added
+		var match = ko.utils.arrayFirst(self.signs(), function(item) {
+			return symptom.id === item.id;
+		});
 
-        if (!match) {
-            this.signs.push(symptom);
-        }
-    };
+		if (!match) {
+			this.signs.push(symptom);
+		}
+	};
 
-    this.removeSign = function (symptom) {
-        self.signs.remove(symptom);
-    };
+	this.removeSign = function(symptom) {
+		self.signs.remove(symptom);
+	};
 
-    this.addDiagnosis = function (diagnosis) {
-        //check if the item has already been added
-        var match = ko.utils.arrayFirst(self.diagnoses(), function(item) {
-            return diagnosis.id === item.id;
-        });
+	this.addDiagnosis = function(diagnosis) {
+		//check if the item has already been added
+		var match = ko.utils.arrayFirst(self.diagnoses(), function(item) {
+			return diagnosis.id === item.id;
+		});
 
-        if (!match) {
-            self.diagnoses.push(diagnosis);
-        }
-    };
+		if (!match) {
+			self.diagnoses.push(diagnosis);
+		}
+	};
 
-    this.removeDiagnosis = function (diagnosis) {
-        self.diagnoses.remove(diagnosis);
-    };
+	this.removeDiagnosis = function(diagnosis) {
+		self.diagnoses.remove(diagnosis);
+	};
 
-    this.addProcedure = function (procedure) {
-        //check if the item has already been added
-        var match = ko.utils.arrayFirst(self.procedures(), function(item) {
-            return procedure.id === item.id;
-        });
+	this.addProcedure = function(procedure) {
+		//check if the item has already been added
+		var match = ko.utils.arrayFirst(self.procedures(), function(item) {
+			return procedure.id === item.id;
+		});
 
-        if (!match) {
-            self.procedures.push(procedure);
-        }
-    };
+		if (!match) {
+			self.procedures.push(procedure);
+		}
+	};
 
-    this.removeProcedure = function (procedure) {
-        self.procedures.remove(procedure);
-    };
+	this.removeProcedure = function(procedure) {
+		self.procedures.remove(procedure);
+	};
 
-    this.addInvestigation = function (investigation) {
-        //check if the item has already been added
-        var match = ko.utils.arrayFirst(self.investigations(), function(item) {
-            return investigation.id === item.id;
-        });
+	this.addInvestigation = function(investigation) {
+		//check if the item has already been added
+		var match = ko.utils.arrayFirst(self.investigations(), function(item) {
+			return investigation.id === item.id;
+		});
 
-        if (!match) {
-            self.investigations.push(investigation);
-        }
-    };
+		if (!match) {
+			self.investigations.push(investigation);
+		}
+	};
 
-    this.removeInvestigation = function (investigation) {
-        self.investigations.remove(investigation);
-    };
+	this.removeInvestigation = function(investigation) {
+		self.investigations.remove(investigation);
+	};
 
-    self.getDrug = function (drugName) {
-        var match = ko.utils.arrayFirst(self.drugs(), function(drug) {
-            return drug.name().toLowerCase() === drugName.toLowerCase();
-        });
-        return match;
-    }
+	self.getPrescription = function(drugName) {
+		var match = ko.utils.arrayFirst(self.drugs(), function(drug) {
+			return drug.name().toLowerCase() === drugName.toLowerCase();
+		});
+		return match;
+	}
 
-    this.addDrug = function () {
-        self.drugs.push(new Drug());
-    };
+	this.addPrescription = function(prescription) {
+		self.drugs.push(prescription);
+	};
 
-    this.removeDrug = function (drug) {
-    	self.drugs.remove(drug);
-    };
+	this.removePrescription = function(drug) {
+		self.drugs.remove(drug);
+	};
 
 }
 
-function Sign (signObj) {
-    this.id = signObj.id;
-    this.label = signObj.label;
-    this.qualifiers = ko.observableArray([]);
-    this.qualifiers(signObj.qualifiers);
+function Sign(signObj) {
+	this.id = signObj.id;
+	this.label = signObj.label;
+	this.qualifiers = ko.observableArray([]);
+	this.qualifiers(signObj.qualifiers);
 }
 
-function Qualifier (id, label, options, answer) {
+function Qualifier(id, label, options, answer) {
 	this.id = id
-    this.label = label;
-    this.options = ko.observableArray(options);
-    this.answer = ko.observable(answer);
-    this.freeText= ko.observable();
+	this.label = label;
+	this.options = ko.observableArray(options);
+	this.answer = ko.observable(answer);
+	this.freeText = ko.observable();
 }
 
 function Option(id, label) {
-    this.id = id;
-    this.label = label
+	this.id = id;
+	this.label = label
 
-    this.display = function (data) {
-        console.log(data);
-        console.log(note);
-        return true;
-    }
+	this.display = function(data) {
+		console.log(data);
+	}
 }
 
-function Diagnosis (diagnosisObj) {
+function Diagnosis(diagnosisObj) {
 	this.id = diagnosisObj.id;
 	this.label = diagnosisObj.label;
 }
 
-function Investigation (investigationObj) {
+function Investigation(investigationObj) {
 	this.id = investigationObj.id;
 	this.label = investigationObj.label;
 }
 
-function Procedure (procedureObj) {
+function Procedure(procedureObj) {
 	this.id = procedureObj.id;
 	this.label = procedureObj.label;
-    this.schedulable = procedureObj.schedulable;
+	this.schedulable = procedureObj.schedulable;
 }
 
-function Drug () {
-	this.name = ko.observable(); 
+function Drug() {
+	this.name = ko.observable();
+	this.frequencyOpts = ko.observableArray([]);
 	this.frequency = ko.observable();
 	this.formulationOpts = ko.observableArray([]);
 	this.formulation = ko.observable();
@@ -149,35 +149,48 @@ function Drug () {
 	this.numberOfDays = ko.observable(0);
 }
 
-function Frequency (freqObj) {
+function Frequency(freqObj) {
 	this.id = freqObj.id;
 	this.label = freqObj.label;
 }
 
-function Formulation (formulationObj) {
+function Formulation(formulationObj) {
 	this.id = formulationObj.id;
 	this.label = formulationObj.label;
 }
 
-if (!Array.prototype.find) {
-    Array.prototype.find = function(predicate) {
-        if (this === null) {
-            throw new TypeError('Array.prototype.find called on null or undefined');
-        }
-        if (typeof predicate !== 'function') {
-            throw new TypeError('predicate must be a function');
-        }
-        var list = Object(this);
-        var length = list.length >>> 0;
-        var thisArg = arguments[1];
-        var value;
+function Outcome(outcomeObj) {
+	this.id = outcomeObj.id;
+	this.label = outcomeObj.label;
+	this.followUp = outcomeObj.followUp;
+	this.admitTo = outcomeObj.adminTo;
 
-        for (var i = 0; i < length; i++) {
-            value = list[i];
-            if (predicate.call(thisArg, value, i, list)) {
-                return value;
-            }
-        }
-        return undefined;
-    };
+	this.updateOutcome = function(data) {
+		note.outcome(data);
+		return true;
+	}
+}
+
+if (!Array.prototype.find) {
+	Array.prototype.find = function(predicate) {
+		if (this === null) {
+			throw new TypeError(
+					'Array.prototype.find called on null or undefined');
+		}
+		if (typeof predicate !== 'function') {
+			throw new TypeError('predicate must be a function');
+		}
+		var list = Object(this);
+		var length = list.length >>> 0;
+		var thisArg = arguments[1];
+		var value;
+
+		for (var i = 0; i < length; i++) {
+			value = list[i];
+			if (predicate.call(thisArg, value, i, list)) {
+				return value;
+			}
+		}
+		return undefined;
+	};
 }

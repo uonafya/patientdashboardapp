@@ -1,51 +1,35 @@
-<head>
-	<% ui.includeJavascript("patientdashboardui", "note.js"); %>
-	
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-debug.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout.mapping/2.4.1/knockout.mapping.min.js"></script>
-	<script src="/openmrs/ms/uiframework/resource/patientdashboardui/scripts/note.js"></script>
-</head>
+<%
+    ui.includeJavascript("patientdashboardui", "note.js")
+    ui.includeJavascript("uicommons", "datetimepicker/bootstrap-datetimepicker.min.js")
+    ui.includeCss("uicommons", "datetimepicker.css")
+%>
 <script>
-var jq = jQuery;
-jq(function() {
-    var note;
-    var procedureMatches = [];
-    jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getNote") }',
-        {
-            'patientId': ${patientId},
-            'opdId': ${opdId},
-            'queueId':${queueId},
-            'opdLogId':${opdLogId}
-        }
-    ).success(function(data) {    
-        console.log(data);
-        note = new Note(data);
-        ko.applyBindings(note);
-        var mappedSigns = jq.map(jq.parseJSON(data.signs), function(sign) {
-            return new Sign(sign);
-        });
-        note.signs(mappedSigns);
-        
-        var mappedDiagnoses = jq.map(jq.parseJSON(data.diagnoses), function(diagnosis) {
-            return new Diagnosis(diagnosis);
-        });
-        note.diagnoses(mappedDiagnoses);
-        
-        var mappedInvestigations = jq.map(jq.parseJSON(data.investigations), function(investigation) {
-            return new Investigation(investigation);
-        });
-        note.investigations(mappedInvestigations);
-        
-        var mappedProcedures = jq.map(jq.parseJSON(data.procedures), function(procedure) {
-            return new Procedure(procedure);
-        });
-        note.procedures(mappedProcedures);
-    });
+var jq = jQuery,
+    previousNote = JSON.parse('${note}');
+    note = new Note(previousNote);
 
+var mappedSigns = jq.map(jq.parseJSON(previousNote.signs), function(sign) {
+    return new Sign(sign);
+});
+note.signs(mappedSigns);
+
+var mappedDiagnoses = jq.map(jq.parseJSON(previousNote.diagnoses), function(diagnosis) {
+    return new Diagnosis(diagnosis);
+});
+note.diagnoses(mappedDiagnoses);
+
+var mappedInvestigations = jq.map(jq.parseJSON(previousNote.investigations), function(investigation) {
+    return new Investigation(investigation);
+});
+note.investigations(mappedInvestigations);
+
+var mappedProcedures = jq.map(jq.parseJSON(previousNote.procedures), function(procedure) {
+    return new Procedure(procedure);
+});
+note.procedures(mappedProcedures);
+
+jq(function() {
+    ko.applyBindings(note, jq("#notes-form")[0]);
     jq( "#symptom" ).autocomplete({
          source: function( request, response ) {
           jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getSymptoms") }',
@@ -87,52 +71,6 @@ jq(function() {
            jq( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
          }
        });
-
-    jq(".prescription").on("focus.autocomplete", ".drug-name", function () {
-      var selectedInput = this;
-      jq(this).autocomplete({
-        source: function( request, response ) {
-          jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getDrugs") }',
-            {
-              q: request.term
-            }
-          ).success(function(data) {
-            var results = [];
-            for (var i in data) {
-              var result = { label: data[i].name, value: data[i].id};
-              results.push(result);
-            }
-            response(results);
-          });
-        },
-        minLength: 3,
-        select: function( event, ui ) {
-          event.preventDefault();
-          jq(selectedInput).val(ui.item.label);
-        },
-        change: function (event, ui) {
-          event.preventDefault();
-          jq(selectedInput).val(ui.item.label);
-          console.log(ui.item.label);
-          jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getFormulationByDrugName") }',
-            {
-              "drugName": ui.item.label
-            }
-          ).success(function(data) {
-            var formulations = jq.map(data, function (formulation) {
-              return new Formulation({ id: formulation.id, label: formulation.name});
-            });
-            note.getDrug(ui.item.label).formulationOpts(formulations);
-          });
-        },
-        open: function() {
-          jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
-        },
-        close: function() {
-          jq( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
-        }
-      });
-    });
 
     jq("#diagnosis").autocomplete({
       source: function( request, response ) {
@@ -251,7 +189,7 @@ jq(function() {
 });
 </script>
 
-<form method="post">
+<form method="post" id="notes-form">
     <fieldset>
         <legend>
             Clinical Notes
@@ -276,10 +214,12 @@ jq(function() {
                 <div class="qualifier" data-bind="foreach: qualifiers" style="display: none;" >
                     <label data-bind="text: label"></label>
                     <div data-bind="if: options().length >= 1">
-                        <p data-bind="foreach: options">
-	                        <input type="radio" data-bind="checkedValue: \$data, checked: \$parent.answer" >
-	                        <label data-bind="text: label"></label>
-                        </p>
+                        <div data-bind="foreach: options">
+                            <p>
+	                           <input type="radio" data-bind="checkedValue: \$data, checked: \$parent.answer" >
+	                           <label data-bind="text: label"></label>
+	                        </p>
+                        </div>
                     </div>
                     <div data-bind="if: options().length === 0" >
                         <p>
@@ -289,12 +229,12 @@ jq(function() {
                 </div> 
             </div>
         </div>
-        
+
         <p class="input-position-class left">
             <input type="radio" name="radio_dia" value="prov_dia" id="prov_dia" onclick="loadSelectedDiagnosisList();"/>
             <label for="prov_dia">Provisional</label>
         </p>
-        <p class="input-position-class left">
+        <p class="input-position-class">
             <input type="radio" name="radio_dia" value="final_dia" id="final_dia" onclick="removeSelectedDia();"/>
             <label for="final_dia">Final</label>
         </p>
@@ -333,86 +273,205 @@ jq(function() {
             </div>
         </div>
         
-        <p class="input-position-class prescription">
-            <label>Prescription</label>
-            <table>
-                <thead>
+        <p>Prescription</p>
+        <table>
+            <thead>
+                <tr>
                     <th>Drug Name</th>
                     <th>Formulation</th>
                     <th>Frequency</th>
                     <th>Number of Days</th>
-                    <th>Comment</th>
-                    <th></th>
-                </thead>
-                <tbody data-bind="foreach: drugs">
+                    <th>Comments</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: drugs">
+                <tr>
+                    <td data-bind="text: name"></td>
+                    <td data-bind="text: formulation.label"></td>
+                    <td data-bind="text: frequency.label"></td>
+                    <td data-bind="text: numberOfDays"></td>
+                    <td data-bind="text: comment"></td>
                     <td>
-                        <input class="drug-name" type="text" data-bind="value: name, valueUpdate: 'blur'" >
+                        <a href="#" title="Remove"><i data-bind="click: \$root.removePrescription" class="icon-remove small"></i></a>
+                        <!-- <a href="#"><i class="icon-edit small"></i></a> -->
                     </td>
-                    <td>
-                        <select data-bind="options: formulationOpts, value: formulation, optionsText: 'label'"></select>
-                    </td>
-                    <td>
-                        <select data-bind="options: \$root.frequencyOpts, value: frequency, optionsText: 'label'"></select>
-                    </td>
-                    <td>
-                        <input type="text" data-bind="value: numberOfDays" >
-                    </td>
-                    <td>
-                        <textarea data-bind="value: comment"></textarea>
-                    </td>
-                    <td>
-                        <button data-bind="click: \$root.removeDrug">Remove</button>
-                    </td>
-                </tbody>
-            </table>
-            <button data-bind="click: addDrug">Add</button>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        <button id="add-prescription">Add</button>
+        <p class="input-position-class">
+            <label for="note">Other Instructions</label>
+            <input  data-bind="value: \$root.otherInstructions" type="text" />
         </p>
         
         <p class="input-position-class">
-            <label for="note">Other Instructions</label>
-            <input  data-bind="value: \$root.otherInstructions" type="text" id="note" name="note" />
-        </p>
-        
-        <p class="input-position-class left">
         <label for="internalReferral">Internal Referral</label>
         <select id="internalReferral" name="internalReferral">
             <option value="">Select Referral</option>
         </select>
         </p>
         
-        <p class="input-position-class left">
+        <p class="input-position-class">
             <label for="externalReferral">External Referral</label>
             <select id="externalReferral" name="externalReferral">
                 <option value="">Select Referral</option>
             </select>
         </p>
         
-        <p class="input-position-class">
+        <div class="input-position-class">
             <label>Outcome:</label>
-            <span data-bind="foreach: availableOutcomes">
-            	<span data-bind="if: !(\$root.admitted !== false && \$data.id !== 2)">
-                <input type="radio" data-bind="checkedValue: \$data, checked: \$root.outcome, click: display" >
-                <label data-bind="text: label"></label>
-                <span data-bind="if: \$data.id === 1 && \$root.outcome() && \$root.outcome().id === 1">
-                    <input data-bind="value : FollowUpDate" type="date">
-                </span>
-                <span data-bind="if: \$data.id === 2 && \$root.outcome() && \$root.outcome().id === 2">
-                    <select data-bind="options: \$root.inpatientWards, optionsText: 'label', value: \$root.referredWard" ></select>
-                </span>
-                </span>
-            </span>
-        </p>
+            <div data-bind="foreach: availableOutcomes">
+                <div data-bind="if: !(\$root.admitted !== false && \$data.id !== 2)">
+                    <p>
+                        <input type="radio" name="outcome" data-bind="click: updateOutcome" >
+                        <label data-bind="text: label"></label>
+                        <span data-bind="if: \$data.id === 1 && \$root.outcome() && \$root.outcome().id === 1">
+                            <span id="follow-up-date" class="date">
+                                <input data-bind="value : followUp" >
+                                <span class="add-on"><i class="icon-calendar small"></i></span>
+                            </span>
+                        </span>
+                        <span data-bind="if: \$data.id === 2 && \$root.outcome() && \$root.outcome().id === 2">
+                            <select data-bind="options: \$root.inpatientWards, optionsText: 'label', value: admitTo" ></select>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
 
         <p><button class="submit">Submit</button></p>
 
     </fieldset>
-    <div>
-        <h2>Debug Vals</h2>
-        <p>
-            queueId=${queueId}
-        </p>
-        <p>
-            opdLogId=${opdLogId}
-        </p>
-    </div>
 </form>
+
+<div id="prescription-dialog" class="dialog">
+    <div class="dialog-header">
+      <i class="icon-folder-open"></i>
+      <h3>Prescription</h3>
+    </div>
+    <div class="dialog-content">
+        <ul>
+            <li>
+                <span>Drug</span>
+                <input class="drug-name" type="text" data-bind="value: name, valueUpdate: 'blur'" >
+            </li>
+            <li>
+                <span>Formulation</span>
+                <select data-bind="options: formulationOpts, value: formulation, optionsText: 'label'"></select>
+            </li>
+            <li>
+                <span>Frequency</span>
+                <select data-bind="options: frequencyOpts, value: frequency, optionsText: 'label'"></select>
+            </li>
+            <li>
+                <span>Number of Days</span>
+                <input type="text" data-bind="value: numberOfDays" >
+            </li>
+            <li>
+                <span>Comment</span>
+                <textarea data-bind="value: comment"></textarea>
+            </li>
+        </ul>
+       
+        <span class="button confirm right"> Confirm </span>
+        <span class="button cancel"> Cancel </span>
+    </div>
+</div>
+
+<script>
+var prescription = {}
+jq(function(){
+	jq("#notes-form").on('focus', '#follow-up-date', function () {
+		jq(this).datetimepicker({
+		  minView: 2,
+		  autoclose: true,
+		  pickerPosition: "bottom-left",
+		  todayHighlight: false,
+		  startDate: "+0d",
+		  format: "dd/mm/yyyy"});
+	});
+
+	var prescriptionDialog = emr.setupConfirmationDialog({
+	    selector: '#prescription-dialog',
+	    actions: {
+		    confirm: function() {
+			    console.log(prescription.name());
+			    note.addPrescription(prescription);
+		        prescriptionDialog.close();
+			},
+			cancel: function() {
+			    prescription = {};
+			    prescriptionDialog.close();
+			}
+	    }
+	});
+
+	jq("#add-prescription").on("click", function(e){
+		e.preventDefault();
+	    prescription = new Drug();
+	    prescription.frequencyOpts(note.frequencyOpts());
+	    ko.applyBindings(prescription, jq("#prescription-dialog")[0]);
+	    prescriptionDialog.show();
+	});
+
+	jq(".drug-name").on("focus.autocomplete", function () {
+	      var selectedInput = this;
+	      jq(this).autocomplete({
+	        source: function( request, response ) {
+	          jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getDrugs") }',
+	            {
+	              q: request.term
+	            }
+	          ).success(function(data) {
+	            var results = [];
+	            for (var i in data) {
+	              var result = { label: data[i].name, value: data[i].id};
+	              results.push(result);
+	            }
+	            response(results);
+	          });
+	        },
+	        minLength: 3,
+	        select: function( event, ui ) {
+	          event.preventDefault();
+	          jq(selectedInput).val(ui.item.label);
+	        },
+	        change: function (event, ui) {
+	          event.preventDefault();
+	          jq(selectedInput).val(ui.item.label);
+	          console.log(ui.item.label);
+	          jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getFormulationByDrugName") }',
+	            {
+	              "drugName": ui.item.label
+	            }
+	          ).success(function(data) {
+	            var formulations = jq.map(data, function (formulation) {
+	              return new Formulation({ id: formulation.id, label: formulation.name});
+	            });
+	            prescription.formulationOpts(formulations);
+	          });
+	        },
+	        open: function() {
+	          jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+	        },
+	        close: function() {
+	          jq( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+	        }
+	      });
+	    });
+});
+</script>
+
+<style>
+.dialog input {
+    display: block;
+    margin: 5px 0;
+    color: #363463;
+    padding: 5px 0 5px 10px;
+    background-color: #FFF;
+    border: 1px solid #DDD;
+    width: 97%;
+}
+</style>
