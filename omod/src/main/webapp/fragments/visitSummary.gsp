@@ -1,68 +1,97 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
-
-<script type="text/javascript">
-    function clinicalSummary(encounterId){
-        var patientId = ${patient.patientId};
-        jQuery.ajax({
-            type : "GET",
-            url : getContextPath() + "/module/patientdashboard/printDetails.form",
-            data : ({
-                encounterId			: encounterId,
-                patientId			: patientId
-            }),
-            success : function(data) {
-                jQuery("#printClinicalSummary").html(data);
-                jQuery("#printClinicalSummary").hide();
-                printClinicalSummary();
-            }
-
-        });
-    }
-</script>
-<script type="text/javascript">
-    function printClinicalSummary(){
-        jQuery("#printClinicalSummary").printArea({
-            mode : "popup",
-            popClose : true
-        });
-    }
-</script>
-<script type="text/javascript">
-    // get context path in order to build controller url
-    function getContextPath(){
-        pn = location.pathname;
-        len = pn.indexOf("/", 1);
-        cp = pn.substring(0, len);
-        return cp;
-    }
-</script>
-
-<c:choose>
-
-    <c:when test="${not empty clinicalSummaries}">
-        <table cellpadding="5" cellspacing="0" width="100%">
-            <tr align="center">
-                <th><spring:message code="patientdashboard.clinicalSummary.dateOfVisit"/></th>
-                <th><spring:message code="patientdashboard.clinicalSummary.viewVisitDetails"/></th>
-                <th><spring:message code="patientdashboard.clinicalSummary.vitalStatistics"/></th>
-                <th><spring:message code="patientdashboard.clinicalSummary.symptomlDetails"/></th>
-                <th></th>
-            </tr>
-
-            <c:forEach items="${clinicalSummaries}" var="clinicalSummary" varStatus="varStatus">
-                <tr align="center" class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
-                    <td><openmrs:formatDate date="${clinicalSummary.dateOfVisit}" type="textbox"/></td>
-                    <td><a href="#" onclick="DASHBOARD.detailClinical('${ clinicalSummary.id}');"><small>View details</small></a> </td>
-                    <td><a href="#" onclick="DASHBOARD.vitalStatistics('${ clinicalSummary.id}','${ clinicalSummary.id}');"><small>View details</small></a> </td>
-                    <td><a href="#" onclick="DASHBOARD.symptomlDetails('${ clinicalSummary.id}');"><small>View details</small></a> </td>
-                    <td><a href="#" onclick="clinicalSummary('${ clinicalSummary.id}');"><small>Print</small></a> </td>
-                </tr>
-
-            </c:forEach>
-        </table>
-    </c:when>
-</c:choose>
-
-<div id="printClinicalSummary" style="visibility:hidden;">
-
+<ul class="left-menu">
+    <% visitSummaries.each { summary -> %>
+        <li class="menu-item visit-summary">
+            <input type="hidden" class="encounter-id" value="${summary.encounterId}" >
+            <span class="menu-date">
+                <i class="icon-time"></i>
+                ${ ui.format(summary.visitDate) }
+            </span>
+            <span class="menu-title">
+                <i class="icon-stethoscope"></i>
+                <% if (summary.outcome) { %>
+                    ${ summary.outcome }
+                <% }  else { %>
+                    ${ ui.message("patientdashboardui.noOutcome")}
+                <% } %>
+            </span>
+        </li>
+        <span class="arrow-border"></span>
+        <span class="arrow"></span>
+    <% } %>
+</ul>
+<div class="main-content">
+    <div id="visit-detail"></div>
+    <div id="drugs-detail"></div>
 </div>
+
+<script>
+jq(function(){
+    jq(".visit-summary").on("click", function(){
+        jq("#visit-detail").html("<i class=\"icon-spinner icon-spin icon-2x pull-left\"></i>")
+        var visitSummary = jq(this);
+        jq(".visit-summary").removeClass("selected");
+        jq(visitSummary).addClass("selected");
+        jq.getJSON('${ ui.actionLink("patientdashboardui", "visitSummary" ,"getVisitSummaryDetails") }',
+            { 'encounterId' : jq(visitSummary).find(".encounter-id").val() }
+        ).success(function (data) {
+            var visitDetailTemplate =  _.template(jq("#visit-detail-template").html());
+            jq("#visit-detail").html(visitDetailTemplate(data.notes));
+
+            if (data.drugs.length > 0) {
+                var drugsTemplate =  _.template(jq("#drugs-template").html());
+                jq("#drugs-detail").html(drugsTemplate(data.drugs));
+            }
+        })
+    });
+    jq(".visit-summary")[0].click();
+})
+</script>
+
+<script id="visit-detail-template" type="text/template">
+    <div>
+        <p>
+            <small>History of Illness</small>
+            <span>{{-history}}</span>
+        </p>
+        <p>
+            <small>Symptoms</small>
+            <span>{{-symptoms}}</span>
+        </p>
+        <p>
+            <small>Diagnosis</small>
+            <span>{{-diagnosis}}</span>
+        </p>
+        <p>
+            <small>Investigations</small>
+            <span>{{-investigations}}</span>
+        </p>
+        <p>
+            <small>Procedures</small>
+            <span>{{-procedures}}</span>
+        </p>
+    </div>
+</script>
+
+<script id="drugs-template" type="text/template">
+    <p>
+        <small>Drugs</small>
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <td>Name</td>
+                <td>Unit</td>
+                <td>Formulation</td>
+                <td>Dosage</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{-inventoryDrug.name}}</td>
+                <td>{{-inventoryDrug.unit.name}}</td>
+                <td>{{-inventoryDrugFormulation.name}}</td>
+                <td>{{-inventoryDrugFormulation.dozage}}</td>
+            </tr>
+         </tbody>
+    </table>
+</script>
