@@ -1,6 +1,6 @@
 <%
     ui.includeCss("uicommons", "datetimepicker.css")
-    ui.includeJavascript("patientdashboardui", "note.js")
+    ui.includeJavascript("patientdashboardapp", "note.js")
     ui.includeJavascript("uicommons", "datetimepicker/bootstrap-datetimepicker.min.js")
     ui.includeJavascript("uicommons", "handlebars/handlebars.min.js", Integer.MAX_VALUE - 1)
     ui.includeJavascript("uicommons", "navigator/validators.js", Integer.MAX_VALUE - 19)
@@ -59,7 +59,7 @@ jq(function() {
     ko.applyBindings(note, jq("#notes-form")[0]);
     jq( "#symptom" ).autocomplete({
          source: function( request, response ) {
-          jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getSymptoms") }',
+          jq.getJSON('${ ui.actionLink("patientdashboardapp", "ClinicalNotes", "getSymptoms") }',
               {
                   q: request.term
               }
@@ -77,7 +77,7 @@ jq(function() {
          select: function( event, ui ) {
            event.preventDefault();
            jq(this).val(ui.item.label);
-           jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getQualifiers") }',
+           jq.getJSON('${ ui.actionLink("patientdashboardapp", "ClinicalNotes", "getQualifiers") }',
                {
                    signId: ui.item.value
                }
@@ -101,7 +101,7 @@ jq(function() {
 
     jq("#diagnosis").autocomplete({
       source: function( request, response ) {
-        jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getDiagnosis") }',
+        jq.getJSON('${ ui.actionLink("patientdashboardapp", "ClinicalNotes", "getDiagnosis") }',
           {
             q: request.term
           }
@@ -130,7 +130,7 @@ jq(function() {
 
     jq("#procedure").autocomplete({
         source: function( request, response ) {
-            jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getProcedures") }',
+            jq.getJSON('${ ui.actionLink("patientdashboardapp", "ClinicalNotes", "getProcedures") }',
                     {
                         q: request.term
                     }
@@ -162,7 +162,7 @@ jq(function() {
 
     jq("#investigation").autocomplete({
         source: function( request, response ) {
-            jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getInvestigations") }',
+            jq.getJSON('${ ui.actionLink("patientdashboardapp", "ClinicalNotes", "getInvestigations") }',
                     {
                         q: request.term
                     }
@@ -205,7 +205,7 @@ jq(function() {
         event.preventDefault();
         jq.ajax({
           type: 'POST',
-          url: '${ ui.actionLink("patientdashboardui", "clinicalNoteProcessor", "processNote", [ successUrl: successUrl ]) }',
+          url: '${ ui.actionLink("patientdashboardapp", "clinicalNoteProcessor", "processNote", [ successUrl: successUrl ]) }',
           data :{ note: ko.toJSON(note, ["label", "id", "admitted","availableOutcomes", "diagnosisProvisional","diagnoses", "illnessHistory", "inpatientWarads", "investigations", "opdId", "opdLogId", "otherInstructions", "patientId", "procedures", "queueId", "signs", "referredTo"]) },
           success: function (data, status, xhr) {
               var redirectUrl = xhr.getResponseHeader('Location');
@@ -500,7 +500,7 @@ jq(function(){
 	      var selectedInput = this;
 	      jq(this).autocomplete({
 	        source: function( request, response ) {
-	          jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getDrugs") }',
+	          jq.getJSON('${ ui.actionLink("patientdashboardapp", "ClinicalNotes", "getDrugs") }',
 	            {
 	              q: request.term
 	            }
@@ -522,7 +522,7 @@ jq(function(){
 	          event.preventDefault();
 	          jq(selectedInput).val(ui.item.label);
 	          console.log(ui.item.label);
-	          jq.getJSON('${ ui.actionLink("patientdashboardui", "ClinicalNotes", "getFormulationByDrugName") }',
+	          jq.getJSON('${ ui.actionLink("patientdashboardapp", "ClinicalNotes", "getFormulationByDrugName") }',
 	            {
 	              "drugName": ui.item.label
 	            }

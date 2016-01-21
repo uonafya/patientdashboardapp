@@ -4,13 +4,13 @@
 
 	<parent>
 		<groupId>org.openmrs.module</groupId>
-		<artifactId>patientdashboardui</artifactId>
+		<artifactId>patientdashboardapp</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>patientdashboardui-api</artifactId>
+	<artifactId>patientdashboardapp-api</artifactId>
 	<packaging>jar</packaging>
-	<name>patientdashboardui Module API</name>
+	<name>Patient Dashboard App Module API</name>
 	<description>API project for patientdashboardui</description>
 
 	<dependencies>

@@ -11,7 +11,7 @@
                 <% if (summary.outcome) { %>
                     ${ summary.outcome }
                 <% }  else { %>
-                    ${ ui.message("patientdashboardui.noOutcome")}
+                    ${ ui.message("patientdashboardapp.noOutcome")}
                 <% } %>
             </span>
         </li>
@@ -31,7 +31,7 @@ jq(function(){
         var visitSummary = jq(this);
         jq(".visit-summary").removeClass("selected");
         jq(visitSummary).addClass("selected");
-        jq.getJSON('${ ui.actionLink("patientdashboardui", "visitSummary" ,"getVisitSummaryDetails") }',
+        jq.getJSON('${ ui.actionLink("patientdashboardapp", "visitSummary" ,"getVisitSummaryDetails") }',
             { 'encounterId' : jq(visitSummary).find(".encounter-id").val() }
         ).success(function (data) {
             var visitDetailTemplate =  _.template(jq("#visit-detail-template").html());
