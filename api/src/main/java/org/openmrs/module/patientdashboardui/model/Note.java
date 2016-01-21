@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.apache.commons.lang3.StringUtils;
+import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
@@ -21,7 +22,6 @@ import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@JsonIgnoreProperties({"referral"})
 public class Note {
 
 	private static Logger logger = LoggerFactory.getLogger(Note.class);
@@ -36,14 +36,8 @@ public class Note {
 		this.opdId = opdId;
 		this.admitted = Context.getService(IpdService.class).getAdmittedByPatientId(patientId) != null;
 		this.opdLogId = opdLogId;
-		this.signs = new ArrayList<Sign>();
-		this.diagnoses = new ArrayList<Diagnosis>();
-		this.investigations = new ArrayList<Investigation>();
-		this.procedures = new ArrayList<Procedure>();
 		loadDiagnoses(patientId);
 		loadSigns(patientId);
-		this.availableOutcomes = Outcome.getAvailableOutcomes();
-		this.inpatientWards = Outcome.getInpatientWards();
 	}
 
 	private int patientId;
@@ -57,11 +51,8 @@ public class Note {
 	private List<Investigation> investigations = new ArrayList<Investigation>();
 	private List<Procedure> procedures = new ArrayList<Procedure>();
 	private List<Drug> drugs = new ArrayList<Drug>();
-	private Referral referral = new Referral();;
 	private Option referredTo;
 	private Outcome outcome;
-	private List<Option> availableOutcomes = new ArrayList<Option>();
-	private List<Option> inpatientWards = new ArrayList<Option>();
 	private String illnessHistory;
 
 	private String otherInstructions;
@@ -146,14 +137,6 @@ public class Note {
 		this.procedures = procedures;
 	}
 
-	public Referral getReferral() {
-		return referral;
-	}
-
-	public void setReferral(Referral referral) {
-		this.referral = referral;
-	}
-
 	public Option getReferredTo() {
 		return referredTo;
 	}
@@ -176,22 +159,6 @@ public class Note {
 
 	public void setDrugs(List<Drug> drugs) {
 		this.drugs = drugs;
-	}
-
-	public List<Option> getAvailableOutcomes() {
-		return availableOutcomes;
-	}
-
-	public void setAvailableOutcomes(List<Option> availableOutcomes) {
-		this.availableOutcomes = availableOutcomes;
-	}
-
-	public List<Option> getInpatientWards() {
-		return inpatientWards;
-	}
-
-	public void setInpatientWards(List<Option> inpatientWards) {
-		this.inpatientWards = inpatientWards;
 	}
 
 	public String getIllnessHistory() {
@@ -263,6 +230,14 @@ public class Note {
 	}
 
 	private void addObs(Obs obsGroup, Encounter encounter) {
+		if (StringUtils.isNotBlank(this.illnessHistory)) {
+			addIllnessHistory(encounter, obsGroup);
+		}
+		
+		if (StringUtils.isNotBlank(this.otherInstructions)) {
+			addOtherInstructions(encounter, obsGroup);
+		}
+		
 		for (Sign sign : this.signs) {
 			sign.addObs(encounter, obsGroup);
 		}
@@ -280,8 +255,32 @@ public class Note {
 		}
 		
 		if (referredTo != null) {
-			referral.addReferralObs(referredTo, opdId, encounter, obsGroup);
+			Referral.addReferralObs(referredTo, opdId, encounter, obsGroup);
 		}
+	}
+	
+	private void addIllnessHistory(Encounter encounter, Obs obsGroup) {
+		Concept conceptIllnessHistory = Context.getConceptService().getConcept("HISTORY OF PRESENT ILLNESS");
+		Obs obsIllnessHistory = new Obs();
+		obsIllnessHistory.setObsGroup(obsGroup);
+		obsIllnessHistory.setConcept(conceptIllnessHistory);
+		obsIllnessHistory.setValueText(this.illnessHistory);
+		obsIllnessHistory.setCreator(encounter.getCreator());
+		obsIllnessHistory.setDateCreated(encounter.getDateCreated());
+		obsIllnessHistory.setEncounter(encounter);
+		encounter.addObs(obsIllnessHistory);
+	}
+	
+	private void addOtherInstructions(Encounter encounter, Obs obsGroup) {
+		Concept conceptOtherInstructions = Context.getConceptService().getConcept("OTHER INSTRUCTIONS");
+		Obs obsOtherInstructions = new Obs();
+		obsOtherInstructions.setObsGroup(obsGroup);
+		obsOtherInstructions.setConcept(conceptOtherInstructions);
+		obsOtherInstructions.setValueText(this.otherInstructions);
+		obsOtherInstructions.setCreator(encounter.getCreator());
+		obsOtherInstructions.setDateCreated(encounter.getDateCreated());
+		obsOtherInstructions.setEncounter(encounter);
+		encounter.addObs(obsOtherInstructions);
 	}
 
 	private void saveNoteDetails(Encounter encounter) {

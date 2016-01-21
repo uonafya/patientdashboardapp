@@ -14,18 +14,8 @@ function Note(noteObj) {
 	self.admitted = noteObj.admitted;
 	self.illnessHistory = noteObj.illnessHistory;
 	self.otherInstructions = noteObj.otherInstructions;
-	self.internalReferralOptions = jq.map(noteObj.referral.internalReferralOptions, function(referral) {
-	    return new Referral(referral);
-	});
-	self.externalReferralOptions = noteObj.referral.externalReferralOptions
 	self.referredTo;
-
-	self.availableOutcomes = jq.map(noteObj.availableOutcomes,
-			function(outcome) {
-				return new Outcome(outcome);
-			});
 	self.outcome = ko.observable();
-	self.inpatientWards = noteObj.inpatientWards;
 	self.referredWard = ko.observable();
 
 	this.addSign = function(symptom) {

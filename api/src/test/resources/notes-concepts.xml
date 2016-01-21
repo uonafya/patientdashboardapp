@@ -21,12 +21,14 @@
   <concept concept_id="9986" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="dc82860a-e946-43d1-9b1f-488755fa7bf3"/>
   <concept concept_id="9987" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="49d94fe2-c017-11e5-9912-ba0be0483c18"/>
   <concept concept_id="9988" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="49d95352-c017-11e5-9912-ba0be0483c18"/>
-
+  <concept concept_id="9960" retired="false" datatype_id="2" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="6be53e7f-c045-11e5-9a67-34e6d77c15d6"/>
+  <concept concept_id="9961" retired="false" datatype_id="2" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="8da1a020-c045-11e5-9a67-34e6d77c15d6"/>
 
   <concept_class concept_class_id="20" name="Frequency" description="Drug frequency" creator="1" date_created="2008-08-15 13:56:55.0" retired="false" uuid="0fd33d76-8b4b-445f-899e-161c5e85d36c"/>
 
   <concept_answer concept_answer_id="9090" concept_id="9990" answer_concept="9991" creator="1" date_created="2008-08-18 12:34:26.0" uuid="66e16778-a235-11e5-bf7f-feff819cdc9f"/>
   <concept_answer concept_answer_id="9091" concept_id="9991" answer_concept="9992" creator="1" date_created="2008-08-18 12:34:26.0" uuid="66e16854-a235-11e5-bf7f-feff819cdc9f"/>
+  <concept_answer concept_answer_id="9060" concept_id="9960" answer_concept="9986" creator="1" date_created="2008-08-18 12:34:26.0" uuid="deed49e4-c049-11e5-9a67-34e6d77c15d6"/>
   <concept_name concept_id="9997" name="Post for procedure" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4003" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="38c3a61f-820b-4cd4-b677-1a9515e338a2"/>
   <concept_name concept_id="9999" name="Investigations" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4004" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="bea3b7c3-cf29-431e-b98d-69e00d4e13c0"/>
   <concept_name concept_id="9980" name="MAJOR OPERATION" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4005" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="dfc104ab-1ec7-44f9-927d-a48baf83c467"/>
@@ -50,8 +52,10 @@
   <global_property property="patientdashboard.investigationConcept" property_value="Investigations" uuid="8d7a5104-7809-441d-9e51-673450c8cb15"/>
   <global_property property="hospitalcore.obsGroup" property_value="OBS GROUP" uuid="fe3e129d-82aa-45a0-b14c-b9cb339d7706"/>
   <global_property property="patientdashboard.visitOutcomeConcept" property_value="Outcome" uuid="40d38b69-9f55-43e8-b2e3-fa9f44c5d053"/>
-  <global_property property="patientdashboard.internalReferralConcept" property_value="9978" uuid="df455a2b-7131-4298-bb7e-809033ccd700"/>
-  <global_property property="patientdashboard.externalReferralConcept" property_value="9979" uuid="d3effc02-25a4-4852-99ca-9ede16a0be58"/>
+  <global_property property="patientdashboard.externalReferralConcept" property_value="9987" uuid="d3effc02-25a4-4852-99ca-9ede16a0be58"/>
+  <global_property property="patientdashboard.internalReferralConcept" property_value="9988" uuid="df455a2b-7131-4298-bb7e-809033ccd700"/>
+  <global_property property="patientdashboard.OPDRootConcept" property_value="9960" uuid="33c06098-c044-11e5-9a67-34e6d77c15d6"/>
+  <global_property property="patientdashboard.externalHospitalConcept" property_value="9961" uuid="fe6275c0-c043-11e5-9a67-34e6d77c15d6"/>
 
   <billing_billable_service service_id="1" concept_id="9993" name="Allergy Shots" short_name="" price="50" disable="false" category="9995" />
   <billing_billable_service service_id="2" concept_id="9994" name="LAPAROTOMY" short_name="" price="500" disable="false" category="9996" />

@@ -24,6 +24,13 @@ var getJSON = function (dataToParse) {
 	}
 	return dataToParse;
 }
+var outcomeOptions = ${outcomeOptions.collect { it.toJson() }}
+note.availableOutcomes = jq.map(outcomeOptions, function(outcomeOption){
+	return new Outcome(outcomeOption);
+});
+note.inpatientWards = ${listOfWards.collect { it.toJson() }};
+note.internalReferralOptions = ${internalReferralSources.collect { it.toJson() }};
+note.externalReferralOptions = ${externalReferralSources.collect { it.toJson() }}
 
 var mappedSigns = jq.map(getJSON(previousNote.signs), function(sign) {
     return new Sign(sign);

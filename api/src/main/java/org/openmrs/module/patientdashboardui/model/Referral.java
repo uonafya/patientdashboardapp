@@ -22,37 +22,31 @@ import org.slf4j.LoggerFactory;
 public class Referral {
 
 	private static Logger logger = LoggerFactory.getLogger(Note.class);
+	private static List<Option> internalReferralOptions;
+	private static List<Option> externalReferralOptions;
 
-	public Referral() {
-		this.internalReferralOptions = new ArrayList<Option>();
-		Concept internalReferralConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_OPDWARD));
+	static {
+		internalReferralOptions = new ArrayList<Option>();
+		Concept internalReferralConcept = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_OPDWARD));
 		for (ConceptAnswer conceptAnswer : internalReferralConcept.getAnswers()) {
 			internalReferralOptions.add(new Option(conceptAnswer.getAnswerConcept()));
 		}
-		this.externalReferralOptions = new ArrayList<Option>();
-		Concept externalReferralConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_HOSPITAL));
+		externalReferralOptions = new ArrayList<Option>();
+		Concept externalReferralConcept = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_HOSPITAL));
 		for (ConceptAnswer conceptAnswer : externalReferralConcept.getAnswers()) {
 			externalReferralOptions.add(new Option(conceptAnswer.getAnswerConcept()));
 		}
 	}
-
-	private List<Option> internalReferralOptions;
-	private List<Option> externalReferralOptions;
 	
-	public List<Option> getInternalReferralOptions() {
+	public static List<Option> getInternalReferralOptions() {
 		return internalReferralOptions;
 	}
-	public void setInternalReferralOptions(List<Option> internalReferralOptions) {
-		this.internalReferralOptions = internalReferralOptions;
-	}
-	public List<Option> getExternalReferralOptions() {
+	
+	public static List<Option> getExternalReferralOptions() {
 		return externalReferralOptions;
 	}
-	public void setExternalReferralOptions(List<Option> externalReferralOptions) {
-		this.externalReferralOptions = externalReferralOptions;
-	}
 
-	public void addReferralObs(Option referredTo, Integer referrer, Encounter encounter, Obs obsGroup) {
+	public static void addReferralObs(Option referredTo, Integer referrer, Encounter encounter, Obs obsGroup) {
 		Concept referralConcept;
 		boolean isInternal = false;
 		if (internalReferralOptions.contains(referredTo)) {
@@ -82,7 +76,7 @@ public class Referral {
 		}
 	}
 	
-	private void refer(Patient patient, Concept referredTo, Concept referredFrom) {
+	private static void refer(Patient patient, Concept referredTo, Concept referredFrom) {
 		List<PersonAttribute> pas = Context.getService(HospitalCoreService.class).getPersonAttributes(patient.getPatientId());
 		String selectedCategory = "";
 		for (PersonAttribute pa : pas) {
@@ -112,6 +106,7 @@ public class Referral {
 		queue.setSex(patient.getGender());
 		queue.setTriageDataId(null);
 		queue.setCategory(selectedCategory);
-		Context.getService(PatientQueueService.class).saveOpdPatientQueue(queue);
+		OpdPatientQueue opdPatient = Context.getService(PatientQueueService.class).saveOpdPatientQueue(queue);
+		logger.info(opdPatient.toString());
 	}
 }
