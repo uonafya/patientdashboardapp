@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+  <concept concept_id="9990" retired="false" datatype_id="2" class_id="12" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="66e1603e-a235-11e5-bf7f-feff819cdc9f"/>
+  <concept concept_id="9991" retired="false" datatype_id="2" class_id="5" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="66e162b4-a235-11e5-bf7f-feff819cdc9f"/>
+  <concept concept_id="9992" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="66e16688-a235-11e5-bf7f-feff819cdc9f"/>
+  <concept concept_id="9993" retired="false" datatype_id="4" class_id="4" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="7e9c500b-a78a-40f7-a0a1-3c5dd496145c"/>
+  <concept concept_id="9994" retired="false" datatype_id="4" class_id="4" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="5421be17-357f-4e97-8b77-81dc545e3a67"/>
+  <concept concept_id="9995" retired="false" datatype_id="2" class_id="7" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="97b0b281-d42f-4550-8f1b-998644f193f6"/>
+  <concept concept_id="9996" retired="false" datatype_id="2" class_id="7" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="17a83f95-49d9-473c-9aeb-c20c874fa5a1"/>
+  <concept concept_id="9997" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="f062f4c0-20cd-460b-984f-1e1db4242630"/>
+  <concept concept_id="9999" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="122b36a4-9c07-4dfa-81ae-e6a4fe823077"/>
+  <concept concept_id="9980" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="54ee1058-e852-4ee7-912f-2ba48d1da8ad"/>
+  <concept concept_id="9981" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="a075d13e-de60-4f30-97d6-fc5bfe09677f"/>
+  <concept concept_id="9950" retired="false" datatype_id="4" class_id="3" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="0bef0d62-46c0-4a14-a0ed-c9106c8af7fe"/>
+  <concept concept_id="9960" retired="false" datatype_id="4" class_id="20" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="17daa17b-47ae-4a93-8e89-8d7b1eae41b6"/>
+  <concept concept_id="9982" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="83540343-e16a-4a7d-970a-8680e77da8ce"/>
+  <concept concept_id="9983" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="23634dc8-e5a3-4c08-8b48-58a12ff980ec"/>
+  <concept concept_id="9984" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="e8a7936b-832d-4824-9ec6-c1f34b8869b9"/>
+  <concept concept_id="9985" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="529f5cae-e7f4-448a-9431-80f8cc26ae91"/>
+  <!-- GENERAL OPD Concept -->
+  <concept concept_id="9986" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="dc82860a-e946-43d1-9b1f-488755fa7bf3"/>
+  <concept concept_id="9987" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="49d94fe2-c017-11e5-9912-ba0be0483c18"/>
+  <concept concept_id="9988" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="49d95352-c017-11e5-9912-ba0be0483c18"/>
+
+
+  <concept_class concept_class_id="20" name="Frequency" description="Drug frequency" creator="1" date_created="2008-08-15 13:56:55.0" retired="false" uuid="0fd33d76-8b4b-445f-899e-161c5e85d36c"/>
+
+  <concept_answer concept_answer_id="9090" concept_id="9990" answer_concept="9991" creator="1" date_created="2008-08-18 12:34:26.0" uuid="66e16778-a235-11e5-bf7f-feff819cdc9f"/>
+  <concept_answer concept_answer_id="9091" concept_id="9991" answer_concept="9992" creator="1" date_created="2008-08-18 12:34:26.0" uuid="66e16854-a235-11e5-bf7f-feff819cdc9f"/>
+  <concept_name concept_id="9997" name="Post for procedure" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4003" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="38c3a61f-820b-4cd4-b677-1a9515e338a2"/>
+  <concept_name concept_id="9999" name="Investigations" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4004" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="bea3b7c3-cf29-431e-b98d-69e00d4e13c0"/>
+  <concept_name concept_id="9980" name="MAJOR OPERATION" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4005" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="dfc104ab-1ec7-44f9-927d-a48baf83c467"/>
+  <concept_name concept_id="9981" name="MINOR OPERATION" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4006" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="ee0abbb6-5ae8-416b-bdf2-6f416be5b2f7"/>
+  <concept_name concept_id="9950" name="AMOX" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4007" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="5951924c-23fc-43df-bf68-2f090c37984b"/>
+  <concept_name concept_id="9982" name="OBS GROUP" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4008" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="cf2b438a-a06a-4918-845f-bbc31856bb63"/>
+  <concept_name concept_id="9983" name="Outcome" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4009" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="90bf71f1-8330-41ad-a436-856a56fddab2"/>
+  <concept_name concept_id="9984" name="NONE" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4010" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="7686b7c5-aaa4-4a23-8699-bd525329247c"/>
+  <concept_name concept_id="9985" name="Visit Outcome" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4011" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="6a0037ac-2ae8-4585-a965-280d0431416b"/>
+  <concept_name concept_id="9986" name="General OPD" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4012" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="cae934c5-7d60-41bc-88bd-1ac64c7beb47"/>
+  <concept_name concept_id="9987" name="External" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4013" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="75347aad-b798-4977-ae44-09fdc959c606"/>  
+  <concept_name concept_id="9988" name="Internal" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4014" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="f5a034a8-9516-4fd4-93cb-fb37dcfd6f8c"/>
+
+  <patient_identifier_type patient_identifier_type_id="1009" name="Test Identifier Type" description="Test description" check_digit="false" creator="1" date_created="2005-01-01 00:00:00.0" required="false" retired="false"  uuid="66e16926-a235-11e5-bf7f-feff819cdc9f"/>
+  <person person_id="3009" dead="false" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" gender="F"  uuid="b29e64f4-a235-11e5-bf7f-feff819cdc9f"/>
+  <person_name person_id="3009" person_name_id="3009" preferred="1" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" given_name="John3" middle_name=" " family_name="Doe"  uuid="b29e68aa-a235-11e5-bf7f-feff819cdc9f"/>
+  <patient patient_id="3009" creator="1" date_created="2005-01-01 00:00:00.0" voided="false"/>
+  <patient_identifier patient_identifier_id="4009" patient_id="3009" identifier="12345" identifier_type="1009" preferred="1" location_id="1" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="b29e6a4e-a235-11e5-bf7f-feff819cdc9f"/>
+  
+  <global_property property="patientdashboard.postForProcedureConcept" property_value="Post for procedure" uuid="0a73db5c-9cc5-470c-b9e2-705a77ad17b1"/>
+  <global_property property="patientdashboard.investigationConcept" property_value="Investigations" uuid="8d7a5104-7809-441d-9e51-673450c8cb15"/>
+  <global_property property="hospitalcore.obsGroup" property_value="OBS GROUP" uuid="fe3e129d-82aa-45a0-b14c-b9cb339d7706"/>
+  <global_property property="patientdashboard.visitOutcomeConcept" property_value="Outcome" uuid="40d38b69-9f55-43e8-b2e3-fa9f44c5d053"/>
+  <global_property property="patientdashboard.internalReferralConcept" property_value="9978" uuid="df455a2b-7131-4298-bb7e-809033ccd700"/>
+  <global_property property="patientdashboard.externalReferralConcept" property_value="9979" uuid="d3effc02-25a4-4852-99ca-9ede16a0be58"/>
+
+  <billing_billable_service service_id="1" concept_id="9993" name="Allergy Shots" short_name="" price="50" disable="false" category="9995" />
+  <billing_billable_service service_id="2" concept_id="9994" name="LAPAROTOMY" short_name="" price="500" disable="false" category="9996" />
+  <billing_billable_service service_id="3" concept_id="9996" name="Maralia Tests" short_name="" price="100" disable="false" category="9996" />
+
+  <inventory_drug_formulation id="1" name="TAB" dozage="250" created_on="2014-07-14 12:23:19" created_by="Super" />
+  <inventory_drug id="1" name="AMOX" attribute="2" created_on="2014-07-14 12:55:15" created_by="Super" />
+</dataset>

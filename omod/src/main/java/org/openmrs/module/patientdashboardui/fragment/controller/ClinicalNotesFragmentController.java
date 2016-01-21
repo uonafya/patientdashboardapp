@@ -3,15 +3,21 @@ package org.openmrs.module.patientdashboardui.fragment.controller;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.Concept;
+import org.openmrs.ConceptAnswer;
 import org.openmrs.module.hospitalcore.InventoryCommonService;
 import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
+import org.openmrs.module.patientdashboardui.model.Procedure;
 import org.openmrs.ui.framework.SimpleObject;
-import org.openmrs.module.hospitalcore.model.Symptom;
+import org.openmrs.module.patientdashboardui.model.Note;
+import org.openmrs.module.patientdashboardui.model.Qualifier;
 import org.openmrs.ui.framework.UiUtils;
-import org.springframework.ui.Model;
+import org.openmrs.ui.framework.fragment.FragmentConfiguration;
+import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.springframework.web.bind.annotation.RequestParam;
+
+
 
 
 import java.util.ArrayList;
@@ -21,7 +27,43 @@ import java.util.List;
  * Created by Francis on 12/7/2015.
  */
 public class ClinicalNotesFragmentController {
-    public void controller() {}
+
+	public void controller(FragmentConfiguration config, FragmentModel model,
+			UiUtils ui) {
+		config.require("patientId");
+		config.require("opdId");
+
+		Integer patientId = Integer
+				.parseInt(config.get("patientId").toString());
+		Integer opdId = Integer.parseInt(config.get("opdId").toString());
+		Integer queueId = null;
+		if (config.containsKey("queueId")) {
+			queueId = Integer.parseInt(config.get("queueId").toString());
+		}
+		Integer opdLogId = null;
+		if (config.containsKey("opdLogId")) {
+			opdLogId = Integer.parseInt(config.get("opdLogId").toString());
+		}
+		Note note = new Note(patientId, queueId, opdId, opdLogId);
+		model.addAttribute(
+				"note",
+				SimpleObject.fromObject(note, ui, "signs.id", "signs.label", "diagnoses",
+						"investigations", "procedures", "patientId", "queueId",
+						"opdId", "opdLogId", "availableOutcomes.id",
+						"availableOutcomes.label", "inpatientWards.id",
+						"inpatientWards.label", "referral.internalReferralOptions.id","referral.internalReferralOptions.label", "referral.externalReferralOptions.id", "referral.externalReferralOptions.label", "admitted", "illnessHistory",
+						"otherInstructions").toJson());
+	}
+
+    public List<SimpleObject> getQualifiers(@RequestParam("signId") Integer signId, UiUtils ui) {
+    	Concept signConcept = Context.getConceptService().getConcept(signId);
+    	List<Qualifier> qualifiers = new ArrayList<Qualifier>();
+    	for (ConceptAnswer conceptAnswer : signConcept.getAnswers()) {
+    		qualifiers.add(new Qualifier(conceptAnswer.getAnswerConcept()));
+    	}
+    	return SimpleObject.fromCollection(qualifiers, ui, "id", "label", "options.id", "options.label");
+    }
+    
     public List<SimpleObject> getSymptoms(@RequestParam(value="q") String name,UiUtils ui)
     {
         List<Concept> symptoms = Context.getService(PatientDashboardService.class).searchSymptom(name);
@@ -39,8 +81,12 @@ public class ClinicalNotesFragmentController {
     public List<SimpleObject> getProcedures(@RequestParam(value="q") String name,UiUtils ui)
     {
         List<Concept> procedures = Context.getService(PatientDashboardService.class).searchProcedure(name);
+        List<Procedure> proceduresPriority = new ArrayList<Procedure>();
+        for(Concept myConcept: procedures){
+            proceduresPriority.add(new Procedure(myConcept));
+        }
 
-        List<SimpleObject> proceduresList = SimpleObject.fromCollection(procedures, ui, "id", "name");
+        List<SimpleObject> proceduresList = SimpleObject.fromCollection(proceduresPriority, ui, "id", "label", "schedulable");
         return proceduresList;
     }
 

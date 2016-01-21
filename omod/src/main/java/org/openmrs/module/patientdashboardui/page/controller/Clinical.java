@@ -1,6 +1,9 @@
-package org.openmrs.module.patientdashboardui.controller.page;
+package org.openmrs.module.patientdashboardui.page.controller;
 
 import java.util.Date;
+import java.util.List;
+
+import org.openmrs.Concept;
 
 /**
  * Created by Francis on 12/7/2015.
@@ -11,10 +14,14 @@ public class Clinical {
     private Date dateOfVisit;
     private String typeOfVisit;
     private String treatingDoctor;
-    private String diagnosis;
-    private String procedures ;
+    private List<Concept> symptoms;
+    private List<Concept> diagnosis;
+    private String diagnosisNote;
+    private List<Concept> procedures;
+    private List<String> nonCodedProcedures;
     private String visitOutcomes;
     private String linkedVisit;
+
     public Integer getId() {
         return id;
     }
@@ -39,19 +46,37 @@ public class Clinical {
     public void setTreatingDoctor(String treatingDoctor) {
         this.treatingDoctor = treatingDoctor;
     }
-    public String getDiagnosis() {
+    public List<Concept> getSymptoms() {
+		return symptoms;
+	}
+	public void setSymptoms(List<Concept> symptoms) {
+		this.symptoms = symptoms;
+	}
+	public List<Concept> getDiagnosis() {
         return diagnosis;
     }
-    public void setDiagnosis(String diagnosis) {
+    public void setDiagnosis(List<Concept> diagnosis) {
         this.diagnosis = diagnosis;
     }
-    public String getProcedures() {
+    public String getDiagnosisNote() {
+		return diagnosisNote;
+	}
+	public void setDiagnosisNote(String diagnosisNote) {
+		this.diagnosisNote = diagnosisNote;
+	}
+	public List<Concept> getProcedures() {
         return procedures;
     }
-    public void setProcedures(String procedures) {
+    public void setProcedures(List<Concept> procedures) {
         this.procedures = procedures;
     }
-    public String getLinkedVisit() {
+    public List<String> getNonCodedProcedures() {
+		return nonCodedProcedures;
+	}
+	public void setNonCodedProcedures(List<String> nonCodedProcedures) {
+		this.nonCodedProcedures = nonCodedProcedures;
+	}
+	public String getLinkedVisit() {
         return linkedVisit;
     }
     public void setLinkedVisit(String linkedVisit) {
