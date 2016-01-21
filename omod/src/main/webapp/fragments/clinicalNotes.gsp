@@ -1,34 +1,54 @@
 <%
+    ui.includeCss("uicommons", "datetimepicker.css")
     ui.includeJavascript("patientdashboardui", "note.js")
     ui.includeJavascript("uicommons", "datetimepicker/bootstrap-datetimepicker.min.js")
-    ui.includeCss("uicommons", "datetimepicker.css")
+    ui.includeJavascript("uicommons", "handlebars/handlebars.min.js", Integer.MAX_VALUE - 1)
+    ui.includeJavascript("uicommons", "navigator/validators.js", Integer.MAX_VALUE - 19)
+    ui.includeJavascript("uicommons", "navigator/navigator.js", Integer.MAX_VALUE - 20)
+    ui.includeJavascript("uicommons", "navigator/navigatorHandlers.js", Integer.MAX_VALUE - 21)
+    ui.includeJavascript("uicommons", "navigator/navigatorModels.js", Integer.MAX_VALUE - 21)
+    ui.includeJavascript("uicommons", "navigator/navigatorTemplates.js", Integer.MAX_VALUE - 21)
+    ui.includeJavascript("uicommons", "navigator/exitHandlers.js", Integer.MAX_VALUE - 22)
+	
+    def successUrl = ui.pageLink("patientqueueui", "chooseOpd")
 %>
 <script>
 var jq = jQuery,
-    previousNote = JSON.parse('${note}');
+    NavigatorController,
+    previousNote = JSON.parse('${note}'),
     note = new Note(previousNote);
 
-var mappedSigns = jq.map(jq.parseJSON(previousNote.signs), function(sign) {
+var getJSON = function (dataToParse) {
+	if (typeof dataToParse === "string") {
+		return JSON.parse(dataToParse);
+	}
+	return dataToParse;
+}
+
+var mappedSigns = jq.map(getJSON(previousNote.signs), function(sign) {
     return new Sign(sign);
 });
 note.signs(mappedSigns);
 
-var mappedDiagnoses = jq.map(jq.parseJSON(previousNote.diagnoses), function(diagnosis) {
+var mappedDiagnoses = jq.map(getJSON(previousNote.diagnoses), function(diagnosis) {
     return new Diagnosis(diagnosis);
 });
 note.diagnoses(mappedDiagnoses);
 
-var mappedInvestigations = jq.map(jq.parseJSON(previousNote.investigations), function(investigation) {
+var mappedInvestigations = jq.map(getJSON(previousNote.investigations), function(investigation) {
     return new Investigation(investigation);
 });
 note.investigations(mappedInvestigations);
 
-var mappedProcedures = jq.map(jq.parseJSON(previousNote.procedures), function(procedure) {
+var mappedProcedures = jq.map(getJSON(previousNote.procedures), function(procedure) {
     return new Procedure(procedure);
 });
 note.procedures(mappedProcedures);
 
+note
+
 jq(function() {
+    NavigatorController = new KeyboardController();
     ko.applyBindings(note, jq("#notes-form")[0]);
     jq( "#symptom" ).autocomplete({
          source: function( request, response ) {
@@ -162,189 +182,242 @@ jq(function() {
         }
     });
 
-    jq("#symptoms-qualifiers").on("click", ".showquestions",function(){
-
-        if (jq(this).attr("value") == "less")
-        {
-            jq(this).attr("value","more");
+    jq(".symptoms-qualifiers").on("click", "span.show-qualifiers", function(){
+        console.log("Clicked");
+        var qualifierContainer = jq(this).parents(".symptom-container").find(".qualifier-container");
+        var icon = jq(this).find("i");
+        qualifierContainer.toggle();
+        if (qualifierContainer.is(":visible")) {
+            icon.removeClass("icon-caret-down").addClass("icon-caret-up");
+        } else {
+            icon.removeClass("icon-caret-up").addClass("icon-caret-down");
         }
-        else
-        {
-            jq(this).attr("value","less");
-        };
-
-        var symptom = jq(this).parent("div");
-        var qualifiers = symptom.siblings(".qualifier");
-        qualifiers.toggle();
     });
 
-    jq(".submit").on("click", function(event){
+    jq(".submitButton").on("click", function(event){
         event.preventDefault();
         jq.ajax({
           type: 'POST',
-          url: '${ ui.actionLink("patientdashboardui", "clinicalNoteProcessor", "processNote") }',
-          data :{ note: ko.toJSON(note, ["label", "id", "admitted","availableOutcomes", "diagnoses", "illnessHistory", "inpatientWarads", "investigations", "opdId", "opdLogId", "otherInstructions", "patientId", "procedures", "queueId", "signs"]) }
+          url: '${ ui.actionLink("patientdashboardui", "clinicalNoteProcessor", "processNote", [ successUrl: successUrl ]) }',
+          data :{ note: ko.toJSON(note, ["label", "id", "admitted","availableOutcomes", "diagnosisProvisional","diagnoses", "illnessHistory", "inpatientWarads", "investigations", "opdId", "opdLogId", "otherInstructions", "patientId", "procedures", "queueId", "signs", "referredTo"]) },
+          success: function (data, status, xhr) {
+              var redirectUrl = xhr.getResponseHeader('Location');
+              console.log(xhr.getAllResponseHeaders());
+              console.log(redirectUrl);
+              window.location.href = '${ui.pageLink("patientqueueui", "chooseOpd")}';
+          }
         });
+    });
+
+    jq(".cancel").on("click", function(e){
+        e.preventDefault();
     });
 });
 </script>
 
-<form method="post" id="notes-form">
-    <fieldset>
-        <legend>
-            Clinical Notes
-        </legend>
-        <p class="input-position-class">
-            <label for="history">History of Presenting illness</label>
-            <textarea data-bind="value: \$root.illnessHistory" id="history" name="history" rows="1" cols="15"></textarea>
-        </p>
-        
-        <div>
-            <p class="input-position-class">
-                <label for="symptom">Symptom</label>
-                <input type="text" id="symptom" name="symptom" />
+<div id="content">
+<form method="post" id="notes-form" class="simple-form-ui">
+    <section>
+        <span class="title">Clinical Notes</span>
+        <fieldset class="no-confirmation">
+            <legend>Illness History</legend>
+            <p>
+                <label for="history">History of Presenting illness</label>
+                <textarea data-bind="value: \$root.illnessHistory" id="history" name="history" rows="1" cols="15"></textarea>
             </p>
+        </fieldset>
+        <fieldset class="no-confirmation">
+            <legend>Symptoms</legend>
+                <p class="input-position-class">
+                    <label for="symptom">Symptom</label>
+                    <input type="text" id="symptom" name="symptom" />
+                </p>
 
-            <div id="symptoms-qualifiers" data-bind="foreach: signs" >
-                <div class="symptom">
-                    <p data-bind="text: label"></p>
-                    <input value="more" type="button" class="showquestions">
-                    <button data-bind="click: \$parent.removeSign">Remove</button>
+                <div class="symptoms-qualifiers" data-bind="foreach: signs" >
+                    <div class="symptom-container">
+                        <p class="symptom-label">
+                            <span class="right pointer show-qualifiers"><i class="icon-caret-down small" title="more"></i></span>
+                            <span class="right pointer" data-bind="click: \$root.removeSign"><i class="icon-remove small"></i></span>
+                            <span data-bind="text: label"></span>
+                        </p>
+                        <div class="qualifier-container" style="display: none;">
+                            <ul class="qualifier" data-bind="foreach: qualifiers">
+                                <li>
+                                    <span data-bind="text: label"></span>
+                                    <div data-bind="if: options().length >= 1">
+                                        <div data-bind="foreach: options" class="qualifier-option">
+                                            <p class="qualifier-field">
+                                                <input type="radio" data-bind="checkedValue: \$data, checked: \$parent.answer" >
+                                                <label data-bind="text: label"></label>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div data-bind="if: options().length === 0" >
+                                        <p>
+                                            <input type="text" data-bind="value: freeText" >
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div> 
+                    </div>
                 </div>
-                <div class="qualifier" data-bind="foreach: qualifiers" style="display: none;" >
-                    <label data-bind="text: label"></label>
-                    <div data-bind="if: options().length >= 1">
-                        <div data-bind="foreach: options">
-                            <p>
-	                           <input type="radio" data-bind="checkedValue: \$data, checked: \$parent.answer" >
-	                           <label data-bind="text: label"></label>
-	                        </p>
+        </fieldset>
+        <fieldset class="no-confirmation">
+            <legend>Diagnosis</legend>
+            <div>
+                <p class="input-position-class">
+                    <input type="radio" name="diagnosis_type" id="provisional-diagnosis" value="true" data-bind="checked: diagnosisProvisional" />
+                    <label for="provisional-diagnosis">Provisional</label>
+                </p>
+                <p class="input-position-class">
+                    <input type="radio" name="diagnosis_type" id="final-diagnosis" value="false" data-bind="checked: diagnosisProvisional"/>
+                    <label for="final-diagnosis">Final</label>
+                </p>
+
+                <div>
+                    <p class="input-position-class">
+                        <label for="diagnosis">Diagnosis:</label>
+                        <input type="text" id="diagnosis" name="diagnosis" />
+                    </p>
+                    <div data-bind="foreach: diagnoses">
+                        <div class="diagnosis-container">
+                            <span class="right pointer" data-bind="click: \$root.removeDiagnosis"><i class="icon-remove small"></i></span>
+                            <p data-bind="text: label"></p>
                         </div>
                     </div>
-                    <div data-bind="if: options().length === 0" >
-                        <p>
-	                        <input type="text" data-bind="value: freeText" >
-	                    </p>
-                    </div>
-                </div> 
-            </div>
-        </div>
-
-        <p class="input-position-class left">
-            <input type="radio" name="radio_dia" value="prov_dia" id="prov_dia" onclick="loadSelectedDiagnosisList();"/>
-            <label for="prov_dia">Provisional</label>
-        </p>
-        <p class="input-position-class">
-            <input type="radio" name="radio_dia" value="final_dia" id="final_dia" onclick="removeSelectedDia();"/>
-            <label for="final_dia">Final</label>
-        </p>
-
-        <div>
-            <p class="input-position-class">
-                <label for="diagnosis">Diagnosis:</label>
-                <input type="text" id="diagnosis" name="diagnosis" />
-            </p>
-            <div data-bind="foreach: diagnoses">
-                <p data-bind="text: label"></p>
-                <button data-bind="click: \$root.removeDiagnosis">Remove</button>
-            </div>
-        </div>
-        
-        <div>
-            <p class="input-position-class">
-                <label for="procedure">Post for Procedure:</label>
-                <input type="text" id="procedure" name="procedure" />
-            </p>
-            <div data-bind="foreach: procedures">
-                <p data-bind="text: label"></p>
-                <span data-bind="if: schedulable">Schedule:<input type="date"></span>
-                <button data-bind="click: \$root.removeProcedure">Remove</button>
-            </div>
-        </div>
-
-        <div>
-            <p class="input-position-class">
-                <label for="investigation">Investigation:</label>
-                <input type="text" id="investigation" name="investigation" />
-            </p>
-            <div data-bind="foreach: investigations">
-                <p data-bind="text: label"></p>
-                <button data-bind="click: \$root.removeInvestigation">Remove</button>
-            </div>
-        </div>
-        
-        <p>Prescription</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>Drug Name</th>
-                    <th>Formulation</th>
-                    <th>Frequency</th>
-                    <th>Number of Days</th>
-                    <th>Comments</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody data-bind="foreach: drugs">
-                <tr>
-                    <td data-bind="text: name"></td>
-                    <td data-bind="text: formulation.label"></td>
-                    <td data-bind="text: frequency.label"></td>
-                    <td data-bind="text: numberOfDays"></td>
-                    <td data-bind="text: comment"></td>
-                    <td>
-                        <a href="#" title="Remove"><i data-bind="click: \$root.removePrescription" class="icon-remove small"></i></a>
-                        <!-- <a href="#"><i class="icon-edit small"></i></a> -->
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <br/>
-        <button id="add-prescription">Add</button>
-        <p class="input-position-class">
-            <label for="note">Other Instructions</label>
-            <input  data-bind="value: \$root.otherInstructions" type="text" />
-        </p>
-        
-        <p class="input-position-class">
-        <label for="internalReferral">Internal Referral</label>
-        <select id="internalReferral" name="internalReferral">
-            <option value="">Select Referral</option>
-        </select>
-        </p>
-        
-        <p class="input-position-class">
-            <label for="externalReferral">External Referral</label>
-            <select id="externalReferral" name="externalReferral">
-                <option value="">Select Referral</option>
-            </select>
-        </p>
-        
-        <div class="input-position-class">
-            <label>Outcome:</label>
-            <div data-bind="foreach: availableOutcomes">
-                <div data-bind="if: !(\$root.admitted !== false && \$data.id !== 2)">
-                    <p>
-                        <input type="radio" name="outcome" data-bind="click: updateOutcome" >
-                        <label data-bind="text: label"></label>
-                        <span data-bind="if: \$data.id === 1 && \$root.outcome() && \$root.outcome().id === 1">
-                            <span id="follow-up-date" class="date">
-                                <input data-bind="value : followUp" >
-                                <span class="add-on"><i class="icon-calendar small"></i></span>
-                            </span>
-                        </span>
-                        <span data-bind="if: \$data.id === 2 && \$root.outcome() && \$root.outcome().id === 2">
-                            <select data-bind="options: \$root.inpatientWards, optionsText: 'label', value: admitTo" ></select>
-                        </span>
-                    </p>
                 </div>
             </div>
+        </fieldset>
+        <fieldset class="no-confirmation">
+            <legend>Procedures</legend>
+            <div>
+                <p class="input-position-class">
+                    <label for="procedure">Post for Procedure:</label>
+                    <input type="text" id="procedure" name="procedure" />
+                </p>
+                <div data-bind="foreach: procedures">
+                    <div class="procedure-container">
+                        <span class="right pointer" data-bind="click: \$root.removeProcedure"><i class="icon-remove small"></i></span>
+                        <p data-bind="text: label"></p>
+                        <span data-bind="if: schedulable">Schedule:<input type="date"></span>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="no-confirmation">
+            <legend>Investigations</legend>
+            <div>
+                <p class="input-position-class">
+                    <label for="investigation">Investigation:</label>
+                    <input type="text" id="investigation" name="investigation" />
+                </p>
+                <div data-bind="foreach: investigations">
+                    <div class="investigation-container">
+                        <span class="right pointer" data-bind="click: \$root.removeInvestigation"><i class="icon-remove small"></i></span>
+                        <p data-bind="text: label"></p>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="no-confirmation">
+            <legend>Prescription</legend>
+            <div>
+                <div style="display:none">
+                    <p><input type="text" ></p>
+                </div>
+                <h3>Prescribe</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Drug Name</th>
+                            <th>Formulation</th>
+                            <th>Frequency</th>
+                            <th>Number of Days</th>
+                            <th>Comments</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: drugs">
+                        <tr>
+                            <td data-bind="text: name"></td>
+                            <td data-bind="text: formulation.label"></td>
+                            <td data-bind="text: frequency.label"></td>
+                            <td data-bind="text: numberOfDays"></td>
+                            <td data-bind="text: comment"></td>
+                            <td>
+                                <a href="#" title="Remove"><i data-bind="click: \$root.removePrescription" class="icon-remove small"></i></a>
+                                <!-- <a href="#"><i class="icon-edit small"></i></a> -->
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+                <button id="add-prescription">Add</button>
+            </div>
+        </fieldset>
+        <fieldset class="no-confirmation">
+            <legend>Other Instructions</legend>
+            <p class="input-position-class">
+                <label for="note">Other Instructions</label>
+                <input  data-bind="value: \$root.otherInstructions" type="text" />
+            </p>
+        </fieldset>
+        <fieldset class="no-confirmation">
+            <legend>Outcome</legend>
+            <div>
+                <h3>Refer patient:</h3>
+                <p class="input-position-class">
+                    <label for="internalReferral">Internal Referral</label>
+                    <select id="internalReferral" name="internalReferral" data-bind="options: \$root.internalReferralOptions, optionsText: 'label', value: \$root.referredTo, optionsCaption: 'Please select...'">
+                    </select>
+                </p>
+        
+                <p class="input-position-class">
+                    <label for="externalReferral">External Referral</label>
+                    <select id="externalReferral" name="externalReferral" data-bind="options: \$root.externalReferralOptions, optionsText: 'label', value: \$root.referredTo, optionsCaption: 'Please select...'">
+                    </select>
+                </p>
+            </div>
+            <div>
+                <h3>What is the outcome of this visit?</h3>
+                <div data-bind="foreach: availableOutcomes" class="outcomes-container">
+                    <div data-bind="if: !(\$root.admitted !== false && \$data.id !== 2)">
+                        <p class="outcome">
+                            <input type="radio" name="outcome" data-bind="click: updateOutcome" >
+                            <label data-bind="text: label"></label>
+                            <span data-bind="if: \$data.id === 1 && \$root.outcome() && \$root.outcome().id === 1">
+                                <span id="follow-up-date" class="date">
+                                    <input data-bind="value : followUp" >
+                                    <span class="add-on"><i class="icon-calendar small"></i></span>
+                                </span>
+                            </span>
+                            <span data-bind="if: \$data.id === 2 && \$root.outcome() && \$root.outcome().id === 2">
+                                <select data-bind="options: \$root.inpatientWards, optionsText: 'label', value: admitTo" ></select>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </section>
+    <div id="confirmation">
+        <span id="confirmation_label" class="title">Confirmation</span>
+        <div class="before-dataCanvas"></div>
+        <div id="dataCanvas"></div>
+        <div class="after-data-canvas"></div>
+        <div id="confirmationQuestion">
+            Proceed?
+            <p style="display: inline">
+                <button class="submitButton confirm right">Submit</button>
+            </p>
+            <p style="display: inline">
+                <button class="cancel">Cancel</button>
+            </p>
         </div>
-
-        <p><button class="submit">Submit</button></p>
-
-    </fieldset>
+    </div>
 </form>
+</div>
 
 <div id="prescription-dialog" class="dialog">
     <div class="dialog-header">
@@ -473,5 +546,25 @@ jq(function(){
     background-color: #FFF;
     border: 1px solid #DDD;
     width: 97%;
+}
+.symptom-container, .diagnosis-container, .procedure-container, .investigation-container {
+    border-top: darkgrey dashed 1px;
+    margin-top: 8px;
+}
+.qualifier-container {
+    margin-left: 20px;
+    background-color: white;
+    padding: 5px 0 5px 15px;
+    font-size: .95em;
+}
+.qualifier-container p.qualifier-field label, .outcomes-container p.outcome {
+    font-size: .95em;
+    line-height: 19px;
+}
+.qualifier-option {
+    margin-bottom: 10px;
+}
+.pointer :hover {
+    cursor: pointer;
 }
 </style>

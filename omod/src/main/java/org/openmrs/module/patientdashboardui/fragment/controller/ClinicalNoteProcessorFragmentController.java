@@ -15,7 +15,7 @@ public class ClinicalNoteProcessorFragmentController {
 
 	private static Logger log = LoggerFactory.getLogger(ClinicalNoteProcessorFragmentController.class);
 
-	public String processNote(HttpServletRequest request) {
+	public void processNote(HttpServletRequest request) {
 		String noteJSON = request.getParameter("note");
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -28,7 +28,6 @@ public class ClinicalNoteProcessorFragmentController {
 		} catch (IOException e) {
 			log.error(e.getMessage());
 		}
-		return "redirect:/index.htm";
 	}
 
 }

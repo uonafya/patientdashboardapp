@@ -5,6 +5,7 @@ function Note(noteObj) {
 	self.opdId = noteObj.opdId;
 	self.opdLogId = noteObj.opdLogId;
 	self.signs = ko.observableArray([]);
+	self.diagnosisProvisional = ko.observable(noteObj.diagnosisProvisional);
 	self.diagnoses = ko.observableArray([]);
 	self.procedures = ko.observableArray([]);
 	self.investigations = ko.observableArray([]);
@@ -13,6 +14,11 @@ function Note(noteObj) {
 	self.admitted = noteObj.admitted;
 	self.illnessHistory = noteObj.illnessHistory;
 	self.otherInstructions = noteObj.otherInstructions;
+	self.internalReferralOptions = jq.map(noteObj.referral.internalReferralOptions, function(referral) {
+	    return new Referral(referral);
+	});
+	self.externalReferralOptions = noteObj.referral.externalReferralOptions
+	self.referredTo;
 
 	self.availableOutcomes = jq.map(noteObj.availableOutcomes,
 			function(outcome) {
@@ -97,6 +103,10 @@ function Note(noteObj) {
 		self.drugs.remove(drug);
 	};
 
+	this.refer = function(referTo) {
+		self.referral(referTo);
+	}
+
 }
 
 function Sign(signObj) {
@@ -169,6 +179,12 @@ function Outcome(outcomeObj) {
 		note.outcome(data);
 		return true;
 	}
+}
+
+function Referral(referralObj) {
+	this.id = referralObj.id;
+	this.label = referralObj.label;
+	this.referral;
 }
 
 if (!Array.prototype.find) {

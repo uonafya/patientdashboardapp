@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
@@ -20,6 +21,7 @@ import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@JsonIgnoreProperties({"referral"})
 public class Note {
 
 	private static Logger logger = LoggerFactory.getLogger(Note.class);
@@ -38,7 +40,6 @@ public class Note {
 		this.diagnoses = new ArrayList<Diagnosis>();
 		this.investigations = new ArrayList<Investigation>();
 		this.procedures = new ArrayList<Procedure>();
-		this.referral = new Referral();
 		loadDiagnoses(patientId);
 		loadSigns(patientId);
 		this.availableOutcomes = Outcome.getAvailableOutcomes();
@@ -51,11 +52,13 @@ public class Note {
 	private boolean admitted;
 	private Integer opdLogId;
 	private List<Sign> signs = new ArrayList<Sign>() ;
+	private Boolean diagnosisProvisional;
 	private List<Diagnosis> diagnoses = new ArrayList<Diagnosis>();
 	private List<Investigation> investigations = new ArrayList<Investigation>();
 	private List<Procedure> procedures = new ArrayList<Procedure>();
 	private List<Drug> drugs = new ArrayList<Drug>();
-	private Referral referral;
+	private Referral referral = new Referral();;
+	private Option referredTo;
 	private Outcome outcome;
 	private List<Option> availableOutcomes = new ArrayList<Option>();
 	private List<Option> inpatientWards = new ArrayList<Option>();
@@ -111,6 +114,14 @@ public class Note {
 		this.signs = symptoms;
 	}
 
+	public Boolean getDiagnosisProvisional() {
+		return diagnosisProvisional;
+	}
+
+	public void setDiagnosisProvisional(Boolean diagnosisProvisional) {
+		this.diagnosisProvisional = diagnosisProvisional;
+	}
+
 	public List<Diagnosis> getDiagnoses() {
 		return diagnoses;
 	}
@@ -141,6 +152,14 @@ public class Note {
 
 	public void setReferral(Referral referral) {
 		this.referral = referral;
+	}
+
+	public Option getReferredTo() {
+		return referredTo;
+	}
+
+	public void setReferredTo(Option referredTo) {
+		this.referredTo = referredTo;
 	}
 
 	public Outcome getOutcome() {
@@ -205,6 +224,9 @@ public class Note {
 		for (Obs diagnosisObs : diagnosisObsns) {
 			diagnoses.add(new Diagnosis(diagnosisObs.getValueCoded()));
 		}
+		if (diagnoses.size() > 0) {
+			this.diagnosisProvisional = true;
+		}
 	}
 
 	public Encounter save() {
@@ -254,7 +276,11 @@ public class Note {
 		}
 		for (Diagnosis diagnosis : this.diagnoses)
 		{
-			diagnosis.addObs(encounter,obsGroup);
+			diagnosis.addObs(encounter, obsGroup, this.diagnosisProvisional);
+		}
+		
+		if (referredTo != null) {
+			referral.addReferralObs(referredTo, opdId, encounter, obsGroup);
 		}
 	}
 
@@ -265,7 +291,7 @@ public class Note {
 			drug.save(encounter, referralWardName);
 		}
 		for (Investigation investigation : this.investigations) {
-			String departmentName = Context.getService(PatientQueueService.class).getOpdPatientQueueById(this.opdId).getOpdConceptName();
+			String departmentName = Context.getConceptService().getConcept(this.opdId).getName().toString();
 			try {
 				investigation.save(encounter, departmentName);
 			} catch (Exception e) {

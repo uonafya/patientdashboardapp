@@ -47,11 +47,11 @@ public class ClinicalNotesFragmentController {
 		Note note = new Note(patientId, queueId, opdId, opdLogId);
 		model.addAttribute(
 				"note",
-				SimpleObject.fromObject(note, ui, "signs", "diagnoses",
+				SimpleObject.fromObject(note, ui, "signs.id", "signs.label", "diagnoses",
 						"investigations", "procedures", "patientId", "queueId",
 						"opdId", "opdLogId", "availableOutcomes.id",
 						"availableOutcomes.label", "inpatientWards.id",
-						"inpatientWards.label", "admitted", "illnessHistory",
+						"inpatientWards.label", "referral.internalReferralOptions.id","referral.internalReferralOptions.label", "referral.externalReferralOptions.id", "referral.externalReferralOptions.label", "admitted", "illnessHistory",
 						"otherInstructions").toJson());
 	}
 

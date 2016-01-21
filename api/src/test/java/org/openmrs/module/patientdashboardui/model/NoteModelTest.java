@@ -16,7 +16,6 @@ public class NoteModelTest extends BaseModuleContextSensitiveTest {
 		executeDataSet("notes-concepts.xml");
 		Note note = new Note();
 		note.setPatientId(3009);
-		note.setPatientId(3009);
 		List<Procedure> procedures = new ArrayList<Procedure>();
 		Procedure procedure = new Procedure(9993, "Allergy Shots");
 		procedure.setScheduledDate("18/12/2015");
