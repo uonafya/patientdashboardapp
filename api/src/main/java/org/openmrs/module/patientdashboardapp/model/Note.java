@@ -17,6 +17,7 @@ import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
+import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.slf4j.Logger;
@@ -203,6 +204,7 @@ public class Note {
 		addObs(obsGroup, encounter);
 		Context.getEncounterService().saveEncounter(encounter);
 		saveNoteDetails(encounter);
+		endEncounter(encounter);
 		return encounter;
 	}
 
@@ -299,6 +301,32 @@ public class Note {
 		}
 		if (this.outcome != null) {
 			this.outcome.save(encounter);
+		}
+	}
+	
+	private void endEncounter(Encounter encounter) {
+		PatientQueueService queueService = Context.getService(PatientQueueService.class);
+		if (this.queueId != null) {
+			OpdPatientQueue queue = queueService.getOpdPatientQueueById(this.queueId);
+			OpdPatientQueueLog queueLog = new OpdPatientQueueLog();
+			queueLog.setOpdConcept(queue.getOpdConcept());
+			queueLog.setOpdConceptName(queue.getOpdConceptName());
+			queueLog.setPatient(queue.getPatient());
+			queueLog.setCreatedOn(queue.getCreatedOn());
+			queueLog.setPatientIdentifier(queue.getPatientIdentifier());
+			queueLog.setPatientName(queue.getPatientName());
+			queueLog.setReferralConcept(queue.getReferralConcept());
+			queueLog.setReferralConceptName(queue.getReferralConceptName());
+			queueLog.setSex(queue.getSex());
+			queueLog.setUser(Context.getAuthenticatedUser());
+			queueLog.setStatus("processed");
+			queueLog.setBirthDate(encounter.getPatient().getBirthdate());
+			queueLog.setEncounter(encounter);
+			queueLog.setCategory(queue.getCategory());
+			queueLog.setVisitStatus(queue.getVisitStatus());
+				
+			queueService.saveOpdPatientQueueLog(queueLog);
+			queueService.deleteOpdPatientQueue(queue);
 		}
 	}
 }

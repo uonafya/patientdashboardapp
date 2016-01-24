@@ -26,7 +26,7 @@
 
 <script>
 jq(function(){
-    jq(".visit-summary").on("click", function(){
+    jq("left-menu").on("click", ".visit-summary", function(){
         jq("#visit-detail").html("<i class=\"icon-spinner icon-spin icon-2x pull-left\"></i>")
         var visitSummary = jq(this);
         jq(".visit-summary").removeClass("selected");
@@ -43,7 +43,10 @@ jq(function(){
             }
         })
     });
-    jq(".visit-summary")[0].click();
+    var visitSummaries = jq(".visit-summary");
+    if (visitSummaries.length > 0) {
+        visitSummaries[0].click();
+    }
 })
 </script>
 
