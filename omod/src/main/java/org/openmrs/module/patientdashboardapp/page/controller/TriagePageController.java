@@ -45,7 +45,6 @@ public class TriagePageController {
 			@RequestParam("patientId") Patient patient,
 			@RequestParam(value = "opdId", required = false) Integer opdId,
 			@RequestParam("queueId") Integer queueId,
-			@RequestParam("visitStatus") String visitStatus,
 			PageModel model) {
 		PatientQueueService pqs = Context.getService(PatientQueueService.class);
 		IpdService ipdService = Context.getService(IpdService.class);
@@ -120,7 +119,7 @@ public class TriagePageController {
 			model.addAttribute("referredType", referral.getValueCoded().getName());
 		}
 
-		model.addAttribute("visitStatus",visitStatus);
+		model.addAttribute("visitStatus",triagePatientQueue.getVisitStatus());
 
 		IpdPatientAdmitted admitted = ipdService.getAdmittedByPatientId(patient.getPatientId());
 
