@@ -2,7 +2,7 @@
     {
         "id": "patientdashboardapp.opdqueue",        // unique app id, (independent of the template)
         "instanceOf": "patientqueue.template.viewQueue",        // unique id of the template to inherit
-        "label": "OPD Patient Queue",        // text or message code
+        "label": "OPD",        // text or message code
         "description": "View patient in OPD queue",        // text or message code
         "extensions": [        // extensions that attach to extension points of _other_ apps
             {
