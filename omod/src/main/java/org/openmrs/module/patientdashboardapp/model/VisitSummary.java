@@ -1,4 +1,4 @@
-package org.openmrs.module.patientdashboardapp.page.controller;
+package org.openmrs.module.patientdashboardapp.model;
 
 import java.util.Date;
 
