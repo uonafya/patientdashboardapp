@@ -9,6 +9,7 @@
     ui.includeJavascript("uicommons", "navigator/navigatorModels.js", Integer.MAX_VALUE - 21)
     ui.includeJavascript("uicommons", "navigator/navigatorTemplates.js", Integer.MAX_VALUE - 21)
     ui.includeJavascript("uicommons", "navigator/exitHandlers.js", Integer.MAX_VALUE - 22)
+	ui.includeJavascript("patientdashboardapp", "knockout-3.4.0.js")
 	
     def successUrl = ui.pageLink("patientqueueui", "chooseOpd")
 %>
@@ -206,12 +207,12 @@ jq(function() {
         jq.ajax({
           type: 'POST',
           url: '${ ui.actionLink("patientdashboardapp", "clinicalNoteProcessor", "processNote", [ successUrl: successUrl ]) }',
-          data :{ note: ko.toJSON(note, ["label", "id", "admitted","availableOutcomes", "diagnosisProvisional","diagnoses", "illnessHistory", "inpatientWarads", "investigations", "opdId", "opdLogId", "otherInstructions", "patientId", "procedures", "queueId", "signs", "referredTo"]) },
+          data :{ note: ko.toJSON(note, ["label", "id", "admitted", "diagnosisProvisional","diagnoses", "illnessHistory", "inpatientWarads", "investigations", "opdId", "opdLogId", "otherInstructions", "patientId", "procedures", "queueId", "signs", "referredTo"]) },
           success: function (data, status, xhr) {
               var redirectUrl = xhr.getResponseHeader('Location');
               console.log(xhr.getAllResponseHeaders());
               console.log(redirectUrl);
-              window.location.href = '${ui.pageLink("patientqueueui", "chooseOpd")}';
+              window.location.href = '${ui.pageLink("patientqueueui", "queue", [app: "patientdashboardapp.opdqueue"])}';
           }
         });
     });
@@ -261,7 +262,7 @@ jq(function() {
                                     </div>
                                     <div data-bind="if: options().length === 0" >
                                         <p>
-                                            <input type="text" data-bind="value: freeText" >
+                                            <input type="text" data-bind="value: \$parent.freeText" >
                                         </p>
                                     </div>
                                 </li>
@@ -300,7 +301,7 @@ jq(function() {
             <legend>Procedures</legend>
             <div>
                 <p class="input-position-class">
-                    <label for="procedure">Post for Procedure:</label>
+                    <label for="procedure">Procedure:</label>
                     <input type="text" id="procedure" name="procedure" />
                 </p>
                 <div data-bind="foreach: procedures">

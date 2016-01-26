@@ -3,8 +3,10 @@ package org.openmrs.module.patientdashboardapp.page.controller;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -35,6 +37,7 @@ import org.openmrs.module.hospitalcore.model.TriagePatientQueueLog;
 import org.openmrs.module.hospitalcore.util.ConceptAnswerComparator;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.openmrs.module.hospitalcore.util.PatientUtils;
+import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.annotation.BindParams;
 import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.session.Session;
@@ -185,10 +188,11 @@ public class TriagePageController {
 			return "Senior Citizen";
 	}
 	
-	public void post(
+	public String post(
 			@RequestParam("queueId") Integer queueId,
 			@RequestParam("opdId")Integer opdId,
-			@BindParams TriagePatientData triagePatientData, 
+			@BindParams TriagePatientData triagePatientData,
+			UiUtils ui,
 			Session session) {
 		User user = Context.getAuthenticatedUser();
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
@@ -213,6 +217,9 @@ public class TriagePageController {
 			visitStatus=false;
 		}
 		sendPatientToOPDQueue(triagePatientLog.getPatient(), Context.getConceptService().getConcept(opdId), triagePatientData, visitStatus, triagePatientLog.getCategory());
+		Map<String,Object> params = new HashMap<String, Object>();
+		params.put("app", "patientdashboardapp.triage");
+		return "redirect:" + ui.pageLink("patientqueueui", "queue", params);
 	}
 
 	private TriagePatientQueueLog logTriagePatient(PatientQueueService queueService,

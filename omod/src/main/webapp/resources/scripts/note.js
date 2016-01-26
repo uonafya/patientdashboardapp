@@ -107,16 +107,17 @@ function Sign(signObj) {
 }
 
 function Qualifier(id, label, options, answer) {
-	this.id = id
-	this.label = label;
-	this.options = ko.observableArray(options);
-	this.answer = ko.observable(answer);
-	this.freeText = ko.observable();
+	self = this;
+	self.id = id
+	self.label = label;
+	self.options = ko.observableArray(options);
+	self.answer = ko.observable(answer);
+	self.freeText = ko.observable();
 }
 
 function Option(id, label) {
 	this.id = id;
-	this.label = label
+	this.label = label;
 
 	this.display = function(data) {
 		console.log(data);
