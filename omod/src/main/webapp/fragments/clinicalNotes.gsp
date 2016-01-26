@@ -230,7 +230,7 @@ jq(function() {
             <legend>Illness History</legend>
             <p>
                 <label for="history">History of Presenting illness</label>
-                <textarea data-bind="value: \$root.illnessHistory" id="history" name="history" rows="1" cols="15"></textarea>
+                <textarea data-bind="value: \$root.illnessHistory" id="history" name="history" rows="10" cols="74"></textarea>
             </p>
         </fieldset>
         <fieldset class="no-confirmation">
@@ -545,6 +545,9 @@ jq(function(){
 </script>
 
 <style>
+.simple-form-ui section {
+   width: 74%;
+}
 .dialog input {
     display: block;
     margin: 5px 0;
