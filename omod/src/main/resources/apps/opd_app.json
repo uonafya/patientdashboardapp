@@ -9,7 +9,7 @@
                 "id": "patientdashboardapp.opdqueue.homepageLink",        // id for this extension, must be unique across all apps
                 "extensionPointId": "org.openmrs.referenceapplication.homepageLink",
                 "type": "link",
-                "label": "OPD Patient Queue",
+                "label": "OPD",
                 "url": "patientqueueui/queue.page?app=patientdashboardapp.opdqueue",
                 "icon": "icon-list-ol",
                 "order": 3,
