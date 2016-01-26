@@ -42,11 +42,11 @@ public class ClinicalNotesFragmentController {
 				.parseInt(config.get("patientId").toString());
 		Integer opdId = Integer.parseInt(config.get("opdId").toString());
 		Integer queueId = null;
-		if (config.containsKey("queueId")) {
+		if (config.containsKey("queueId") && config.get("queueId") != null) {
 			queueId = Integer.parseInt(config.get("queueId").toString());
 		}
 		Integer opdLogId = null;
-		if (config.containsKey("opdLogId")) {
+		if (config.containsKey("opdLogId") && config.get("opdLogId") != null) {
 			opdLogId = Integer.parseInt(config.get("opdLogId").toString());
 		}
 		model.addAttribute("outcomeOptions", SimpleObject.fromCollection(Outcome.getAvailableOutcomes(), ui, "label", "id"));

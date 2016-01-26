@@ -13,7 +13,7 @@ public class MainPageController {
 		
 		model.addAttribute("patientId", patientId);
 		model.addAttribute("opdId", opdId);
-		model.addAttribute("queueId", opdId);
+		model.addAttribute("queueId", queueId);
 		model.addAttribute("opdLogId", opdLogId);
 		
 	}

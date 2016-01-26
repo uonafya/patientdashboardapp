@@ -7,7 +7,7 @@
     </ul>
     
     <div id="notes">
-        ${ ui.includeFragment("patientdashboardapp", "clinicalNotes", [patientId: patientId, opdId: opdId]) }
+        ${ ui.includeFragment("patientdashboardapp", "clinicalNotes", [patientId: patientId, opdId: opdId, queueId: queueId, opdLogId: opdLogId]) }
     </div>
     
     <div id="summary">
