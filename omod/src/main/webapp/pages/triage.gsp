@@ -19,11 +19,24 @@ var emrMessages = {};
 emrMessages["numericRangeHigh"] = "value should be less than {0}";
 emrMessages["numericRangeLow"] = "value should be more than {0}";
 
+function getFloatValue(source) {
+    return isNaN(parseFloat(source)) ? 0 : parseFloat(source);
+}
+
 jq(function(){
     NavigatorController = new KeyboardController();
 
     emrMessages["numericRangeHigh"] = "value should be less than {0}";
     emrMessages["numericRangeLow"] = "value should be more than {0}";
+
+    jq("#height-field,#weight-field").change(function () {
+        console.log("Value changed.")
+        var height = getFloatValue(jq("#height-field").val());
+        var weight = getFloatValue(jq("#weight-field").val());
+        var bmi = weight/(height * height);
+        console.log("BMI " + bmi);
+        jq(".bmi").html(bmi);
+    });
 });
 </script>
 
@@ -63,6 +76,11 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
                         ])}
                     </p>
                     <div style="clear:left"></div>
+                    <% if (patient.age >= 18) { %>
+                        <p>
+                            <label>BMI: <span class="bmi"></span></label>
+                        </p>
+                    <% } %>
                     <p>
                         ${ ui.includeFragment("uicommons", "field/text", [
                             label: "MUA Circumference",
@@ -217,7 +235,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
             <fieldset>
                 <legend>Room to Visit</legend>
                 <p>
-                    <select id="opd" name="opdId">
+                    <select id="room-to-visit" name="roomToVisit">
                         <option value="">-Please select-</option>
                         <% listOPD.each { opd -> %>
                             <option value="${opd.answerConcept.id }"

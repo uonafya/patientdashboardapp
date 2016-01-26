@@ -190,12 +190,13 @@ public class TriagePageController {
 	
 	public String post(
 			@RequestParam("queueId") Integer queueId,
-			@RequestParam("opdId")Integer opdId,
+			@RequestParam("roomToVisit")Integer roomToVisit,
 			@BindParams TriagePatientData triagePatientData,
 			UiUtils ui,
 			Session session) {
 		User user = Context.getAuthenticatedUser();
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
+		triagePatientData = queueService.saveTriagePatientData(triagePatientData);
 		TriagePatientQueue queue = queueService.getTriagePatientQueueById(queueId);
 		String triageEncounterType = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_TRIAGE_ENCOUTNER_TYPE);
 		EncounterType encounterType = Context.getEncounterService().getEncounterType(triageEncounterType);
@@ -216,7 +217,7 @@ public class TriagePageController {
 		} else {
 			visitStatus=false;
 		}
-		sendPatientToOPDQueue(triagePatientLog.getPatient(), Context.getConceptService().getConcept(opdId), triagePatientData, visitStatus, triagePatientLog.getCategory());
+		sendPatientToOPDQueue(triagePatientLog.getPatient(), Context.getConceptService().getConcept(roomToVisit), triagePatientData, visitStatus, triagePatientLog.getCategory());
 		Map<String,Object> params = new HashMap<String, Object>();
 		params.put("app", "patientdashboardapp.triage");
 		return "redirect:" + ui.pageLink("patientqueueui", "queue", params);
