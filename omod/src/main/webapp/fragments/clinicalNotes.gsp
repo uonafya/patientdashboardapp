@@ -272,6 +272,13 @@ jq(function() {
                 </div>
         </fieldset>
         <fieldset class="no-confirmation">
+            <legend>Physical Examination</legend>
+            <p class="input-position-class">
+                <label>Physical Examination</label>
+                <textarea data-bind="value: \$root.physicalExamination" id="examination" name="examination" rows="10" cols="74"></textarea>
+            </p>
+        </fieldset>
+        <fieldset class="no-confirmation">
             <legend>Diagnosis</legend>
             <div>
                 <p class="input-position-class">
@@ -367,7 +374,7 @@ jq(function() {
         <fieldset class="no-confirmation">
             <legend>Other Instructions</legend>
             <p class="input-position-class">
-                <label for="note">Other Instructions</label>
+                <label>Other Instructions</label>
                 <input  data-bind="value: \$root.otherInstructions" type="text" />
             </p>
         </fieldset>

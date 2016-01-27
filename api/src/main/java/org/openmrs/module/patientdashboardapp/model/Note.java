@@ -57,6 +57,7 @@ public class Note {
 	private String illnessHistory;
 
 	private String otherInstructions;
+	private String physicalExamination;
 
 	public int getPatientId() {
 		return patientId;
@@ -178,6 +179,12 @@ public class Note {
 		this.otherInstructions = otherInstructions;
 	}
 
+	public String getPhysicalExamination() {return physicalExamination;}
+
+	public void setPhysicalExamination(String physicalExamination) {
+		this.physicalExamination = physicalExamination;
+	}
+
 	private void loadSigns(Integer patientId) {
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
 		List<Obs> symptomObs = queueService.getAllSymptom(patientId);
@@ -239,6 +246,10 @@ public class Note {
 		if (StringUtils.isNotBlank(this.otherInstructions)) {
 			addOtherInstructions(encounter, obsGroup);
 		}
+
+		if(StringUtils.isNotBlank(this.physicalExamination)){
+			addPhysicalExamination(encounter,obsGroup);
+		}
 		
 		for (Sign sign : this.signs) {
 			sign.addObs(encounter, obsGroup);
@@ -283,6 +294,19 @@ public class Note {
 		obsOtherInstructions.setDateCreated(encounter.getDateCreated());
 		obsOtherInstructions.setEncounter(encounter);
 		encounter.addObs(obsOtherInstructions);
+	}
+
+	public void addPhysicalExamination(Encounter encounter, Obs obsGroup)
+	{
+		Concept conceptPhysicalExamination = Context.getConceptService().getConcept("PHYSICAL EXAMINATION");
+		Obs obsPhysicalExamination = new Obs();
+		obsPhysicalExamination.setObsGroup(obsGroup);
+		obsPhysicalExamination.setConcept(conceptPhysicalExamination);
+		obsPhysicalExamination.setValueText(this.physicalExamination);
+		obsPhysicalExamination.setCreator(encounter.getCreator());
+		obsPhysicalExamination.setDateCreated(encounter.getDateCreated());
+		obsPhysicalExamination.setEncounter(encounter);
+		encounter.addObs(obsPhysicalExamination);
 	}
 
 	private void saveNoteDetails(Encounter encounter) {
