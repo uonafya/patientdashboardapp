@@ -17,7 +17,9 @@
             }
         ],
         "config": {
-            "onSelectUrl": "/patientdashboardapp/triage.page?patientId={{patientId}}&opdId={{opdId}}&queueId={{queueId}}"
+            "onSelectUrl": "/patientdashboardapp/triage.page?patientId={{patientId}}&opdId={{opdId}}&queueId={{queueId}}",
+            "title": "Triage Queue"
         }
+
     }
 ] 

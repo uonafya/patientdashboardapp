@@ -49,6 +49,7 @@ public class TriagePageController {
 			@RequestParam(value = "opdId", required = false) Integer opdId,
 			@RequestParam("queueId") Integer queueId,
 			PageModel model) {
+
 		PatientQueueService pqs = Context.getService(PatientQueueService.class);
 		IpdService ipdService = Context.getService(IpdService.class);
 		TriagePatientQueue triagePatientQueue = pqs.getTriagePatientQueueById(queueId);
