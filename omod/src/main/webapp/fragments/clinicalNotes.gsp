@@ -207,7 +207,7 @@ jq(function() {
         jq.ajax({
           type: 'POST',
           url: '${ ui.actionLink("patientdashboardapp", "clinicalNoteProcessor", "processNote", [ successUrl: successUrl ]) }',
-          data :{ note: ko.toJSON(note, ["label", "id", "admitted", "diagnosisProvisional","diagnoses", "illnessHistory", "inpatientWarads", "investigations", "opdId", "opdLogId", "otherInstructions", "patientId", "procedures", "queueId", "signs", "referredTo"]) },
+          data :{ note: ko.toJSON(note, ["label", "id", "admitted", "diagnosisProvisional","diagnoses", "illnessHistory", "inpatientWarads", "investigations", "opdId", "opdLogId", "otherInstructions", "patientId", "procedures", "queueId", "signs", "referredTo", "outcome", "admitTo", "followUp","option"]) },
           success: function (data, status, xhr) {
               var redirectUrl = xhr.getResponseHeader('Location');
               console.log(xhr.getAllResponseHeaders());
@@ -400,14 +400,14 @@ jq(function() {
                     <div data-bind="if: !(\$root.admitted !== false && \$data.id !== 2)">
                         <p class="outcome">
                             <input type="radio" name="outcome" data-bind="click: updateOutcome" >
-                            <label data-bind="text: label"></label>
-                            <span data-bind="if: \$data.id === 1 && \$root.outcome() && \$root.outcome().id === 1">
+                            <label data-bind="text: option.label"></label>
+                            <span data-bind="if: \$data.option.id === 1 && \$root.outcome() && \$root.outcome().option.id === 1">
                                 <span id="follow-up-date" class="date">
                                     <input data-bind="value : followUp" >
                                     <span class="add-on"><i class="icon-calendar small"></i></span>
                                 </span>
                             </span>
-                            <span data-bind="if: \$data.id === 2 && \$root.outcome() && \$root.outcome().id === 2">
+                            <span data-bind="if: \$data.option.id === 2 && \$root.outcome() && \$root.outcome().option.id === 2">
                                 <select data-bind="options: \$root.inpatientWards, optionsText: 'label', value: admitTo" ></select>
                             </span>
                         </p>

@@ -161,13 +161,12 @@ function Formulation(formulationObj) {
 }
 
 function Outcome(outcomeObj) {
-	this.id = outcomeObj.id;
-	this.label = outcomeObj.label;
+	this.option = new Option(outcomeObj.id,outcomeObj.label);
 	this.followUp = outcomeObj.followUp;
 	this.admitTo = outcomeObj.adminTo;
 
 	this.updateOutcome = function(data) {
-		note.outcome(data);
+		note.outcome(this);
 		return true;
 	}
 }
