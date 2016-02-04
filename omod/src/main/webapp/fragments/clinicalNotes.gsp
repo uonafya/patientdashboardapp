@@ -447,11 +447,11 @@ jq(function() {
             </li>
             <li>
                 <span>Formulation</span>
-                <select data-bind="options: formulationOpts, value: formulation, optionsText: 'label'"></select>
+                <select data-bind="options: formulationOpts, value: formulation, optionsText: 'label',  optionsCaption: 'Select Formulation'"></select>
             </li>
             <li>
                 <span>Frequency</span>
-                <select data-bind="options: frequencyOpts, value: frequency, optionsText: 'label'"></select>
+                <select data-bind="options: frequencyOpts, value: frequency, optionsText: 'label',  optionsCaption: 'Select Frequency'"></select>
             </li>
             <li>
                 <span>Number of Days</span>
