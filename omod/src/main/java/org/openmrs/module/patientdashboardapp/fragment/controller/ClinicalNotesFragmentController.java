@@ -123,4 +123,18 @@ public class ClinicalNotesFragmentController {
 
         return formulationsList;
     }
+
+    public List<SimpleObject> getFrequencies(UiUtils uiUtils){
+        InventoryCommonService inventoryCommonService = Context
+                .getService(InventoryCommonService.class);
+        List<Concept> drugFrequencyConcept = inventoryCommonService
+                .getDrugFrequency();
+        if(drugFrequencyConcept != null){
+            List<SimpleObject> mydrugFrequencyObj = SimpleObject.fromCollection(drugFrequencyConcept,uiUtils, "id", "name");
+            return mydrugFrequencyObj;
+        }
+        else{
+            return null;
+        }
+    }
 }

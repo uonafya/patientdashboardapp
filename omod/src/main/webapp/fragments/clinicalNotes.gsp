@@ -447,11 +447,11 @@ jq(function() {
             </li>
             <li>
                 <span>Formulation</span>
-                <select data-bind="options: formulationOpts, value: formulation, optionsText: 'label'"></select>
+                <select data-bind="options: formulationOpts, value: formulation, optionsText: 'label',  optionsCaption: 'Select Formulation'"></select>
             </li>
             <li>
                 <span>Frequency</span>
-                <select data-bind="options: frequencyOpts, value: frequency, optionsText: 'label'"></select>
+                <select data-bind="options: frequencyOpts, value: frequency, optionsText: 'label',  optionsCaption: 'Select Frequency'"></select>
             </li>
             <li>
                 <span>Number of Days</span>
@@ -499,7 +499,6 @@ jq(function(){
 	jq("#add-prescription").on("click", function(e){
 		e.preventDefault();
 	    prescription = new Drug();
-	    prescription.frequencyOpts(note.frequencyOpts());
 	    ko.applyBindings(prescription, jq("#prescription-dialog")[0]);
 	    prescriptionDialog.show();
 	});
@@ -536,10 +535,21 @@ jq(function(){
 	            }
 	          ).success(function(data) {
 	            var formulations = jq.map(data, function (formulation) {
+                    console.log(formulation);
 	              return new Formulation({ id: formulation.id, label: formulation.name});
 	            });
 	            prescription.formulationOpts(formulations);
 	          });
+
+              //fetch the frequenciesui.
+              jq.getJSON('${ui.actionLink("patientdashboardapp","ClinicalNotes","getFrequencies")}').success(function(data){
+                   console.log(data);
+                  var frequency = jq.map(data, function (frequency) {
+                      return new Frequency({id: frequency.id, label: frequency.name});
+                  });
+                  prescription.frequencyOpts(frequency);
+                });
+
 	        },
 	        open: function() {
 	          jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
