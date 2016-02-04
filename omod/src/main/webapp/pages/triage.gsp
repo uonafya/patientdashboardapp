@@ -35,7 +35,7 @@ jq(function(){
         var weight = getFloatValue(jq("#weight-field").val());
         var bmi = weight/(height * height);
         console.log("BMI " + bmi);
-        jq(".bmi").html(bmi);
+        jq(".bmi").html(bmi.toFixed(2));
     });
 });
 </script>
