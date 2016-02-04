@@ -31,7 +31,7 @@ jq(function(){
 
     jq("#height-field,#weight-field").change(function () {
         console.log("Value changed.")
-        var height = getFloatValue(jq("#height-field").val());
+        var height = getFloatValue(jq("#height-field").val())/100;
         var weight = getFloatValue(jq("#weight-field").val());
         var bmi = weight/(height * height);
         console.log("BMI " + bmi);
