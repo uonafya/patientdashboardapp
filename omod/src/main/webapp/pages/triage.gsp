@@ -49,188 +49,183 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
             <fieldset>
                 <legend>Vitals</legend>
                 <div>
-                    <p>
-                        ${ ui.includeFragment("uicommons", "field/text", [
-                            label: "Weight",
-                            id:"weight",
-                            formFieldName: "weight",
-                            maxLength: 7,
-                            min: 0,
-                            max: 999,
-                            classes: ["numeric-range"],
-                            appendToValueDisplayed: "kg",
-                            left: true
-                        ])}
-                    </p>
-                    <p>
-                        ${ ui.includeFragment("uicommons", "field/text", [
-                            label: "Height",
-                            id:"height",
-                            formFieldName: "height",
-                            maxLength: 7,
-                            min: 0,
-                            max: 999,
-                            classes: ["numeric-range"],
-                            appendToValueDisplayed: "cm",
-                            left: true
-                        ])}
-                    </p>
+                    ${ ui.includeFragment("uicommons", "field/text", [
+                        label: "Weight",
+                        id:"weight",
+                        formFieldName: "weight",
+                        maxLength: 7,
+                        min: 0,
+                        max: 999,
+                        classes: ["numeric-range"],
+                        appendToValueDisplayed: "kg",
+                        initialValue: vitals?.weight,
+                        left: true
+                    ])}
+                    ${ ui.includeFragment("uicommons", "field/text", [
+                        label: "Height",
+                        id:"height",
+                        formFieldName: "height",
+                        maxLength: 7,
+                        min: 0,
+                        max: 999,
+                        classes: ["numeric-range"],
+                        appendToValueDisplayed: "cm",
+                        initialValue: vitals?.height,
+                        left: true
+                    ])}
                     <div style="clear:left"></div>
                     <% if (patient.age >= 18) { %>
                         <p>
                             <label>BMI: <span class="bmi"></span></label>
                         </p>
                     <% } %>
-                    <p>
-                        ${ ui.includeFragment("uicommons", "field/text", [
-                            label: "MUA Circumference",
-                            id:"muac",
-                            formFieldName: "mua",
-                            maxLength: 7,
-                            min: 0,
-                            max: 999,
-                            classes: ["numeric-range"],
-                            appendToValueDisplayed: "cm",
-                            left: false
-                        ])}
-                    </p>
-                    <p>
-                        ${ ui.includeFragment("uicommons", "field/text", [
-                            label: "Chest Circumference",
-                            id:"chest-circum",
-                            formFieldName: "chest",
-                            maxLength: 7,
-                            min: 0,
-                            max: 999,
-                            classes: ["numeric-range"],
-                            appendToValueDisplayed: "cm",
-                            left: false
-                        ])}
-                    </p>
-                    <p>
-                        ${ ui.includeFragment("uicommons", "field/text", [
-                            label: "Abdominal Circumference",
-                            id:"abdominal-circum",
-                            formFieldName: "abdominal",
-                            maxLength: 7,
-                            min: 0,
-                            max: 999,
-                            classes: ["numeric-range"],
-                            appendToValueDisplayed: "cm",
-                            left: false
-                        ])}
-                    </p>
-                    <p>
-                        ${ ui.includeFragment("uicommons", "field/text", [
-                            label: "Temperature ",
-                            id:"temperature",
-                            formFieldName: "temperature",
-                            maxLength: 7,
-                            min: 0,
-                            max: 999,
-                            classes: ["numeric-range"],
-                            appendToValueDisplayed: "(degree C)",
-                            left: false
-                        ])}
-                    </p>
-                    <p>
-                        <label>Blood Pressure</label>
-                        ${ ui.includeFragment("uicommons", "field/text", [
-                            label: "<span>(Systolic B.P)</span>",
-                            id:"systolic-bp",
-                            formFieldName: "systolic",
-                            maxLength: 3,
-                            size: 4,
-                            min: 0,
-                            max: 999,
-                            classes: ["numeric-range"],
-                            left: true
-                        ])}
-                        ${ ui.includeFragment("uicommons", "field/text", [
-                            label: "<span>(Diastolic B.P)</span>",
-                            id:"diastolic-bp",
-                            formFieldName: "diastolic",
-                            maxLength: 3,
-                            size: 4,
-                            min: 0,
-                            max: 999,
-                            classes: ["numeric-range"],
-                            left: true
-                        ])}
-                    </p>
+                    ${ ui.includeFragment("uicommons", "field/text", [
+                        label: "MUA Circumference",
+                        id:"muac",
+                        formFieldName: "mua",
+                        maxLength: 7,
+                        min: 0,
+                        max: 999,
+                        classes: ["numeric-range"],
+                        appendToValueDisplayed: "cm",
+                        initialValue: vitals?.mua,
+                        left: false
+                    ])}
+                    ${ ui.includeFragment("uicommons", "field/text", [
+                        label: "Chest Circumference",
+                        id:"chest-circum",
+                        formFieldName: "chest",
+                        maxLength: 7,
+                        min: 0,
+                        max: 999,
+                        classes: ["numeric-range"],
+                        appendToValueDisplayed: "cm",
+                        initialValue: vitals?.chest,
+                        left: false
+                    ])}
+                    ${ ui.includeFragment("uicommons", "field/text", [
+                        label: "Abdominal Circumference",
+                        id:"abdominal-circum",
+                        formFieldName: "abdominal",
+                        maxLength: 7,
+                        min: 0,
+                        max: 999,
+                        classes: ["numeric-range"],
+                        appendToValueDisplayed: "cm",
+                        initialValue: vitals?.abdominal,
+                        left: false
+                    ])}
+                    ${ ui.includeFragment("uicommons", "field/text", [
+                        label: "Temperature ",
+                        id:"temperature",
+                        formFieldName: "temperature",
+                        maxLength: 7,
+                        min: 0,
+                        max: 999,
+                        classes: ["numeric-range"],
+                        appendToValueDisplayed: "(degree C)",
+                        initialValue: vitals?.temperature,
+                        left: false
+                    ])}
+                    <label>Blood Pressure</label>
+                    ${ ui.includeFragment("uicommons", "field/text", [
+                        label: "<span>(Systolic B.P)</span>",
+                        id:"systolic-bp",
+                        formFieldName: "systolic",
+                        maxLength: 3,
+                        size: 4,
+                        min: 0,
+                        max: 999,
+                        classes: ["numeric-range"],
+                        initialValue: vitals?.systolic,
+                        left: true
+                    ])}
+                    ${ ui.includeFragment("uicommons", "field/text", [
+                        label: "<span>(Diastolic B.P)</span>",
+                        id:"diastolic-bp",
+                        formFieldName: "diastolic",
+                        maxLength: 3,
+                        size: 4,
+                        min: 0,
+                        max: 999,
+                        classes: ["numeric-range"],
+                        initialValue: vitals?.diastolic,
+                        left: true
+                    ])}
                     <div style="clear:left"></div>
-                    <p>
-                        ${ ui.includeFragment("uicommons", "field/text", [
-                            label: "Respiratory Rate",
-                            id:"resp-rate",
-                            formFieldName: "respiratoryRate",
-                            maxLength: 7,
-                            min: 0,
-                            max: 999,
-                            classes: ["numeric-range"],
-                            left: false
-                        ])}
-                    </p>
-                    <p>
-                        ${ ui.includeFragment("uicommons", "field/text", [
-                            label: "Pulse Rate",
-                            id:"pulse-rate",
-                            formFieldName: "pulsRate",
-                            maxLength: 7,
-                            min: 0,
-                            max: 999,
-                            classes: ["numeric-range"],
-                            left: false
-                        ])}
-                    </p>
-                    <% if (patient.gender == "F")  { %>
-                        <p>
-                            ${ui.includeFragment("uicommons", "field/datetimepicker", [
-                                id: 'datetime',
-                                label: 'Last Menstual Period',
-                                formFieldName: 'lastMenstrualDate',
-                                useTime: false])
-                            }
-                        </p>
+                    ${ ui.includeFragment("uicommons", "field/text", [
+                        label: "Respiratory Rate",
+                        id:"resp-rate",
+                        formFieldName: "respiratoryRate",
+                        maxLength: 7,
+                        min: 0,
+                        max: 999,
+                        classes: ["numeric-range"],
+                        initialValue: vitals?.respiratoryRate,
+                        left: false
+                    ])}
+                    ${ ui.includeFragment("uicommons", "field/text", [
+                        label: "Pulse Rate",
+                        id:"pulse-rate",
+                        formFieldName: "pulsRate",
+                        maxLength: 7,
+                        min: 0,
+                        max: 999,
+                        classes: ["numeric-range"],
+                        initialValue: vitals?.pulsRate,
+                        left: false
+                    ])}
+                    <% if (patient.gender == "F" && patient.age > 10)  { %>
+                        ${ui.includeFragment("uicommons", "field/datetimepicker", [
+                            id: 'datetime',
+                            label: 'Last Menstual Period',
+                            formFieldName: 'lastMenstrualDate',
+                            initialValue: vitals?.lastMenstrualDate,
+                            useTime: false])
+                        }
                     <% } %>
                 </div>
             </fieldset>
             <fieldset>
                 <legend>Blood Group</legend>
-                <div>
-                    <p>
-                        <label>Blood Group</label>
-                        <select id="bloodGroup" name="bloodGroup" >
-                            <option value="">-Please select-</option>
-                            <option value="O">O</option>
-                            <option value="A">A</option>
-                            <option value="B">B</option>
-                            <option value="AB">AB</option>
-                            <option value="Not Known">Not Known</option>
-                        </select>
-                    </p>
-                    <p>
-                        <label>Rhesus Factor</label>
-                        <select id="rhesusFactor" name="rhesusFactor" >
-                            <option value="">-Please select-</option>
-                            <option value="Positive (+)">Positive (+)</option>
-                            <option value="Negative (-)">Negative (-)</option>
-                            <option value="Not Known">Not Known</option>
-                        </select>
-                    </p>
-                </div>
+                ${ ui.includeFragment("uicommons", "field/dropDown", [
+                     id : 'bloodGroup',
+                     label : 'Blood Group',
+                     formFieldName: 'bloodGroup',
+                     emptyOptionLabel: '- Please select -', 
+                     options: [
+                         [value: 'O', label: 'O' ],
+                         [value: 'A', label: 'A' ],
+                         [value: 'B', label: 'B' ],
+                         [value: 'AB', label: 'AB' ],
+                         [value: 'Not Known', label: 'Not Known' ]],
+                     initialValue : vitals?.rhesusFactor
+                 ]) }
+                ${ ui.includeFragment("uicommons", "field/dropDown", [
+                     id : 'rhesusFactor',
+                     label : 'Rhesus Factor',
+                     formFieldName: 'rhesusFactor',
+                     emptyOptionLabel: '- Please select -', 
+                     options: [
+                         [value: 'Positive (+)', label: 'Positive (+)' ],
+                         [value: 'Negative (-)', label: 'Negative (-)' ], 
+                         [value: 'Not Known', label: 'Not Known' ]],
+                     initialValue : vitals?.rhesusFactor
+                 ]) }
             </fieldset>
             <fieldset>
                 <legend>PITCT</legend>
-                <p class="no-confirmation">
-                    <label>PITCT</label>
-                    <select id="pitct" name="pitct" style="width: 278px;">
-                        <option value="">-Please select-</option>
-                        <option value="Reactive">Reactive</option>
-                        <option value="Non-Reactive">Non-Reactive</option>
-                        <option value="Not Known">Not Known</option>
-                    </select>
-                </p>
+                ${ ui.includeFragment("uicommons", "field/dropDown", [
+                     id : 'pitct',
+                     label : 'PITCT',
+                     formFieldName: 'pitct',
+                     emptyOptionLabel: '- Please select -', 
+                     options: [
+                         [value: 'Reactive', label: 'Reactive' ],
+                         [value: 'Non-Reactive', label: 'Non-Reactive' ], 
+                         [value: 'Not Known', label: 'Not Known' ]],
+                     initialValue : vitals?.rhesusFactor
+                 ]) }
             </fieldset>
             <fieldset>
                 <legend>Room to Visit</legend>

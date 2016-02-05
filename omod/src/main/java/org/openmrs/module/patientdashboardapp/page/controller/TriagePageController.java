@@ -4,29 +4,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
-import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
-import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
-import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
-import org.openmrs.module.hospitalcore.model.IpdPatientAdmitted;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
-import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.model.PatientDrugHistory;
 import org.openmrs.module.hospitalcore.model.PatientFamilyHistory;
 import org.openmrs.module.hospitalcore.model.PatientMedicalHistory;
@@ -36,7 +29,6 @@ import org.openmrs.module.hospitalcore.model.TriagePatientQueue;
 import org.openmrs.module.hospitalcore.model.TriagePatientQueueLog;
 import org.openmrs.module.hospitalcore.util.ConceptAnswerComparator;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
-import org.openmrs.module.hospitalcore.util.PatientUtils;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.annotation.BindParams;
 import org.openmrs.ui.framework.page.PageModel;
@@ -46,90 +38,46 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class TriagePageController {
 	public void get(
 			@RequestParam("patientId") Patient patient,
-			@RequestParam(value = "opdId", required = false) Integer opdId,
 			@RequestParam("queueId") Integer queueId,
+			@RequestParam(value = "opdId", required = false) Integer opdId,
 			PageModel model) {
 
-		PatientQueueService pqs = Context.getService(PatientQueueService.class);
-		IpdService ipdService = Context.getService(IpdService.class);
-		TriagePatientQueue triagePatientQueue = pqs.getTriagePatientQueueById(queueId);
-		Date createdOn = null;
-		if (queueId != null) {
-			createdOn = triagePatientQueue.getCreatedOn();
+		PatientQueueService patientQueueService = Context.getService(PatientQueueService.class);
+		TriagePatientQueue triagePatientQueue = patientQueueService.getTriagePatientQueueById(queueId);
+
+		OpdPatientQueue opdPatientQueue = patientQueueService.getOpdPatientQueueById(queueId);
+		TriagePatientData triagePatientData = null;
+		if (opdPatientQueue != null) {
+			triagePatientData = opdPatientQueue.getTriageDataId();
 		}
+		model.addAttribute("vitals", triagePatientData);
 
-		Encounter encounter;
-		EncounterService es = Context.getEncounterService();
-		List<Encounter> listEncounter = es.getEncounters(patient, null, createdOn, createdOn, null, getEncounterTypes(), null, null, null, false);
-		if (1 == listEncounter.size()) {
-			encounter = listEncounter.get(0);
-		} else {
-			HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
-			encounter = hcs.getLastVisitEncounter(patient, getEncounterTypes());
-		}
-
-		Concept referredTypeConcept = Context.getConceptService().getConcept("REASON FOR REFERRAL");
-		Concept temporaryCategoryConcept = Context.getConceptService().getConcept("MEDICO LEGAL CASE");
-
-		List<Obs> listObsTemporaryCategories = new ArrayList<Obs>();
-		Obs referral = null;
-
-		Set<Obs> setObs = encounter.getAllObs();
-		Iterator<Obs> obs = setObs.iterator();
-		Obs o;
-		while (obs.hasNext()) {
-			o = obs.next();
-			if (temporaryCategoryConcept.getId().equals(o.getConcept().getId()))
-				listObsTemporaryCategories.add(o); 
-												
-			if (referredTypeConcept.getId().equals(o.getConcept().getId()))
-				referral = o; 
-								
-		}
-		
-		PatientMedicalHistory pmh = pqs.getPatientHistoryByPatientId(triagePatientQueue.getPatient().getPatientId());
+		PatientMedicalHistory pmh = patientQueueService.getPatientHistoryByPatientId(triagePatientQueue.getPatient().getPatientId());
 		
 		if(pmh !=null) {
 			model.addAttribute("patientMedicalHistory", pmh);
 		}
 		
-		PatientDrugHistory pdh = pqs.getPatientDrugHistoryByPatientId(triagePatientQueue.getPatient().getPatientId());
+		PatientDrugHistory pdh = patientQueueService.getPatientDrugHistoryByPatientId(triagePatientQueue.getPatient().getPatientId());
 		if(pdh != null) {
 			model.addAttribute("patientDrugHistory", pdh);
 		}
 		
-		PatientFamilyHistory patientFamilyHistory = pqs.getPatientFamilyHistoryByPatientId(triagePatientQueue.getPatient().getPatientId());
+		PatientFamilyHistory patientFamilyHistory = patientQueueService.getPatientFamilyHistoryByPatientId(triagePatientQueue.getPatient().getPatientId());
 		if(patientFamilyHistory != null) {
 			model.addAttribute("familyHistory", patientFamilyHistory);
 		}
 
-		PatientPersonalHistory patientPersonalHistory = pqs.getPatientPersonalHistoryByPatientId(triagePatientQueue.getPatient().getPatientId());
+		PatientPersonalHistory patientPersonalHistory = patientQueueService.getPatientPersonalHistoryByPatientId(triagePatientQueue.getPatient().getPatientId());
 		if(patientPersonalHistory != null) {
 			model.addAttribute("personalHistory", patientPersonalHistory);
 		}
 		
-		Date birthday = patient.getBirthdate();
 
-		model.addAttribute("observation", listObsTemporaryCategories);
 		model.addAttribute("patient", patient);
-		model.addAttribute("patientCategory", PatientUtils.getPatientCategory(patient));
 
 		model.addAttribute("queueId", queueId);
-		model.addAttribute("age", PatientUtils.estimateAge(birthday));
-		model.addAttribute("ageCategory", calcAgeClass(patient.getAge()));
 		model.addAttribute("opdId", opdId);
-
-		if (null != referral) {
-			model.addAttribute("referredType", referral.getValueCoded().getName());
-		}
-
-		model.addAttribute("visitStatus",triagePatientQueue.getVisitStatus());
-
-		IpdPatientAdmitted admitted = ipdService.getAdmittedByPatientId(patient.getPatientId());
-
-		if (admitted != null) {
-			model.addAttribute("admittedStatus", "Admitted");
-		}
 
 		Concept opdWardConcept = Context.getConceptService().getConceptByName("OPD WARD");
 		List<ConceptAnswer> oList = (opdWardConcept != null ? new ArrayList<ConceptAnswer>(opdWardConcept.getAnswers()) : null);
@@ -137,12 +85,6 @@ public class TriagePageController {
 			Collections.sort(oList, new ConceptAnswerComparator());
 		}
 		model.addAttribute("listOPD", oList);
-		
-		Encounter enc = pqs.getLastOPDEncounter(patient);
-		OpdPatientQueueLog opdPatientQueueLog = pqs.getOpdPatientQueueLogByEncounter(enc);
-		model.addAttribute("opdPatientQueueLog", opdPatientQueueLog);
-		Obs ob = pqs.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patient.getPatientId()),Context.getConceptService().getConcept("VISIT OUTCOME"),enc);
-		model.addAttribute("ob", ob);
 		
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 		List<PersonAttribute> pas = hcs.getPersonAttributes(patient.getPatientId());
@@ -154,41 +96,6 @@ public class TriagePageController {
 		 }
 	}
 
-	private List<EncounterType> getEncounterTypes() {
-		List<EncounterType> types = new ArrayList<EncounterType>();
-
-		EncounterType reginit = Context.getEncounterService().getEncounterType(
-				"REGINITIAL");
-		types.add(reginit);
-		EncounterType regrevisit = Context.getEncounterService()
-				.getEncounterType("REGREVISIT");
-		types.add(regrevisit);
-		EncounterType labencounter = Context.getEncounterService()
-				.getEncounterType("LABENCOUNTER");
-		types.add(labencounter);
-		EncounterType radiologyencounter = Context.getEncounterService()
-				.getEncounterType("RADIOLOGYENCOUNTER");
-		types.add(radiologyencounter);
-		EncounterType opdencounter = Context.getEncounterService()
-				.getEncounterType("OPDENCOUNTER");
-		types.add(opdencounter);
-		EncounterType ipdencounter = Context.getEncounterService()
-				.getEncounterType("IPDENCOUNTER");
-		types.add(ipdencounter);
-		return types;
-	}
-
-	private String calcAgeClass(int patientAge) {
-		if (patientAge >= 0 && patientAge <= 12)
-			return "Child";
-		else if (patientAge > 12 && patientAge <= 19)
-			return "Adolescent";
-		else if (patientAge > 19 && patientAge <= 59)
-			return "Adult";
-		else
-			return "Senior Citizen";
-	}
-	
 	public String post(
 			@RequestParam("queueId") Integer queueId,
 			@RequestParam("roomToVisit")Integer roomToVisit,
