@@ -2,8 +2,8 @@
 <div class="patient-header new-patient-header">
     <div class="demographics">
         <h1 class="name">
-            <span><small>${patient.familyName}</small>,<em>surname</em></span>
-            <span><small>${patient.givenName} &nbsp;${(patient.middleName)?.replace(',', ' ')}</small><em>name</em>
+            <span><small>${patient.names.givenName}</small>,<em>surname</em></span>
+            <span><small>${patient.names.familyName} &nbsp;${(patient.middleName)?.replace(',', ' ')}</small><em>name</em>
             </span>
             <span><small>${patient.gender}</small>,<em>Gender</em></span>
             <span><small>${patient.age} year(s)</small><em>Age</em></span>
@@ -14,7 +14,7 @@
 
         <div class="status-container">
             <span class="status active"></span>
-            Active Visit
+            ${visitStatus}
         </div>
 
         <div class="tag">Outpatient (File Number :)</div>
@@ -22,14 +22,19 @@
 
     <div class="identifiers">
         <em>Patient ID</em>
-        <span>${patient.patientId}</span>
+        <span>${patientIdentifier}</span>
         <em>Payment Category</em>
-        <span></span>
+        <span>${category}</span>
     </div>
 
     <div class="identifiers">
         <em>Date/ Time:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em>
-        <span>${patient.birthdate}</span>
+        <span>${previousVisit}</span>
+
+    </div>
+    <div class="identifiers">
+        <em>Location</em>
+        <span>${patient.addresses.address1}</span>
 
     </div>
 </div>
