@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Encounter;
@@ -40,35 +41,32 @@ public class TriagePageController {
 			@RequestParam("patientId") Patient patient,
 			@RequestParam("queueId") Integer queueId,
 			@RequestParam(value = "opdId", required = false) Integer opdId,
+			@RequestParam(value = "returnUrl", required = false) String returnUrl,
 			PageModel model) {
 
 		PatientQueueService patientQueueService = Context.getService(PatientQueueService.class);
 		TriagePatientQueue triagePatientQueue = patientQueueService.getTriagePatientQueueById(queueId);
 
-		OpdPatientQueue opdPatientQueue = patientQueueService.getOpdPatientQueueById(queueId);
-		TriagePatientData triagePatientData = null;
-		if (opdPatientQueue != null) {
-			triagePatientData = opdPatientQueue.getTriageDataId();
-		}
+		TriagePatientData triagePatientData = getPreviousTriageDetails(queueId, patientQueueService);
 		model.addAttribute("vitals", triagePatientData);
 
-		PatientMedicalHistory pmh = patientQueueService.getPatientHistoryByPatientId(triagePatientQueue.getPatient().getPatientId());
+		PatientMedicalHistory pmh = patientQueueService.getPatientHistoryByPatientId(patient.getPatientId());
 		
 		if(pmh !=null) {
 			model.addAttribute("patientMedicalHistory", pmh);
 		}
 		
-		PatientDrugHistory pdh = patientQueueService.getPatientDrugHistoryByPatientId(triagePatientQueue.getPatient().getPatientId());
+		PatientDrugHistory pdh = patientQueueService.getPatientDrugHistoryByPatientId(patient.getPatientId());
 		if(pdh != null) {
 			model.addAttribute("patientDrugHistory", pdh);
 		}
 		
-		PatientFamilyHistory patientFamilyHistory = patientQueueService.getPatientFamilyHistoryByPatientId(triagePatientQueue.getPatient().getPatientId());
+		PatientFamilyHistory patientFamilyHistory = patientQueueService.getPatientFamilyHistoryByPatientId(patient.getPatientId());
 		if(patientFamilyHistory != null) {
 			model.addAttribute("familyHistory", patientFamilyHistory);
 		}
 
-		PatientPersonalHistory patientPersonalHistory = patientQueueService.getPatientPersonalHistoryByPatientId(triagePatientQueue.getPatient().getPatientId());
+		PatientPersonalHistory patientPersonalHistory = patientQueueService.getPatientPersonalHistoryByPatientId(patient.getPatientId());
 		if(patientPersonalHistory != null) {
 			model.addAttribute("personalHistory", patientPersonalHistory);
 		}
@@ -78,6 +76,9 @@ public class TriagePageController {
 
 		model.addAttribute("queueId", queueId);
 		model.addAttribute("opdId", opdId);
+		OpdPatientQueue opdPatientQueue = patientQueueService.getOpdPatientQueueById(queueId);
+		model.addAttribute("inOpdQueue", opdPatientQueue != null);
+		model.addAttribute("returnUrl", returnUrl);
 
 		Concept opdWardConcept = Context.getConceptService().getConceptByName("OPD WARD");
 		List<ConceptAnswer> oList = (opdWardConcept != null ? new ArrayList<ConceptAnswer>(opdWardConcept.getAnswers()) : null);
@@ -96,9 +97,20 @@ public class TriagePageController {
 		 }
 	}
 
+	private TriagePatientData getPreviousTriageDetails(Integer queueId,
+			PatientQueueService patientQueueService) {
+		OpdPatientQueue opdPatientQueue = patientQueueService.getOpdPatientQueueById(queueId);
+		TriagePatientData triagePatientData = null;
+		if (opdPatientQueue != null) {
+			triagePatientData = opdPatientQueue.getTriageDataId();
+		}
+		return triagePatientData;
+	}
+
 	public String post(
 			@RequestParam("queueId") Integer queueId,
-			@RequestParam("roomToVisit")Integer roomToVisit,
+			@RequestParam(value = "roomToVisit", required = false) Integer roomToVisit,
+			@RequestParam(value = "returnUrl", required = false) String returnUrl,
 			@BindParams TriagePatientData triagePatientData,
 			UiUtils ui,
 			Session session) {
@@ -108,27 +120,48 @@ public class TriagePageController {
 		TriagePatientQueue queue = queueService.getTriagePatientQueueById(queueId);
 		String triageEncounterType = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_TRIAGE_ENCOUTNER_TYPE);
 		EncounterType encounterType = Context.getEncounterService().getEncounterType(triageEncounterType);
-		Encounter encounter = new Encounter();
-		Date date = new Date();
-		encounter.setPatient(queue.getPatient());
-		encounter.setCreator(user);
-		encounter.setEncounterDatetime(date);
-		encounter.setEncounterType(encounterType);
-		encounter.setLocation(session.getLocation());
-		Context.getEncounterService().saveEncounter(encounter);		
 
-		TriagePatientQueueLog triagePatientLog = logTriagePatient(queueService, queue, encounter);
-
-		boolean visitStatus=false;
-		if(triagePatientLog.getVisitStatus().equalsIgnoreCase("REVISIT")) {
-			visitStatus=true;
+		if (queue != null) {
+			Encounter encounter = new Encounter();
+			Date date = new Date();
+			encounter.setPatient(queue.getPatient());
+			encounter.setCreator(user);
+			encounter.setEncounterDatetime(date);
+			encounter.setEncounterType(encounterType);
+			encounter.setLocation(session.getLocation());
+			Context.getEncounterService().saveEncounter(encounter);		
+			TriagePatientQueueLog triagePatientLog = logTriagePatient(
+					queueService, queue, encounter);
+			boolean visitStatus = false;
+			if (triagePatientLog.getVisitStatus().equalsIgnoreCase("REVISIT")) {
+				visitStatus = true;
+			} else {
+				visitStatus = false;
+			}
+			sendPatientToOPDQueue(triagePatientLog.getPatient(), Context
+					.getConceptService().getConcept(roomToVisit),
+					triagePatientData, visitStatus,
+					triagePatientLog.getCategory());
 		} else {
-			visitStatus=false;
+			OpdPatientQueue opdPatientQueue = Context.getService(PatientQueueService.class).getOpdPatientQueueById(queueId);
+			Encounter encounter = new Encounter();
+			Date date = new Date();
+			encounter.setPatient(opdPatientQueue.getPatient());
+			encounter.setCreator(user);
+			encounter.setEncounterDatetime(date);
+			encounter.setEncounterType(encounterType);
+			encounter.setLocation(session.getLocation());
+			Context.getEncounterService().saveEncounter(encounter);
+			opdPatientQueue.setTriageDataId(triagePatientData);
+			Context.getService(PatientQueueService.class).saveOpdPatientQueue(opdPatientQueue);
 		}
-		sendPatientToOPDQueue(triagePatientLog.getPatient(), Context.getConceptService().getConcept(roomToVisit), triagePatientData, visitStatus, triagePatientLog.getCategory());
-		Map<String,Object> params = new HashMap<String, Object>();
-		params.put("app", "patientdashboardapp.triage");
-		return "redirect:" + ui.pageLink("patientqueueui", "queue", params);
+		
+		if (StringUtils.isBlank(returnUrl)) {
+			Map<String,Object> params = new HashMap<String, Object>();
+			params.put("app", "patientdashboardapp.triage");
+			returnUrl = ui.pageLink("patientqueueui", "queue", params);
+		}
+		return "redirect:" + returnUrl;
 	}
 
 	private TriagePatientQueueLog logTriagePatient(PatientQueueService queueService,

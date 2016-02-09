@@ -36,9 +36,14 @@
 
 <div class="dashboard-tabs">
     <ul>
+        <li><a href="#triage-info">Triage Information</a></li>
         <li><a href="#notes">Clinical Note</a></li>
         <li><a href="#summary">Clinical Summary</a></li>
     </ul>
+
+    <div id="triage-info">
+        ${ ui.includeFragment("patientdashboardapp", "triageInfo", [patientId: patientId, opdId: opdId, queueId: queueId]) }
+    </div>
 
     <div id="notes">
         ${ ui.includeFragment("patientdashboardapp", "clinicalNotes", [patientId: patientId, opdId: opdId, queueId: queueId, opdLogId: opdLogId]) }
