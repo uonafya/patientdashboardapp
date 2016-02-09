@@ -44,6 +44,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
 
 <div id="content">
     <form method="post" id="notes-form" class="simple-form-ui">
+        <input type="hidden" value="${returnUrl?:""}" name="returnUrl" >
         <section>
             <span class="title">Vital Stats</span>
             <fieldset>
@@ -116,7 +117,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
                         left: false
                     ])}
                     ${ ui.includeFragment("uicommons", "field/text", [
-                        label: "Temperature ",
+                        label: "Temperature",
                         id:"temperature",
                         formFieldName: "temperature",
                         maxLength: 7,
@@ -149,7 +150,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
                         min: 0,
                         max: 999,
                         classes: ["numeric-range"],
-                        initialValue: vitals?.diastolic,
+                        initialValue: vitals?.daistolic,
                         left: true
                     ])}
                     <div style="clear:left"></div>
@@ -199,7 +200,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
                          [value: 'B', label: 'B' ],
                          [value: 'AB', label: 'AB' ],
                          [value: 'Not Known', label: 'Not Known' ]],
-                     initialValue : vitals?.rhesusFactor
+                     initialValue : vitals?.bloodGroup
                  ]) }
                 ${ ui.includeFragment("uicommons", "field/dropDown", [
                      id : 'rhesusFactor',
@@ -224,21 +225,22 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
                          [value: 'Reactive', label: 'Reactive' ],
                          [value: 'Non-Reactive', label: 'Non-Reactive' ], 
                          [value: 'Not Known', label: 'Not Known' ]],
-                     initialValue : vitals?.rhesusFactor
+                     initialValue : vitals?.pitct
                  ]) }
             </fieldset>
-            <fieldset>
-                <legend>Room to Visit</legend>
-                <p>
-                    <select id="room-to-visit" name="roomToVisit">
-                        <option value="">-Please select-</option>
-                        <% listOPD.each { opd -> %>
-                            <option value="${opd.answerConcept.id }"
-                                <% if (opdId == opd.answerConcept.id)  { %>selected="selected"<% } %>>${opd.answerConcept.name}</option>
-                        <% } %>
-                    </select>
-                </p>
-            </fieldset>
+            <% if (!inOpdQueue) {%>
+                <fieldset>
+                    <legend>Room to Visit</legend>
+                    <p>
+                        <select id="room-to-visit" name="roomToVisit">
+                            <option value="">-Please select-</option>
+                            <% listOPD.each { opd -> %>
+                                <option value="${opd.answerConcept.id }">${opd.answerConcept.name}</option>
+                            <% } %>
+                        </select>
+                    </p>
+                </fieldset>
+            <% } %>
         </section>
         <div id="confirmation">
             <span id="confirmation_label" class="title">Confirm</span>
