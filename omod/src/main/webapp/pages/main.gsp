@@ -1,10 +1,23 @@
 <% ui.decorateWith("appui", "standardEmrPage") %>
+<script>
+    function strReplace(word) {
+        var res = word.replace("[", "");
+        res=res.replace("]","");
+        return res;
+    }
+
+    jQuery(document).ready(function () {
+        jq('#givenname').html('<small>'+strReplace('${patient.names.givenName}')+'</small>,<em>surname</em>');
+        jq('#names').html('<small>'+strReplace('${patient.names.familyName}')+'</small>,<em>name</em>');
+        jq('#location').html('<em>Location</em><span>'+strReplace('${patient.addresses.address1}')+'</span>');
+
+    });
+</script>
 <div class="patient-header new-patient-header">
     <div class="demographics">
         <h1 class="name">
-            <span><small>${patient.familyName}</small>,<em>surname</em></span>
-            <span><small>${patient.givenName} &nbsp;${(patient.middleName)?.replace(',', ' ')}</small><em>name</em>
-            </span>
+            <span id="givenname"></span>
+            <span id="names"></span>
             <span><small>${patient.gender}</small>,<em>Gender</em></span>
             <span><small>${patient.age} year(s)</small><em>Age</em></span>
 
@@ -14,7 +27,7 @@
 
         <div class="status-container">
             <span class="status active"></span>
-            Active Visit
+            ${visitStatus}
         </div>
 
         <div class="tag">Outpatient (File Number :)</div>
@@ -22,16 +35,17 @@
 
     <div class="identifiers">
         <em>Patient ID</em>
-        <span>${patient.patientId}</span>
+        <span>${patientIdentifier}</span>
         <em>Payment Category</em>
-        <span></span>
+        <span>${category}</span>
     </div>
 
     <div class="identifiers">
         <em>Date/ Time:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em>
-        <span>${patient.birthdate}</span>
+        <span>${previousVisit}</span>
 
     </div>
+    <div class="identifiers" id="location"></div>
 </div>
 
 <div class="dashboard-tabs">
