@@ -80,7 +80,7 @@ public class TriagePageController {
 		model.addAttribute("queueId", queueId);
 		model.addAttribute("opdId", opdId);
 		OpdPatientQueue opdPatientQueue = patientQueueService.getOpdPatientQueueById(queueId);
-		model.addAttribute("inOpdQueue", opdPatientQueue != null);
+		model.addAttribute("inOpdQueue", opdPatientQueue != null && opdPatientQueue.getPatient().equals(triagePatientQueue.getPatient()));
 		model.addAttribute("returnUrl", returnUrl);
 
 		Concept opdWardConcept = Context.getConceptService().getConceptByName("OPD WARD");
