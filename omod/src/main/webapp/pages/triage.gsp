@@ -1,7 +1,11 @@
 <%
     ui.decorateWith("appui", "standardEmrPage")
+	
     ui.includeCss("uicommons", "datetimepicker.css")
+	ui.includeCss("patientdashboardapp", "onepcssgrid.css")
+	
     ui.includeJavascript("patientdashboardapp", "note.js")
+	
     ui.includeJavascript("uicommons", "datetimepicker/bootstrap-datetimepicker.min.js")
     ui.includeJavascript("uicommons", "handlebars/handlebars.min.js", Integer.MAX_VALUE - 1)
     ui.includeJavascript("uicommons", "navigator/validators.js", Integer.MAX_VALUE - 19)
@@ -13,31 +17,37 @@
 %>
 
 <script>
-var NavigatorController;
-var emrMessages = {};
+	var NavigatorController;
+	var emrMessages = {};
 
-emrMessages["numericRangeHigh"] = "value should be less than {0}";
-emrMessages["numericRangeLow"] = "value should be more than {0}";
+	emrMessages["numericRangeHigh"] = "value should be less than {0}";
+	emrMessages["numericRangeLow"] = "value should be more than {0}";
+	emrMessages["requiredField"] = "Required";
+	emrMessages["numberField"] = "Value not a number";
+	
+	jq(document).ready(function () {
+	
+	});
 
-function getFloatValue(source) {
-    return isNaN(parseFloat(source)) ? 0 : parseFloat(source);
-}
+	function getFloatValue(source) {
+		return isNaN(parseFloat(source)) ? 0 : parseFloat(source);
+	}
 
-jq(function(){
-    NavigatorController = new KeyboardController();
+	jq(function(){
+		NavigatorController = new KeyboardController();
 
-    emrMessages["numericRangeHigh"] = "value should be less than {0}";
-    emrMessages["numericRangeLow"] = "value should be more than {0}";
+		emrMessages["numericRangeHigh"] = "value should be less than {0}";
+		emrMessages["numericRangeLow"] = "value should be more than {0}";
 
-    jq("#height-field,#weight-field").change(function () {
-        console.log("Value changed.")
-        var height = getFloatValue(jq("#height-field").val())/100;
-        var weight = getFloatValue(jq("#weight-field").val());
-        var bmi = weight/(height * height);
-        console.log("BMI " + bmi);
-        jq(".bmi").html(bmi.toFixed(2));
-    });
-});
+		jq("#height-field,#weight-field").change(function () {
+			console.log("Value changed.")
+			var height = getFloatValue(jq("#height-field").val())/100;
+			var weight = getFloatValue(jq("#weight-field").val());
+			var bmi = weight/(height * height);
+			console.log("BMI " + bmi);
+			jq(".bmi").html(bmi.toFixed(2));
+		});
+	});
 </script>
 
 ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
@@ -50,36 +60,69 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
             <fieldset>
                 <legend>Vitals</legend>
                 <div>
-                    ${ ui.includeFragment("uicommons", "field/text", [
-                        label: "Weight",
-                        id:"weight",
-                        formFieldName: "weight",
-                        maxLength: 7,
-                        min: 0,
-                        max: 999,
-                        classes: ["numeric-range"],
-                        appendToValueDisplayed: "kg",
-                        initialValue: vitals?.weight,
-                        left: true
-                    ])}
-                    ${ ui.includeFragment("uicommons", "field/text", [
-                        label: "Height",
-                        id:"height",
-                        formFieldName: "height",
-                        maxLength: 7,
-                        min: 0,
-                        max: 999,
-                        classes: ["numeric-range"],
-                        appendToValueDisplayed: "cm",
-                        initialValue: vitals?.height,
-                        left: true
-                    ])}
+					<div class="onerow">
+						<h2>Body Mass Index</h2>
+						
+						<div class="col4">
+							<label for="weight-field"> Weight </label>
+							<span class="append-to-value">kg</span>
+						</div>
+						
+						<div class="col4">
+							<label for="height-field"> Height </label>
+							<span class="append-to-value">cm</span>
+						</div>
+						
+						<div class="col4 last">
+							<% if (patient.age >= 18) { %>
+							<p>
+								<label>BMI:</label>
+							</p>
+							<% } %>
+						</div>
+					</div>
+					
+					<div class="onerow">
+						<div class="col4">
+							<p class="left">
+								<input id="weight-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="weight">
+								<span id="fr1139" class="field-error" style="display: none"></span>
+							</p>
+						</div>
+						
+						<div class="col4">
+							<p class="left">
+								<input id="height-field" class="number numeric-range focused" type="text" max="999" min="0" maxlength="7" value="" name="height">
+								<span id="fr9875" class="field-error" style="display: none"></span>
+							</p>
+						</div>
+						
+						<div class="col4 last">
+							<% if (patient.age >= 18) { %>
+							<p>
+								<span class="bmi"></span>
+							</p>
+							<% } %>
+						</div>
+					</div>
+					
+					<h2>&nbsp;</h2>
+					<div class="onerow">
+						<h2>Circumference</h2>
+						
+						
+					</div>
+					
+						
+					
+						
+					
+                    
+					
+					
                     <div style="clear:left"></div>
-                    <% if (patient.age >= 18) { %>
-                        <p>
-                            <label>BMI: <span class="bmi"></span></label>
-                        </p>
-                    <% } %>
+                   
+					
                     ${ ui.includeFragment("uicommons", "field/text", [
                         label: "MUA Circumference",
                         id:"muac",
