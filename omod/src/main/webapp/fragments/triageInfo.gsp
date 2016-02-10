@@ -18,7 +18,7 @@
     <% if (patient.age > 18)  {%>
       <p>
           <small>BMI</small>
-          <span>${triage?.weight/((triage?.height/100) * (triage?.height/100)) }</span>
+          <span>${(triage && triage.weight && triage.height) ? triage?.weight/((triage?.height/100) * (triage?.height/100)) : "" }</span>
       </p>
     <% } %>
     <p>
