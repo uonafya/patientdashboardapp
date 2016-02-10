@@ -50,6 +50,50 @@
 	});
 </script>
 
+<style>
+	input[type="text"], 
+	input[type="password"],
+	select, .bmi {
+		border: 1px solid #aaa;
+		border-radius: 3px !important;
+		box-shadow: none !important;
+		box-sizing: border-box !important;
+		height: 38px !important;
+		line-height: 18px !important;
+		padding: 8px 10px !important;
+		width: 100% !important;
+	}
+	input:focus{
+		outline: 2px none #007fff!important;
+		border: 1px solid #007fff;
+	}
+	.bmi{
+		background: #fff none repeat scroll 0 0;
+		margin-top: 2px;
+	}
+	.append-to-value{
+		color: #999;
+		float: right;
+		left: auto;
+		margin-left: -50px;
+		margin-top: 5px;
+		padding-right: 10px;
+		position: relative;
+	}
+	form h2{
+		margin: 10px 0 0;
+		padding: 0 5px
+	}
+	.col1, .col2, .col3, .col4, .col5, .col6, .col7, .col8, .col9, .col10, .col11, .col12 {
+		float: left;
+		margin: 0;
+	}
+	form label, .form label {
+		margin: 5px 0 0;
+		padding: 0 5px
+	}
+</style>
+
 ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
 
 <div id="content">
@@ -65,19 +109,15 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
 						
 						<div class="col4">
 							<label for="weight-field"> Weight </label>
-							<span class="append-to-value">kg</span>
 						</div>
 						
 						<div class="col4">
 							<label for="height-field"> Height </label>
-							<span class="append-to-value">cm</span>
 						</div>
 						
 						<div class="col4 last">
 							<% if (patient.age >= 18) { %>
-							<p>
-								<label>BMI:</label>
-							</p>
+							<label>BMI:</label>
 							<% } %>
 						</div>
 					</div>
@@ -86,13 +126,15 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
 						<div class="col4">
 							<p class="left">
 								<input id="weight-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="weight">
+								<span class="append-to-value">kg</span>
 								<span id="fr1139" class="field-error" style="display: none"></span>
 							</p>
 						</div>
 						
 						<div class="col4">
 							<p class="left">
-								<input id="height-field" class="number numeric-range focused" type="text" max="999" min="0" maxlength="7" value="" name="height">
+								<input id="height-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="height">
+								<span class="append-to-value">cm</span>
 								<span id="fr9875" class="field-error" style="display: none"></span>
 							</p>
 						</div>
@@ -100,125 +142,139 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
 						<div class="col4 last">
 							<% if (patient.age >= 18) { %>
 							<p>
-								<span class="bmi"></span>
+								<div class="bmi"></div>
 							</p>
 							<% } %>
 						</div>
 					</div>
 					
-					<h2>&nbsp;</h2>
-					<div class="onerow">
+					<div class="onerow" style="padding-top: 10px;">
 						<h2>Circumference</h2>
 						
+						<div class="col4">
+							<label for="muac-field"> M.U.A </label>
+						</div>
 						
+						<div class="col4">
+							<label for="chest-circum-field"> Chest </label>
+						</div>
+						
+						<div class="col4 last">
+							<label for="abdominal-circum-field"> Abdominal </label>
+						</div>
 					</div>
 					
+					<div class="onerow">
+						<div class="col4">
+							<p>
+								<input id="muac-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="mua">
+								<span class="append-to-value">cm</span>
+								<span id="fr801" class="field-error" style="display: none"></span>
+							</p>
+						</div>
 						
-					
+						<div class="col4">
+							<p>
+								<input id="chest-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="chest">
+								<span class="append-to-value">cm</span>
+								<span id="fr3193" class="field-error" style="display: none"></span>
+							</p>
+						</div>
 						
+						<div class="col4 last">
+							<p>
+								<input id="abdominal-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="abdominal">
+								<span class="append-to-value">cm</span>
+								<span id="fr76" class="field-error" style="display: none"></span>
+							</p>
+						</div>
+					</div>
 					
-                    
+					<div class="onerow" style="padding-top: 10px;">
+						<h2>Others Measures</h2>
+						
+						<div class="col4">
+							<label for="temperature-field"> Temperature </label>
+						</div>
+						
+						<div class="col4">
+							<label for="systolic-bp-field">Systolic B.P</label>
+						</div>
+						
+						<div class="col4 last">
+							<label for="diastolic-bp-field">Diastolic B.P</label>
+						</div>
+					</div>
+					
+					<div class="onerow">
+						<div class="col4">
+							<p>
+								<input id="temperature-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="temperature">
+								<span class="append-to-value">..&#8451;</span>
+								<span id="fr8998" class="field-error" style="display: none"></span>
+							</p>
+						</div>
+						
+						<div class="col4">
+							<p>
+								<input id="systolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="" name="systolic">
+								<span id="fr5882" class="field-error" style="display: none"></span>
+							</p>
+						</div>
+						
+						<div class="col4 last">
+							 <p>
+								<input id="diastolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="" name="diastolic">
+								<span id="fr9945" class="field-error" style="display: none"></span>
+							</p>
+						</div>
+					</div>
+					
+					<div class="onerow" style="padding-top: 10px;">
+						<div class="col4">
+							<label for="resp-rate-field"> Respiratory Rate </label>
+						</div>
+						
+						<div class="col4">
+							<label for="pulse-rate-field"> Pulse Rate </label>
+						</div>
+						
+						<div class="col4 last">
+							&nbsp;
+						</div>
+					</div>
+					
+					<div class="onerow">
+						<div class="col4">
+							<p>
+								<input id="resp-rate-field" class="numeric-range focused" type="text" max="999" min="0" maxlength="7" value="" name="respiratoryRate">
+								<span id="fr1753" class="field-error" style="display: none"></span>
+							</p>
+						</div>
+						
+						<div class="col4">
+							<p>
+								<input id="pulse-rate-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="pulsRate">
+								<span id="fr8917" class="field-error" style="display: none"></span>
+							</p>
+						</div>
+						
+						<div class="col4 last"> &nbsp;
+						</div>
+					</div>
 					
 					
-                    <div style="clear:left"></div>
+					
                    
 					
-                    ${ ui.includeFragment("uicommons", "field/text", [
-                        label: "MUA Circumference",
-                        id:"muac",
-                        formFieldName: "mua",
-                        maxLength: 7,
-                        min: 0,
-                        max: 999,
-                        classes: ["numeric-range"],
-                        appendToValueDisplayed: "cm",
-                        initialValue: vitals?.mua,
-                        left: false
-                    ])}
-                    ${ ui.includeFragment("uicommons", "field/text", [
-                        label: "Chest Circumference",
-                        id:"chest-circum",
-                        formFieldName: "chest",
-                        maxLength: 7,
-                        min: 0,
-                        max: 999,
-                        classes: ["numeric-range"],
-                        appendToValueDisplayed: "cm",
-                        initialValue: vitals?.chest,
-                        left: false
-                    ])}
-                    ${ ui.includeFragment("uicommons", "field/text", [
-                        label: "Abdominal Circumference",
-                        id:"abdominal-circum",
-                        formFieldName: "abdominal",
-                        maxLength: 7,
-                        min: 0,
-                        max: 999,
-                        classes: ["numeric-range"],
-                        appendToValueDisplayed: "cm",
-                        initialValue: vitals?.abdominal,
-                        left: false
-                    ])}
-                    ${ ui.includeFragment("uicommons", "field/text", [
-                        label: "Temperature",
-                        id:"temperature",
-                        formFieldName: "temperature",
-                        maxLength: 7,
-                        min: 0,
-                        max: 999,
-                        classes: ["numeric-range"],
-                        appendToValueDisplayed: "(degree C)",
-                        initialValue: vitals?.temperature,
-                        left: false
-                    ])}
-                    <label>Blood Pressure</label>
-                    ${ ui.includeFragment("uicommons", "field/text", [
-                        label: "<span>(Systolic B.P)</span>",
-                        id:"systolic-bp",
-                        formFieldName: "systolic",
-                        maxLength: 3,
-                        size: 4,
-                        min: 0,
-                        max: 999,
-                        classes: ["numeric-range"],
-                        initialValue: vitals?.systolic,
-                        left: true
-                    ])}
-                    ${ ui.includeFragment("uicommons", "field/text", [
-                        label: "<span>(Diastolic B.P)</span>",
-                        id:"diastolic-bp",
-                        formFieldName: "diastolic",
-                        maxLength: 3,
-                        size: 4,
-                        min: 0,
-                        max: 999,
-                        classes: ["numeric-range"],
-                        initialValue: vitals?.daistolic,
-                        left: true
-                    ])}
-                    <div style="clear:left"></div>
-                    ${ ui.includeFragment("uicommons", "field/text", [
-                        label: "Respiratory Rate",
-                        id:"resp-rate",
-                        formFieldName: "respiratoryRate",
-                        maxLength: 7,
-                        min: 0,
-                        max: 999,
-                        classes: ["numeric-range"],
-                        initialValue: vitals?.respiratoryRate,
-                        left: false
-                    ])}
-                    ${ ui.includeFragment("uicommons", "field/text", [
-                        label: "Pulse Rate",
-                        id:"pulse-rate",
-                        formFieldName: "pulsRate",
-                        maxLength: 7,
-                        min: 0,
-                        max: 999,
-                        classes: ["numeric-range"],
-                        initialValue: vitals?.pulsRate,
-                        left: false
-                    ])}
+					
+                   
+                   
+					
+                   
+					
+					
+					
                     <% if (patient.gender == "F" && patient.age > 10)  { %>
                         ${ui.includeFragment("uicommons", "field/datetimepicker", [
                             id: 'datetime',
