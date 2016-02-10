@@ -90,6 +90,7 @@ jq(function() {
                        }));
                });
                note.addSign(new Sign({"id": ui.item.value, "label": ui.item.label, "qualifiers": qualifiers}));
+                       jq('#symptom').val('');
            });
          },
          open: function() {
@@ -120,6 +121,7 @@ jq(function() {
         event.preventDefault();
         jq(this).val(ui.item.label);
         note.addDiagnosis(new Diagnosis({id: ui.item.value, label: ui.item.label}));
+          jq('#diagnosis').val('');
       },
       open: function() {
         jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -152,6 +154,7 @@ jq(function() {
                return procedureMatch.value === ui.item.value;
             });
             note.addProcedure(new Procedure({id: procedure.value, label: procedure.label, schedulable: procedure.schedulable}));
+            jq('#procedure').val('');
         },
         open: function() {
             jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -181,6 +184,7 @@ jq(function() {
             event.preventDefault();
             jq(this).val(ui.item.label);
             note.addInvestigation(new Investigation({id: ui.item.value, label: ui.item.label}));
+            jq('#investigation').val('');
         },
         open: function() {
             jq( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
