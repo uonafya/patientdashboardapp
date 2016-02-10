@@ -43,7 +43,7 @@
     </p>
     <p>
         <small>Respiratory Rate</small>
-        <span>${triage?.respiratoryRate}</span>
+        <span>${triage?.respiratoryRate?:"Not Captured"}</span>
     </p>
     <% if (patient.gender == 'F' && patient.age > 10) {%>
         <p>
