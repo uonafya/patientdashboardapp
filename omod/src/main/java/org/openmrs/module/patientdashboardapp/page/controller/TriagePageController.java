@@ -46,7 +46,10 @@ public class TriagePageController {
 
 		PatientQueueService patientQueueService = Context.getService(PatientQueueService.class);
 		TriagePatientQueue triagePatientQueue = patientQueueService.getTriagePatientQueueById(queueId);
-
+		if (triagePatientQueue != null) {
+			triagePatientQueue.setStatus(Context.getAuthenticatedUser().getGivenName() + " Processing");
+			patientQueueService.saveTriagePatientQueue(triagePatientQueue);
+		}
 		TriagePatientData triagePatientData = getPreviousTriageDetails(queueId, patientQueueService);
 		model.addAttribute("vitals", triagePatientData);
 

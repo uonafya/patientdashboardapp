@@ -1,6 +1,8 @@
 package org.openmrs.module.patientdashboardapp.page.controller;
 
 import org.openmrs.api.context.Context;
+import org.openmrs.module.hospitalcore.PatientQueueService;
+import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.ui.framework.page.PageModel;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -19,7 +21,13 @@ public class MainPageController {
         model.addAttribute("opdLogId", opdLogId);
         model.addAttribute("patient",Context.getPatientService().getPatient(patientId));
 
-
+        if (queueId != null) {
+            OpdPatientQueue opdPatientQueue = Context.getService(PatientQueueService.class).getOpdPatientQueueById(queueId);
+            if (opdPatientQueue != null) {
+                opdPatientQueue.setStatus(Context.getAuthenticatedUser().getGivenName() + " Processing");
+                Context.getService(PatientQueueService.class).saveOpdPatientQueue(opdPatientQueue);
+            }
+        }
 
     }
 }
