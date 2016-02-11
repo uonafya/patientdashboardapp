@@ -9,8 +9,6 @@
     jQuery(document).ready(function () {
         jq('#givenname').html('<small>'+strReplace('${patient.names.givenName}')+'</small>,<em>surname</em>');
         jq('#names').html('<small>'+strReplace('${patient.names.familyName}')+'</small>,<em>name</em>');
-        jq('#location').html('<em>Location</em><span>'+strReplace('${patient.addresses.address1}')+'</span>');
-
     });
 </script>
 <div class="patient-header new-patient-header">
@@ -41,13 +39,11 @@
     </div>
 
     <div class="identifiers">
-        <em>Date/ Time:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em>
+        <em>Previous Visit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em>
         <span>${previousVisit}</span>
 
     </div>
-    <div class="identifiers" id="location"></div>
 </div>
-
 <div class="dashboard-tabs">
     <ul>
         <li><a href="#triage-info">Triage Information</a></li>
