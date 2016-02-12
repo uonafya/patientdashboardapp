@@ -27,6 +27,19 @@
 	emrMessages["numberField"] = "Value not a number";
 	
 	jq(document).ready(function () {
+		var diff = ''
+		
+		jq('#surname').html(strReplace('${patient.names.familyName}')+',<em>surname</em>');
+		jq('#othname').html(strReplace('${patient.names.givenName}')+' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <em>other names</em>');
+		jq('#agename').html('${patient.age} years ('+ moment('${patient.birthdate}').format('DD,MMM YYYY') +')');
+		
+		jq('.tad').text('Last Visit: '+ moment('${lastVisitDate}').format('DD.MM.YYYY hh:mm')+' HRS');
+		
+		function strReplace(word) {
+			var res = word.replace("[", "");
+			res=res.replace("]","");
+			return res;
+		}
 		jq('input:text[id]').on('input',function(event){
 			var idd = jq(event.target).attr('id');
 			var txt = jq(event.target).val();
@@ -355,6 +368,36 @@
 	.simple-form-ui section.focused {
 		width: 75%;
 	}
+	
+	.new-patient-header .demographics .gender-age {
+		font-size: 14px;
+		margin-left: -55px;
+		margin-top: 12px;
+	}
+	.new-patient-header .demographics .gender-age span {
+		border-bottom: 1px none #ddd;
+	}
+	.new-patient-header .identifiers {
+		margin-top: 5px;
+	}
+	.tag {
+		padding: 2px 10px;
+	}
+	.tad {
+		background: #666 none repeat scroll 0 0;
+		border-radius: 1px;
+		color: white;
+		display: inline;
+		font-size: 0.8em;
+		padding: 2px 10px;
+	}
+	.status-container {
+		padding: 5px 10px 5px 5px;
+	}
+	.catg{
+		color: #363463;
+		margin: 40px 10px 0 0;
+	}
 </style>
 
 <openmrs:require privilege="Triage Queue" otherwise="/login.htm" redirect="/module/patientqueueui/queue.page?app=patientdashboardapp.triage"/>
@@ -371,11 +414,11 @@
 			</li>
 			<li>
 				<i class="icon-chevron-right link"></i>
-				<a href="${ui.pageLink('registration','patientRegistration')}">Registration</a>
+				<a href="${ui.pageLink('patientqueueui','queue', [app:'patientdashboardapp.triage'])}">Triage</a>
 			</li>
 			<li>
 				<i class="icon-chevron-right link"></i>
-				Revist Patient
+				Capture Vitals
 			</li>
 		</ul>
 	</div>
@@ -383,27 +426,44 @@
 	<div class="patient-header new-patient-header">
 		<div class="demographics">
 			<h1 class="name">
-				<span>Surname,<em>surname</em></span>
-				<span>Other Names &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<em>other names</em></span>
+				<span id="surname">${patient.names.familyName},<em>surname</em></span>
+				<span id="othname">${patient.names.givenName} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<em>other names</em></span>
+				
+				<span class="gender-age">
+					<span>
+						<% if (patient.gender == "F") { %>
+							Female
+						<% } else { %>
+							Male
+						<% } %>
+						</span>
+					<span id="agename">${patient.age} years (15.Oct.1996) </span>
+					
+				</span>
 			</h1>
 			
-			<br>
-			<div class="status-container">
+			<br/>
+			<div id="stacont" class="status-container">
 				<span class="status active"></span>
-				Active Visit
+				Visit Status
 			</div>
-			<div class="tag">Outpatient</div>
+			<div class="tag">${visitStatus}</div>
+			<div class="tad">Last Visit</div>
 		</div>
 
 		<div class="identifiers">
 			<em>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Patient ID</em>
-			<span>KALMSHU893094</span>
+			<span>${patient.getPatientIdentifier()}</span>
 			<br>
+			
+			<div class="catg">
+				<i class="icon-tags small" style="font-size: 16px"></i>${selectedCategory}
+			</div>
 		</div>
 		<div class="close"></div>
 	</div>
 	
-    <form method="post" id="notes-form" class="simple-form-ui" style="margin-top:30px;">
+    <form method="post" id="notes-form" class="simple-form-ui" style="margin-top:10px;">
         <input type="hidden" value="${returnUrl?:""}" name="returnUrl" >
         <section>
             <span class="title">Vital Stats</span>

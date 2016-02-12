@@ -45,6 +45,7 @@ public class TriagePageController {
 			PageModel model) {
 
 		PatientQueueService patientQueueService = Context.getService(PatientQueueService.class);
+		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 		TriagePatientQueue triagePatientQueue = patientQueueService.getTriagePatientQueueById(queueId);
 		if (triagePatientQueue != null) {
 			triagePatientQueue.setStatus(Context.getAuthenticatedUser().getGivenName() + " Processing");
@@ -54,7 +55,9 @@ public class TriagePageController {
 		model.addAttribute("vitals", triagePatientData);
 
 		PatientMedicalHistory pmh = patientQueueService.getPatientHistoryByPatientId(patient.getPatientId());
-		
+
+		model.addAttribute("lastVisitDate", hcs.getLastVisitTime(patient));
+
 		if(pmh !=null) {
 			model.addAttribute("patientMedicalHistory", pmh);
 		}
@@ -73,15 +76,23 @@ public class TriagePageController {
 		if(patientPersonalHistory != null) {
 			model.addAttribute("personalHistory", patientPersonalHistory);
 		}
-		
 
 		model.addAttribute("patient", patient);
-
 		model.addAttribute("queueId", queueId);
 		model.addAttribute("opdId", opdId);
 		OpdPatientQueue opdPatientQueue = patientQueueService.getOpdPatientQueueById(queueId);
 		model.addAttribute("inOpdQueue", opdPatientQueue != null && opdPatientQueue.getPatient().equals(triagePatientQueue.getPatient()));
 		model.addAttribute("returnUrl", returnUrl);
+
+		if (opdPatientQueue != null){
+			model.addAttribute("visitStatus", opdPatientQueue.getVisitStatus());
+		}
+		else if (triagePatientQueue != null){
+			model.addAttribute("visitStatus", triagePatientQueue.getVisitStatus());
+		}
+		else {
+			model.addAttribute("visitStatus", "Unknown");
+		}
 
 		Concept opdWardConcept = Context.getConceptService().getConceptByName("OPD WARD");
 		List<ConceptAnswer> oList = (opdWardConcept != null ? new ArrayList<ConceptAnswer>(opdWardConcept.getAnswers()) : null);
@@ -89,8 +100,7 @@ public class TriagePageController {
 			Collections.sort(oList, new ConceptAnswerComparator());
 		}
 		model.addAttribute("listOPD", oList);
-		
-		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+
 		List<PersonAttribute> pas = hcs.getPersonAttributes(patient.getPatientId());
 		 for (PersonAttribute pa : pas) {
 			 PersonAttributeType attributeType = pa.getAttributeType(); 
