@@ -50,8 +50,14 @@ public class MainPageController {
             if (opdPatientQueue != null) {
                 opdPatientQueue.setStatus(Context.getAuthenticatedUser().getGivenName() + " Processing");
                 Context.getService(PatientQueueService.class).saveOpdPatientQueue(opdPatientQueue);
+                model.addAttribute("patientStatus", opdPatientQueue.getVisitStatus());
+            }
+            else{
+                model.addAttribute("patientStatus", "Unknown");
             }
         }
-
+        else {
+            model.addAttribute("patientStatus", "Unknown");
+        }
     }
 }

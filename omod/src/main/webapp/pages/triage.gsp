@@ -1,5 +1,5 @@
 <%
-    ui.decorateWith("appui", "standardEmrPage", [title: "Triage Information"])
+    ui.decorateWith("appui", "standardEmrPage", [title: "Triage Dashboard"])
 	
     ui.includeCss("uicommons", "datetimepicker.css")
 	ui.includeCss("patientdashboardapp", "onepcssgrid.css")
@@ -27,8 +27,6 @@
 	emrMessages["numberField"] = "Value not a number";
 	
 	jq(document).ready(function () {
-		var diff = ''
-		
 		jq('#surname').html(strReplace('${patient.names.familyName}')+',<em>surname</em>');
 		jq('#othname').html(strReplace('${patient.names.givenName}')+' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <em>other names</em>');
 		jq('#agename').html('${patient.age} years ('+ moment('${patient.birthdate}').format('DD,MMM YYYY') +')');
@@ -40,6 +38,7 @@
 			res=res.replace("]","");
 			return res;
 		}
+		
 		jq('input:text[id]').on('input',function(event){
 			var idd = jq(event.target).attr('id');
 			var txt = jq(event.target).val();
@@ -580,7 +579,7 @@
 					<div class="onerow">
 						<div class="col4">
 							<p>
-								<input id="temperature-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="temperature">
+								<input id="temperature-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="temperature">
 								<span class="append-to-value">..&#8451;</span>
 								<span id="fr8998" class="field-error" style="display: none"></span>
 							</p>
@@ -588,14 +587,14 @@
 						
 						<div class="col4">
 							<p>
-								<input id="systolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="" name="systolic">
+								<input id="systolic-bp-field" class="number numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="" name="systolic">
 								<span id="fr5882" class="field-error" style="display: none"></span>
 							</p>
 						</div>
 						
 						<div class="col4 last">
 							 <p>
-								<input id="diastolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="" name="diastolic">
+								<input id="diastolic-bp-field" class="number numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="" name="diastolic">
 								<span id="fr9945" class="field-error" style="display: none"></span>
 							</p>
 						</div>
@@ -620,14 +619,14 @@
 					<div class="onerow">
 						<div class="col4">
 							<p>
-								<input id="resp-rate-field" class="numeric-range focused" type="text" max="999" min="0" maxlength="7" value="" name="respiratoryRate">
+								<input id="resp-rate-field" class="number numeric-range focused" type="text" max="999" min="0" maxlength="7" value="" name="respiratoryRate">
 								<span id="fr1753" class="field-error" style="display: none"></span>
 							</p>
 						</div>
 						
 						<div class="col4">
 							<p>
-								<input id="pulse-rate-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="pulsRate">
+								<input id="pulse-rate-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="pulsRate">
 								<span id="fr8917" class="field-error" style="display: none"></span>
 							</p>
 						</div>
@@ -1074,14 +1073,13 @@
 
         </section>
         <div id="confirmation">
+			<span id="confirmation_label" class="title">Confirm</span>
+			
 			<div style="display:none;">
-				<span id="confirmation_label" class="title">Confirm</span>
 				<div class="before-dataCanvas"></div>
 				<div id="dataCanvas"></div>
 				<div class="after-data-canvas"></div>
-				<div id="confirmationQuestion">
-
-				</div>
+				<div id="confirmationQuestion"></div>
 			</div>
 			
 			<div class="dashboard">
