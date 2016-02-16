@@ -125,7 +125,7 @@
 	}
 	.catg{
 		color: #363463;
-		margin: 40px 10px 0 0;
+		margin: 25px 10px 0 0;
 	}
 	.ui-tabs {
 		margin-top: 5px;
@@ -206,7 +206,7 @@
 	
 	<div class="dashboard-tabs">
 		<ul>
-			<li><a href="#notes">Clinical Note</a></li>
+			<li><a href="#notes">Clinical Notes</a></li>
 			<li><a href="#triage-info">Triage Information</a></li>
 			<li><a href="#summary">Clinical Summary</a></li>
 		</ul>

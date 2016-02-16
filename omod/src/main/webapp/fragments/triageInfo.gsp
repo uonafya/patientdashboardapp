@@ -3,6 +3,14 @@
 	ui.includeCss("registration", "onepcssgrid.css")
 %>
 
+<script>
+	jq(document).ready(function () {
+		jq('#vistdate').html(moment('${previousVisit}').format('DD MMM YYYY')+'<br/> &nbsp; &nbsp; (Active since '+moment('${previousVisit}').format('hh:mm')+' hrs)');
+    });
+
+
+</script>
+
 <style>
 	.donotprint {
 		display: none;
@@ -78,7 +86,6 @@
 		height: 32px !important;
 		line-height: 18px !important;
 		padding: 0px 10px !important;
-		width: 200px !important;
 	}
 
 	#fileNumberRow {
@@ -102,6 +109,9 @@
 
 	.red-border {
 		border: 1px solid #f00 !important;
+	}
+	.info-body .status.active {
+		margin-right: 10px;
 	}
 </style>
 
@@ -131,7 +141,7 @@
 		<div class="info-section">
 			<div class="info-header">
 				<i class="icon-diagnosis"></i>
-				<h3>TRIAGE INFORMATION ${triage.createdOn}</h3>
+				<h3>TRIAGE INFORMATION</h3>
 			</div>
 			<div class="info-body">
 				<label><span class="status active"></span>Height:</label>
@@ -148,7 +158,7 @@
 					<br>
 				<% } %>
 				
-				<label><span class="status active"></span>MUAC:</label>
+				<label><span class="status active"></span>M.U.A Circum:</label>
 				<span>${triage?.mua?:"Not Captured"}</span>
 				<br>
 				
@@ -187,7 +197,7 @@
 				<br>
 				
 				<label><span class="status active"></span>PITCT:</label>
-				<span>${triage?.pitct}</span>
+				<span>${triage?.pitct ?: "Not Captured"}</span>
 				<br>
 			</div>
 		</div>
