@@ -495,20 +495,20 @@
 					<div class="onerow">
 						<div class="col4">
 							<p class="left">
-								<input id="weight-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="weight">
+								<input id="weight-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="triagePatientData.weight">
 								<span class="append-to-value">kg</span>
 								<span id="fr1139" class="field-error" style="display: none"></span>
 							</p>
 						</div>
-						
+
 						<div class="col4">
 							<p class="left">
-								<input id="height-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="height">
+								<input id="height-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="triagePatientData.height">
 								<span class="append-to-value">cm</span>
 								<span id="fr9875" class="field-error" style="display: none"></span>
 							</p>
 						</div>
-						
+
 						<div class="col4 last">
 							<% if (patient.age >= 18) { %>
 							<p>
@@ -517,84 +517,84 @@
 							<% } %>
 						</div>
 					</div>
-					
+
 					<div class="onerow" style="padding-top: 10px;">
 						<h2>Circumference</h2>
-						
+
 						<div class="col4">
 							<label for="muac-field"> M.U.A </label>
 						</div>
-						
+
 						<div class="col4">
 							<label for="chest-circum-field"> Chest </label>
 						</div>
-						
+
 						<div class="col4 last">
 							<label for="abdominal-circum-field"> Abdominal </label>
 						</div>
 					</div>
-					
+
 					<div class="onerow">
 						<div class="col4">
 							<p>
-								<input id="muac-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="mua">
+								<input id="muac-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="triagePatientData.mua">
 								<span class="append-to-value">cm</span>
 								<span id="fr801" class="field-error" style="display: none"></span>
 							</p>
 						</div>
-						
+
 						<div class="col4">
 							<p>
-								<input id="chest-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="chest">
+								<input id="chest-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="triagePatientData.chest">
 								<span class="append-to-value">cm</span>
 								<span id="fr3193" class="field-error" style="display: none"></span>
 							</p>
 						</div>
-						
+
 						<div class="col4 last">
 							<p>
-								<input id="abdominal-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="abdominal">
+								<input id="abdominal-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="triagePatientData.abdominal">
 								<span class="append-to-value">cm</span>
 								<span id="fr76" class="field-error" style="display: none"></span>
 							</p>
 						</div>
 					</div>
-					
+
 					<div class="onerow" style="padding-top: 10px;">
 						<h2>Others Measures</h2>
-						
+
 						<div class="col4">
 							<label for="temperature-field"> Temperature </label>
 						</div>
-						
+
 						<div class="col4">
 							<label for="systolic-bp-field">Blood Pressure (Systolic)</label>
 						</div>
-						
+
 						<div class="col4 last">
 							<label for="diastolic-bp-field">Blood Pressure (Diastolic)</label>
 						</div>
 					</div>
-					
+
 					<div class="onerow">
 						<div class="col4">
 							<p>
-								<input id="temperature-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="temperature">
+								<input id="temperature-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="triagePatientData.temperature">
 								<span class="append-to-value">..&#8451;</span>
 								<span id="fr8998" class="field-error" style="display: none"></span>
 							</p>
 						</div>
-						
+
 						<div class="col4">
 							<p>
-								<input id="systolic-bp-field" class="number numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="" name="systolic">
+								<input id="systolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="" name="triagePatientData.systolic">
 								<span id="fr5882" class="field-error" style="display: none"></span>
 							</p>
 						</div>
-						
+
 						<div class="col4 last">
 							 <p>
-								<input id="diastolic-bp-field" class="number numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="" name="diastolic">
+								<input id="diastolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="" name="triagePatientData.diastolic">
 								<span id="fr9945" class="field-error" style="display: none"></span>
 							</p>
 						</div>
@@ -619,14 +619,14 @@
 					<div class="onerow">
 						<div class="col4">
 							<p>
-								<input id="resp-rate-field" class="number numeric-range focused" type="text" max="999" min="0" maxlength="7" value="" name="respiratoryRate">
+								<input id="resp-rate-field" class="numeric-range focused" type="text" max="999" min="0" maxlength="7" value="" name="triagePatientData.respiratoryRate">
 								<span id="fr1753" class="field-error" style="display: none"></span>
 							</p>
 						</div>
 						
 						<div class="col4">
 							<p>
-								<input id="pulse-rate-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="pulsRate">
+								<input id="pulse-rate-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="triagePatientData.pulsRate">
 								<span id="fr8917" class="field-error" style="display: none"></span>
 							</p>
 						</div>
@@ -681,7 +681,7 @@
 					<div class="onerow">
 						<div class="col4">
 							<p id="bloodGroup">
-								<select id="bloodGroup-field" class="focused" name="bloodGroup">
+								<select id="bloodGroup-field" class="focused" name="triagePatientData.bloodGroup">
 									<option value="">- Please select -</option>
 									<option value="O">O</option>
 									<option value="A">A</option>
@@ -695,7 +695,7 @@
 						
 						<div class="col4">
 							<p id="rhesusFactor">
-								<select id="rhesusFactor-field" name="rhesusFactor">
+								<select id="rhesusFactor-field" name="triagePatientData.rhesusFactor">
 									<option value="">- Please select -</option>
 									<option value="Positive (+)">Positive (+)</option>
 									<option value="Negative (-)">Negative (-)</option>
@@ -707,7 +707,7 @@
 						
 						<div class="col4 last">
 							<p id="pitct">
-								<select id="pitct-field" class="focused" name="pitct">
+								<select id="pitct-field" class="focused" name="triagePatientData.pitct">
 									<option value="">- Please select -</option>
 									<option value="Reactive">Reactive</option>
 									<option value="Non-Reactive">Non-Reactive</option>
@@ -788,8 +788,8 @@
                     <div class="onerow">
 
                         <h2>Any existing illness/ conditions?
-                            <p><input id="illnessExisting" type="radio" name="radiogroup1"<% if (patientMedicalHistory?.illnessExisting == "Yes") { %> checked="checked" <% } %>/>Yes </p>
-                            <p><input type="radio" name="radiogroup1"<% if (patientMedicalHistory?.illnessExisting == "No") { %> checked="checked" <% } %>/> </p>No </h2>
+                            <p><input id="illnessExisting" type="radio" value="Yes" name="patientMedicalHistory.illnessExisting"<% if (patientMedicalHistory?.illnessExisting == "Yes") { %> checked="checked" <% } %>/>Yes </p>
+                            <p><input type="radio" value="No" name="patientMedicalHistory.illnessExisting"<% if (patientMedicalHistory?.illnessExisting == "No") { %> checked="checked" <% } %>/> </p>No </h2>
 
                         <div class="col4">
                             What is the problem? <input type="text" value="${patientMedicalHistory?.illnessProblem}">
@@ -808,8 +808,8 @@
                     </div>
                     <div class="onerow">
                         <h2>Suffered from any chronic illness?
-                            <p><input id="chronicIllness" type="radio" name="radiogroup2"<% if (patientMedicalHistory?.chronicIllness == "Yes") { %> checked="checked" <% } %>/>Yes </p>
-                            <p><input type="radio" name="radiogroup2"<% if (patientMedicalHistory?.chronicIllness == "No") { %> checked="checked" <% } %>/></p>No</h2>
+                            <p><input id="chronicIllness" type="radio" value="Yes" name="patientMedicalHistory.chronicIllness"<% if (patientMedicalHistory?.chronicIllness == "Yes") { %> checked="checked" <% } %>/>Yes </p>
+                            <p><input type="radio" value="No" name="patientMedicalHistory.chronicIllness"<% if (patientMedicalHistory?.chronicIllness == "No") { %> checked="checked" <% } %>/></p>No</h2>
 
                         <div class="col4">
                             What is the problem? <input type="text" value="${patientMedicalHistory?.chronicIllnessProblem}">
@@ -829,8 +829,8 @@
                     </div>
                     <div class="onerow">
                         <h2> Any previous hospital admissions?
-                            <p><input id="previousAdmission" type="radio" name="radiogroup3"<% if (patientMedicalHistory?.previousAdmission == "Yes") { %> checked="checked" <% } %>/>Yes </p>
-                            <p>No<input type="radio" name="radiogroup3"<% if (patientMedicalHistory?.previousAdmission == "No") { %> checked="checked" <% } %>/></p></h2>
+                            <p><input id="previousAdmission" type="radio" value="Yes" name="patientMedicalHistory.previousAdmission"<% if (patientMedicalHistory?.previousAdmission == "Yes") { %> checked="checked" <% } %>/>Yes </p>
+                            <p>No<input type="radio" value="No" name="patientMedicalHistory.previousAdmission"<% if (patientMedicalHistory?.previousAdmission == "No") { %> checked="checked" <% } %>/></p></h2>
 
                         <div class="col4">
                             When was this? <input type="text" value="${patientMedicalHistory?.previousAdmissionWhen}">
@@ -850,8 +850,8 @@
                     </div>
                     <div class="onerow">
                         <h2>Any previous operations/ investigations?
-                            <p><input id="previousInvestigation" type="radio" name="radiogroup4"<% if (patientMedicalHistory?.previousInvestigation == "Yes") { %> checked="checked" <% } %>/>Yes </p>
-                            <p>No<input type="radio" name="radiogroup4"<% if (patientMedicalHistory?.previousInvestigation == "No") { %> checked="checked" <% } %>/></p></h2>
+                            <p><input id="previousInvestigation" type="radio" value="Yes" name="patientMedicalHistory.previousInvestigation"<% if (patientMedicalHistory?.previousInvestigation == "Yes") { %> checked="checked" <% } %>/>Yes </p>
+                            <p>No<input type="radio" value="No" name="patientMedicalHistory.previousInvestigation"<% if (patientMedicalHistory?.previousInvestigation == "No") { %> checked="checked" <% } %>/></p></h2>
 
                         <div class="col4">
                             When was this? <input type="text" value="${patientMedicalHistory?.previousInvestigationWhen}">
@@ -871,14 +871,14 @@
                     </div>
                     <div>
                         <h2>Any previous operations/ investigations? </h2>
-                        <p>BCG?</p><p><input id="bcg" type="radio" name="radiogroup5"<% if (patientMedicalHistory?.bcg == "Yes") { %> checked="checked" <% } %>/>Yes </p> <p>No<input type="radio" name="radiogroup5" ></p> <p>Not Sure<input type="radio" name="radiogroup5"></p>
-                        <p>3 Polio Doses?</p><p><input type="radio" name="radiogroup6"<% if (patientMedicalHistory?.polio == "Yes") { %> checked="checked" <% } %>/>Yes </p> <p><p><input type="radio" name="radiogroup6" <% if (patientMedicalHistory?.polio == "No") { %> checked="checked" <% } %>/>No</p> <p><input type="radio" name="radiogroup6" <% if (patientMedicalHistory?.polio == "Not Sure") { %> checked="checked" <% } %>/>Not Sure</p>
-                        <p>3DPT/ Pentavalent Doses?</p><p><input type="radio" name="radiogroup7"<% if (patientMedicalHistory?.dpt == "Yes") { %> checked="checked" <% } %>/>Yes </p> <p><input type="radio" name="radiogroup7"<% if (patientMedicalHistory?.dpt == "No") { %> checked="checked" <% } %>/>No</p> <p><input type="radio" name="radiogroup7"<% if (patientMedicalHistory?.dpt == "Not Sure") { %> checked="checked" <% } %>/>Not Sure</p>
-                        <p>Measles?</p><p><input type="radio" name="radiogroup8"<% if (patientMedicalHistory?.measles == "Yes") { %> checked="checked" <% } %>/>Yes </p> <p><input type="radio" name="radiogroup8" <% if (patientMedicalHistory?.measles == "No") { %> checked="checked" <% } %>/>No</p> <p><input type="radio" name="radiogroup8"<% if (patientMedicalHistory?.measles == "Not Sure") { %> checked="checked" <% } %>/>Not Sure</p>
-                        <p>Pneumococcal?</p><p><input type="radio" name="radiogroup9"<% if (patientMedicalHistory?.pneumococcal == "Yes") { %> checked="checked" <% } %>/>Yes </p> <p><input type="radio" name="radiogroup9" <% if (patientMedicalHistory?.pneumococcal == "No") { %> checked="checked" <% } %>/>No</p> <p><input type="radio" name="radiogroup9"<% if (patientMedicalHistory?.pneumococcal == "Not Sure") { %> checked="checked" <% } %>/>Not Sure</p>
-                        <p>Yellow Fever?</p><p><input type="radio" name="radiogroup10"<% if (patientMedicalHistory?.yellowFever == "Yes") { %> checked="checked" <% } %>/>Yes </p> <p><input type="radio" name="radiogroup10" <% if (patientMedicalHistory?.yellowFever == "No") { %> checked="checked" <% } %>/>No</p> <p><input type="radio" name="radiogroup10"<% if (patientMedicalHistory?.yellowFever == "Not Sure") { %> checked="checked" <% } %>/>Not Sure</p>
-                        <p> 5 Tetanus Doses (If Female)?</p><p><input type="radio" name="radiogroup11"<% if (patientMedicalHistory?.tetanusMale == "Yes") { %> checked="checked" <% } %>/>Yes </p> <p><input type="radio" name="radiogroup11"<% if (patientMedicalHistory?.tetanusMale == "No") { %> checked="checked" <% } %>/>No</p> <p><input type="radio" name="radiogroup11"<% if (patientMedicalHistory?.tetanusMale == "Not Sure") { %> checked="checked" <% } %>/>Not Sure</p>
-                        <p>3 Tetanus Doses (If Male)?</p><p><input type="radio" name="radiogroup12"<% if (patientMedicalHistory?.tetanusFemale == "Yes") { %> checked="checked" <% } %>/>Yes </p> <p><input type="radio" name="radiogroup12"<% if (patientMedicalHistory?.tetanusFemale == "No") { %> checked="checked" <% } %>/>No</p> <p><input type="radio" name="radiogroup12"<% if (patientMedicalHistory?.tetanusFemale == "Not Sure") { %> checked="checked" <% } %>/>Not Sure</p>
+                        <p>BCG?</p><p><input id="bcg" type="radio" value="Yes" name="patientMedicalHistory.bcg"<% if (patientMedicalHistory?.bcg == "Yes") { %> checked="checked" <% } %>/>Yes </p> <p>No<input type="radio" value="No" name="patientMedicalHistory.bcg" ></p> <p>Not Sure<input type="radio" name="radiogroup5"></p>
+                        <p>3 Polio Doses?</p><p><input type="radio" value="Yes" name="patientMedicalHistory.polio"<% if (patientMedicalHistory?.polio == "Yes") { %> checked="checked" <% } %>/>Yes </p> <p><p><input type="radio" value="No" name="patientMedicalHistory.polio" <% if (patientMedicalHistory?.polio == "No") { %> checked="checked" <% } %>/>No</p> <p><input type="radio" name="radiogroup6" <% if (patientMedicalHistory?.polio == "Not Sure") { %> checked="checked" <% } %>/>Not Sure</p>
+                        <p>3DPT/ Pentavalent Doses?</p><p><input type="radio" value="Yes" name="patientMedicalHistory.dpt"<% if (patientMedicalHistory?.dpt == "Yes") { %> checked="checked" <% } %>/>Yes </p> <p><input type="radio" value="No" name="patientMedicalHistory.dpt"<% if (patientMedicalHistory?.dpt == "No") { %> checked="checked" <% } %>/>No</p> <p><input type="radio" name="radiogroup7"<% if (patientMedicalHistory?.dpt == "Not Sure") { %> checked="checked" <% } %>/>Not Sure</p>
+                        <p>Measles?</p><p><input type="radio" value="Yes" name="patientMedicalHistory.measles"<% if (patientMedicalHistory?.measles == "Yes") { %> checked="checked" <% } %>/>Yes </p> <p><input type="radio" value="No" name="patientMedicalHistory.measles" <% if (patientMedicalHistory?.measles == "No") { %> checked="checked" <% } %>/>No</p> <p><input type="radio" name="radiogroup8"<% if (patientMedicalHistory?.measles == "Not Sure") { %> checked="checked" <% } %>/>Not Sure</p>
+                        <p>Pneumococcal?</p><p><input type="radio" name="patientMedicalHistory.pneumococcal"<% if (patientMedicalHistory?.pneumococcal == "Yes") { %> checked="checked" <% } %>/>Yes </p> <p><input type="radio" name="patientMedicalHistory.pneumococcal" <% if (patientMedicalHistory?.pneumococcal == "No") { %> checked="checked" <% } %>/>No</p> <p><input type="radio" name="radiogroup9"<% if (patientMedicalHistory?.pneumococcal == "Not Sure") { %> checked="checked" <% } %>/>Not Sure</p>
+                        <p>Yellow Fever?</p><p><input type="radio" name="patientMedicalHistory.yellowFever"<% if (patientMedicalHistory?.yellowFever == "Yes") { %> checked="checked" <% } %>/>Yes </p> <p><input type="radio" name="patientMedicalHistory.yellowFever" <% if (patientMedicalHistory?.yellowFever == "No") { %> checked="checked" <% } %>/>No</p> <p><input type="radio" name="radiogroup10"<% if (patientMedicalHistory?.yellowFever == "Not Sure") { %> checked="checked" <% } %>/>Not Sure</p>
+                        <p> 5 Tetanus Doses (If Female)?</p><p><input type="radio" name="patientMedicalHistory.tetanusMale"<% if (patientMedicalHistory?.tetanusMale == "Yes") { %> checked="checked" <% } %>/>Yes </p> <p><input type="radio" name="patientMedicalHistory.tetanusMale"<% if (patientMedicalHistory?.tetanusMale == "No") { %> checked="checked" <% } %>/>No</p> <p><input type="radio" name="radiogroup11"<% if (patientMedicalHistory?.tetanusMale == "Not Sure") { %> checked="checked" <% } %>/>Not Sure</p>
+                        <p>3 Tetanus Doses (If Male)?</p><p><input type="radio" name="patientMedicalHistory.tetanusFemale"<% if (patientMedicalHistory?.tetanusFemale == "Yes") { %> checked="checked" <% } %>/>Yes </p> <p><input type="radio" name="patientMedicalHistory.tetanusMale"<% if (patientMedicalHistory?.tetanusFemale == "No") { %> checked="checked" <% } %>/>No</p> <p><input type="radio" name="radiogroup12"<% if (patientMedicalHistory?.tetanusFemale == "Not Sure") { %> checked="checked" <% } %>/>Not Sure</p>
 
                     </div>
                     <div class="col4last ">

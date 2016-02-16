@@ -114,13 +114,15 @@ public class TriagePageController {
 			@RequestParam("queueId") Integer queueId,
 			@RequestParam(value = "roomToVisit", required = false) Integer roomToVisit,
 			@RequestParam(value = "returnUrl", required = false) String returnUrl,
-			@BindParams TriagePatientData triagePatientData,
+			@BindParams ("triagePatientData") TriagePatientData triagePatientData,
+			@BindParams("patientMedicalHistory") PatientMedicalHistory patientMedicalHistory,
 			UiUtils ui,
 			Session session) {
 		User user = Context.getAuthenticatedUser();
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
 		triagePatientData.setCreatedOn(new Date());
 		triagePatientData = queueService.saveTriagePatientData(triagePatientData);
+        patientMedicalHistory = queueService.savePatientMedicalHistory(patientMedicalHistory);
 		TriagePatientQueue queue = queueService.getTriagePatientQueueById(queueId);
 		String triageEncounterType = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_TRIAGE_ENCOUTNER_TYPE);
 		EncounterType encounterType = Context.getEncounterService().getEncounterType(triageEncounterType);
