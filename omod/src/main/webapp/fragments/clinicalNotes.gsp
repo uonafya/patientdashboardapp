@@ -722,8 +722,8 @@ jq(function(){
                     <tbody data-bind="foreach: drugs">
                         <tr>
                             <td data-bind="text: name"></td>
-                            <td data-bind="text: formulation.label"></td>
-                            <td data-bind="text: frequency.label"></td>
+                            <td data-bind="text: formulation().label"></td>
+                            <td data-bind="text: frequency().label"></td>
                             <td data-bind="text: numberOfDays"></td>
                             <td data-bind="text: comment"></td>
                             <td>
