@@ -209,6 +209,7 @@
 			<li><a href="#notes">Clinical Notes</a></li>
 			<li><a href="#triage-info">Triage Information</a></li>
 			<li><a href="#summary">Clinical Summary</a></li>
+			<li><a href="#investigations">Lab Reports</a></li>
 		</ul>
 		
 		<div id="notes">
@@ -221,6 +222,10 @@
 		
 		<div id="summary">
 			${ ui.includeFragment("patientdashboardapp", "visitSummary", [patientId: patientId]) }
+		</div>
+		
+		<div id="investigations">
+            ${ ui.includeFragment("patientdashboardapp", "investigations", [patientId: patientId]) }
 		</div>
 	</div>
 </div>
