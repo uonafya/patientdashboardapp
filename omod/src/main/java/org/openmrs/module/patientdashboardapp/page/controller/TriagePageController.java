@@ -54,28 +54,18 @@ public class TriagePageController {
 		TriagePatientData triagePatientData = getPreviousTriageDetails(queueId, patientQueueService);
 		model.addAttribute("vitals", triagePatientData);
 
-		PatientMedicalHistory pmh = patientQueueService.getPatientHistoryByPatientId(patient.getPatientId());
-
 		model.addAttribute("lastVisitDate", hcs.getLastVisitTime(patient));
-
-		if(pmh !=null) {
-			model.addAttribute("patientMedicalHistory", pmh);
-		}
+		PatientMedicalHistory pmh = patientQueueService.getPatientHistoryByPatientId(patient.getPatientId());
+		model.addAttribute("patientMedicalHistory", pmh);
 		
 		PatientDrugHistory pdh = patientQueueService.getPatientDrugHistoryByPatientId(patient.getPatientId());
-		if(pdh != null) {
-			model.addAttribute("patientDrugHistory", pdh);
-		}
+		model.addAttribute("patientDrugHistory", pdh);
 		
 		PatientFamilyHistory patientFamilyHistory = patientQueueService.getPatientFamilyHistoryByPatientId(patient.getPatientId());
-		if(patientFamilyHistory != null) {
-			model.addAttribute("familyHistory", patientFamilyHistory);
-		}
+		model.addAttribute("familyHistory", patientFamilyHistory);
 
 		PatientPersonalHistory patientPersonalHistory = patientQueueService.getPatientPersonalHistoryByPatientId(patient.getPatientId());
-		if(patientPersonalHistory != null) {
-			model.addAttribute("personalHistory", patientPersonalHistory);
-		}
+		model.addAttribute("personalHistory", patientPersonalHistory);
 
 		model.addAttribute("patient", patient);
 		model.addAttribute("queueId", queueId);
