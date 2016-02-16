@@ -129,6 +129,7 @@ public class TriagePageController {
 			Session session) {
 		User user = Context.getAuthenticatedUser();
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
+		triagePatientData.setCreatedOn(new Date());
 		triagePatientData = queueService.saveTriagePatientData(triagePatientData);
 		TriagePatientQueue queue = queueService.getTriagePatientQueueById(queueId);
 		String triageEncounterType = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_TRIAGE_ENCOUTNER_TYPE);
