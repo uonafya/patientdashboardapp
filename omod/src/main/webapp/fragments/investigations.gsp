@@ -3,7 +3,7 @@ ui.includeCss("uicommons", "datatables/dataTables_jui.css")
 ui.includeJavascript("patientqueueui", "jquery.dataTables.min.js")
 %>
 
-<table id="investigations">
+<table id="investigations-table">
     <thead>
         <tr>
             <th></th>
@@ -40,7 +40,7 @@ function format ( results ) {
 }
 
 jq(function(){
-    investigationsTable = jq('#investigations').DataTable({
+    investigationsTable = jq('#investigations-table').DataTable({
         searching: false,
         lengthChange: false,
         pageLength: 15,
