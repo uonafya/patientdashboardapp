@@ -21,6 +21,8 @@ var jq = jQuery,
     previousNote = JSON.parse('${note}'),
     note = new Note(previousNote);
 
+
+
 var getJSON = function (dataToParse) {
 	if (typeof dataToParse === "string") {
 		return JSON.parse(dataToParse);
@@ -70,7 +72,7 @@ var mappedProcedures = jq.map(getJSON(previousNote.procedures), function(procedu
 });
 note.procedures(mappedProcedures);
 
-note
+//note
 
 jq(function() {
     NavigatorController = new KeyboardController();
@@ -251,6 +253,7 @@ jq(function() {
 });
 
 var prescription = {}
+
 jq(function(){
 	jq("#notes-form").on('focus', '#follow-up-date', function () {
 		jq(this).datetimepicker({
@@ -266,21 +269,22 @@ jq(function(){
 	    selector: '#prescription-dialog',
 	    actions: {
 		    confirm: function() {
-			    console.log(prescription.name());
-			    note.addPrescription(prescription);
-		        prescriptionDialog.close();
+				note.addPrescription(prescription.drug());
+				console.log("This is the prescription object:");
+				console.log(prescription);
+				prescription.drug(new Drug());
+				prescriptionDialog.close();
 			},
 			cancel: function() {
-			    prescription = {};
-			    prescriptionDialog.close();
+				prescription.drug(new Drug());
+				prescriptionDialog.close();
 			}
 	    }
 	});
 
 	jq("#add-prescription").on("click", function(e){
 		e.preventDefault();
-	    prescription = new Drug();
-	    ko.applyBindings(prescription, jq("#prescription-dialog")[0]);
+
 	    prescriptionDialog.show();
 	});
 
@@ -319,7 +323,7 @@ jq(function(){
                     console.log(formulation);
 	              return new Formulation({ id: formulation.id, label: formulation.name});
 	            });
-	            prescription.formulationOpts(formulations);
+	            prescription.drug().formulationOpts(formulations);
 	          });
 
               //fetch the frequenciesui.
@@ -328,7 +332,7 @@ jq(function(){
                   var frequency = jq.map(data, function (frequency) {
                       return new Frequency({id: frequency.id, label: frequency.name});
                   });
-                  prescription.frequencyOpts(frequency);
+                  prescription.drug().frequencyOpts(frequency);
                 });
 
 	        },
@@ -825,23 +829,23 @@ jq(function(){
         <ul>
             <li>
                 <span>Drug</span>
-                <input class="drug-name" type="text" data-bind="value: name, valueUpdate: 'blur'" >
+                <input class="drug-name" type="text" data-bind="value: prescription.drug().name, valueUpdate: 'blur'" >
             </li>
             <li>
                 <span>Formulation</span>
-                <select data-bind="options: formulationOpts, value: formulation, optionsText: 'label',  optionsCaption: 'Select Formulation'"></select>
+                <select data-bind="options: prescription.drug().formulationOpts, value: prescription.drug().formulation, optionsText: 'label',  optionsCaption: 'Select Formulation'"></select>
             </li>
             <li>
                 <span>Frequency</span>
-                <select data-bind="options: frequencyOpts, value: frequency, optionsText: 'label',  optionsCaption: 'Select Frequency'"></select>
+                <select data-bind="options: prescription.drug().frequencyOpts, value: prescription.drug().frequency, optionsText: 'label',  optionsCaption: 'Select Frequency'"></select>
             </li>
             <li>
                 <span>Number of Days</span>
-                <input type="text" data-bind="value: numberOfDays" >
+                <input type="text" data-bind="value: prescription.drug().numberOfDays" >
             </li>
             <li>
                 <span>Comment</span>
-                <textarea data-bind="value: comment"></textarea>
+                <textarea data-bind="value: prescription.drug().comment"></textarea>
             </li>
         </ul>
        
@@ -851,5 +855,6 @@ jq(function(){
 </div>
 
 <script>
-
+	var prescription = {drug: ko.observable(new Drug())};
+	ko.applyBindings(prescription, jq("#prescription-dialog")[0]);
 </script>
