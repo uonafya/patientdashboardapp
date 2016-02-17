@@ -30,6 +30,10 @@ import org.openmrs.module.hospitalcore.model.TriagePatientQueue;
 import org.openmrs.module.hospitalcore.model.TriagePatientQueueLog;
 import org.openmrs.module.hospitalcore.util.ConceptAnswerComparator;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
+import org.openmrs.module.patientdashboardapp.patienthistory.PatientDrugHistorySaveHandler;
+import org.openmrs.module.patientdashboardapp.patienthistory.PatientFamilyHistorySaveHandler;
+import org.openmrs.module.patientdashboardapp.patienthistory.PatientMedicalHistorySaveHandler;
+import org.openmrs.module.patientdashboardapp.patienthistory.PatientPersonalHistorySaveHandler;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.annotation.BindParams;
 import org.openmrs.ui.framework.page.PageModel;
@@ -116,13 +120,25 @@ public class TriagePageController {
 			@RequestParam(value = "returnUrl", required = false) String returnUrl,
 			@BindParams ("triagePatientData") TriagePatientData triagePatientData,
 			@BindParams("patientMedicalHistory") PatientMedicalHistory patientMedicalHistory,
-			UiUtils ui,
+			@BindParams("patientFamilyHistory") PatientFamilyHistory patientFamilyHistory,
+			@BindParams("patientDrugHistory") PatientDrugHistory patientDrugHistory,
+            @BindParams("patientPersonalHistory") PatientPersonalHistory patientPersonalHistory,
+            @RequestParam("patientId") Integer patientId,
+            UiUtils ui,
 			Session session) {
 		User user = Context.getAuthenticatedUser();
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
 		triagePatientData.setCreatedOn(new Date());
+        patientMedicalHistory.setCreatedOn(new Date());
+        patientFamilyHistory.setCreatedOn(new Date());
+        patientDrugHistory.setCreatedOn(new Date());
+        patientPersonalHistory.setCreatedOn(new Date());
 		triagePatientData = queueService.saveTriagePatientData(triagePatientData);
-        patientMedicalHistory = queueService.savePatientMedicalHistory(patientMedicalHistory);
+        PatientMedicalHistorySaveHandler.save(patientMedicalHistory,patientId);
+		PatientFamilyHistorySaveHandler.save(patientFamilyHistory,patientId);
+		PatientDrugHistorySaveHandler.save(patientDrugHistory,patientId);
+        PatientPersonalHistorySaveHandler.save(patientPersonalHistory,patientId);
+
 		TriagePatientQueue queue = queueService.getTriagePatientQueueById(queueId);
 		String triageEncounterType = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_TRIAGE_ENCOUTNER_TYPE);
 		EncounterType encounterType = Context.getEncounterService().getEncounterType(triageEncounterType);
