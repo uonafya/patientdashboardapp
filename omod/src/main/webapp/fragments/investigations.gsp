@@ -46,6 +46,8 @@ jq(function(){
         pageLength: 15,
         jQueryUI: true,
         pagingType: 'full_numbers',
+        sort: false,
+        dom: 't<"fg-toolbar ui-toolbar ui-corner-bl ui-corner-br ui-helper-clearfix datatables-info-and-pg"ip>',
         language: {
             zeroRecords: 'No Investigations ordered.',
             paginate: {
@@ -65,14 +67,15 @@ jq(function(){
         var idx = jq.inArray( tr.attr('id'), detailRows );
  
         if ( row.child.isShown() ) {
-            jq(this).find('icon-plus').removeClass('icon-plus').addClass('icon-minus');
+            jq(this).find('.icon-minus').removeClass('icon-minus').addClass('icon-plus');
             row.child.hide();
  
             // Remove from the 'open' array
             detailRows.splice( idx, 1 );
         }
         else {
-            jq(this).find('icon-minus').removeClass('icon-minus').addClass('icon-plus');
+            console.log(jq(this).find('.icon-plus'));
+            jq(this).find('.icon-plus').removeClass('icon-plus').addClass('icon-minus');
             var orderId = tr[0].dataset.orderId;
             var patientId = tr[0].dataset.patientId;
             jq.getJSON(emr.fragmentActionLink("patientdashboardapp", "investigations", "getInvestigationResults", { "orderId": orderId, "patientId": patientId}))
