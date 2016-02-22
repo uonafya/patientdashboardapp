@@ -48,7 +48,7 @@ public class MainPageController {
         if (queueId != null) {
             OpdPatientQueue opdPatientQueue = Context.getService(PatientQueueService.class).getOpdPatientQueueById(queueId);
             if (opdPatientQueue != null) {
-                opdPatientQueue.setStatus(Context.getAuthenticatedUser().getGivenName() + " Processing");
+                opdPatientQueue.setStatus("Dr. "+Context.getAuthenticatedUser().getGivenName());
                 Context.getService(PatientQueueService.class).saveOpdPatientQueue(opdPatientQueue);
                 model.addAttribute("patientStatus", opdPatientQueue.getVisitStatus());
             }
