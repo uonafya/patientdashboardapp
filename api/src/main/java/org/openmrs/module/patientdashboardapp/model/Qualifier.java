@@ -3,6 +3,7 @@ package org.openmrs.module.patientdashboardapp.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.api.context.Context;
@@ -72,24 +73,45 @@ public class Qualifier {
 	}
 
 	public void save(Symptom symptom) {
-		Question question = new Question();
-		question.setSymptom(symptom);
 		Concept questionConcept = Context.getConceptService().getConcept(this.id);
-		question.setQuestionConcept(questionConcept);
 		PatientDashboardService patientDashboardService = Context.getService(PatientDashboardService.class);
-		question = patientDashboardService.saveQuestion(question);
-
-		Answer answer = new Answer();
-		if (questionConcept.getDatatype().isCoded()) {
-			answer.setQuestion(question);
-			answer.setAnswerConcept(Context.getConceptService().getConcept(this.answer.getId()));
-			answer.setFreeText(null);
-		} else {
-			answer.setQuestion(question);
-			answer.setAnswerConcept(null);
-			answer.setFreeText(this.getFreeText());
+		List<Question> savedQuestions = patientDashboardService.getQuestion(symptom);
+		Boolean qualifierHasBeenSaved = false;
+		for (Question savedQuestion : savedQuestions) {
+			if (savedQuestion.getQuestionConcept().equals(questionConcept)) {
+				Answer previousAnswer = patientDashboardService.getAnswer(savedQuestion);
+				if (savedQuestion.getQuestionConcept().getDatatype().isCoded()) {
+					Concept currentAnswerConcept = Context.getConceptService().getConcept(this.answer.getId());
+					if (!previousAnswer.getAnswerConcept().equals(currentAnswerConcept)) {
+						previousAnswer.setAnswerConcept(currentAnswerConcept);
+					}
+				} else {
+					if (!StringUtils.equalsIgnoreCase(previousAnswer.getFreeText(), this.getFreeText())) {
+						previousAnswer.setFreeText(this.getFreeText());
+					}
+				}
+				patientDashboardService.saveAnswer(previousAnswer);
+				qualifierHasBeenSaved = true;
+			}
 		}
-		patientDashboardService.saveAnswer(answer);
+		if (!qualifierHasBeenSaved) {
+			Question question = new Question();
+			question.setSymptom(symptom);
+			question.setQuestionConcept(questionConcept);
+			question = patientDashboardService.saveQuestion(question);
+			
+			Answer answer = new Answer();
+			if (questionConcept.getDatatype().isCoded()) {
+				answer.setQuestion(question);
+				answer.setAnswerConcept(Context.getConceptService().getConcept(this.answer.getId()));
+				answer.setFreeText(null);
+			} else {
+				answer.setQuestion(question);
+				answer.setAnswerConcept(null);
+				answer.setFreeText(this.getFreeText());
+			}
+			patientDashboardService.saveAnswer(answer);
+		}
 	}
 
 }
