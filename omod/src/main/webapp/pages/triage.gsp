@@ -27,6 +27,8 @@
 	emrMessages["numberField"] = "Value not a number";
 	
 	jq(document).ready(function () {
+		jq(".lab-tabs").tabs();
+		
 		jq('#surname').html(strReplace('${patient.names.familyName}')+',<em>surname</em>');
 		jq('#othname').html(strReplace('${patient.names.givenName}')+' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <em>other names</em>');
 		jq('#agename').html('${patient.age} years ('+ moment('${patient.birthdate}').format('DD,MMM YYYY') +')');
@@ -38,6 +40,12 @@
 			res=res.replace("]","");
 			return res;
 		}
+		
+		jq('.col5 input:radio[name]').on('change',function(){
+			if (jq(this).attr('name') == "radiogroup1"){
+				alert(jq('input[name=radioName]:checked', '#myForm').val()); 
+			}
+		});
 		
 		jq('input:text[id]').on('input',function(event){
 			var idd = jq(event.target).attr('id');
@@ -219,7 +227,7 @@
 			
 			while (jQuery(':focus') != jQuery('#bloodGroup-field')) {
 				if (currents == jQuery(':focus').attr('id')){
-					NavigatorController.stepForward();
+					//NavigatorController.stepForward();
 					break;
 				}
 				else {
@@ -233,9 +241,7 @@
 					NavigatorController.stepForward();
 				}
 			}
-			// jQuery(':focus')
-		
-			//NavigatorController.getFieldById('passportNumber').select();
+			NavigatorController.getFieldById('passportNumber').select();
 			
 		}
 		else if (current_tab == 2){
@@ -332,6 +338,29 @@
 	.col1, .col2, .col3, .col4, .col5, .col6, .col7, .col8, .col9, .col10, .col11, .col12 {
 		float: left;
 		margin: 0;
+	}
+	.col5 {
+		width: 15%;
+	}
+	.col6 {
+		border-left: 1px solid #ddd;
+		padding-left: 20px;
+		width: 80%;
+	}
+	.col5 input{
+		margin-top: 12px!important;
+	}
+	.col6 label{
+		margin-bottom: 0px!important;
+		margin-left: 0px!important;
+		padding-left: 0px!important;
+	}
+	.col6 input{
+		margin-top: 0px!important;
+	}
+	.underline h2{
+		padding-bottom: 5px;
+		border-bottom: 1px solid #ddd;
 	}
 	form label, .form label {
 		margin: 5px 0 0;
@@ -466,14 +495,14 @@
 		</div>
 		<div class="close"></div>
 	</div>
-	
-    <form method="post" id="notes-form" class="simple-form-ui" style="margin-top:10px;">
-        <input type="hidden" value="${returnUrl?:""}" name="returnUrl" >
-        <section>
-            <span class="title">Vital Stats</span>
-            <fieldset>
-                <legend>Vitals</legend>
-                <div>
+
+	<form method="post" id="notes-form" class="simple-form-ui" style="margin-top:10px;">
+		<input type="hidden" value="${returnUrl?:""}" name="returnUrl" >
+		<section>
+			<span class="title">Vital Stats</span>
+			<fieldset>
+				<legend>Vitals</legend>
+				<div>
 					<div class="onerow">
 						<h2>Body Mass Index</h2>
 						
@@ -655,12 +684,12 @@
 							</a>
 						</div>
 					</div>
-                </div>
-            </fieldset>
+				</div>
+			</fieldset>
 			
 			
-            <fieldset>
-                <legend>Blood Group</legend>
+			<fieldset>
+				<legend>Blood Group</legend>
 				<div>
 					<div class="onerow">
 						<h2>Blood Measures</h2>
@@ -732,11 +761,11 @@
 						</div>
 					</div>
 				</div>
-            </fieldset>
+			</fieldset>
 			
-            <% if (!inOpdQueue) {%>
-                <fieldset>
-                    <legend>Room to Visit</legend>
+			<% if (!inOpdQueue) {%>
+				<fieldset>
+					<legend>Room to Visit</legend>
 					<div>
 						<div class="onerow">
 							<h2>Room to Visit</h2>
@@ -1120,6 +1149,9 @@
 				<input id="submit" type="submit" class="submitButton confirm right" value="FINISH" style="float:right; display:inline-block; margin-left: 5px;" />
 				<input id="cancelSubmission" class="cancel" type="button" value="RESET" style="float:right; display:inline-block;" onclick="location.reload();"/>
 			</div>
-        </div>
-    </form>
+		</div>
+	</form>
+	
+	
+    
 </div>
