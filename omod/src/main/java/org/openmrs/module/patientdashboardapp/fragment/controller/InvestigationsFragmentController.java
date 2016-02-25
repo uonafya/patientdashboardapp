@@ -49,7 +49,7 @@ public class InvestigationsFragmentController {
 		List<SimpleObject> results = new ArrayList<SimpleObject>();
 		for (Encounter encounter: labOrdersEncounters) {
 			for (Obs obs : encounter.getAllObs()) {
-				if (obs.getOrder().getOrderId() !=  orderId) {
+				if (!obs.getOrder().getOrderId().equals(orderId)) {
 					break;
 				}
 				String resultDescription = obs.getConcept().getDisplayString();
