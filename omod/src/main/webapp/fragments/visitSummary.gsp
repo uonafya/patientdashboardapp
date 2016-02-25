@@ -1,3 +1,9 @@
+<style>
+    .main-content {
+        width: 76.2%;
+    }
+</style>
+
 <ul class="left-menu">
     <% visitSummaries.each { summary -> %>
         <li class="menu-item visit-summary">
@@ -26,7 +32,8 @@
 
 <script>
 jq(function(){
-    jq("left-menu").on("click", ".visit-summary", function(){
+    jq(".left-menu").on("click", ".visit-summary", function(){
+        console.log("visit-summary clicked");
         jq("#visit-detail").html("<i class=\"icon-spinner icon-spin icon-2x pull-left\"></i>")
         var visitSummary = jq(this);
         jq(".visit-summary").removeClass("selected");
