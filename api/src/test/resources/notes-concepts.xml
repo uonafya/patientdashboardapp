@@ -21,8 +21,19 @@
   <concept concept_id="9986" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="dc82860a-e946-43d1-9b1f-488755fa7bf3"/>
   <concept concept_id="9987" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="49d94fe2-c017-11e5-9912-ba0be0483c18"/>
   <concept concept_id="9988" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="49d95352-c017-11e5-9912-ba0be0483c18"/>
+  <concept concept_id="9989" retired="false" datatype_id="2" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="3c0e2a4b-da0f-11e5-a3f2-34e6d77c15d6"/>
   <concept concept_id="9960" retired="false" datatype_id="2" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="6be53e7f-c045-11e5-9a67-34e6d77c15d6"/>
   <concept concept_id="9961" retired="false" datatype_id="2" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="8da1a020-c045-11e5-9a67-34e6d77c15d6"/>
+  <concept concept_id="9900" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="fcb5480c-da0f-11e5-a3f2-34e6d77c15d6"/>
+  <concept concept_id="10001" retired="false" datatype_id="2" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="9f59b101-dade-11e5-a3f2-34e6d77c15d6"/>
+  <concept concept_id="10002" retired="false" datatype_id="2" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="9556452d-dade-11e5-a3f2-34e6d77c15d6"/>
+  <concept concept_id="10003" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="abf9d3e8-dae1-11e5-a3f2-34e6d77c15d6"/>
+  <concept concept_id="10003" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="abf9d3e8-dae1-11e5-a3f2-34e6d77c15d6"/>
+  <concept concept_id="10004" retired="false" datatype_id="2" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="657b12b0-dbb4-11e5-a3f2-34e6d77c15d6"/>
+  <concept concept_id="10005" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="7b750c4f-dbb4-11e5-a3f2-34e6d77c15d6"/>
+  <concept concept_id="10006" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="8441794d-dbb4-11e5-a3f2-34e6d77c15d6"/>
+  <concept concept_id="10007" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="8c285a01-dbb4-11e5-a3f2-34e6d77c15d6"/>
+  <concept concept_id="10008" retired="false" datatype_id="3" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="aef9752b-dbb9-11e5-a3f2-34e6d77c15d6"/>
 
   <concept_class concept_class_id="20" name="Frequency" description="Drug frequency" creator="1" date_created="2008-08-15 13:56:55.0" retired="false" uuid="0fd33d76-8b4b-445f-899e-161c5e85d36c"/>
 
@@ -41,6 +52,16 @@
   <concept_name concept_id="9986" name="General OPD" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4012" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="cae934c5-7d60-41bc-88bd-1ac64c7beb47"/>
   <concept_name concept_id="9987" name="External" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4013" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="75347aad-b798-4977-ae44-09fdc959c606"/>  
   <concept_name concept_id="9988" name="Internal" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4014" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="f5a034a8-9516-4fd4-93cb-fb37dcfd6f8c"/>
+  <concept_name concept_id="9989" name="Symptom" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4015" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="14a4b008-da0f-11e5-a3f2-34e6d77c15d6"/>
+  <concept_name concept_id="9900" name="Headache" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4016" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="30d09cc6-da10-11e5-a3f2-34e6d77c15d6"/>
+  <concept_name concept_id="10001" name="Provisional Diagnosis" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4017" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="536ea3f2-dade-11e5-a3f2-34e6d77c15d6"/>
+  <concept_name concept_id="10002" name="Final Diagnosis" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4018" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="27ee653b-dade-11e5-a3f2-34e6d77c15d6"/>
+  <concept_name concept_id="10003" name="Malaria" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4019" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="f34f4dbb-dae0-11e5-a3f2-34e6d77c15d6"/>
+  <concept_name concept_id="10004" name="How severe is the headache?" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4020" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="485c4480-dba9-11e5-a3f2-34e6d77c15d6"/>
+  <concept_name concept_id="10005" name="A one" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4021" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="2d0696f6-dbaa-11e5-a3f2-34e6d77c15d6"/>
+  <concept_name concept_id="10006" name="A five" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4022" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="3fb4a20c-dbaa-11e5-a3f2-34e6d77c15d6"/>
+  <concept_name concept_id="10007" name="A ten" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4023" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="48d22a14-dbaa-11e5-a3f2-34e6d77c15d6"/>
+  <concept_name concept_id="10008" name="Comment" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4024" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="adfd3485-dbb4-11e5-a3f2-34e6d77c15d6"/>
 
   <patient_identifier_type patient_identifier_type_id="1009" name="Test Identifier Type" description="Test description" check_digit="false" creator="1" date_created="2005-01-01 00:00:00.0" required="false" retired="false"  uuid="66e16926-a235-11e5-bf7f-feff819cdc9f"/>
   <person person_id="3009" dead="false" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" gender="F"  uuid="b29e64f4-a235-11e5-bf7f-feff819cdc9f"/>
@@ -56,6 +77,8 @@
   <global_property property="patientdashboard.internalReferralConcept" property_value="9988" uuid="df455a2b-7131-4298-bb7e-809033ccd700"/>
   <global_property property="patientdashboard.OPDRootConcept" property_value="9960" uuid="33c06098-c044-11e5-9a67-34e6d77c15d6"/>
   <global_property property="patientdashboard.externalHospitalConcept" property_value="9961" uuid="fe6275c0-c043-11e5-9a67-34e6d77c15d6"/>
+  <global_property property="patientdashboard.symptomConcept" property_value="symptom" uuid="f1987d67-da0e-11e5-a3f2-34e6d77c15d6"/>
+  <global_property property="patientdashboard.provisionalDiagnosisConcept" property_value="Provisional Diagnosis" uuid="882627cf-dae1-11e5-a3f2-34e6d77c15d6"/>
 
   <billing_billable_service service_id="1" concept_id="9993" name="Allergy Shots" short_name="" price="50" disable="false" category="9995" />
   <billing_billable_service service_id="2" concept_id="9994" name="LAPAROTOMY" short_name="" price="500" disable="false" category="9996" />

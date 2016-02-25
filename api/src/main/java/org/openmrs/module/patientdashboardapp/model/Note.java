@@ -37,8 +37,12 @@ public class Note {
 		this.opdId = opdId;
 		this.admitted = Context.getService(IpdService.class).getAdmittedByPatientId(patientId) != null;
 		this.opdLogId = opdLogId;
-		loadDiagnoses(patientId);
-		loadSigns(patientId);
+		this.diagnoses = Diagnosis.getPreviousDiagnoses(patientId);
+		this.signs = Sign.getPreviousSigns(patientId);		
+
+		if (diagnoses.size() > 0) {
+			this.diagnosisProvisional = true;
+		}
 	}
 
 	private int patientId;
@@ -185,25 +189,6 @@ public class Note {
 		this.physicalExamination = physicalExamination;
 	}
 
-	private void loadSigns(Integer patientId) {
-		PatientQueueService queueService = Context.getService(PatientQueueService.class);
-		List<Obs> symptomObs = queueService.getAllSymptom(patientId);
-		for (Obs signObs : symptomObs) {
-			signs.add(new Sign(signObs.getValueCoded()));
-		}
-	}
-
-	private void loadDiagnoses(Integer patientId) {
-		PatientQueueService queueService = Context.getService(PatientQueueService.class);
-		List<Obs> diagnosisObsns = queueService.getAllDiagnosis(patientId);
-		for (Obs diagnosisObs : diagnosisObsns) {
-			diagnoses.add(new Diagnosis(diagnosisObs.getValueCoded()));
-		}
-		if (diagnoses.size() > 0) {
-			this.diagnosisProvisional = true;
-		}
-	}
-
 	public Encounter save() {
 		Patient patient = Context.getPatientService().getPatient(this.patientId);
 		Obs obsGroup = Context.getService(HospitalCoreService.class).getObsGroupCurrentDate(patient.getPersonId());
@@ -254,16 +239,15 @@ public class Note {
 		for (Sign sign : this.signs) {
 			sign.addObs(encounter, obsGroup);
 		}
-		for (Procedure procedure : this.procedures)
-		{
+		for (Procedure procedure : this.procedures) {
 			procedure.addObs(encounter,obsGroup);
 		}
-		for(Investigation investigation : this.investigations)
-		{
+		
+		for(Investigation investigation : this.investigations) {
 			investigation.addObs(encounter,obsGroup);
 		}
-		for (Diagnosis diagnosis : this.diagnoses)
-		{
+		
+		for (Diagnosis diagnosis : this.diagnoses) {
 			diagnosis.addObs(encounter, obsGroup, this.diagnosisProvisional);
 		}
 		
