@@ -41,8 +41,6 @@
 			return res;
 		}
 		
-		
-		
 		jq('.col5 input:radio[name]').on('change',function(){
 			if (jq(this).attr('name') == "radiogroup1"){
 				if (jq('input[name=radiogroup1]:checked', '#notes-form').val() == "Yes"){
@@ -100,8 +98,71 @@
 					jq('#invasives').hide(500)
 				}
 			}
-			
-			//patientDrugHistory.invasiveContraception
+			else if (jq(this).attr('name') == "familyHistory.fatherStatus"){
+				if (jq('input[name="familyHistory.fatherStatus"]:checked', '#notes-form').val() == "Dead"){
+					jq('#father-status').show(500)
+				}
+				else {
+					jq('#father-status').hide(500)
+				}
+			}
+			else if (jq(this).attr('name') == "familyHistory.motherStatus"){
+				if (jq('input[name="familyHistory.motherStatus"]:checked', '#notes-form').val() == "Dead"){
+					jq('#mother-status').show(500)
+				}
+				else {
+					jq('#mother-status').hide(500)
+				}
+			}
+			else if (jq(this).attr('name') == "familyHistory.siblingStatus"){
+				if (jq('input[name="familyHistory.siblingStatus"]:checked', '#notes-form').val() == "Dead"){
+					jq('#sibling-status').show(500)
+				}
+				else {
+					jq('#sibling-status').hide(500)
+				}
+			}
+			else if (jq(this).attr('name') == "personalHistory.smoke"){
+				if (jq('input[name="personalHistory.smoke"]:checked', '#notes-form').val() == "Yes"){
+					jq('#do-smoke').show(500)
+				}
+				else {
+					jq('#do-smoke').hide(500)
+				}
+			}
+			else if (jq(this).attr('name') == "personalHistory.alcohol"){
+				if (jq('input[name="personalHistory.alcohol"]:checked', '#notes-form').val() == "Yes"){
+					jq('#do-alcohol').show(500)
+				}
+				else {
+					jq('#do-alcohol').hide(500)
+				}
+			}
+			else if (jq(this).attr('name') == "personalHistory.drug"){
+				if (jq('input[name="personalHistory.drug"]:checked', '#notes-form').val() == "Yes"){
+					jq('#do-drugs').show(500)
+				}
+				else {
+					jq('#do-drugs').hide(500)
+				}
+			}
+			else if (jq(this).attr('name') == "personalHistory.exposedHiv"){
+				if (jq('input[name="personalHistory.exposedHiv"]:checked', '#notes-form').val() == "Yes"){
+					jq('#do-exposed').show(500)
+				}
+				else {
+					jq('#do-exposed').hide(500)
+				}
+			}
+			else if (jq(this).attr('name') == "personalHistory.familyHelp"){
+				if (jq('input[name="personalHistory.familyHelp"]:checked', '#notes-form').val() == "Yes"){
+					jq('#do-support').show(500)
+				}
+				else {
+					jq('#do-support').hide(500)
+				}
+			}
+			//
 		});
 		
 		jq('.noidnt input:radio[name]').on('change',function(){
@@ -269,7 +330,12 @@
 		jq('.col5 input:radio').each(function() {
 		  var name = jq(this).attr("name");
 		  if(jq("input:radio[name='"+name+"']:checked").length == 0){
-			jq("input[name='"+name+"'][value='No']").attr('checked', 'checked').change();
+			if (name.indexOf('familyHistory') !== -1 ) {
+			  jq("input[name='"+name+"'][value='Alive']").attr('checked', 'checked').change();
+			}
+			else {
+			  jq("input[name='"+name+"'][value='No']").attr('checked', 'checked').change();
+			}
 		  }
 		});
 		
@@ -1207,49 +1273,66 @@
                 <div>
                     <div class="onerow underline">
 						<h2>Status of father?</h2>
+						<div class="col5">
+							<p><label><input type="radio" value="Alive" name="familyHistory.fatherStatus"<% if (familyHistory?.fatherStatus == "Alive") { %> checked="checked" <% } %>/>Alive </label></p>
+							<p><label><input type="radio" value="Dead"  name="familyHistory.fatherStatus"<% if (familyHistory?.fatherStatus == "Dead") { %> checked="checked" <% } %>/>Dead</label></p> 
+						</div>
 						
-						<p><input type="radio" value="Alive" name="familyHistory.fatherStatus"<% if (familyHistory?.fatherStatus == "Alive") { %> checked="checked" <% } %>/>Alive </p>
-						<p><input type="radio" value="Dead" name="familyHistory.fatherStatus"<% if (familyHistory?.fatherStatus == "Dead") { %> checked="checked" <% } %>/>Dead</p> 
-
-                        <div class="col4">
-                            What was the cause of death? <input type="text" name="familyHistory.fatherDeathCause" value="">
-                        </div>
-
-                        <div class="col4">
-                            How old were they? <input type="text" name="familyHistory.fatherDeathAge" value="">
-                        </div>
+						<div class="col6 last" id="father-status">
+							<p>
+								<label>What was the cause of death?</label>
+								<input type="text" name="familyHistory.fatherDeathCause" value="">
+							</p>
+							
+							<p>
+								<label>How old were they?</label>
+								<input type="text" name="familyHistory.fatherDeathAge" value="">
+							</p>
+						</div>
                     </div>
 
-                    <div class="onerow">
+                    <div class="onerow underline" style="padding-top: 20px">
                         <h2>Status of mother?</h2>
-                            <p><input type="radio"  value="Alive" name="familyHistory.motherStatus"<% if (familyHistory?.motherStatus == "Alive") { %> checked="checked" <% } %>/>Alive </p>
-                            <p><input type="radio"  value="Dead" name="familyHistory.motherStatus"<% if (familyHistory?.motherStatus == "Dead") { %> checked="checked" <% } %>/> Dead</p> 
-
-                        <div class="col4">
-                            What was the cause of death? <input type="text" name="familyHistory.motherDeathCause" value="">
-                        </div>
-
-                        <div class="col4">
-                            How old were they? <input type="text" name="familyHistory.motherDeathAge" value="">
-                        </div>
+						<div class="col5">
+							<p><label><input type="radio"  value="Alive" name="familyHistory.motherStatus"<% if (familyHistory?.motherStatus == "Alive") { %> checked="checked" <% } %>/>Alive </label></p>
+                            <p><label><input type="radio"  value="Dead"  name="familyHistory.motherStatus"<% if (familyHistory?.motherStatus == "Dead")  { %> checked="checked" <% } %>/>Dead  </label></p> 
+						</div>
+						
+						<div class="col6 last" id="mother-status">
+							<p>
+								<label>What was the cause of death?</label>
+								<input type="text" name="familyHistory.motherDeathCause" value="">
+							</p>
+							
+							<p>
+								<label>How old were they?</label>
+								<input type="text" name="familyHistory.motherDeathAge" value="">
+							</p>
+						</div>
                     </div>
 
-                    <div class="onerow">
-
-                        <h2>Status of sibling?
-                            <p><input type="radio" value="Alive" name="familyHistory.siblingStatus"<% if (familyHistory?.siblingStatus == "Alive") { %> checked="checked" <% } %>/>Alive </p>
-                            <p><input type="radio" value="Dead"  name="familyHistory.siblingStatus" <% if (familyHistory?.siblingStatus == "Alive") { %> checked="checked" <% } %>/> Dead</p> </h2>
-
-                        <div class="col4">
-                            What was the cause of death? <input type="text" name="familyHistory.siblingDeathCause" value="">
-                        </div>
-
-                        <div class="col4">
-                            How old were they? <input type="text" name="familyHistory.siblingDeathAge" value="">
-                        </div>
+                    <div class="onerow underline" style="padding-top: 20px">
+                        <h2>Status of sibling?</h2>
+						<div class="col5">
+							<p><label><input type="radio" value="Alive" name="familyHistory.siblingStatus"<% if (familyHistory?.siblingStatus == "Alive") { %> checked="checked" <% } %>/>Alive </label></p>
+                            <p><label><input type="radio" value="Dead"  name="familyHistory.siblingStatus" <% if (familyHistory?.siblingStatus == "Alive") { %> checked="checked" <% } %>/>Dead</label></p> 
+						</div>
+						
+						<div class="col6 last" id="sibling-status">
+							<p>
+								<label>What was the cause of death?</label>
+								<input type="text" name="familyHistory.siblingDeathCause" value="">
+							</p>
+							<p>
+								<label>How old were they?</label>
+								<input type="text" name="familyHistory.siblingDeathAge" value="">
+							</p>
+						</div>
                     </div>
-                    <div class="col4last ">
-                        Any family history of the following illness? <input type="text" name="familyHistory.familyIllnessHistory" value="">
+					
+                    <div class="onerow" style="padding-top: 20px">
+                        <h2>Any family history of the following illness?</h2>
+						<textarea type="text" name="familyHistory.familyIllnessHistory" value="" style="width: 675px;"></textarea>
                     </div>
 
                 </div>
@@ -1257,80 +1340,108 @@
             <fieldset>
                 <legend>Personal and Social</legend>
                 <div>
+                    <div class="onerow underline">
+                        <h2> Do you smoke?</h2>
+						<div class="col5">
+							<p><label><input type="radio" value="Yes" name="personalHistory.smoke"<% if (personalHistory?.smoke == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
+                            <p><label><input type="radio" value="No"  name="personalHistory.smoke"<% if (personalHistory?.smoke == "No") { %> checked="checked" <% } %>/> No</label></p>
+						</div>
+						
+						<div class="col6 last" id="do-smoke">
+							<p>
+								<label>What do you smoke?</label>
+								<input type="text" name="personalHistory.smokeItem" value="">
+							</p>
+							
+							<p>
+								<label>What is your average in a day?</label>
+								<input type="text" name="personalHistory.smokeAverage" value="">
+							</p>
+						</div>
+                    </div>
+					
+                    <div class="onerow underline" style="padding-top: 20px">
+                        <h2> Do you drink alcohol?</h2>
+						<div class="col5">
+							<p><label><input type="radio" value="Yes" name="personalHistory.alcohol"<% if (personalHistory?.smoke == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
+                            <p><label><input type="radio" value="No" name="personalHistory.alcohol"<% if (personalHistory?.smoke == "No") { %> checked="checked" <% } %>/>No</label></p> 
+						</div>
+						
+						<div class="col6 last" id="do-alcohol">
+							<p>
+								<label>What alcohol do you drink?</label>
+								<input type="text" name="personalHistory.alcoholItem" value="">
+							</p>
+							
+							<p>
+								<label>What is your average in a day?</label>
+								<input type="text" name="personalHistory.alcoholAverage" value="">
+							</p>
+						</div>
+                    </div>
+
+                    <div class="onerow underline" style="padding-top: 20px">
+                        <h2>Do you take any recreational drugs?</h2>
+						<div class="col5">
+							<p><label><input type="radio" value="Yes" name="personalHistory.drug"<% if (personalHistory?.drug == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
+                            <p><label><input type="radio" value="No" name="personalHistory.drug"<% if (personalHistory?.drug == "No") { %> checked="checked" <% } %>/>No</label> </p>
+						</div>
+						
+						<div class="col6 last" id="do-drugs">
+							<p>
+								<label>What drugs do you take?</label>
+								<input type="text" name="personalHistory.drugItem" value="">
+							</p>
+							
+							<p>
+								<label>What is your average in a day?</label>
+								<input type="text" name="personalHistory.drugAverage" value="">
+							</p>
+						</div>
+                    </div>
+                    
+					<div class="onerow underline" style="padding-top: 20px">
+						<h2> Are you aware of your current HIV status?</h2>
+						<div class="col5">
+							<p><label><input type="radio" value="Yes" name="personalHistory.hivStatus"<% if (personalHistory?.hivStatus == "Yes") { %> checked="checked" <% } %>/>Yes</label> </p>
+							<p><label><input type="radio" value="No" name="personalHistory.hivStatus"<% if (personalHistory?.hivStatus == "No") { %> checked="checked" <% } %>/>No</label> </p> 
+						</div>						
+                    </div>
+					
+					<div class="onerow underline" style="padding-top: 20px">
+						<h2> Have you been exposed to any HIV/ AIDS factor in the past year, or since your last HIV Test?</h2>
+						<div class="col5">
+							<p><label><input type="radio" value="Yes" name="personalHistory.exposedHiv"<% if (personalHistory?.exposedHiv == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
+							<p><label><input type="radio" value="No"  name="personalHistory.exposedHiv"<% if (personalHistory?.exposedHiv == "No" ) { %> checked="checked" <% } %>/>No</label> </p> 
+						</div>
+
+						<div class="col6 last" id="do-exposed">
+							<p>
+								<label>Which factors?</label>
+								<input type="text" name="personalHistory.exposedHivFactor" value="">
+							</p>
+						</div>
+					</div>
+                    
+                    <div class="onerow underline" style="padding-top: 20px">
+                        <h2> Any close member in the family who can support during illness?</h2>
+						<div class="col5">
+							<p><label><input type="radio" value="Yes" name="personalHistory.familyHelp"<% if (personalHistory?.familyHelp == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
+                            <p><label><input type="radio" value="No" name="personalHistory.familyHelp"<% if (personalHistory?.familyHelp == "No") { %> checked="checked" <% } %>/>No</label></p>
+						</div>
+						
+                        <div class="col6 last" id="do-support">
+                            <label>Who else can support you during illness?</label>
+							<input type="text" name="personalHistory.otherHelp" value="">
+                        </div>
+                    </div>
+					
                     <div class="onerow">
-
-                        <h2> Do you smoke?
-                            <p><input type="radio" value="Yes" name="personalHistory.smoke"<% if (personalHistory?.smoke == "Yes") { %> checked="checked" <% } %>/>Yes </p>
-                            <p><input type="radio" value="No" name="personalHistory.smoke"<% if (personalHistory?.smoke == "No") { %> checked="checked" <% } %>/> </p>No</h2>
-
-                        <div class="col4">
-                            What do you smoke? <input type="text" name="personalHistory.smokeItem" value="">
-                        </div>
-
-                        <div class="col4">
-                            What is your average in a day? <input type="text" name="personalHistory.smokeAverage" value="">
-                        </div>
-
-                    </div>
-                    <div class="onerow">
-
-                        <h2> Do you drink alcohol?
-                            <p><input type="radio" value="Yes" name="personalHistory.alcohol"<% if (personalHistory?.smoke == "Yes") { %> checked="checked" <% } %>/>Yes </p>
-                            <p>No<input type="radio" value="No" name="personalHistory.alcohol"<% if (personalHistory?.smoke == "No") { %> checked="checked" <% } %>/> </p> </h2>
-
-                        <div class="col4">
-                            What alcohol do you drink? <input type="text" name="personalHistory.alcoholItem" value="">
-                        </div>
-
-                        <div class="col4">
-                            What is your average in a day? <input type="text" name="personalHistory.alcoholAverage" value="">
-                        </div>
-                    </div>
-
-                    <div class="onerow">
-
-                        <h2> Do you take any recreational drugs?
-                            <p><input type="radio" value="Yes" name="personalHistory.drug"<% if (personalHistory?.drug == "Yes") { %> checked="checked" <% } %>/>Yes </p>
-                            <p>No<input type="radio" value="No" name="personalHistory.drug"<% if (personalHistory?.drug == "No") { %> checked="checked" <% } %>/> </p> </h2>
-
-                        <div class="col4">
-                            What drugs do you take? <input type="text" name="personalHistory.drugItem" value="">
-                        </div>
-
-                        <div class="col4">
-                            What is your average in a day? <input type="text" name="personalHistory.drugAverage" value="">
-                        </div>
-                    </div>
-                    <div>
-                        <div class="onerow">
-
-                            <h2> Are you aware of your current HIV status?
-                                <p><input type="radio" value="Yes" name="personalHistory.hivStatus"<% if (personalHistory?.hivStatus == "Yes") { %> checked="checked" <% } %>/>Yes </p>
-                                <p>No<input type="radio" value="No" name="personalHistory.hivStatus"<% if (personalHistory?.hivStatus == "No") { %> checked="checked" <% } %>/> </p> </h2>
-                    </div>
-                        <div class="onerow">
-                            <h2> Have you been exposed to any HIV/ AIDS factor in the past year, or since your last HIV Test?
-                                <p><input type="radio" value="Yes" name="personalHistory.exposedHiv"<% if (personalHistory?.exposedHiv == "Yes") { %> checked="checked" <% } %>/>Yes </p>
-                                <p>No<input type="radio" value="No" name="personalHistory.exposedHiv"<% if (personalHistory?.exposedHiv == "No") { %> checked="checked" <% } %>/> </p> </h2>
-
-                            <div class="col4">
-                                Which factors? <input type="text" name="personalHistory.exposedHivFactor" value="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="onerow">
-                        <h2> Any close member in the family who can support during illness?
-                            <p><input type="radio" value="Yes" name="personalHistory.familyHelp"<% if (personalHistory?.familyHelp == "Yes") { %> checked="checked" <% } %>/>Yes </p>
-                            <p>No<input type="radio" value="No" name="personalHistory.familyHelp"<% if (personalHistory?.familyHelp == "No") { %> checked="checked" <% } %>/> </p> </h2>
-
-                        <div class="col4">
-                            Who else can support you during illness? <input type="text" name="personalHistory.otherHelp" value="">
-                        </div>
-                    </div>
-                    <div class="onerow">
-                        <h2>  Do you have a regular source of income?
-                            <p><input type="radio" value="Yes" name="personalHistory.incomeSource"<% if (personalHistory?.incomeSource == "Yes") { %> checked="checked" <% } %>/>Yes </p>
-                            <p>No<input type="radio" value="No" name="personalHistory.incomeSource"<% if (personalHistory?.incomeSource == "No") { %> checked="checked" <% } %>/> </p> </h2>
+                        <h2>  Do you have a regular source of income?</h2>
+						<div class="col5">
+							<p><label><input type="radio" value="Yes" name="personalHistory.incomeSource"<% if (personalHistory?.incomeSource == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
+                            <p><label><input type="radio" value="No"  name="personalHistory.incomeSource"<% if (personalHistory?.incomeSource == "No" ) { %> checked="checked" <% } %>/>No</label> </p> 
+						</div> 
                     </div>
                 </div>
             </fieldset>
