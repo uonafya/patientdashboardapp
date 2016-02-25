@@ -107,13 +107,13 @@ public class VisitDetail {
 			visitDetail.setDiagnosis(provisionalDiagnosisList.append(finalDiagnosisList).substring(0, provisionalDiagnosisList.length() - ", ".length()));
 		}
 		if (symptomList.length() > 0) {
-			visitDetail.setSymptoms(symptomList.substring(0, ", ".length()));
+			visitDetail.setSymptoms(symptomList.substring(0, symptomList.length() - ", ".length()));
 		}
 		if (procedureList.length() > 0) {
-			visitDetail.setProcedures(procedureList.substring(0, ", ".length()));
+			visitDetail.setProcedures(procedureList.substring(0, procedureList.length() - ", ".length()));
 		}
 		if (investigationList.length() > 0) {
-			visitDetail.setInvestigations(investigationList.substring(0, ", ".length()));
+			visitDetail.setInvestigations(investigationList.substring(0, investigationList.length() - ", ".length()));
 		}
 		return visitDetail;
 	}
