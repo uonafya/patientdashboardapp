@@ -42,8 +42,8 @@
 		}
 		
 		jq('.col5 input:radio[name]').on('change',function(){
-			if (jq(this).attr('name') == "radiogroup1"){
-				if (jq('input[name=radiogroup1]:checked', '#notes-form').val() == "Yes"){
+			if (jq(this).attr('name') == "patientMedicalHistory.illnessExisting"){
+				if (jq('input[name="patientMedicalHistory.illnessExisting"]:checked', '#notes-form').val() == "Yes"){
 					jq('#illness').show(500)
 				}
 				else {
@@ -991,14 +991,14 @@
 						<div class="col5">
 							<p>
 								<label>
-									<input type="radio" name="radiogroup1" value="Yes" id="illnessExisting" <% if (patientMedicalHistory?.illnessExisting == "Yes") { %> checked="checked" <% } %>/>
+									<input type="radio" name="patientMedicalHistory.illnessExisting" value="Yes" id="illnessExisting" <% if (patientMedicalHistory?.illnessExisting == "Yes") { %> checked="checked" <% } %>/>
 									Yes 
 								</label>
 							</p>
 								
 							<p>
 								<label>
-									<input type="radio" name="radiogroup1" value="No" <% if (patientMedicalHistory?.illnessExisting == "No") { %> checked="checked" <% } %>/> 
+									<input type="radio" name="patientMedicalHistory.illnessExisting" value="No" id="illnessExisting" <% if (patientMedicalHistory?.illnessExisting == "No") { %> checked="checked" <% } %>/>
 									No 
 								</label>
 							</p>
@@ -1175,7 +1175,7 @@
 								
 								<p><label><input type="radio" value="Yes" name="patientMedicalHistory.tetanusFemale"<% if (patientMedicalHistory?.tetanusFemale == "Yes") { %> checked="checked" <% } %>/>Yes </label></p> 
 								<p><label><input type="radio" value="No" name="patientMedicalHistory.tetanusFemale"<% if (patientMedicalHistory?.tetanusFemale == "No") { %> checked="checked" <% } %>/>No</label></p> 
-								<p><label><input type="radio" value="Not Sure" name="patientMedicalHistory.tetanusFemale""<% if (patientMedicalHistory?.tetanusFemale == "Not Sure") { %> checked="checked" <% } %>/>Not Sure</label></p>
+								<p><label><input type="radio" value="Not Sure" name="patientMedicalHistory.tetanusFemale"<% if (patientMedicalHistory?.tetanusFemale == "Not Sure") { %> checked="checked" <% } %>/>Not Sure</label></p>
 							<% } else { %>
 								<div><i class="icon-diagnosis small"> </i> 3 Tetanus Doses?</div>
 								
