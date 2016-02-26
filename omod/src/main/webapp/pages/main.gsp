@@ -3,8 +3,6 @@
 	ui.includeJavascript("uicommons", "moment.js")
 %>
 <script>
-	
-	
     function strReplace(word) {
         var res = word.replace("[", "");
         res=res.replace("]","");
@@ -12,15 +10,14 @@
     }
 
     jQuery(document).ready(function () {
+		jq(".dashboard-tabs").tabs();
+		
         jq('#surname').html(strReplace('${patient.names.familyName}')+',<em>surname</em>');
 		jq('#othname').html(strReplace('${patient.names.givenName}')+' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <em>other names</em>');
 		jq('#agename').html('${patient.age} years ('+ moment('${patient.birthdate}').format('DD,MMM YYYY') +')');
 		
 		jq('.tad').text('Last Visit: '+ moment('${previousVisit}').format('DD.MM.YYYY hh:mm')+' HRS');
     });
-	jq(function(){
-		jq(".dashboard-tabs").tabs();
-	});
 </script>
 
 <style>

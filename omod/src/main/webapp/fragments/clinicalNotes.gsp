@@ -344,6 +344,13 @@ jq(function(){
 	        }
 	    });
 	});
+	
+	if (!jq('.symptoms-qualifiers').text().trim() == ""){
+		jq('#task-symptom').show();
+	}
+	if (!jq('.diagnosis-container').text().trim() == ""){
+		jq('#task-diagnosis').show();
+	}
 });
 </script>
 
