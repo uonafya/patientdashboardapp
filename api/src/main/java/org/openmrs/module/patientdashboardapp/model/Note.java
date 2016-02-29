@@ -3,6 +3,7 @@ package org.openmrs.module.patientdashboardapp.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.Concept;
@@ -38,12 +39,16 @@ public class Note {
 		this.admitted = Context.getService(IpdService.class).getAdmittedByPatientId(patientId) != null;
 		this.opdLogId = opdLogId;
 		this.diagnoses = Diagnosis.getPreviousDiagnoses(patientId);
-		this.signs = Sign.getPreviousSigns(patientId);		
+		this.signs = Sign.getPreviousSigns(patientId);
+		this.physicalExamination = getPreviousPhysicalExamination(patientId);
 
 		if (diagnoses.size() > 0) {
 			this.diagnosisProvisional = true;
 		}
 	}
+
+
+	private static final String PHYSICAL_EXAMINATION_CONCEPT_NAME = "PHYSICAL EXAMINATION";
 
 	private int patientId;
 	private Integer queueId;
@@ -282,7 +287,7 @@ public class Note {
 
 	public void addPhysicalExamination(Encounter encounter, Obs obsGroup)
 	{
-		Concept conceptPhysicalExamination = Context.getConceptService().getConcept("PHYSICAL EXAMINATION");
+		Concept conceptPhysicalExamination = Context.getConceptService().getConcept(PHYSICAL_EXAMINATION_CONCEPT_NAME);
 		Obs obsPhysicalExamination = new Obs();
 		obsPhysicalExamination.setObsGroup(obsGroup);
 		obsPhysicalExamination.setConcept(conceptPhysicalExamination);
@@ -336,5 +341,25 @@ public class Note {
 			queueService.saveOpdPatientQueueLog(queueLog);
 			queueService.deleteOpdPatientQueue(queue);
 		}
+	}
+	private String getPreviousPhysicalExamination(int patientId){
+		String previousPhysicalExamination = "";
+		Patient patient = Context.getPatientService().getPatient(patientId);
+		PatientQueueService queueService = Context.getService(PatientQueueService.class);
+		Concept conceptPhysicalExamination = Context.getConceptService().getConcept(PHYSICAL_EXAMINATION_CONCEPT_NAME);
+		Encounter physicalExaminationEncounter = queueService.getLastOPDEncounter(patient);
+
+		if(physicalExaminationEncounter!=null) {
+
+			Set<Obs> allPhysicalExaminationEncounterObs = physicalExaminationEncounter.getAllObs();
+
+			for (Obs ob : allPhysicalExaminationEncounterObs) {
+				if (ob.getConcept() == conceptPhysicalExamination) {
+					previousPhysicalExamination = ob.getValueText();
+				}
+			}
+		}
+
+		return  previousPhysicalExamination;
 	}
 }

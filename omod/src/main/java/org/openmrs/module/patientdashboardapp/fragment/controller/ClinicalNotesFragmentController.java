@@ -58,7 +58,7 @@ public class ClinicalNotesFragmentController {
 				"note",
 				SimpleObject.fromObject(note, ui, "signs.id", "signs.label", "diagnoses.id", "diagnoses.label",
 						"investigations", "procedures", "patientId", "queueId",
-						"opdId", "opdLogId", "admitted", "illnessHistory", "otherInstructions").toJson());
+						"opdId", "opdLogId", "admitted", "illnessHistory", "physicalExamination", "otherInstructions").toJson());
 	}
 
     public List<SimpleObject> getQualifiers(@RequestParam("signId") Integer signId, UiUtils ui) {

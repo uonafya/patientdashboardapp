@@ -13,6 +13,7 @@ function Note(noteObj) {
 	self.frequencyOpts = ko.observableArray([]);
 	self.admitted = noteObj.admitted;
 	self.illnessHistory = noteObj.illnessHistory;
+	self.physicalExamination = noteObj.physicalExamination;
 	self.otherInstructions = noteObj.otherInstructions;
 	self.referredTo;
 	self.outcome = ko.observable();
