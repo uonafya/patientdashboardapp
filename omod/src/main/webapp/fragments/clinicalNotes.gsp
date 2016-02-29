@@ -237,7 +237,7 @@ jq(function() {
         jq.ajax({
           type: 'POST',
           url: '${ ui.actionLink("patientdashboardapp", "clinicalNoteProcessor", "processNote", [ successUrl: successUrl ]) }',
-          data :{ note: ko.toJSON(note, ["label", "id", "admitted", "diagnosisProvisional","diagnoses", "illnessHistory", "inpatientWarads", "investigations", "opdId", "opdLogId", "otherInstructions", "patientId", "procedures", "queueId", "signs", "referredTo", "outcome", "admitTo", "followUp","option"]) },
+          data :{ note: ko.toJSON(note, ["label", "id", "admitted", "diagnosisProvisional","diagnoses", "illnessHistory","physicalExamination", "inpatientWarads", "investigations", "opdId", "opdLogId", "otherInstructions", "patientId", "procedures", "queueId", "signs", "referredTo", "outcome", "admitTo", "followUp","option"]) },
           success: function (data, status, xhr) {
               var redirectUrl = xhr.getResponseHeader('Location');
               console.log(xhr.getAllResponseHeaders());
