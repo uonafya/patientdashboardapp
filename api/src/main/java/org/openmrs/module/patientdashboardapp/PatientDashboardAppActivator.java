@@ -14,14 +14,12 @@
 package org.openmrs.module.patientdashboardapp;
 
 
-import java.util.Arrays;
-import java.util.List;
 
 import org.apache.commons.logging.Log; 
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.api.context.Context;
 import org.openmrs.module.ModuleActivator;
-import org.openmrs.module.appframework.service.AppFrameworkService;
+
+
 
 /**
  * This class contains the logic that is run every time this module is either started or stopped.
@@ -56,14 +54,7 @@ public class PatientDashboardAppActivator implements ModuleActivator {
 	 */
 	public void started() {
 		log.info("patientdashboardui Module started");
-		
-		AppFrameworkService appFrameworkService = Context.getService(AppFrameworkService.class);
-		
-		List<String> apps = Arrays.asList("coreapps.activeVisits", "referenceapplication.vitals", "registrationapp.basicRegisterPatient", "coreapps.findPatient", "referenceapplication.registrationapp.registerPatient", "referenceapplication.styleGuide");
-		
-		for (String app : apps) {
-			appFrameworkService.disableApp(app);
-		}
+
 	}
 	
 	/**
