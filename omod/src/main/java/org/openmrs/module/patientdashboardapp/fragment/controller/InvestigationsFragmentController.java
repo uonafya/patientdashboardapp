@@ -2,6 +2,7 @@ package org.openmrs.module.patientdashboardapp.fragment.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.openmrs.Encounter;
@@ -54,7 +55,7 @@ public class InvestigationsFragmentController {
 				}
 				String resultDescription = obs.getConcept().getDisplayString();
 				String resultValue = obs.getValueAsString(Context.getLocale());
-				results.add(SimpleObject.create("label", resultDescription, "value", resultValue));
+				results.add(SimpleObject.create("label", resultDescription, "value", resultValue,"datePerformed",ui.formatDatePretty(encounter.getEncounterDatetime()) ));
 			}
 		}
 		return results;
