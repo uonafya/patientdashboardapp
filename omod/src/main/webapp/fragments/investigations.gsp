@@ -21,6 +21,7 @@ ui.includeJavascript("patientqueueui", "jquery.dataTables.min.js")
                 <td>${labOrder.orderer}</td>
             </tr>
         <% } %>
+
     </tbody>
 </table>
 
@@ -33,7 +34,7 @@ function format ( results ) {
         display = "NO RESULTS<br>";
     } else {
         jq.each(results, (function(index, result){
-            display += result.label + ": " + (result.value || "--") + "<br>";
+            display += result.label + ": " + (result.value || "--")+ "<br>Day Performed: "+(result.datePerformed ) + "<br>";
         }));
     }
     return display;
@@ -81,6 +82,7 @@ jq(function(){
             jq.getJSON(emr.fragmentActionLink("patientdashboardapp", "investigations", "getInvestigationResults", { "orderId": orderId, "patientId": patientId}))
             .success(function (results) {
                 row.child(format(results)).show();
+                        console.log(results);
             });
  
             // Add to the 'open' array
