@@ -439,11 +439,18 @@
 		else if (current_tab == 4){
 			NavigatorController.stepBackward();
 		}
+       
 	}
     function strReplace(word) {
         var res = word.replace("null", "");
         res=res.replace("null","");
         return res;
+    }
+    function toggleSelection(){
+		NavigatorController.getSections()[NavigatorController.getSections().length - 1]
+        NavigatorController.getSections()[0].toggleSelection();
+        NavigatorController.getQuestions()[0].toggleSelection();
+        NavigatorController.getFields()[0].toggleSelection();
     }
 </script>
 
@@ -1488,12 +1495,10 @@
 			</div>
 			
 			<div class="onerow" style="margin-top: 150px">
-				<a class="button task ui-tabs-anchor" onclick="goto_previous_tab(4);">
-					<span style="padding: 15px;">PREVIOUS</span>
-				</a>
-				
 				<input id="submit" type="submit" class="submitButton confirm right" value="FINISH" style="float:right; display:inline-block; margin-left: 5px;" />
-				<input id="cancelSubmission" class="cancel" type="button" value="RESET" style="float:right; display:inline-block;" onclick="location.reload();"/>
+                <a class="button cancel" onclick=" toggleSelection();">
+                    <span style="padding: 15px;">REVIEW</span>
+                </a>
 			</div>
 		</div>
 	</form>
