@@ -146,7 +146,7 @@
 	}
 </style>
 
-<openmrs:require privilege="Triage Queue" otherwise="/login.htm" redirect="/module/patientqueueui/queue.page?app=patientdashboardapp.triage"/>
+<openmrs:require privilege="Triage Queue" otherwise="/login.htm" redirect="/module/patientqueueapp/queue.page?app=patientdashboardapp.triage"/>
 <openmrs:globalProperty key="hospitalcore.hospitalName" defaultValue="ddu" var="hospitalName"/>
 
 <div class="clear"></div>
@@ -159,7 +159,7 @@
 			</li>
 			<li>
 				<i class="icon-chevron-right link"></i>
-				<a href="${ui.pageLink('patientqueueui','queue', [app:'patientdashboardapp.opdqueue'])}">OPD</a>
+				<a href="${ui.pageLink('patientqueueapp','opdQueue', [app:'patientdashboardapp.opdqueue'])}">OPD</a>
 			</li>
 			<li>
 				<i class="icon-chevron-right link"></i>

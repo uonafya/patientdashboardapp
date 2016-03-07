@@ -13,7 +13,7 @@
     ui.includeJavascript("uicommons", "navigator/exitHandlers.js", Integer.MAX_VALUE - 22)
 	ui.includeJavascript("patientdashboardapp", "knockout-3.4.0.js")
 	
-    def successUrl = ui.pageLink("patientqueueui", "chooseOpd")
+    def successUrl = ui.pageLink("patientqueueapp", "opdQueue", [app:'patientdashboardapp.opdqueue'])
 %>
 <script>
 var jq = jQuery,
@@ -242,7 +242,7 @@ jq(function() {
               var redirectUrl = xhr.getResponseHeader('Location');
               console.log(xhr.getAllResponseHeaders());
               console.log(redirectUrl);
-              window.location.href = '${ui.pageLink("patientqueueui", "queue", [app: "patientdashboardapp.opdqueue"])}';
+              window.location.href = '${ui.pageLink("patientqueueapp", "opdQueue", [app: "patientdashboardapp.opdqueue"])}';
           }
         });
     });

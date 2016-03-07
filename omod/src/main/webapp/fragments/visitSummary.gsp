@@ -120,40 +120,33 @@
     <div id=""></div>
 </div>
 
-
-
 <script id="visit-detail-template" type="text/template">
-	<div class="info-section">
-		<div class="info-header">
-			<i class="icon-user-md"></i>
-			<h3>CLINICAL HISTORY SUMMARY INFORMATION</h3>
-		</div>
-		
-		<div class="info-body">
-			<label><span class='status active'></span>History:</label>
-			<span>{{-history}}</span>
-			<br>
-			
-			<label><span class="status active"></span>Symptoms:</label>
-			<span>{{-symptoms}}</span>
-			<br>
-			
-			<label><span class="status active"></span>Diagnosis:</label>
-			<span>{{-diagnosis}}</span>
-			<br>
-			
-			<label><span class="status active"></span>Investigations:</label>
-			<span>{{-investigations}}</span>
-			<br>
-			
-			<label><span class="status active"></span>Procedures:</label>
-			<span>{{-procedures}}</span>
-			<br>
-		</div>
+	<div class="info-header">
+		<i class="icon-user-md"></i>
+		<h3>CLINICAL HISTORY SUMMARY INFORMATION</h3>
 	</div>
-			
 	
-    
+	<div class="info-body">
+		<label><span class='status active'></span>History:</label>
+		<span>{{-history}}</span>
+		<br>
+		
+		<label><span class="status active"></span>Symptoms:</label>
+		<span>{{-symptoms}}</span>
+		<br>
+		
+		<label><span class="status active"></span>Diagnosis:</label>
+		<span>{{-diagnosis}}</span>
+		<br>
+		
+		<label><span class="status active"></span>Investigations:</label>
+		<span>{{-investigations}}</span>
+		<br>
+		
+		<label><span class="status active"></span>Procedures:</label>
+		<span>{{-procedures}}</span>
+		<br>
+	</div>
 </script>
 
 <script id="drugs-template" type="text/template">
