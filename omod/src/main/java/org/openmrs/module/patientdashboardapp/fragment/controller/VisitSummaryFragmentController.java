@@ -41,6 +41,8 @@ public class VisitSummaryFragmentController {
         List<Encounter> encounters = dashboardService.getEncounter(patient, location, labOPDType, null);
         
         List<VisitSummary> visitSummaries = new ArrayList<VisitSummary>();
+
+        int i=0;
         
         for (Encounter enc : encounters) {
             VisitSummary visitSummary = new VisitSummary();
@@ -54,6 +56,12 @@ public class VisitSummaryFragmentController {
                 }
             }
             visitSummaries.add(visitSummary);
+
+            i++;
+
+            if (i >=20){
+                break;
+            }
         }
         model.addAttribute("patient", patient);
         model.addAttribute("visitSummaries", visitSummaries);

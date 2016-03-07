@@ -1,6 +1,7 @@
 <% 
 	ui.decorateWith("appui", "standardEmrPage", [title: "OPD Dashboard"]);
-	ui.includeJavascript("uicommons", "moment.js")
+	
+	ui.includeJavascript("billingui", "moment.js")
 %>
 <script>
     function strReplace(word) {
@@ -130,6 +131,18 @@
 	.simple-form-ui section.focused {
 		width: 74.6%;
 		min-height: 400px;
+	}
+	.col15 {
+		min-width: 22%;
+		max-width: 22%;
+		float: left;
+		display: inline-block;
+	}
+	.col16 {
+		min-width: 56%;
+		max-width: 56%;
+		float: left;
+		display: inline-block;
 	}
 </style>
 

@@ -7,8 +7,6 @@
 	jq(document).ready(function () {
 		jq('#vistdate').html(moment('${previousVisit}').format('DD MMM YYYY')+'<br/> &nbsp; &nbsp; (Active since '+moment('${previousVisit}').format('hh:mm')+' hrs)');
     });
-
-
 </script>
 
 <style>
@@ -38,20 +36,6 @@
 		border-image: none;
 		border-style: solid solid solid solid;
 		border-width: 1px 1px 1px medium;
-	}
-
-	.col15 {
-		min-width: 22%;
-		max-width: 22%;
-		float: left;
-		display: inline-block;
-	}
-
-	.col16 {
-		min-width: 56%;
-		max-width: 56%;
-		float: left;
-		display: inline-block;
 	}
 
 	.dashboard .info-body label {
