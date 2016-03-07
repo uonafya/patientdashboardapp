@@ -181,7 +181,7 @@ public class TriagePageController {
 		if (StringUtils.isBlank(returnUrl)) {
 			Map<String,Object> params = new HashMap<String, Object>();
 			params.put("app", "patientdashboardapp.triage");
-			returnUrl = ui.pageLink("patientqueueui", "queue", params);
+			returnUrl = ui.pageLink("patientqueueapp", "triageQueue", params);
 		}
 		return "redirect:" + returnUrl;
 	}
