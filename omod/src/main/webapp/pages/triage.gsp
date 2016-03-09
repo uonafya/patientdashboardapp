@@ -330,12 +330,10 @@
 		jq('.col5 input:radio').each(function() {
 		  var name = jq(this).attr("name");
 		  if(jq("input:radio[name='"+name+"']:checked").length == 0){
-			if (name.indexOf('familyHistory') !== -1 ) {
-			  jq("input[name='"+name+"'][value='Alive']").attr('checked', 'checked').change();
-			}
-			else {
-			  jq("input[name='"+name+"'][value='No']").attr('checked', 'checked').change();
-			}
+			
+		  }
+		  else if(jq("input:radio[name='"+name+"']:checked").val() == "Yes") {
+			jq("input[name='"+name+"'][value='Yes']").attr('checked', 'checked').change();
 		  }
 		});
 		
@@ -607,6 +605,9 @@
 	}
 	.small{
 		font-size: 10px;
+	}
+	.col6{
+		display: none;
 	}
 </style>
 
