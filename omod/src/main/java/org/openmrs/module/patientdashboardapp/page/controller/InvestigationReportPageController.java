@@ -2,12 +2,16 @@ package org.openmrs.module.patientdashboardapp.page.controller;
 
 import org.openmrs.*;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.appui.UiSessionContext;
 import org.openmrs.module.hospitalcore.LabService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.Lab;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.openmrs.module.patientdashboardapp.global.Node;
+import org.openmrs.module.referenceapplication.ReferenceApplicationWebConstants;
+import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.page.PageModel;
+import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -22,9 +26,16 @@ import java.util.*;
  * Created by VICTOR AND FRANCIS on 10/12/2015.
  */
 public class InvestigationReportPageController {
-    public void get(@RequestParam("patientId") Integer patientId,@RequestParam(value="date", required=false) String date, PageModel model){
+    public void get(
+            UiSessionContext sessionContext,
+            PageModel model,
+            PageRequest pageRequest,
+            UiUtils ui,
+            @RequestParam("patientId") Integer patientId,
+            @RequestParam(value="date", required=false) String date){
+        pageRequest.getSession().setAttribute(ReferenceApplicationWebConstants.SESSION_ATTRIBUTE_REDIRECT_URL,ui.thisUrl());
+        sessionContext.requireAuthentication();
         model.addAttribute("patientId",patientId);
-
         PatientDashboardService dashboardService =  Context.getService(PatientDashboardService.class);
         String orderLocationId = "1";
         Location location = StringUtils.hasText(orderLocationId) ? Context.getLocationService().getLocation(Integer.parseInt(orderLocationId)) : null;
