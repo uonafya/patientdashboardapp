@@ -337,7 +337,8 @@ public class Note {
 			queueLog.setEncounter(encounter);
 			queueLog.setCategory(queue.getCategory());
 			queueLog.setVisitStatus(queue.getVisitStatus());
-				
+			queueLog.setTriageDataId(queue.getTriageDataId());
+
 			queueService.saveOpdPatientQueueLog(queueLog);
 			queueService.deleteOpdPatientQueue(queue);
 		}
