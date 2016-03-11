@@ -31,6 +31,13 @@
 		<require_module version="1.5.1">
 			org.openmrs.module.hospitalcore
 		</require_module>
+
+		<require_module version="1.4">
+			org.openmrs.module.appui
+		</require_module>
+		<require_module version="1.0.1">
+			org.openmrs.module.referenceapplication
+		</require_module>
 			
 	</require_modules>
 	<!-- / Required Modules -->

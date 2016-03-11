@@ -18,6 +18,7 @@ import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.appui.UiSessionContext;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
@@ -34,20 +35,26 @@ import org.openmrs.module.patientdashboardapp.patienthistory.PatientDrugHistoryS
 import org.openmrs.module.patientdashboardapp.patienthistory.PatientFamilyHistorySaveHandler;
 import org.openmrs.module.patientdashboardapp.patienthistory.PatientMedicalHistorySaveHandler;
 import org.openmrs.module.patientdashboardapp.patienthistory.PatientPersonalHistorySaveHandler;
+import org.openmrs.module.referenceapplication.ReferenceApplicationWebConstants;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.annotation.BindParams;
 import org.openmrs.ui.framework.page.PageModel;
+import org.openmrs.ui.framework.page.PageRequest;
 import org.openmrs.ui.framework.session.Session;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public class TriagePageController {
 	public void get(
+			UiSessionContext sessionContext,
+			PageModel model,
+			PageRequest pageRequest,
+			UiUtils ui,
 			@RequestParam("patientId") Patient patient,
 			@RequestParam("queueId") Integer queueId,
 			@RequestParam(value = "opdId", required = false) Integer opdId,
-			@RequestParam(value = "returnUrl", required = false) String returnUrl,
-			PageModel model) {
-
+			@RequestParam(value = "returnUrl", required = false) String returnUrl) {
+		pageRequest.getSession().setAttribute(ReferenceApplicationWebConstants.SESSION_ATTRIBUTE_REDIRECT_URL,ui.thisUrl());
+		sessionContext.requireAuthentication();
 		PatientQueueService patientQueueService = Context.getService(PatientQueueService.class);
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 		TriagePatientQueue triagePatientQueue = patientQueueService.getTriagePatientQueueById(queueId);
