@@ -55,7 +55,7 @@ public class InvestigationsFragmentController {
 				}
 				String resultDescription = obs.getConcept().getDisplayString();
 				String resultValue = obs.getValueAsString(Context.getLocale());
-				results.add(SimpleObject.create("label", resultDescription, "value", resultValue,"datePerformed",ui.formatDatePretty(encounter.getEncounterDatetime()) ));
+				results.add(SimpleObject.create("label", resultDescription, "value", resultValue,"datePerformed",ui.formatDatetimePretty(encounter.getEncounterDatetime()) ));
 			}
 		}
 		return results;
