@@ -62,6 +62,11 @@ var mappedDiagnoses = jq.map(getJSON(previousNote.diagnoses), function(diagnosis
 });
 note.diagnoses(mappedDiagnoses);
 
+//final diagnoses are never returned
+if (mappedDiagnoses.length > 0) {
+	note.diagnosisProvisional("true");
+}
+
 var mappedInvestigations = jq.map(getJSON(previousNote.investigations), function(investigation) {
     return new Investigation(investigation);
 });
