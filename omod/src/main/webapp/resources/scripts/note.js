@@ -142,7 +142,7 @@ function Procedure(procedureObj) {
 }
 
 function Drug() {
-	this.name = ko.observable();
+	this.drugName = ko.observable();
 	this.frequencyOpts = ko.observableArray([]);
 	this.frequency = ko.observable();
 	this.formulationOpts = ko.observableArray([]);
@@ -163,8 +163,8 @@ function Formulation(formulationObj) {
 
 function Outcome(outcomeObj) {
 	this.option = new Option(outcomeObj.id,outcomeObj.label);
-	this.followUp = outcomeObj.followUp;
-	this.admitTo = outcomeObj.adminTo;
+	this.followUpDate = outcomeObj.followUpDate;
+	this.admitTo = outcomeObj.admitTo;
 
 	this.updateOutcome = function(data) {
 		note.outcome(this);

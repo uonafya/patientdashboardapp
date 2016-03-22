@@ -242,7 +242,15 @@ jq(function() {
         jq.ajax({
           type: 'POST',
           url: '${ ui.actionLink("patientdashboardapp", "clinicalNoteProcessor", "processNote", [ successUrl: successUrl ]) }',
-          data :{ note: ko.toJSON(note, ["label", "id", "admitted", "diagnosisProvisional","diagnoses", "illnessHistory","physicalExamination", "inpatientWarads", "investigations", "opdId", "opdLogId", "otherInstructions", "patientId", "procedures", "queueId", "signs", "referredTo", "outcome", "admitTo", "followUp","option"]) },
+          data :{ note: ko.toJSON(note, 
+                  ["label", "id", "admitted", "diagnosisProvisional",
+                   "diagnoses", "illnessHistory", "physicalExamination",
+                   "inpatientWarads", "investigations", "opdId",
+                   "opdLogId", "otherInstructions", "patientId",
+                   "procedures", "queueId", "signs", "referredTo",
+                   "outcome", "admitTo", "followUpDate", "option",
+                   "drugs", "comment", "formulation", "frequency", 
+                   "drugName", "numberOfDays"]) },
           success: function (data, status, xhr) {
               var redirectUrl = xhr.getResponseHeader('Location');
               console.log(xhr.getAllResponseHeaders());
@@ -740,7 +748,7 @@ jq(function(){
                     </thead>
                     <tbody data-bind="foreach: drugs">
                         <tr>
-                            <td data-bind="text: name"></td>
+                            <td data-bind="text: drugName"></td>
                             <td data-bind="text: formulation().label"></td>
                             <td data-bind="text: frequency().label"></td>
                             <td data-bind="text: numberOfDays"></td>
@@ -804,7 +812,7 @@ jq(function(){
                             <label data-bind="text: option.label"></label>
                             <span data-bind="if: \$data.option.id === 1 && \$root.outcome() && \$root.outcome().option.id === 1">
                                 <span id="follow-up-date" class="date">
-                                    <input data-bind="value : followUp" >
+                                    <input data-bind="value : followUpDate" >
                                     <span class="add-on"><i class="icon-calendar small"></i></span>
                                 </span>
                             </span>
@@ -844,7 +852,7 @@ jq(function(){
         <ul>
             <li>
                 <span>Drug</span>
-                <input class="drug-name" type="text" data-bind="value: prescription.drug().name, valueUpdate: 'blur'" >
+                <input class="drug-name" type="text" data-bind="value: prescription.drug().drugName, valueUpdate: 'blur'" >
             </li>
             <li>
                 <span>Formulation</span>

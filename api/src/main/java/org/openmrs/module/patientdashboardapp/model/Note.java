@@ -259,6 +259,10 @@ public class Note {
 		if (referredTo != null) {
 			Referral.addReferralObs(referredTo, opdId, encounter, obsGroup);
 		}
+
+		if (this.outcome != null) {
+			this.outcome.addObs(encounter, obsGroup);
+		}
 	}
 	
 	private void addIllnessHistory(Encounter encounter, Obs obsGroup) {
@@ -300,7 +304,7 @@ public class Note {
 
 	private void saveNoteDetails(Encounter encounter) {
 		for (Drug drug : this.drugs) {
-			String referralWardName = Context.getService(PatientQueueService.class).getOpdPatientQueueById(this.opdId)
+			String referralWardName = Context.getService(PatientQueueService.class).getOpdPatientQueueById(this.queueId)
 					.getReferralConceptName();
 			drug.save(encounter, referralWardName);
 		}
