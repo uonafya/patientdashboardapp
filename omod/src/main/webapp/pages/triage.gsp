@@ -716,7 +716,7 @@
 						</div>
 
 						<div class="col4 last">
-							<% if (patient.age >= 18) { %>
+							<% if (patient.age >= 2) { %>
 							<p>
 								<div class="bmi"></div>
 							</p>
