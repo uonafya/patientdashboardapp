@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Hibernate;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Encounter;
@@ -41,6 +42,7 @@ import org.openmrs.ui.framework.annotation.BindParams;
 import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.openmrs.ui.framework.session.Session;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public class TriagePageController {
@@ -58,7 +60,7 @@ public class TriagePageController {
 		PatientQueueService patientQueueService = Context.getService(PatientQueueService.class);
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 		TriagePatientQueue triagePatientQueue = patientQueueService.getTriagePatientQueueById(queueId);
-		if (triagePatientQueue != null) {
+		if (triagePatientQueue != null && triagePatientQueue.getPatient().equals(patient)) {
 			triagePatientQueue.setStatus(Context.getAuthenticatedUser().getGivenName() + " Processing");
 			patientQueueService.saveTriagePatientQueue(triagePatientQueue);
 		}
@@ -82,7 +84,7 @@ public class TriagePageController {
 		model.addAttribute("queueId", queueId);
 		model.addAttribute("opdId", opdId);
 		OpdPatientQueue opdPatientQueue = patientQueueService.getOpdPatientQueueById(queueId);
-		model.addAttribute("inOpdQueue", opdPatientQueue != null && opdPatientQueue.getPatient().equals(triagePatientQueue.getPatient()));
+		model.addAttribute("inOpdQueue", opdPatientQueue != null && opdPatientQueue.getPatient().equals(patient));
 		model.addAttribute("returnUrl", returnUrl);
 
 		if (opdPatientQueue != null){
@@ -150,7 +152,7 @@ public class TriagePageController {
 		String triageEncounterType = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_TRIAGE_ENCOUTNER_TYPE);
 		EncounterType encounterType = Context.getEncounterService().getEncounterType(triageEncounterType);
 
-		if (queue != null) {
+		if (queue != null && queue.getPatient().getId() == patientId) {
 			Encounter encounter = new Encounter();
 			Date date = new Date();
 			encounter.setPatient(queue.getPatient());

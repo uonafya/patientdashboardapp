@@ -371,7 +371,6 @@
 			
 			while (jQuery(':focus') != jQuery('#bloodGroup-field')) {
 				if (currents == jQuery(':focus').attr('id')){
-					//NavigatorController.stepForward();
 					break;
 				}
 				else {
@@ -702,7 +701,7 @@
 					<div class="onerow">
 						<div class="col4">
 							<p class="left">
-								<input id="weight-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="triagePatientData.weight">
+								<input id="weight-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.weight?:''}" name="triagePatientData.weight">
 								<span class="append-to-value">kg</span>
 								<span id="fr1139" class="field-error" style="display: none"></span>
 							</p>
@@ -710,7 +709,7 @@
 
 						<div class="col4">
 							<p class="left">
-								<input id="height-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="triagePatientData.height">
+								<input id="height-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.height?:''}" name="triagePatientData.height">
 								<span class="append-to-value">cm</span>
 								<span id="fr9875" class="field-error" style="display: none"></span>
 							</p>
@@ -744,7 +743,7 @@
 					<div class="onerow">
 						<div class="col4">
 							<p>
-								<input id="muac-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="triagePatientData.mua">
+								<input id="muac-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.mua?:''}" name="triagePatientData.mua">
 								<span class="append-to-value">cm</span>
 								<span id="fr801" class="field-error" style="display: none"></span>
 							</p>
@@ -752,7 +751,7 @@
 
 						<div class="col4">
 							<p>
-								<input id="chest-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="triagePatientData.chest">
+								<input id="chest-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.chest?:''}" name="triagePatientData.chest">
 								<span class="append-to-value">cm</span>
 								<span id="fr3193" class="field-error" style="display: none"></span>
 							</p>
@@ -760,7 +759,7 @@
 
 						<div class="col4 last">
 							<p>
-								<input id="abdominal-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="triagePatientData.abdominal">
+								<input id="abdominal-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.abdominal?:''}" name="triagePatientData.abdominal">
 								<span class="append-to-value">cm</span>
 								<span id="fr76" class="field-error" style="display: none"></span>
 							</p>
@@ -786,7 +785,7 @@
 					<div class="onerow">
 						<div class="col4">
 							<p>
-								<input id="temperature-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="triagePatientData.temperature">
+								<input id="temperature-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.temperature?:''}" name="triagePatientData.temperature">
 								<span class="append-to-value">..&#8451;</span>
 								<span id="fr8998" class="field-error" style="display: none"></span>
 							</p>
@@ -794,14 +793,14 @@
 
 						<div class="col4">
 							<p>
-								<input id="systolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="" name="triagePatientData.systolic">
+								<input id="systolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="${vitals?.systolic?:''}" name="triagePatientData.systolic">
 								<span id="fr5882" class="field-error" style="display: none"></span>
 							</p>
 						</div>
 
 						<div class="col4 last">
 							 <p>
-								<input id="diastolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="" name="triagePatientData.diastolic">
+								<input id="diastolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="${vitals?.daistolic?:''}" name="triagePatientData.daistolic">
 								<span id="fr9945" class="field-error" style="display: none"></span>
 							</p>
 						</div>
@@ -826,14 +825,14 @@
 					<div class="onerow">
 						<div class="col4">
 							<p>
-								<input id="resp-rate-field" class="numeric-range focused" type="text" max="999" min="0" maxlength="7" value="" name="triagePatientData.respiratoryRate">
+								<input id="resp-rate-field" class="numeric-range focused" type="text" max="999" min="0" maxlength="7" value="${vitals?.respiratoryRate?:''}" name="triagePatientData.respiratoryRate">
 								<span id="fr1753" class="field-error" style="display: none"></span>
 							</p>
 						</div>
 						
 						<div class="col4">
 							<p>
-								<input id="pulse-rate-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="" name="triagePatientData.pulsRate">
+								<input id="pulse-rate-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.pulsRate?:''}" name="triagePatientData.pulsRate">
 								<span id="fr8917" class="field-error" style="display: none"></span>
 							</p>
 						</div>
@@ -843,8 +842,8 @@
 							${ui.includeFragment("uicommons", "field/datetimepicker", [
 								id: 'datetime',
 								label: '',
-								formFieldName: 'lastMenstrualDate',
-								initialValue: vitals?.lastMenstrualDate,
+								formFieldName: 'triagePatientData.lastMenstrualDate',
+								initialValue: vitals?.lastMenstrualDate?:'',
 								useTime: false,
 								defaultToday: false,
 								endDate: new Date()])

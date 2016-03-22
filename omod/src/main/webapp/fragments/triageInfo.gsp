@@ -108,10 +108,6 @@
 					<i class="icon-time"></i>
 					<span id="vistdate">2 Mar 2017<br> &nbsp; &nbsp; (Active since 04:10 PM)</span>
 				</span>
-				<span class="menu-title">
-					<i class="icon-stethoscope"></i>
-					No diagnosis yet.
-				</span>
 				<span class="arrow-border"></span>
 				<span class="arrow"></span>
 			</li>
@@ -212,8 +208,7 @@
 				<br>
 				
 				<h3> &nbsp; Triage Actions</h3>
-				<a><li> <i class="icon-edit"></i> Edit Triage</li></a>
-				<a><li><i class="icon-link"></i> Merge Details</li></a>
+				<a href="${ ui.pageLink("patientdashboardapp", "triage", [patientId: patientId, opdId: opdId, queueId: queueId, returnUrl: returnUrl]) }"><li> <i class="icon-edit"></i> Edit Triage</li></a>
 				
 				<br/>
 				<br/>
