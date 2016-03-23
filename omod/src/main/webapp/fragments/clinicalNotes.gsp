@@ -568,15 +568,7 @@ jq(function(){
 <form method="post" id="notes-form" class="simple-form-ui">
     <section>
         <span class="title">Clinical Notes</span>
-        <fieldset class="no-confirmation">
-            <legend>Illness History</legend>
-            <p>
-                <label for="history">History of Presenting illness</label>
-                <textarea data-bind="value: \$root.illnessHistory" id="history" name="history" rows="10" cols="74"></textarea>
-            </p>
-        </fieldset>
-		
-		
+
         <fieldset class="no-confirmation">
             <legend>Symptoms</legend>
                 <p class="input-position-class">
@@ -585,44 +577,51 @@ jq(function(){
                 </p>
 
                 <div class="tasks" id="task-symptom" style="display:none;">
-					<header class="tasks-header">
-						<span id="title-symptom" class="tasks-title">PATIENT'S SYMPTOMS</span>
-						<a class="tasks-lists"></a>
-					</header>
-					
-					<div class="symptoms-qualifiers" data-bind="foreach: signs" >
-						<div class="symptom-container">
-							<div class="symptom-label">
-								<span class="right pointer show-qualifiers"><i class="icon-caret-down small" title="more"></i></span>
-								<span class="right pointer" data-bind="click: \$root.removeSign"><i class="icon-remove small"></i></span>
-								<span data-bind="text: label"></span>
-							</div>
-							
-							<div class="qualifier-container" style="display: none;">
-								<ul class="qualifier" data-bind="foreach: qualifiers">
-									<li>
-										<span data-bind="text: label"></span>
-										<div data-bind="if: options().length >= 1">
-											<div data-bind="foreach: options" class="qualifier-option">
-												<p class="qualifier-field">
-													<input type="radio" data-bind="checkedValue: \$data, checked: \$parent.answer" >
-													<label data-bind="text: label"></label>
-												</p>
-											</div>
-										</div>
-										<div data-bind="if: options().length === 0" >
-											<p>
-												<input type="text" data-bind="value: \$parent.freeText" >
-											</p>
-										</div>
-									</li>
-								</ul>
-							</div> 
-						</div>
-					</div>
-				</div>
+                    <header class="tasks-header">
+                        <span id="title-symptom" class="tasks-title">PATIENT'S SYMPTOMS</span>
+                        <a class="tasks-lists"></a>
+                    </header>
+                    
+                    <div class="symptoms-qualifiers" data-bind="foreach: signs" >
+                        <div class="symptom-container">
+                            <div class="symptom-label">
+                                <span class="right pointer show-qualifiers"><i class="icon-caret-down small" title="more"></i></span>
+                                <span class="right pointer" data-bind="click: \$root.removeSign"><i class="icon-remove small"></i></span>
+                                <span data-bind="text: label"></span>
+                            </div>
+                            
+                            <div class="qualifier-container" style="display: none;">
+                                <ul class="qualifier" data-bind="foreach: qualifiers">
+                                    <li>
+                                        <span data-bind="text: label"></span>
+                                        <div data-bind="if: options().length >= 1">
+                                            <div data-bind="foreach: options" class="qualifier-option">
+                                                <p class="qualifier-field">
+                                                    <input type="radio" data-bind="checkedValue: \$data, checked: \$parent.answer" >
+                                                    <label data-bind="text: label"></label>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div data-bind="if: options().length === 0" >
+                                            <p>
+                                                <input type="text" data-bind="value: \$parent.freeText" >
+                                            </p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
         </fieldset>
-		
+
+        <fieldset class="no-confirmation">
+            <legend>Illness History</legend>
+            <p>
+                <label for="history">History of Presenting illness</label>
+                <textarea data-bind="value: \$root.illnessHistory" id="history" name="history" rows="10" cols="74"></textarea>
+            </p>
+        </fieldset>
 		
         <fieldset class="no-confirmation">
             <legend>Physical Examination</legend>
