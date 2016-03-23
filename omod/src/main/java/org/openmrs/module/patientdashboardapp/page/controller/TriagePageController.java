@@ -152,7 +152,7 @@ public class TriagePageController {
 		String triageEncounterType = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_TRIAGE_ENCOUTNER_TYPE);
 		EncounterType encounterType = Context.getEncounterService().getEncounterType(triageEncounterType);
 
-		if (queue != null && queue.getPatient().getId() == patientId) {
+		if (queue != null && queue.getPatient().getId().equals(patientId)) {
 			Encounter encounter = new Encounter();
 			Date date = new Date();
 			encounter.setPatient(queue.getPatient());
