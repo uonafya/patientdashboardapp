@@ -132,7 +132,7 @@
 				<span>${triage?.weight?:"Not Captured"}</span>
 				<br>
 				
-				<% if (patient.age > 18)  {%>
+				<% if (patient.age >= 2)  {%>
 					<label><span class="status active"></span>BMI:</label>
 					<span>${(triage && triage.weight && triage.height) ? triage?.weight/((triage?.height/100) * (triage?.height/100)) : "" }</span>
 					<br>
