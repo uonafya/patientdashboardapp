@@ -292,6 +292,9 @@ public class Note {
 	public void addPhysicalExamination(Encounter encounter, Obs obsGroup)
 	{
 		Concept conceptPhysicalExamination = Context.getConceptService().getConcept(PHYSICAL_EXAMINATION_CONCEPT_NAME);
+		if (conceptPhysicalExamination == null) {
+			throw new NullPointerException("Physical examination concept is not defined");
+		}
 		Obs obsPhysicalExamination = new Obs();
 		obsPhysicalExamination.setObsGroup(obsGroup);
 		obsPhysicalExamination.setConcept(conceptPhysicalExamination);

@@ -239,6 +239,8 @@ jq(function() {
 
     jq(".submitButton").on("click", function(event){
         event.preventDefault();
+        jq().toastmessage({sticky : true});
+        var savingMessage = jq().toastmessage('showNoticeToast', 'Saving...');
         jq.ajax({
           type: 'POST',
           url: '${ ui.actionLink("patientdashboardapp", "clinicalNoteProcessor", "processNote", [ successUrl: successUrl ]) }',
@@ -251,12 +253,23 @@ jq(function() {
                    "outcome", "admitTo", "followUpDate", "option",
                    "drugs", "comment", "formulation", "frequency", 
                    "drugName", "numberOfDays"]) },
-          success: function (data, status, xhr) {
-              var redirectUrl = xhr.getResponseHeader('Location');
-              console.log(xhr.getAllResponseHeaders());
-              console.log(redirectUrl);
-              window.location.href = '${ui.pageLink("patientqueueapp", "opdQueue", [app: "patientdashboardapp.opdqueue"])}';
-          }
+          dataType: 'json'
+        })
+        .done(function(data) {
+            jq().toastmessage('removeToast', savingMessage);
+            if (data.status == "success") {
+                jq().toastmessage('showNoticeToast', 'Saved!');
+                var redirectUrl = xhr.getResponseHeader('Location');
+                console.log(xhr.getAllResponseHeaders());
+                console.log(redirectUrl);
+                window.location.href = '${ui.pageLink("patientqueueapp", "opdQueue", [app: "patientdashboardapp.opdqueue"])}';
+            } else if (data.status == "fail") {
+                jq().toastmessage('showErrorToast', data.message);
+            }
+        })
+        .fail(function(data){
+            jq().toastmessage('removeToast', savingMessage);
+            jq().toastmessage('showErrorToast', "An error occurred while saving. Please contact your system administrator");
         });
     });
 

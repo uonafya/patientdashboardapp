@@ -8,6 +8,7 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.openmrs.module.patientdashboardapp.model.Note;
+import org.openmrs.ui.framework.SimpleObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +16,7 @@ public class ClinicalNoteProcessorFragmentController {
 
 	private static Logger log = LoggerFactory.getLogger(ClinicalNoteProcessorFragmentController.class);
 
-	public void processNote(HttpServletRequest request) {
+	public SimpleObject processNote(HttpServletRequest request) {
 		String noteJSON = request.getParameter("note");
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -23,11 +24,19 @@ public class ClinicalNoteProcessorFragmentController {
 			note.save();
 		} catch (JsonParseException e) {
 			log.error("Unable to parse JSON string: {}.\n Error: {}", new Object[] { noteJSON, e.getMessage() });
+			return SimpleObject.create("status", "fail", "message", e.getMessage());
 		} catch (JsonMappingException e) {
 			log.error("Unable to map JSON string: {}, to class Note.java.\n Error: {}", new Object[] { noteJSON, e.getMessage() });
+			return SimpleObject.create("status", "fail", "message", e.getMessage());
 		} catch (IOException e) {
 			log.error(e.getMessage());
+			return SimpleObject.create("status", "fail", "message",e.getMessage());
+		} catch (NullPointerException npe) {
+			log.error(npe.getMessage());
+			return SimpleObject.create("status", "fail", "message", npe.getMessage());
 		}
+		
+		return SimpleObject.create("status", "success");
 	}
 
 }
