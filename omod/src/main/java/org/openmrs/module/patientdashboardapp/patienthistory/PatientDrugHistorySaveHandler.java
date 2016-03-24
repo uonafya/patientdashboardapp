@@ -49,6 +49,7 @@
             if(StringUtils.isNotBlank(updatedPatientDrugHistory.getInvasiveContraceptionName())){
                 patientDrugHistory.setInvasiveContraceptionName(updatedPatientDrugHistory.getInvasiveContraceptionName());
             }
+
             patientQueueService.savePatientDrugHistory(patientDrugHistory);
 
         }
