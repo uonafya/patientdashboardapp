@@ -57,11 +57,11 @@ public class Outcome {
 
     public static List<Option> getAvailableOutcomes() {
         List<Option> options = new ArrayList<Option>();
-        options.add(new Option(FOLLOW_UP_OPTION, "Follow-up"));
+        options.add(new Option(REVIEWED_OPTION, "Reviewed"));
+        options.add(new Option(CURED_OPTION, "Discharged"));
+        options.add(new Option(FOLLOW_UP_OPTION, "Next Appointment Date"));
         options.add(new Option(ADMIT_OPTION, "Admit"));
         options.add(new Option(DIED_OPTION, "Died"));
-        options.add(new Option(REVIEWED_OPTION, "Reviewed"));
-        options.add(new Option(CURED_OPTION, "Cured"));
         return options;
     }
 
