@@ -11,7 +11,9 @@
     public class PatientFamilyHistorySaveHandler {
         private static PatientFamilyHistory patientFamilyHistory;
         public static void save(PatientFamilyHistory updatedPatientFamilyHistory, Integer patientId) {
+
             PatientQueueService patientQueueService = Context.getService(PatientQueueService.class);
+
             patientFamilyHistory = patientQueueService.getPatientFamilyHistoryByPatientId(patientId) == null ? new PatientFamilyHistory(): patientQueueService.getPatientFamilyHistoryByPatientId(patientId);
             if (patientFamilyHistory.getPatientId() == null) {
                 patientFamilyHistory.setPatientId(patientId);
@@ -46,6 +48,7 @@
             if (StringUtils.isNotBlank(updatedPatientFamilyHistory.getFamilyIllnessHistory())){
                 patientFamilyHistory.setFamilyIllnessHistory(updatedPatientFamilyHistory.getFamilyIllnessHistory());
             }
+
             patientQueueService.savePatientFamilyHistory(patientFamilyHistory);
         }
 
