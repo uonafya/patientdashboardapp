@@ -259,9 +259,6 @@ jq(function() {
             jq().toastmessage('removeToast', savingMessage);
             if (data.status == "success") {
                 jq().toastmessage('showNoticeToast', 'Saved!');
-                var redirectUrl = xhr.getResponseHeader('Location');
-                console.log(xhr.getAllResponseHeaders());
-                console.log(redirectUrl);
                 window.location.href = '${ui.pageLink("patientqueueapp", "opdQueue", [app: "patientdashboardapp.opdqueue"])}';
             } else if (data.status == "fail") {
                 jq().toastmessage('showErrorToast', data.message);
