@@ -68,23 +68,23 @@
 			
 			<div class="info-body">
 				<label><span class="status active"></span>History:</label>
-				<span>xx</span>
+				<span>N/A</span>
 				<br>
 				
 				<label><span class="status active"></span>Symptoms:</label>
-				<span>xx</span>
+				<span>N/A</span>
 				<br>
 				
 				<label><span class="status active"></span>Diagnosis:</label>
-				<span>xx</span>
+				<span>N/A</span>
 				<br>
 				
 				<label><span class="status active"></span>Investigations:</label>
-				<span>xx</span>
+				<span>N/A</span>
 				<br>
 				
 				<label><span class="status active"></span>Procedures:</label>
-				<span>xx</span>
+				<span>N/A</span>
 				<br>
 			</div>
 		</div>
