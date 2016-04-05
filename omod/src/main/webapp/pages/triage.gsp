@@ -19,6 +19,8 @@
 
 <script>
 	var NavigatorController;
+
+
 	var emrMessages = {};
 
 	emrMessages["numericRangeHigh"] = "value should be less than {0}";
@@ -363,92 +365,74 @@
 			console.log("BMI " + bmi);
 			jq(".bmi").html(bmi.toFixed(2));
 		});
+
+		togglePreviousButton();
+		jq(".next").on("click", function (e) {
+			e.preventDefault();
+			if (!jq(this).hasClass("disabled")) {
+				navigateToQuestion(1);
+			}
+		});
+
+		jq(".previous").on("click", function (e) {
+			e.preventDefault();
+			if (!jq(this).hasClass("disabled")) {
+				navigateToQuestion(-1);
+			}
+		});
 	});
-	
-	function goto_next_tab(current_tab){
-		if (current_tab == 1){
-			var currents = '';
-			
-			while (jQuery(':focus') != jQuery('#bloodGroup-field')) {
-				if (currents == jQuery(':focus').attr('id')){
-					break;
-				}
-				else {
-					currents = jQuery(':focus').attr('id');
-				}
-				
-				if (jQuery(':focus').attr('id')=='bloodGroup-field'){
-					break;
-				}
-				else {
-					NavigatorController.stepForward();
-				}
-			}
-			NavigatorController.getFieldById('passportNumber').select();
-			
-		}
-		else if (current_tab == 2){
-			var currents = '';
-			
-			while (jQuery(':focus') != jQuery('#room-to-visit')) {
-				if (currents == jQuery(':focus').attr('id')){
-					NavigatorController.stepForward();
-					break;
-				}
-				else {
-					currents = jQuery(':focus').attr('id');
-				}
-				
-				if (jQuery(':focus').attr('id')=='room-to-visit'){
-					break;
-				}
-				else {
-					NavigatorController.stepForward();
-				}
-			}
-		}
-		else if (current_tab == 3){
-			NavigatorController.stepForward();
-		}
-	}
-	
-	function goto_previous_tab(current_tab){
-		if (current_tab == 2){
-			while (jQuery(':focus') != jQuery('#pulse-rate-field')) {
-				if (jQuery(':focus').attr('id') == 'pulse-rate-field' || jQuery(':focus').attr('id') == 'datetime-field'){
-					break;
-				}
-				else {
-					NavigatorController.stepBackward();
-				}
-			}
-		}
-		else if (current_tab == 3){
-			while (jQuery(':focus') != jQuery('#pitct-field')) {
-				if (jQuery(':focus').attr('id') == 'pitct-field'){
-					break;
-				}
-				else {
-					NavigatorController.stepBackward();
-				}
-			}
-		}
-		else if (current_tab == 4){
-			NavigatorController.stepBackward();
-		}
-       
-	}
+
+
+
+
+
+
+
     function strReplace(word) {
         var res = word.replace("null", "");
         res=res.replace("null","");
         return res;
     }
-    function toggleSelection(){
-		NavigatorController.getSections()[NavigatorController.getSections().length - 1]
-        NavigatorController.getSections()[0].toggleSelection();
-        NavigatorController.getQuestions()[0].toggleSelection();
-        NavigatorController.getFields()[0].toggleSelection();
-    }
+
+	function navigateToQuestion(step) {
+		var questions = NavigatorController.getQuestions();
+		var selectedQuestion = selectedModel(questions);
+		var selectedQuestionIndex = _.indexOf(questions, selectedQuestion);
+		var nextQuestion = questions[selectedQuestionIndex + step];
+
+		selectedQuestion.toggleSelection();
+		nextQuestion.toggleSelection();
+		selectedModel(selectedQuestion.fields) && selectedModel(selectedQuestion.fields).toggleSelection();
+		nextQuestion.fields[0] && nextQuestion.fields[0].toggleSelection();
+		if (selectedQuestion.parentSection != nextQuestion.parentSection) {
+			selectedQuestion.parentSection.toggleSelection();
+			nextQuestion.parentSection.toggleSelection();
+		}
+
+		togglePreviousButton();
+	}
+
+	function togglePreviousButton() {
+		var questions = NavigatorController.getQuestions();
+		var selectedQuestion = selectedModel(questions);
+		var selectedQuestionIndex = _.indexOf(questions, selectedQuestion);
+		if (selectedQuestionIndex == 0) {
+			jq(".previous").addClass("disabled");
+		} else if (selectedQuestionIndex > 0) {
+			jq(".previous").removeClass("disabled");
+		}
+	}
+
+	function toggleNextButton() {
+		var questions = NavigatorController.getQuestions();
+		var selectedQuestion = selectedModel(questions);
+		if (!selectedQuestion.isValid()) {
+			jq(".next").addClass("disabled");
+		} else {
+			jq(".next").removeClass("disabled");
+		}
+	}
+
 </script>
 
 <style>
@@ -610,7 +594,7 @@
 	}
 </style>
 
-<openmrs:require privilege="Triage Queue" otherwise="/login.htm" redirect="/module/patientqueueapp/queue.page?app=patientdashboardapp.triage"/>
+<openmrs:require privilege="Triage Queue" otherwise="/login.htm" redirect="/module/patientqueueapp/queue.page?app=patientdashboardapp.triage"></openmrs:require>
 <openmrs:globalProperty key="hospitalcore.hospitalName" defaultValue="ddu" var="hospitalName"/>
 
 
@@ -817,7 +801,7 @@
 						
 						<div class="col4 last">
 							<% if (patient.gender == "F" && patient.age > 10)  { %>
-								<label for="datetime-display"> Last Menstual Period </label>
+								<label for="datetime-display"> Last Menstrual Period </label>
 							<% } %>
 						</div>
 					</div>
@@ -856,7 +840,7 @@
 						<div class="col4">&nbsp;</div>
 						<div class="col4">&nbsp;</div>
 						<div class="col4 last">
-							<a class="button confirm" style="float:right; display:inline-block;margin-right:5px;" onclick="goto_next_tab(1);">
+							<a class="button next confirm" style="float:right; display:inline-block;margin-right:5px;" >
 								<span>NEXT PAGE</span>
 							</a>
 						</div>
@@ -926,13 +910,13 @@
 					
 					<div class="onerow" style="margin-top: 50px">
 						<div class="col4" style="padding-left: 5px">
-							<a class="button task" onclick="goto_previous_tab(2);">
+							<a class="button previous task" >
 								<span style="padding: 15px;">PREVIOUS</span>
 							</a>
 						</div>
 						<div class="col4">&nbsp;</div>
 						<div class="col4 last">
-							<a class="button confirm" style="float:right; display:inline-block;margin-right:5px;" onclick="goto_next_tab(2);">
+							<a class="button next confirm" style="float:right; display:inline-block;margin-right:5px;" >
 								<span>NEXT PAGE</span>
 							</a>
 						</div>
@@ -970,13 +954,13 @@
 						
 						<div class="onerow" style="margin-top: 50px">
 							<div class="col4" style="padding-left: 5px">
-								<a class="button task" onclick="goto_previous_tab(3);">
+								<a class="button previous task" >
 									<span style="padding: 15px;">PREVIOUS</span>
 								</a>
 							</div>
 							<div class="col4">&nbsp;</div>
 							<div class="col4 last">
-								<a class="button confirm" style="float:right; display:inline-block;margin-right:5px;" onclick="goto_next_tab(3);">
+								<a class="button next confirm" style="float:right; display:inline-block;margin-right:5px;" >
 									<span>NEXT PAGE</span>
 								</a>
 							</div>
@@ -1204,6 +1188,7 @@
 						<label for="otherVaccinations">Specify Others </label>
 						<textarea type="text" id="otherVaccinations" name="patientMedicalHistory.otherVaccinations" value="" style="width: 675px;"></textarea>
 					</div>
+
                 </div>
             </fieldset>
 			
@@ -1344,6 +1329,7 @@
 
                 </div>
             </fieldset>
+
             <fieldset>
                 <legend>Personal and Social</legend>
                 <div>
@@ -1450,8 +1436,23 @@
                             <p><label><input type="radio" value="No"  name="personalHistory.incomeSource"<% if (personalHistory?.incomeSource == "No" ) { %> checked="checked" <% } %>/>No</label> </p> 
 						</div> 
                     </div>
+
                 </div>
             </fieldset>
+
+			<div class="onerow" style="margin-top: 50px">
+				<div class="col4" style="padding-left: 5px">
+					<a class="button previous task" >
+						<span style="padding: 15px;">PREVIOUS</span>
+					</a>
+				</div>
+				<div class="col4">&nbsp;</div>
+				<div class="col4 last">
+					<a class="button next confirm" style="float:right; display:inline-block;margin-right:5px;" >
+						<span>NEXT PAGE</span>
+					</a>
+				</div>
+			</div>
 
         </section>
         <div id="confirmation">
