@@ -394,6 +394,8 @@
 	}
 
 	function toggleSelection(){
+		var currentModel = selectedModel(NavigatorController.getSections());
+		currentModel.toggleSelection();
 		NavigatorController.getSections()[NavigatorController.getSections().length - 1]
 		NavigatorController.getSections()[0].toggleSelection();
 		NavigatorController.getQuestions()[0].toggleSelection();
