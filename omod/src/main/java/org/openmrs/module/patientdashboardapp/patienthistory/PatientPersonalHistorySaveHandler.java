@@ -54,6 +54,15 @@ public class PatientPersonalHistorySaveHandler {
         if(StringUtils.isNotBlank(updatedPatientPersonalHistory.getExposedHivFactor())){
             patientPersonalHistory.setExposedHivFactor(updatedPatientPersonalHistory.getExposedHivFactor());
         }
-            patientQueueService.savePatientPersonalHistory(patientPersonalHistory);
+        if(StringUtils.isNotBlank(updatedPatientPersonalHistory.getFamilyHelp())){
+            patientPersonalHistory.setFamilyHelp(updatedPatientPersonalHistory.getFamilyHelp());
+        }
+        if(StringUtils.isNotBlank(updatedPatientPersonalHistory.getOtherHelp())){
+            patientPersonalHistory.setOtherHelp(updatedPatientPersonalHistory.getOtherHelp());
+        }
+        if (StringUtils.isNotBlank(updatedPatientPersonalHistory.getIncomeSource())){
+            patientPersonalHistory.setIncomeSource(updatedPatientPersonalHistory.getIncomeSource());
+        }
+        patientQueueService.savePatientPersonalHistory(patientPersonalHistory);
       }
     }
