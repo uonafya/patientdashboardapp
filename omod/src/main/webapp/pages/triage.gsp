@@ -385,7 +385,7 @@
 	});
 
 	function setIllnessHistory () {
-		var str = "${patientFamilyHistory.familyIllnessHistory}";
+		var str = "${patientFamilyHistory?.familyIllnessHistory}";
 		var temp = new Array();
 		temp = str.split(",");
 		jq.each(temp, function (index, value1) {
