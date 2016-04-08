@@ -279,9 +279,18 @@
 					jq('#summ_10').text(jq(event.target).val());
 				}
 			}
-			
+
+            else if (idd == 'oxygenSaturation-field'){
+                if (txt == ''){
+                    jq('#li16').hide();
+                }
+                else {
+                    jq('#li16').show();
+                    jq('#summ_16').text(jq(event.target).val());
+                }
+            }
         });
-		
+
 		jq('#datetime-display').on("change", function (dateText) {
 			jq('#li11').show();
 			jq('#summ_11').text(jq('#datetime-display').val());
@@ -385,7 +394,7 @@
 	});
 
 	function setIllnessHistory () {
-		var str = "${patientFamilyHistory.familyIllnessHistory}";
+		var str = "${patientFamilyHistory?.familyIllnessHistory}";
 		var temp = new Array();
 		temp = str.split(",");
 		jq.each(temp, function (index, value1) {
@@ -657,178 +666,200 @@
 			<span class="title">Vital Stats</span>
 			<fieldset>
 				<legend>Vitals</legend>
-				<div>
-					<div class="onerow">
-						<h2>Body Mass Index</h2>
-						
-						<div class="col4">
-							<label for="weight-field"> Weight </label>
-						</div>
-						
-						<div class="col4">
-							<label for="height-field"> Height </label>
-						</div>
-						
-						<div class="col4 last">
-							<% if (patient.age >= 2) { %>
-							<label>BMI:</label>
-							<% } %>
-						</div>
-					</div>
+				    <div>
+                        <div class="onerow" style="padding-top: 10px;">
+                            <h2 style="border-bottom: 1px solid #008394">Vital Summary</h2>
+
+						    <div class="col4">
+							    <label for="temperature-field"> Temperature </label>
+                            </div>
+
+						    <div class="col4">
+							    <label for="systolic-bp-field">Blood Pressure (Systolic)</label>
+                            </div>
+
+						    <div class="col4 last">
+							    <label for="diastolic-bp-field">Blood Pressure (Diastolic)</label>
+                            </div>
+					    </div>
+
+                        <div class="onerow">
+                            <div class="col4">
+                                <p>
+                                    <input id="temperature-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.temperature?:''}" name="triagePatientData.temperature">
+                                    <span class="append-to-value">..&#8451;</span>
+								    <span id="fr8998" class="field-error" style="display: none"></span>
+                                </p>
+						    </div>
+
+                            <div class="col4">
+                                <p>
+                                    <input id="systolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="${vitals?.systolic?:''}" name="triagePatientData.systolic">
+                                    <span id="fr5882" class="field-error" style="display: none"></span>
+                                </p>
+                            </div>
+
+                            <div class="col4 last">
+                                <p>
+                                    <input id="diastolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="${vitals?.daistolic?:''}" name="triagePatientData.daistolic">
+                                    <span id="fr9945" class="field-error" style="display: none"></span>
+                                </p>
+                            </div>
+                        </div>
+
+
+                        <div class="onerow" style="padding-top: 10px;">
+                            <div class="col4">
+                                <label for="resp-rate-field"> Respiratory Rate </label>
+                            </div>
+
+                            <div class="col4">
+                                <label for="pulse-rate-field"> Pulse Rate </label>
+                            </div>
+
+                            <div class="col4 last">
+                                <% if (patient.gender == "F" && patient.age > 10)  { %>
+                                    <label for="datetime-display"> Last Menstrual Period </label>
+                                <% } %>
+                            </div>
+                        </div>
+
+					    <div class="onerow">
+						    <div class="col4">
+							    <p>
+                                    <input id="resp-rate-field" class="numeric-range focused" type="text" max="999" min="0" maxlength="7" value="${vitals?.respiratoryRate?:''}" name="triagePatientData.respiratoryRate">
+								    <span id="fr1753" class="field-error" style="display: none"></span>
+                                </p>
+						    </div>
+
+                            <div class="col4">
+                                <p>
+                                    <input id="pulse-rate-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.pulsRate?:''}" name="triagePatientData.pulsRate">
+                                    <span id="fr8917" class="field-error" style="display: none"></span>
+							    </p>
+                            </div>
+
+						    <div class="col4 last">
+							    <% if (patient.gender == "F" && patient.age > 10)  { %>
+							        ${ui.includeFragment("uicommons", "field/datetimepicker", [
+                                        id: 'datetime',
+                                        label: '',
+                                        formFieldName: 'triagePatientData.lastMenstrualDate',
+                                        initialValue: vitals?.lastMenstrualDate?:'',
+                                        useTime: false,
+                                        defaultToday: false,
+                                        endDate: new Date()])
+                                    }
+							    <% } %>
+						    </div>
+                        </div>
+
+                        <div class="onerow" style="padding-top: 10px">
+                               <div class="col4">
+                                    <label for="oxygenSaturation-field">Oxygen saturation</label>
+                                </div>
+                        </div>
+
+                        <div class="onerow">
+                            <div class="col4">
+                                <p>
+                                    <input id="oxygenSaturation-field" class="numeric-range" type="text" max="100" min="0" value="${vitals?.oxygenSaturation?:''}" name="triagePatientData.oxygenSaturation">
+                                    <span class="append-to-value">%</span>
+                                    <span id="fr8998" class="field-error" style="display: non"></span>
+                                </p>
+                                <br >
+                            </div>
+                        </div>
+
+                        <div class="onerow">
+                            <h2 style="border-bottom: 1px solid #008394">Body Mass Index</h2>
+
+                            <div class="col4">
+                                <label for="weight-field"> Weight </label>
+                            </div>
+
+                            <div class="col4">
+                                <label for="height-field"> Height </label>
+                            </div>
+
+                            <div class="col4 last">
+                                <% if (patient.age >= 2) { %>
+                                <label>BMI:</label>
+                                <% } %>
+                            </div>
+                        </div>
 					
-					<div class="onerow">
-						<div class="col4">
+					    <div class="onerow">
+						    <div class="col4">
 							<p class="left">
 								<input id="weight-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.weight?:''}" name="triagePatientData.weight">
 								<span class="append-to-value">kg</span>
 								<span id="fr1139" class="field-error" style="display: none"></span>
 							</p>
-						</div>
+						    </div>
 
-						<div class="col4">
-							<p class="left">
-								<input id="height-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.height?:''}" name="triagePatientData.height">
-								<span class="append-to-value">cm</span>
-								<span id="fr9875" class="field-error" style="display: none"></span>
-							</p>
-						</div>
+                            <div class="col4">
+                                <p class="left">
+                                    <input id="height-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.height?:''}" name="triagePatientData.height">
+                                    <span class="append-to-value">cm</span>
+                                    <span id="fr9875" class="field-error" style="display: none"></span>
+                                </p>
+                            </div>
 
-						<div class="col4 last">
-							<% if (patient.age >= 2) { %>
-							<p>
-								<div class="bmi"></div>
-							</p>
-							<% } %>
-						</div>
-					</div>
+                            <div class="col4 last">
+                                <% if (patient.age >= 2) { %>
+                                <p>
+                                    <div class="bmi"></div>
+                                </p>
+                                <% } %>
+                            </div>
+					    </div>
 
-					<div class="onerow" style="padding-top: 10px;">
-						<h2>Circumference</h2>
+                        <div class="onerow" style="padding-top: 10px;">
+                            <h2 style="border-bottom: 1px solid #008394">Circumference</h2>
 
-						<div class="col4">
-							<label for="muac-field"> M.U.A </label>
-						</div>
+                            <div class="col4">
+                                <label for="muac-field"> M.U.A </label>
+                            </div>
 
-						<div class="col4">
-							<label for="chest-circum-field"> Chest </label>
-						</div>
+                            <div class="col4">
+                                <label for="chest-circum-field"> Chest </label>
+                            </div>
 
-						<div class="col4 last">
-							<label for="abdominal-circum-field"> Abdominal </label>
-						</div>
-					</div>
+                            <div class="col4 last">
+                                <label for="abdominal-circum-field"> Abdominal </label>
+                            </div>
+                        </div>
 
-					<div class="onerow">
-						<div class="col4">
-							<p>
-								<input id="muac-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.mua?:''}" name="triagePatientData.mua">
-								<span class="append-to-value">cm</span>
-								<span id="fr801" class="field-error" style="display: none"></span>
-							</p>
-						</div>
+                        <div class="onerow">
+                            <div class="col4">
+                                <p>
+                                    <input id="muac-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.mua?:''}" name="triagePatientData.mua">
+                                    <span class="append-to-value">cm</span>
+                                    <span id="fr801" class="field-error" style="display: none"></span>
+                                </p>
+                            </div>
 
-						<div class="col4">
-							<p>
-								<input id="chest-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.chest?:''}" name="triagePatientData.chest">
-								<span class="append-to-value">cm</span>
-								<span id="fr3193" class="field-error" style="display: none"></span>
-							</p>
-						</div>
+                            <div class="col4">
+                                <p>
+                                    <input id="chest-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.chest?:''}" name="triagePatientData.chest">
+                                    <span class="append-to-value">cm</span>
+                                    <span id="fr3193" class="field-error" style="display: none"></span>
+                                </p>
+                            </div>
 
-						<div class="col4 last">
-							<p>
-								<input id="abdominal-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.abdominal?:''}" name="triagePatientData.abdominal">
-								<span class="append-to-value">cm</span>
-								<span id="fr76" class="field-error" style="display: none"></span>
-							</p>
-						</div>
-					</div>
+                            <div class="col4 last">
+                                <p>
+                                    <input id="abdominal-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.abdominal?:''}" name="triagePatientData.abdominal">
+                                    <span class="append-to-value">cm</span>
+                                    <span id="fr76" class="field-error" style="display: none"></span>
+                                </p>
+                            </div>
+                        </div>
 
-					<div class="onerow" style="padding-top: 10px;">
-						<h2>Others Measures</h2>
 
-						<div class="col4">
-							<label for="temperature-field"> Temperature </label>
-						</div>
 
-						<div class="col4">
-							<label for="systolic-bp-field">Blood Pressure (Systolic)</label>
-						</div>
-
-						<div class="col4 last">
-							<label for="diastolic-bp-field">Blood Pressure (Diastolic)</label>
-						</div>
-					</div>
-
-					<div class="onerow">
-						<div class="col4">
-							<p>
-								<input id="temperature-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.temperature?:''}" name="triagePatientData.temperature">
-								<span class="append-to-value">..&#8451;</span>
-								<span id="fr8998" class="field-error" style="display: none"></span>
-							</p>
-						</div>
-
-						<div class="col4">
-							<p>
-								<input id="systolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="${vitals?.systolic?:''}" name="triagePatientData.systolic">
-								<span id="fr5882" class="field-error" style="display: none"></span>
-							</p>
-						</div>
-
-						<div class="col4 last">
-							 <p>
-								<input id="diastolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="${vitals?.daistolic?:''}" name="triagePatientData.daistolic">
-								<span id="fr9945" class="field-error" style="display: none"></span>
-							</p>
-						</div>
-					</div>
-					
-					<div class="onerow" style="padding-top: 10px;">
-						<div class="col4">
-							<label for="resp-rate-field"> Respiratory Rate </label>
-						</div>
-						
-						<div class="col4">
-							<label for="pulse-rate-field"> Pulse Rate </label>
-						</div>
-						
-						<div class="col4 last">
-							<% if (patient.gender == "F" && patient.age > 10)  { %>
-								<label for="datetime-display"> Last Menstrual Period </label>
-							<% } %>
-						</div>
-					</div>
-					
-					<div class="onerow">
-						<div class="col4">
-							<p>
-								<input id="resp-rate-field" class="numeric-range focused" type="text" max="999" min="0" maxlength="7" value="${vitals?.respiratoryRate?:''}" name="triagePatientData.respiratoryRate">
-								<span id="fr1753" class="field-error" style="display: none"></span>
-							</p>
-						</div>
-						
-						<div class="col4">
-							<p>
-								<input id="pulse-rate-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.pulsRate?:''}" name="triagePatientData.pulsRate">
-								<span id="fr8917" class="field-error" style="display: none"></span>
-							</p>
-						</div>
-						
-						<div class="col4 last">
-							<% if (patient.gender == "F" && patient.age > 10)  { %>
-							${ui.includeFragment("uicommons", "field/datetimepicker", [
-								id: 'datetime',
-								label: '',
-								formFieldName: 'triagePatientData.lastMenstrualDate',
-								initialValue: vitals?.lastMenstrualDate?:'',
-								useTime: false,
-								defaultToday: false,
-								endDate: new Date()])
-							}
-							<% } %>
-						</div>
-					</div>
+                    
 
 					<div class="onerow" style="margin-top: 50px">
 						<div class="col4">&nbsp;</div>
@@ -1493,6 +1524,7 @@
 							<li id="li09"><span class="status active"></span><div>Respiratory Rate:</div>	<small id="summ_09">/</small></li>
 							<li id="li10"><span class="status active"></span><div>Pulse Rate:</div>			<small id="summ_10">/</small></li>
 							<li id="li11"><span class="status active"></span><div>Last Periods:</div>		<small id="summ_11">/</small></li>
+                            <li id="li16"><span class="status active"></span><div>Oxygen saturation:</div>  <small id="summ_16">/</small></li>
 							
 							<li id="li12"><span class="status active"></span><div>Blood Group:</div>		<small id="summ_12">/</small></li>
 							<li id="li13"><span class="status active"></span><div>Rhesus Factor:</div>		<small id="summ_13">/</small></li>
