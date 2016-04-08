@@ -1,6 +1,8 @@
 package org.openmrs.module.patientdashboardapp.model;
 
 import org.openmrs.Concept;
+import org.openmrs.Encounter;
+import org.openmrs.Obs;
 
 public class Option {
 
@@ -64,8 +66,5 @@ public class Option {
 						: this.id.equals(otherOption.id));
 	}
 
-	@Override
-	public String toString() {
-		return "{id=" + this.id + ", label=" + this.label + "}";
-	}
+
 }

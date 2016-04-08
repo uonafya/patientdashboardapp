@@ -8,11 +8,7 @@ import org.openmrs.module.hospitalcore.InventoryCommonService;
 import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
-import org.openmrs.module.patientdashboardapp.model.Note;
-import org.openmrs.module.patientdashboardapp.model.Outcome;
-import org.openmrs.module.patientdashboardapp.model.Procedure;
-import org.openmrs.module.patientdashboardapp.model.Qualifier;
-import org.openmrs.module.patientdashboardapp.model.Referral;
+import org.openmrs.module.patientdashboardapp.model.*;
 import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.fragment.FragmentConfiguration;
@@ -52,13 +48,13 @@ public class ClinicalNotesFragmentController {
 		model.addAttribute("outcomeOptions", SimpleObject.fromCollection(Outcome.getAvailableOutcomes(), ui, "label", "id"));
 		model.addAttribute("listOfWards", SimpleObject.fromCollection(Outcome.getInpatientWards(), ui, "label", "id"));
 		model.addAttribute("internalReferralSources", SimpleObject.fromCollection(Referral.getInternalReferralOptions(), ui, "label", "id"));
-		model.addAttribute("externalReferralSources", SimpleObject.fromCollection(Referral.getExternalReferralOptions(), ui, "label", "id"));
+		model.addAttribute("referralReasonsSources", SimpleObject.fromCollection(ReferralReasons.getReferralReasonsOptions(), ui, "label", "id"));
 		Note note = new Note(patientId, queueId, opdId, opdLogId);
 		model.addAttribute(
 				"note",
 				SimpleObject.fromObject(note, ui, "signs.id", "signs.label", "diagnoses.id", "diagnoses.label",
 						"investigations", "procedures", "patientId", "queueId",
-						"opdId", "opdLogId", "admitted", "illnessHistory", "physicalExamination", "otherInstructions").toJson());
+						"opdId", "opdLogId", "admitted", "illnessHistory","externalReferral","externalReferralComments","physicalExamination", "otherInstructions").toJson());
 	}
 
     public List<SimpleObject> getQualifiers(@RequestParam("signId") Integer signId, UiUtils ui) {

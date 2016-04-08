@@ -23,7 +23,7 @@ public class Referral {
 
 	private static Logger logger = LoggerFactory.getLogger(Note.class);
 	private static List<Option> internalReferralOptions;
-	private static List<Option> externalReferralOptions;
+
 
 	static {
 		internalReferralOptions = new ArrayList<Option>();
@@ -31,29 +31,20 @@ public class Referral {
 		for (ConceptAnswer conceptAnswer : internalReferralConcept.getAnswers()) {
 			internalReferralOptions.add(new Option(conceptAnswer.getAnswerConcept()));
 		}
-		externalReferralOptions = new ArrayList<Option>();
-		Concept externalReferralConcept = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_HOSPITAL));
-		for (ConceptAnswer conceptAnswer : externalReferralConcept.getAnswers()) {
-			externalReferralOptions.add(new Option(conceptAnswer.getAnswerConcept()));
-		}
+
 	}
 	
 	public static List<Option> getInternalReferralOptions() {
 		return internalReferralOptions;
 	}
 	
-	public static List<Option> getExternalReferralOptions() {
-		return externalReferralOptions;
-	}
 
 	public static void addReferralObs(Option referredTo, Integer referrer, Encounter encounter, Obs obsGroup) {
-		Concept referralConcept;
+		Concept referralConcept = null;
 		boolean isInternal = false;
 		if (internalReferralOptions.contains(referredTo)) {
 			isInternal = true;
 			referralConcept = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL));
-		} else {
-			referralConcept = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL));
 		}
 		if (referralConcept == null) {
 			logger.error("Global property: " + PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL + " not defined OR\n Internal/External Referral concept not defined");
