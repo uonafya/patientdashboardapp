@@ -124,6 +124,32 @@
 				<h3>TRIAGE INFORMATION</h3>
 			</div>
 			<div class="info-body">
+                <label><span class="status active"></span>Temperature:</label>
+                <span>${triage?.temperature?:"Not Captured"}</span>
+                <br>
+
+                <label><span class="status active"></span>Blood Pressure:</label>
+                <span>${ triage?.systolic && triage?.daistolic ? triage?.systolic + "/" + triage?.daistolic : "Not captured" }</span>
+                <br>
+
+                <label><span class="status active"></span>Respiratory Rate:</label>
+                <span>${triage?.respiratoryRate?:"Not Captured"}</span>
+                <br>
+
+                <label><span class="status active"></span>Temperature:</label>
+                <span>${triage?.temperature?:"Not Captured"}</span>
+                <br>
+
+                <% if (patient.gender == "F" && patient.age > 10) {%>
+                    <label><span class="status active"></span>Last Periods:</label>
+                    <span>${triage?.lastMenstrualDate ?: "Not captured"}</span>
+                    <br>
+                <% } %>
+
+                <label><span class"status active"></span> Oxygen Saturation:</label>
+                <span>${triage?.oxygenSaturation?: "Not captured"}</span>
+                <br>
+
 				<label><span class="status active"></span>Height:</label>
 				<span>${triage?.height?:"Not Captured"}</span>
 				<br>
@@ -150,28 +176,7 @@
 				<span>${triage?.abdominal?:"Not Captured"}</span>
 				<br>
 				
-				<label><span class="status active"></span>Temperature:</label>
-				<span>${triage?.temperature?:"Not Captured"}</span>
-				<br>
-				
-				<label><span class="status active"></span>Blood Pressure:</label>
-				<span>${ triage?.systolic && triage?.daistolic ? triage?.systolic + "/" + triage?.daistolic : "Not captured" }</span>
-				<br>
-				
-				<label><span class="status active"></span>Respiratory Rate:</label>
-				<span>${triage?.respiratoryRate?:"Not Captured"}</span>
-				<br>
-				
-				<label><span class="status active"></span>Temperature:</label>
-				<span>${triage?.temperature?:"Not Captured"}</span>
-				<br>
-				
-				<% if (patient.gender == "F" && patient.age > 10) {%>
-					<label><span class="status active"></span>Last Periods:</label>
-					<span>${triage?.lastMenstrualDate ?: "Not captured"}</span>
-					<br>
-				<% } %>
-				
+
 				<label><span class="status active"></span>Blood Group:</label>
 				<span>${triage?.bloodGroup && triage?.rhesusFactor ? triage?.bloodGroup + "/" + triage?.rhesusFactor : "Not captured"}</span>
 				<br>
