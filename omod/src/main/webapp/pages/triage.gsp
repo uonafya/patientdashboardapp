@@ -27,6 +27,10 @@
 	emrMessages["numericRangeLow"] = "value should be more than {0}";
 	emrMessages["requiredField"] = "Required Field";
 	emrMessages["numberField"] = "Value not a number";
+
+function isNombre(numb){
+    return !isNaN(parseFloat(numb));
+}
 	
 	jq(document).ready(function () {
 		jq(".lab-tabs").tabs();
@@ -42,7 +46,7 @@
 			res=res.replace("]","");
 			return res;
 		}
-		
+
 		jq('.col5 input:radio[name]').on('change',function(){
 			if (jq(this).attr('name') == "patientMedicalHistory.illnessExisting"){
 				if (jq('input[name="patientMedicalHistory.illnessExisting"]:checked', '#notes-form').val() == "Yes"){
@@ -337,6 +341,8 @@
 				}
 			}
         });
+
+
 		
 		jq('.col5 input:radio').each(function() {
 		  var name = jq(this).attr("name");
@@ -376,7 +382,14 @@
 			var bmi = weight/(height * height);
 			console.log("BMI " + bmi);
 			jq(".bmi").html(bmi.toFixed(2));
-		});
+
+            if (isNombre(bmi)){
+                jq('#li17').show();
+                jq('#summ_17').text(bmi);
+            }
+
+        });
+
 
 		jq(".next").on("click", function (e) {
 			e.preventDefault();
@@ -717,11 +730,9 @@
                                 <label for="pulse-rate-field"> Pulse Rate </label>
                             </div>
 
-                            <div class="col4 last">
-                                <% if (patient.gender == "F" && patient.age > 10)  { %>
-                                    <label for="datetime-display"> Last Menstrual Period </label>
-                                <% } %>
-                            </div>
+                        <div class="col 4 last>
+                                <label for="oxygenSaturation-field">Oxygen Saturation </label>
+                        </div>
                         </div>
 
 					    <div class="onerow">
@@ -739,7 +750,25 @@
 							    </p>
                             </div>
 
-						    <div class="col4 last">
+                            <div class="col4 last">
+                                <p>
+                                <input id="oxygenSaturation-field" class="numeric-range" type="text" max="100" min="0" value="${vitals?.oxygenSaturation?:''}" name="triagePatientData.oxygenSaturation">
+                                <span class="append-to-value">%</span>
+                                <span id="fr8998" class="field-error" style="display: non"></span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="onerow">
+                        <div class="col4 last">
+                              <% if (patient.gender == "F" && patient.age > 10)  { %>
+                                    <label for="datetime-display"> Last Menstrual Period </label>
+                                <% } %>
+                            </div>
+                            </div>
+
+                        <div class="onerow">
+						    <div class="col4">
+						    <p>
 							    <% if (patient.gender == "F" && patient.age > 10)  { %>
 							        ${ui.includeFragment("uicommons", "field/datetimepicker", [
                                         id: 'datetime',
@@ -751,24 +780,8 @@
                                         endDate: new Date()])
                                     }
 							    <% } %>
+                            </p>
 						    </div>
-                        </div>
-
-                        <div class="onerow" style="padding-top: 10px">
-                               <div class="col4">
-                                    <label for="oxygenSaturation-field">Oxygen saturation</label>
-                                </div>
-                        </div>
-
-                        <div class="onerow">
-                            <div class="col4">
-                                <p>
-                                    <input id="oxygenSaturation-field" class="numeric-range" type="text" max="100" min="0" value="${vitals?.oxygenSaturation?:''}" name="triagePatientData.oxygenSaturation">
-                                    <span class="append-to-value">%</span>
-                                    <span id="fr8998" class="field-error" style="display: non"></span>
-                                </p>
-                                <br >
-                            </div>
                         </div>
 
                         <div class="onerow">
@@ -784,7 +797,7 @@
 
                             <div class="col4 last">
                                 <% if (patient.age >= 2) { %>
-                                <label>BMI:</label>
+                                <label for="bmi">BMI:</label>
                                 <% } %>
                             </div>
                         </div>
@@ -889,7 +902,7 @@
 						</div>
 						
 						<div class="col4 last">
-							<label for="pitct-field"> PITCT </label>
+							<label for="pitct-field"> HIV Status </label>
 						</div>
 					</div>
 					
@@ -1190,360 +1203,361 @@
 								<div><i class="icon-diagnosis small"> </i> 5 Tetanus Doses?</div>
 								
 								<p><label><input type="radio" value="Yes" name="patientMedicalHistory.tetanusFemale"<% if (patientMedicalHistory?.tetanusFemale == "Yes") { %> checked="checked" <% } %>/>Yes </label></p> 
-								<p><label><input type="radio" value="No" name="patientMedicalHistory.tetanusFemale"<% if (patientMedicalHistory?.tetanusFemale == "No") { %> checked="checked" <% } %>/>No</label></p> 
-								<p><label><input type="radio" value="Not Sure" name="patientMedicalHistory.tetanusFemale"<% if (patientMedicalHistory?.tetanusFemale == "Not Sure") { %> checked="checked" <% } %>/>Not Sure</label></p>
+								<p><label><input type="radio" value="No" name="patientMedicalHistory.tetanusFemale"<% if (patientMedicalHistory?.tetanusFemale == "No") { %> checked="checked" <% } %>/>No</label></p>
+                                <p><label><input type="radio" value="Not Sure" name="patientMedicalHistory.tetanusFemale"<% if (patientMedicalHistory?.tetanusFemale == "Not Sure") { %> checked="checked" <% } %>/>Not Sure</label></p>
+
 							<% } else { %>
 								<div><i class="icon-diagnosis small"> </i> 3 Tetanus Doses?</div>
-								
-								<p><label><input type="radio" value="Yes" name="patientMedicalHistory.tetanusMale"<% if (patientMedicalHistory?.tetanusMale == "Yes") { %> checked="checked" <% } %>/>Yes </label></p> 
-								<p><label><input type="radio" value="No" name="patientMedicalHistory.tetanusMale"<% if (patientMedicalHistory?.tetanusMale == "No") { %> checked="checked" <% } %>/>No</label></p> 
+
+								<p><label><input type="radio" value="Yes" name="patientMedicalHistory.tetanusMale"<% if (patientMedicalHistory?.tetanusMale == "Yes") { %> checked="checked" <% } %>/>Yes </label></p>
+                                <p><label><input type="radio" value="No" name="patientMedicalHistory.tetanusMale"<% if (patientMedicalHistory?.tetanusMale == "No") { %> checked="checked" <% } %>/>No</label></p>
 								<p><label><input type="radio" value="Not Sure" name="patientMedicalHistory.tetanusMale"<% if (patientMedicalHistory?.tetanusMale == "Not Sure") { %> checked="checked" <% } %>/>Not Sure</label></p>
-							<% } %>
-						</div>
-						
+                                    <% } %>
+                                    </div>
+
 						<div class="testbox noidnt">
 							<div><i class="icon-diagnosis small"> </i> Others ?</div>
 
 							<p><label><input type="radio" value="Yes" name="patientMedicalHistory.otherVaccinations" <% if (patientMedicalHistory?.otherVaccinations == "Yes") { %> checked="checked" <% } %> />Yes</label></p>
-							<p><label><input type="radio" value="No"  name="patientMedicalHistory.otherVaccinations"<% if (patientMedicalHistory?.otherVaccinations == "No") { %> checked="checked" <% } %> />No </label></p>
+                            <p><label><input type="radio" value="No"  name="patientMedicalHistory.otherVaccinations"<% if (patientMedicalHistory?.otherVaccinations == "No") { %> checked="checked" <% } %> />No </label></p>
 						</div>
-                    </div>
-					
+        </div>
+
                     <div class="onerow" id="p-otherVaccinations" style="padding-left: 15px;">
 						<label for="otherVaccinations">Specify Others </label>
-						<textarea type="text" id="otherVaccinations" name="patientMedicalHistory.otherVaccinations" value="${patientMedicalHistory?.otherVaccinations}" style="width: 675px;"></textarea>
+                        <textarea type="text" id="otherVaccinations" name="patientMedicalHistory.otherVaccinations" value="${patientMedicalHistory?.otherVaccinations}" style="width: 675px;"></textarea>
 					</div>
 
-                </div>
+                    </div>
             </fieldset>
-			
-			<fieldset>
-				<legend>Drug History</legend>
-				<div>
-					<div class="onerow underline">
-						<h2>Current medications?</h2>
-						<div class="col5">
-							<p><label><input type="radio" id="currentMedication" value="Yes" name="patientDrugHistory.currentMedication"<% if (patientDrugHistory?.currentMedication == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
-							<p><label><input type="radio" value="No" name="patientDrugHistory.currentMedication"<% if (patientDrugHistory?.currentMedication == "No") { %> checked="checked" <% } %>/>No</label></p> 
-						</div>
-						
-						<div class="col6 last" id="medication">
-							<p>
-								<label>What is the medication?</label> 
-								<input type="text" id="medicationName" name="patientDrugHistory.medicationName" value="${patientDrugHistory?.medicationName}">
-							</p>
-							
-							<p>
-								<label>For how long it has been taken?</label> 
-								<input type="text" id="medicationPeriod" name="patientDrugHistory.medicationPeriod" value="${patientDrugHistory?.medicationPeriod}">
-							</p>
-							
-							<p>
-								<label>Why is it being taken?</label> 
-								<input type="text" id="medicationReason" name="patientDrugHistory.medicationReason" value="${patientDrugHistory?.medicationReason}">
-							</p>
-							
-							<p>
-								<label>Where are the Medical Records?</label>
-								<input type="text" id="medicationRecord" name="patientDrugHistory.medicationRecord" value="${patientDrugHistory?.medicationRecord}">
-							</p>
-						</div>
-					</div>
-					<div class="onerow underline" style="padding-top: 20px">
-						<h2>Any medication you are sensitive to?</h2>
-						<div class="col5">
-							<p><label><input type="radio" id="sensitiveMedication" value="Yes" name="patientDrugHistory.sensitiveMedication"<% if (patientDrugHistory?.sensitiveMedication == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
-							<p><label><input type="radio" value="No"  name="patientDrugHistory.sensitiveMedication"<% if (patientDrugHistory?.sensitiveMedication == "No") { %> checked="checked" <% } %>/>No</label></p> 
-						</div>
 
-						<div class="col6 last" id="sensitives">
-							<p>
-								<label>What is the medication?</label>
-								<input type="text" id="sensitiveMedicationName" name="patientDrugHistory.sensitiveMedicationName" value="${patientDrugHistory?.sensitiveMedicationName}">
-							</p>
-							
-							<p>
-								<label>What are the symptoms you experience?</label>
-								<input type="text" id="sensitiveMedicationSymptom" name="patientDrugHistory.sensitiveMedicationSymptom" value="${patientDrugHistory?.sensitiveMedicationSymptom}">
-							</p>
-						</div>
-					</div>
-					
-					<div class="onerow underline" style="padding-top: 20px">
-						<h2>Are you using any invasive contraception?</h2>
-						<div class="col5">
-							<p><label><input type="radio" id="invasiveContraception" value="Yes" name="patientDrugHistory.invasiveContraception"<% if (patientDrugHistory?.invasiveContraception == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
-							<p><label><input type="radio" value="No"  name="patientDrugHistory.invasiveContraception"<% if (patientDrugHistory?.invasiveContraception == "No") { %> checked="checked" <% } %>/>No</label></p> 
-						</div>
-						
-						<div class="col6 last" id="invasives">
-							<label>What is the medication?</label>
-							<input type="text" id="invasiveContraceptionName" name="patientDrugHistory.invasiveContraceptionName" value="${patientDrugHistory?.invasiveContraceptionName}">
-						</div>
-					</div>
+            <fieldset>
+            <legend>Drug History</legend>
+                <div>
+                 <div class="onerow underline">
+                  <h2>Current medications?</h2>
+            <div class="col5">
+                <p><label><input type="radio" id="currentMedication" value="Yes" name="patientDrugHistory.currentMedication"<% if (patientDrugHistory?.currentMedication == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
+                <p><label><input type="radio" value="No" name="patientDrugHistory.currentMedication"<% if (patientDrugHistory?.currentMedication == "No") { %> checked="checked" <% } %>/>No</label></p>
+            </div>
 
+            <div class="col6 last" id="medication">
+                <p>
+                  < label>What is the medication?</label>
+                    <input type="text" id="medicationName" name="patientDrugHistory.medicationName" value="${patientDrugHistory?.medicationName}">
+                </p>
+
+				<p>
+					<label>For how long it has been taken?</label>
+                    <input type="text" id="medicationPeriod" name="patientDrugHistory.medicationPeriod" value="${patientDrugHistory?.medicationPeriod}">
+                </p>
+
+				<p>
+					<label>Why is it being taken?</label>
+                    <input type="text" id="medicationReason" name="patientDrugHistory.medicationReason" value="${patientDrugHistory?.medicationReason}">
+                </p>
+
+				<p>
+					<label>Where are the Medical Records?</label>
+                    <input type="text" id="medicationRecord" name="patientDrugHistory.medicationRecord" value="${patientDrugHistory?.medicationRecord}">
+                </p>
 				</div>
-			</fieldset>
-			
-            <fieldset>
-                <legend>Family History</legend>
-                <div>
-                    <div class="onerow underline">
-						<h2>Status of father?</h2>
-						<div class="col5">
-							<p><label><input type="radio" value="Alive" id="fatherStatus" name="patientFamilyHistory.fatherStatus"<% if (patientFamilyHistory?.fatherStatus == "Alive") { %> checked="checked" <% } %>/>Alive </label></p>
-							<p><label><input type="radio" value="Dead"  name="patientFamilyHistory.fatherStatus"<% if (patientFamilyHistory?.fatherStatus == "Dead") { %> checked="checked" <% } %>/>Dead</label></p>
-						</div>
-						
-						<div class="col6 last" id="father-status">
-							<p>
-								<label>What was the cause of death?</label>
-								<input type="text" id="fatherDeathCause" name="patientFamilyHistory.fatherDeathCause" value="${patientFamilyHistory?.fatherDeathCause}">
-							</p>
-							
-							<p>
-								<label>How old were they?</label>
-								<input type="text" id="fatherDeathAge" name="patientFamilyHistory.fatherDeathAge" value="${patientFamilyHistory?.fatherDeathAge}">
-							</p>
-						</div>
-                    </div>
-
-                    <div class="onerow underline" style="padding-top: 20px">
-                        <h2>Status of mother?</h2>
-						<div class="col5">
-							<p><label><input type="radio" id="motherStatus" value="Alive" name="patientFamilyHistory.motherStatus"<% if (patientFamilyHistory?.motherStatus == "Alive") { %> checked="checked" <% } %>/>Alive </label></p>
-                            <p><label><input type="radio"  value="Dead"  name="patientFamilyHistory.motherStatus"<% if (patientFamilyHistory?.motherStatus == "Dead")  { %> checked="checked" <% } %>/>Dead  </label></p>
-						</div>
-						
-						<div class="col6 last" id="mother-status">
-							<p>
-								<label>What was the cause of death?</label>
-								<input type="text" id="motherDeathCause" name="patientFamilyHistory.motherDeathCause" value="${patientFamilyHistory?.motherDeathCause}">
-							</p>
-							
-							<p>
-								<label>How old were they?</label>
-								<input type="text" id="motherDeathAge" name="patientFamilyHistory.motherDeathAge" value="${patientFamilyHistory?.motherDeathAge}">
-							</p>
-						</div>
-                    </div>
-
-                    <div class="onerow underline" style="padding-top: 20px">
-                        <h2>Status of sibling?</h2>
-						<div class="col5">
-							<p><label><input type="radio" id="siblingStatus" value="Alive" name="patientFamilyHistory.siblingStatus"<% if (patientFamilyHistory?.siblingStatus == "Alive") { %> checked="checked" <% } %>/>Alive </label></p>
-                            <p><label><input type="radio" value="Dead"  name="patientFamilyHistory.siblingStatus" <% if (patientFamilyHistory?.siblingStatus == "Dead") { %> checked="checked" <% } %>/>Dead</label></p>
-						</div>
-						
-						<div class="col6 last" id="sibling-status">
-							<p>
-								<label>What was the cause of death?</label>
-								<input type="text" id="siblingDeathCause" name="patientFamilyHistory.siblingDeathCause" value="${patientFamilyHistory?.siblingDeathCause}">
-							</p>
-							<p>
-								<label>How old were they?</label>
-								<input type="text" id="siblingDeathAge" name="patientFamilyHistory.siblingDeathAge" value="${patientFamilyHistory?.siblingDeathAge}">
-							</p>
-						</div>
-                    </div>
-
-					<div class="onerow underline" style="padding-top: 20px;">
-						<h2>Any family history of the following illness? </h2>
-						<div><i class="icon-diagnosis small"> </i><p><label>  <input type="checkbox" id="Hypertension" value="Hypertension" name="patientFamilyHistory.familyIllnessHistory" <%if(patientFamilyHistory?.familyIllnessHistory == "Hypertension") { %> checked="checked"<% } %>/>Hypertension </label></p></div>
-
-						<div><i class="icon-diagnosis small"> </i><p><label>  <input type="checkbox" id="Tuberculosis" value="Tuberculosis" name="patientFamilyHistory.familyIllnessHistory" <%if (patientFamilyHistory?.familyIllnessHistory == "Tuberculosis") {%> checked="checked"<%} %>/> Tuberculosis</label></p></div>
-
-						<div><i class="icon-diagnosis small"> </i><p><label>  <input type="checkbox" id="Sudden Death" value="Sudden Death" name="patientFamilyHistory.familyIllnessHistory" <% if(patientFamilyHistory?.familyIllnessHistory == "Sudden Death") {%> checked="checked"<% }%>/>Sudden Death </label></p></div>
-
-						<div><i class="icon-diagnosis small"> </i><p><label>  <input type="checkbox" id="Stroke" value="Stroke" name="patientFamilyHistory.familyIllnessHistory"<%if (patientFamilyHistory?.familyIllnessHistory=="Stroke"){%> checked="checked"<%}%> /> Stroke</label></p></div>
-
-						<div><i class="icon-diagnosis small"> </i><p><label>  <input type="checkbox" id="Asthma" value="Asthma" name="patientFamilyHistory.familyIllnessHistory" <%if(patientFamilyHistory?.familyIllnessHistory=="Asthma"){%> checked="checked" <%}%>/> Asthma</label></p></div>
-
-						<div><i class="icon-diagnosis small"> </i><p><label>  <input type="checkbox" id="Diabetes" value="Diabetes" name="patientFamilyHistory.familyIllnessHistory" <%if(patientFamilyHistory?.familyIllnessHistory=="Diabetes"){%>checked="checked" <%}%> /> Diabetes</label></p> </div>
-
-						<div><i class="icon-diagnosis small"> </i><p><label>  <input type="checkbox" id="Others" value="Others" name="patientFamilyHistory.familyIllnessHistory" <%if(patientFamilyHistory?.familyIllnessHistory=="Others"){%>checked="checked"<%}%>/> Others </label></p></div>
-
-						<div><i class="icon-diagnosis small"> </i> <p><label>  <input type="checkbox" id="None" value="None" name="patientFamilyHistory.familyIllnessHistory" <%if(patientFamilyHistory?.familyIllnessHistory=="None"){%>checked="checked"<%}%>/> None</label></p></div>
-                    </div>
-
                 </div>
-            </fieldset>
 
-            <fieldset>
-                <legend>Personal and Social</legend>
+                <div class="onerow underline" style="padding-top: 20px">
+					<h2>Any medication you are sensitive to?</h2>
+                    <div class="col5">
+                        <p><label><input type="radio" id="sensitiveMedication" value="Yes" name="patientDrugHistory.sensitiveMedication"<% if (patientDrugHistory?.sensitiveMedication == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
+                        <p><label><input type="radio" value="No"  name="patientDrugHistory.sensitiveMedication"<% if (patientDrugHistory?.sensitiveMedication == "No") { %> checked="checked" <% } %>/>No</label></p>
+                    </div>
+
+					<div class="col6 last" id="sensitives">
+						<p>
+						<label>What is the medication?</label>
+                        <input type="text" id="sensitiveMedicationName" name="patientDrugHistory.sensitiveMedicationName" value="${patientDrugHistory?.sensitiveMedicationName}">
+                        </p>
+
+						<p>
+						<label>What are the symptoms you experience?</label>
+                        <input type="text" id="sensitiveMedicationSymptom" name="patientDrugHistory.sensitiveMedicationSymptom" value="${patientDrugHistory?.sensitiveMedicationSymptom}">
+                        </p>
+					</div>
+                </div>
+
+				<div class="onerow underline" style="padding-top: 20px">
+					<h2>Are you using any invasive contraception?</h2>
+                    <div class="col5">
+                        <p><label><input type="radio" id="invasiveContraception" value="Yes" name="patientDrugHistory.invasiveContraception"<% if (patientDrugHistory?.invasiveContraception == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
+						<p><label><input type="radio" value="No"  name="patientDrugHistory.invasiveContraception"<% if (patientDrugHistory?.invasiveContraception == "No") { %> checked="checked" <% } %>/>No</label></p>
+                    </div>
+
+                    <div class="col6 last" id="invasives">
+						<label>What is the medication?</label>
+                        <input type="text" id="invasiveContraceptionName" name="patientDrugHistory.invasiveContraceptionName" value="${patientDrugHistory?.invasiveContraceptionName}">
+                    </div>
+				</div>
+
+            </div>
+		</fieldset>
+
+        <fieldset>
+            <legend>Family History</legend>
                 <div>
                     <div class="onerow underline">
-                        <h2> Do you smoke?</h2>
-						<div class="col5">
-							<p><label><input type="radio" id="smoke" value="Yes" name="patientPersonalHistory.smoke"<% if (patientPersonalHistory?.smoke == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
-                            <p><label><input type="radio" value="No"  name="patientPersonalHistory.smoke"<% if (patientPersonalHistory?.smoke == "No") { %> checked="checked" <% } %>/> No</label></p>
-						</div>
-						
-						<div class="col6 last" id="do-smoke">
-							<p>
-								<label>What do you smoke?</label>
-								<input type="text" id="smokeItem" name="patientPersonalHistory.smokeItem" value="${patientPersonalHistory?.smokeItem}">
-							</p>
-							
-							<p>
-								<label>What is your average in a day?</label>
-								<input type="text" id="smokeAverage" name="patientPersonalHistory.smokeAverage" value="${patientPersonalHistory?.smokeAverage}">
-							</p>
-						</div>
-                    </div>
-					
-                    <div class="onerow underline" style="padding-top: 20px">
-                        <h2> Do you drink alcohol?</h2>
-						<div class="col5">
-							<p><label><input type="radio" id="alcohol" value="Yes" name="patientPersonalHistory.alcohol"<% if (patientPersonalHistory?.smoke == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
-                            <p><label><input type="radio" value="No" name="patientPersonalHistory.alcohol"<% if (patientPersonalHistory?.smoke == "No") { %> checked="checked" <% } %>/>No</label></p>
-						</div>
-						
-						<div class="col6 last" id="do-alcohol">
-							<p>
-								<label>What alcohol do you drink?</label>
-								<input type="text" id="alcoholItem" name="patientPersonalHistory.alcoholItem" value="${patientPersonalHistory?.alcoholItem}">
-							</p>
-							
-							<p>
-								<label>What is your average in a day?</label>
-								<input type="text" id="alcoholAverage" name="patientPersonalHistory.alcoholAverage" value="${patientPersonalHistory?.alcoholAverage}">
-							</p>
-						</div>
+                        <h2>Status of father?</h2>
+                    <div class="col5">
+                        <p><label><input type="radio" value="Alive" id="fatherStatus" name="patientFamilyHistory.fatherStatus"<% if (patientFamilyHistory?.fatherStatus == "Alive") { %> checked="checked" <% } %>/>Alive </label></p>
+                        <p><label><input type="radio" value="Dead"  name="patientFamilyHistory.fatherStatus"<% if (patientFamilyHistory?.fatherStatus == "Dead") { %> checked="checked" <% } %>/>Dead</label></p>
                     </div>
 
-                    <div class="onerow underline" style="padding-top: 20px">
-                        <h2>Do you take any recreational drugs?</h2>
-						<div class="col5">
-							<p><label><input type="radio" id="drug" value="Yes" name="patientPersonalHistory.drug"<% if (patientPersonalHistory?.drug == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
-                            <p><label><input type="radio" value="No" name="patientPersonalHistory.drug"<% if (patientPersonalHistory?.drug == "No") { %> checked="checked" <% } %>/>No</label> </p>
-						</div>
-						
-						<div class="col6 last" id="do-drugs">
-							<p>
-								<label>What drugs do you take?</label>
-								<input type="text" id="drugItem" name="patientPersonalHistory.drugItem" value="${patientPersonalHistory?.drugItem}">
-							</p>
-							
-							<p>
-								<label>What is your average in a day?</label>
-								<input type="text" id="drugAverage" name="patientPersonalHistory.drugAverage" value="${patientPersonalHistory?.drugAverage}">
-							</p>
-						</div>
-                    </div>
-                    
-					<div class="onerow underline" style="padding-top: 20px">
-						<h2> Are you aware of your current HIV status?</h2>
-						<div class="col5">
-							<p><label><input type="radio" id="hivStatus" value="Yes" name="patientPersonalHistory.hivStatus"<% if (patientPersonalHistory?.hivStatus == "Yes") { %> checked="checked" <% } %>/>Yes</label> </p>
-							<p><label><input type="radio" value="No" name="patientPersonalHistory.hivStatus"<% if (patientPersonalHistory?.hivStatus == "No") { %> checked="checked" <% } %>/>No</label> </p>
-						</div>						
-                    </div>
-					
-					<div class="onerow underline" style="padding-top: 20px">
-						<h2> Have you been exposed to any HIV/ AIDS factor in the past year, or since your last HIV Test?</h2>
-						<div class="col5">
-							<p><label><input type="radio" id="exposedHiv" value="Yes" name="patientPersonalHistory.exposedHiv"<% if (patientPersonalHistory?.exposedHiv == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
-							<p><label><input type="radio" value="No"  name="patientPersonalHistory.exposedHiv"<% if (patientPersonalHistory?.exposedHiv == "No" ) { %> checked="checked" <% } %>/>No</label> </p>
-						</div>
+                    <div class="col6 last" id="father-status">
+                        <p>
+                            <label>What was the cause of death?</label>
+                            <input type="text" id="fatherDeathCause" name="patientFamilyHistory.fatherDeathCause" value="${patientFamilyHistory?.fatherDeathCause}">
+                        </p>
 
-						<div class="col6 last" id="do-exposed">
-							<p>
-								<label>Which factors?</label>
-								<input type="text" id="exposedHivFactor" name="patientPersonalHistory.exposedHivFactor" value="${patientPersonalHistory?.exposedHivFactor}">
-							</p>
-						</div>
+						<p>
+							<label>How old were they?</label>
+                            <input type="text" id="fatherDeathAge" name="patientFamilyHistory.fatherDeathAge" value="${patientFamilyHistory?.fatherDeathAge}">
+                        </p>
 					</div>
-                    
-                    <div class="onerow underline" style="padding-top: 20px">
-                        <h2> Any close member in the family who can support during illness?</h2>
-						<div class="col5">
-							<p><label><input type="radio" id="familyHelp" value="Yes" name="patientPersonalHistory.familyHelp"<% if (patientPersonalHistory?.familyHelp == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
-                            <p><label><input type="radio" value="No" name="patientPersonalHistory.familyHelp"<% if (patientPersonalHistory?.familyHelp == "No") { %> checked="checked" <% } %>/>No</label></p>
-						</div>
-						
-                        <div class="col6 last" id="do-support">
-                            <label>Who else can support you during illness?</label>
-							<input type="text" id="otherHelp" name="patientPersonalHistory.otherHelp" value="${patientPersonalHistory?.otherHelp}">
+                </div>
+
+                <div class="onerow underline" style="padding-top: 20px">
+                    <h2>Status of mother?</h2>
+                <div class="col5">
+                    <p><label><input type="radio" id="motherStatus" value="Alive" name="patientFamilyHistory.motherStatus"<% if (patientFamilyHistory?.motherStatus == "Alive") { %> checked="checked" <% } %>/>Alive </label></p>
+                     <p><label><input type="radio"  value="Dead"  name="patientFamilyHistory.motherStatus"<% if (patientFamilyHistory?.motherStatus == "Dead")  { %> checked="checked" <% } %>/>Dead  </label></p>
+                </div>
+
+				<div class="col6 last" id="mother-status">
+					<p>
+                        <label>What was the cause of death?</label>
+                        <input type="text" id="motherDeathCause" name="patientFamilyHistory.motherDeathCause" value="${patientFamilyHistory?.motherDeathCause}">
+                    </p>
+
+					<p>
+                        <label>How old were they?</label>
+                        <input type="text" id="motherDeathAge" name="patientFamilyHistory.motherDeathAge" value="${patientFamilyHistory?.motherDeathAge}">
+                    </p>
+				</div>
+            </div>
+
+            <div class="onerow underline" style="padding-top: 20px">
+                <h2>Status of sibling?</h2>
+                <div class="col5">
+                    <p><label><input type="radio" id="siblingStatus" value="Alive" name="patientFamilyHistory.siblingStatus"<% if (patientFamilyHistory?.siblingStatus == "Alive") { %> checked="checked" <% } %>/>Alive </label></p>
+                    <p><label><input type="radio" value="Dead"  name="patientFamilyHistory.siblingStatus" <% if (patientFamilyHistory?.siblingStatus == "Dead") { %> checked="checked" <% } %>/>Dead</label></p>
+                </div>
+
+				<div class="col6 last" id="sibling-status">
+					<p>
+						<label>What was the cause of death?</label>
+                        <input type="text" id="siblingDeathCause" name="patientFamilyHistory.siblingDeathCause" value="${patientFamilyHistory?.siblingDeathCause}">
+                    </p>
+					<p>
+						<label>How old were they?</label>
+                        <input type="text" id="siblingDeathAge" name="patientFamilyHistory.siblingDeathAge" value="${patientFamilyHistory?.siblingDeathAge}">
+                    </p>
+                 </div>
+            </div>
+
+			<div class="onerow underline" style="padding-top: 20px;">
+				<h2>Any family history of the following illness? </h2>
+                <div><i class="icon-diagnosis small"> </i><p><label>  <input type="checkbox" id="Hypertension" value="Hypertension" name="patientFamilyHistory.familyIllnessHistory" <%if(patientFamilyHistory?.familyIllnessHistory == "Hypertension") { %> checked="checked"<% } %>/>Hypertension </label></p></div>
+
+				<div><i class="icon-diagnosis small"> </i><p><label>  <input type="checkbox" id="Tuberculosis" value="Tuberculosis" name="patientFamilyHistory.familyIllnessHistory" <%if (patientFamilyHistory?.familyIllnessHistory == "Tuberculosis") {%> checked="checked"<%} %>/> Tuberculosis</label></p></div>
+
+                <div><i class="icon-diagnosis small"> </i><p><label>  <input type="checkbox" id="Sudden Death" value="Sudden Death" name="patientFamilyHistory.familyIllnessHistory" <% if(patientFamilyHistory?.familyIllnessHistory == "Sudden Death") {%> checked="checked"<% }%>/>Sudden Death </label></p></div>
+
+                <div><i class="icon-diagnosis small"> </i><p><label>  <input type="checkbox" id="Stroke" value="Stroke" name="patientFamilyHistory.familyIllnessHistory"<%if (patientFamilyHistory?.familyIllnessHistory=="Stroke"){%> checked="checked"<%}%> /> Stroke</label></p></div>
+
+                <div><i class="icon-diagnosis small"> </i><p><label>  <input type="checkbox" id="Asthma" value="Asthma" name="patientFamilyHistory.familyIllnessHistory" <%if(patientFamilyHistory?.familyIllnessHistory=="Asthma"){%> checked="checked" <%}%>/> Asthma</label></p></div>
+
+				<div><i class="icon-diagnosis small"> </i><p><label>  <input type="checkbox" id="Diabetes" value="Diabetes" name="patientFamilyHistory.familyIllnessHistory" <%if(patientFamilyHistory?.familyIllnessHistory=="Diabetes"){%>checked="checked" <%}%> /> Diabetes</label></p> </div>
+
+                <div><i class="icon-diagnosis small"> </i><p><label>  <input type="checkbox" id="Others" value="Others" name="patientFamilyHistory.familyIllnessHistory" <%if(patientFamilyHistory?.familyIllnessHistory=="Others"){%>checked="checked"<%}%>/> Others </label></p></div>
+
+                <div><i class="icon-diagnosis small"> </i> <p><label>  <input type="checkbox" id="None" value="None" name="patientFamilyHistory.familyIllnessHistory" <%if(patientFamilyHistory?.familyIllnessHistory=="None"){%>checked="checked"<%}%>/> None</label></p></div>
+            </div>
+
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Personal and Social</legend>
+        <div>
+        <div class="onerow underline">
+        <h2> Do you smoke?</h2>
+		<div class="col5">
+			<p><label><input type="radio" id="smoke" value="Yes" name="patientPersonalHistory.smoke"<% if (patientPersonalHistory?.smoke == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
+            <p><label><input type="radio" value="No"  name="patientPersonalHistory.smoke"<% if (patientPersonalHistory?.smoke == "No") { %> checked="checked" <% } %>/> No</label></p>
+		</div>
+
+        <div class="col6 last" id="do-smoke">
+            <p>
+                <label>What do you smoke?</label>
+                <input type="text" id="smokeItem" name="patientPersonalHistory.smokeItem" value="${patientPersonalHistory?.smokeItem}">
+			</p>
+
+            <p>
+                <label>What is your average in a day?</label>
+				<input type="text" id="smokeAverage" name="patientPersonalHistory.smokeAverage" value="${patientPersonalHistory?.smokeAverage}">
+			</p>
+        </div>
+         </div>
+
+        <div class="onerow underline" style="padding-top: 20px">
+            <h2> Do you drink alcohol?</h2>
+				<div class="col5">
+					<p><label><input type="radio" id="alcohol" value="Yes" name="patientPersonalHistory.alcohol"<% if (patientPersonalHistory?.smoke == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
+                    <p><label><input type="radio" value="No" name="patientPersonalHistory.alcohol"<% if (patientPersonalHistory?.smoke == "No") { %> checked="checked" <% } %>/>No</label></p>
+				</div>
+
+                <div class="col6 last" id="do-alcohol">
+                    <p>
+                        <label>What alcohol do you drink?</label>
+						<input type="text" id="alcoholItem" name="patientPersonalHistory.alcoholItem" value="${patientPersonalHistory?.alcoholItem}">
+					</p>
+
+                    <p>
+                        <label>What is your average in a day?</label>
+						<input type="text" id="alcoholAverage" name="patientPersonalHistory.alcoholAverage" value="${patientPersonalHistory?.alcoholAverage}">
+					</p>
+                </div>
+        </div>
+
+        <div class="onerow underline" style="padding-top: 20px">
+        <h2>Do you take any recreational drugs?</h2>
+			<div class="col5">
+                <p><label><input type="radio" id="drug" value="Yes" name="patientPersonalHistory.drug"<% if (patientPersonalHistory?.drug == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
+                <p><label><input type="radio" value="No" name="patientPersonalHistory.drug"<% if (patientPersonalHistory?.drug == "No") { %> checked="checked" <% } %>/>No</label> </p>
+			</div>
+
+            <div class="col6 last" id="do-drugs">
+                <p>
+                    <label>What drugs do you take?</label>
+                    <input type="text" id="drugItem" name="patientPersonalHistory.drugItem" value="${patientPersonalHistory?.drugItem}">
+				</p>
+
+                <p>
+                    <label>What is your average in a day?</label>
+					<input type="text" id="drugAverage" name="patientPersonalHistory.drugAverage" value="${patientPersonalHistory?.drugAverage}">
+				</p>
+            </div>
+        </div>
+
+        <div class="onerow underline" style="padding-top: 20px">
+        <h2> Are you aware of your current HIV status?</h2>
+			<div class="col5">
+				<p><label><input type="radio" id="hivStatus" value="Yes" name="patientPersonalHistory.hivStatus"<% if (patientPersonalHistory?.hivStatus == "Yes") { %> checked="checked" <% } %>/>Yes</label> </p>
+                <p><label><input type="radio" value="No" name="patientPersonalHistory.hivStatus"<% if (patientPersonalHistory?.hivStatus == "No") { %> checked="checked" <% } %>/>No</label> </p>
+			</div>
+        </div>
+
+		<div class="onerow underline" style="padding-top: 20px">
+			<h2> Have you been exposed to any HIV/ AIDS factor in the past year, or since your last HIV Test?</h2>
+			<div class="col5">
+				<p><label><input type="radio" id="exposedHiv" value="Yes" name="patientPersonalHistory.exposedHiv"<% if (patientPersonalHistory?.exposedHiv == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
+                <p><label><input type="radio" value="No"  name="patientPersonalHistory.exposedHiv"<% if (patientPersonalHistory?.exposedHiv == "No" ) { %> checked="checked" <% } %>/>No</label> </p>
+			</div>
+
+            <div class="col6 last" id="do-exposed">
+                <p>
+                    <label>Which factors?</label>
+                    <input type="text" id="exposedHivFactor" name="patientPersonalHistory.exposedHivFactor" value="${patientPersonalHistory?.exposedHivFactor}">
+                </p>
+            </div>
+		</div>
+
+        <div class="onerow underline" style="padding-top: 20px">
+        <h2> Any close member in the family who can support during illness?</h2>
+			<div class="col5">
+				<p><label><input type="radio" id="familyHelp" value="Yes" name="patientPersonalHistory.familyHelp"<% if (patientPersonalHistory?.familyHelp == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
+                <p><label><input type="radio" value="No" name="patientPersonalHistory.familyHelp"<% if (patientPersonalHistory?.familyHelp == "No") { %> checked="checked" <% } %>/>No</label></p>
+			</div>
+
+            <div class="col6 last" id="do-support">
+                <label>Who else can support you during illness?</label>
+				<input type="text" id="otherHelp" name="patientPersonalHistory.otherHelp" value="${patientPersonalHistory?.otherHelp}">
+            </div>
+        </div>
+
+         <div class="onerow">
+            <h2>  Do you have a regular source of income?</h2>
+            <div class="col5">
+                <p><label><input type="radio" id="incomeSource" value="Yes" name="patientPersonalHistory.incomeSource"<% if (patientPersonalHistory?.incomeSource == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
+                <p><label><input type="radio" value="No"  name="patientPersonalHistory.incomeSource"<% if (patientPersonalHistory?.incomeSource == "No" ) { %> checked="checked" <% } %>/>No</label> </p>
+            </div>
+         </div>
+
+        </div>
+     </fieldset>
+
+    <div class="onerow" style="margin-top: 50px">
+        <div class="col4" style="padding-left: 5px">
+            <a class="button previous task" >
+                <span style="padding: 15px;">PREVIOUS</span>
+			</a>
+    </div>
+	<div class="col4">&nbsp;</div>
+        <div class="col4 last">
+            <a class="button next confirm" style="float:right; display:inline-block;margin-right:5px;" >
+                <span>NEXT PAGE</span>
+            </a>
+        </div>
+	</div>
+
+</section>
+
+<div id="confirmation">
+	<span id="confirmation_label" class="title">Confirm</span>
+
+        <div style="display:none;">
+            <div class="before-dataCanvas"></div>
+                <div id="dataCanvas"></div>
+                    <div class="after-data-canvas"></div>
+				        <div id="confirmationQuestion"></div>
+                    </div>
+			    <div class="dashboard">
+                    <div class="info-section">
+		                <div class="info-header">
+                        <i class="icon-list-ul"></i>
+                        <h3>Vitals Summary</h3>
+                                            </div>
+                        <div class="info-body">
+                            <ul>
+                                <li id="li01"><span class="status active"></span><div>Weight:</div> <small id="summ_01">/</small></li>
+                                <li id="li02"><span class="status active"></span><div>Height:</div> <small id="summ_02">/</small></li>
+                                <% if (patient.age >= 2) { %>
+                                <li id="li17"><span class="status active"></span><div>BMI:</div>                <small id="summ_17">/</small></li>
+                                <% } %>
+                                <li id="li03"><span class="status active"></span><div>MUA CC:</div> 			<small id="summ_03">/</small></li>
+                                <li id="li04"><span class="status active"></span><div>Chest CC:</div> 			<small id="summ_04">/</small></li>
+                                <li id="li05"><span class="status active"></span><div>Abdominal CC:</div>		<small id="summ_05">/</small></li>
+                                <li id="li06"><span class="status active"></span><div>Temperature:</div>		<small id="summ_06">/</small></li>
+                                <li id="li07"><span class="status active"></span><div>BP (Systolic):</div>		<small id="summ_07">/</small></li>
+                                <li id="li08"><span class="status active"></span><div>BP (Diastolic):</div>		<small id="summ_08">/</small></li>
+                                <li id="li09"><span class="status active"></span><div>Respiratory Rate:</div>	<small id="summ_09">/</small></li>
+                                <li id="li10"><span class="status active"></span><div>Pulse Rate:</div>			<small id="summ_10">/</small></li>
+                                <li id="li11"><span class="status active"></span><div>Last Periods:</div>		<small id="summ_11">/</small></li>
+                                <li id="li16"><span class="status active"></span><div>Oxygen saturation:</div>  <small id="summ_16">/</small></li>
+
+                                <li id="li12"><span class="status active"></span><div>Blood Group:</div>		<small id="summ_12">/</small></li>
+                                <li id="li13"><span class="status active"></span><div>Rhesus Factor:</div>		<small id="summ_13">/</small></li>
+                                <li id="li14"><span class="status active"></span><div>HIV STATUS:</div>				<small id="summ_14">/</small></li>
+                                <li id="li15"><span class="status active"></span><div>Room to Visit:</div>		<small id="summ_15">/</small></li>
+                            </ul>
                         </div>
                     </div>
-					
-                    <div class="onerow">
-                        <h2>  Do you have a regular source of income?</h2>
-						<div class="col5">
-							<p><label><input type="radio" id="incomeSource" value="Yes" name="patientPersonalHistory.incomeSource"<% if (patientPersonalHistory?.incomeSource == "Yes") { %> checked="checked" <% } %>/>Yes</label></p>
-                            <p><label><input type="radio" value="No"  name="patientPersonalHistory.incomeSource"<% if (patientPersonalHistory?.incomeSource == "No" ) { %> checked="checked" <% } %>/>No</label> </p>
-						</div> 
-                    </div>
-
                 </div>
-            </fieldset>
 
-			<div class="onerow" style="margin-top: 50px">
-				<div class="col4" style="padding-left: 5px">
-					<a class="button previous task" >
-						<span style="padding: 15px;">PREVIOUS</span>
-					</a>
-				</div>
-				<div class="col4">&nbsp;</div>
-				<div class="col4 last">
-					<a class="button next confirm" style="float:right; display:inline-block;margin-right:5px;" >
-						<span>NEXT PAGE</span>
-					</a>
-				</div>
-			</div>
-
-        </section>
-        <div id="confirmation">
-			<span id="confirmation_label" class="title">Confirm</span>
-			
-			<div style="display:none;">
-				<div class="before-dataCanvas"></div>
-				<div id="dataCanvas"></div>
-				<div class="after-data-canvas"></div>
-				<div id="confirmationQuestion"></div>
-			</div>
-			
-			<div class="dashboard">
-				<div class="info-section">
-					<div class="info-header">
-						<i class="icon-list-ul"></i>
-						<h3>Vitals Summary</h3>
-					</div>
-					<div class="info-body">
-						<ul>
-							<li id="li01"><span class="status active"></span><div>Weight:</div> 			<small id="summ_01">/</small></li>
-							<li id="li02"><span class="status active"></span><div>Height:</div> 			<small id="summ_02">/</small></li>
-							<li id="li03"><span class="status active"></span><div>MUA CC:</div> 			<small id="summ_03">/</small></li>
-							<li id="li04"><span class="status active"></span><div>Chest CC:</div> 			<small id="summ_04">/</small></li>
-							<li id="li05"><span class="status active"></span><div>Abdominal CC:</div>		<small id="summ_05">/</small></li>
-							<li id="li06"><span class="status active"></span><div>Temperature:</div>		<small id="summ_06">/</small></li>
-							
-							<li id="li07"><span class="status active"></span><div>BP (Systolic):</div>		<small id="summ_07">/</small></li>
-							<li id="li08"><span class="status active"></span><div>BP (Diastolic):</div>		<small id="summ_08">/</small></li>
-							<li id="li09"><span class="status active"></span><div>Respiratory Rate:</div>	<small id="summ_09">/</small></li>
-							<li id="li10"><span class="status active"></span><div>Pulse Rate:</div>			<small id="summ_10">/</small></li>
-							<li id="li11"><span class="status active"></span><div>Last Periods:</div>		<small id="summ_11">/</small></li>
-                            <li id="li16"><span class="status active"></span><div>Oxygen saturation:</div>  <small id="summ_16">/</small></li>
-							
-							<li id="li12"><span class="status active"></span><div>Blood Group:</div>		<small id="summ_12">/</small></li>
-							<li id="li13"><span class="status active"></span><div>Rhesus Factor:</div>		<small id="summ_13">/</small></li>
-							<li id="li14"><span class="status active"></span><div>PITCT:</div>				<small id="summ_14">/</small></li>
-							<li id="li15"><span class="status active"></span><div>Room to Visit:</div>		<small id="summ_15">/</small></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			
-			<div class="onerow" style="margin-top: 150px">
-				<input id="submit" type="submit" class="submitButton confirm right" value="FINISH" style="float:right; display:inline-block; margin-left: 5px;" />
-                <a class="button cancel" onclick=" toggleSelection();">
-                    <span style="padding: 15px;">REVIEW</span>
-                </a>
-			</div>
-		</div>
-	</form>
-	
-	
-    
+                <div class="onerow" style="margin-top: 150px">
+                    <input id="submit" type="submit" class="submitButton confirm right" value="FINISH" style="float:right; display:inline-block; margin-left: 5px;" />
+                    <a class="button cancel" onclick=" toggleSelection();">
+                        <span style="padding: 15px;">REVIEW</span>
+                    </a>
+                </div>
+		    </div>
+        </form>
 </div>
