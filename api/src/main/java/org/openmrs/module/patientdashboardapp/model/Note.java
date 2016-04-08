@@ -62,8 +62,11 @@ public class Note {
 	private List<Procedure> procedures = new ArrayList<Procedure>();
 	private List<Drug> drugs = new ArrayList<Drug>();
 	private Option referredTo;
+	private Option referralReasons;
 	private Outcome outcome;
 	private String illnessHistory;
+	private String externalReferral;
+	private String externalReferralComments;
 
 	private String otherInstructions;
 	private String physicalExamination;
@@ -156,6 +159,14 @@ public class Note {
 		this.referredTo = referredTo;
 	}
 
+	public Option getReferralReasons() {
+		return referralReasons;
+	}
+
+	public void setReferralReasons(Option referralReasons) {
+		this.referralReasons = referralReasons;
+	}
+
 	public Outcome getOutcome() {
 		return this.outcome;
 	}
@@ -178,6 +189,22 @@ public class Note {
 
 	public void setIllnessHistory(String illnessHistory) {
 		this.illnessHistory = illnessHistory;
+	}
+
+	public String getExternalReferral() {
+		return externalReferral;
+	}
+
+	public void setExternalReferral(String externalReferral) {
+		this.externalReferral = externalReferral;
+	}
+
+	public String getExternalReferralComments() {
+		return externalReferralComments;
+	}
+
+	public void setExternalReferralComments(String externalReferralComments) {
+		this.externalReferralComments = externalReferralComments;
 	}
 
 	public String getOtherInstructions() {
@@ -237,6 +264,10 @@ public class Note {
 			addOtherInstructions(encounter, obsGroup);
 		}
 
+		if (StringUtils.isNotBlank(this.externalReferral)) {
+			addExternalReferral(encounter,obsGroup);
+		}
+
 		if(StringUtils.isNotBlank(this.physicalExamination)){
 			addPhysicalExamination(encounter,obsGroup);
 		}
@@ -258,6 +289,10 @@ public class Note {
 		
 		if (referredTo != null) {
 			Referral.addReferralObs(referredTo, opdId, encounter, obsGroup);
+		}
+
+		if (referralReasons != null) {
+			ReferralReasons.addReferralReasonsObs(referralReasons, encounter, obsGroup);
 		}
 
 		if (this.outcome != null) {
@@ -287,6 +322,19 @@ public class Note {
 		obsOtherInstructions.setDateCreated(encounter.getDateCreated());
 		obsOtherInstructions.setEncounter(encounter);
 		encounter.addObs(obsOtherInstructions);
+	}
+
+	private void addExternalReferral(Encounter encounter, Obs obsGroup) {
+		Concept conceptExternalReferral = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL));
+		Obs obsExternalReferral = new Obs();
+		obsExternalReferral.setObsGroup(obsGroup);
+		obsExternalReferral.setConcept(conceptExternalReferral);
+		obsExternalReferral.setValueText(this.externalReferral);
+		obsExternalReferral.setComment(this.externalReferralComments);
+		obsExternalReferral.setCreator(encounter.getCreator());
+		obsExternalReferral.setDateCreated(encounter.getDateCreated());
+		obsExternalReferral.setEncounter(encounter);
+		encounter.addObs(obsExternalReferral);
 	}
 
 	public void addPhysicalExamination(Encounter encounter, Obs obsGroup)
