@@ -347,7 +347,7 @@ jq(function(){
 	          ).success(function(data) {
 	            var formulations = jq.map(data, function (formulation) {
                     console.log(formulation);
-	              return new Formulation({ id: formulation.id, label: formulation.name});
+	              return new Formulation({ id: formulation.id, label: formulation.name + ":" + formulation.dozage});
 	            });
 	            prescription.drug().formulationOpts(formulations);
 	          });
