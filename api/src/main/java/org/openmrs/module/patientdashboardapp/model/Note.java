@@ -67,7 +67,6 @@ public class Note {
 	private Outcome outcome;
 	private String illnessHistory;
 	private String facility;
-	//private String externalReferral;
 	private String referralComments;
 
 	private String otherInstructions;
@@ -203,14 +202,6 @@ public class Note {
 		this.facility = facility;
 	}
 
-	//public String getExternalReferral() {
-		//return externalReferral;
-	//}
-
-	//public void setExternalReferral(String externalReferral) {
-		//this.externalReferral = externalReferral;
-	//}
-
 	public String getReferralComments() {
 		return referralComments;
 	}
@@ -280,10 +271,6 @@ public class Note {
 			addFacility(encounter, obsGroup);
 		}
 
-		//if (StringUtils.isNotBlank(this.externalReferral)) {
-			//addExternalReferral(encounter,obsGroup);
-		//}
-
 		if(StringUtils.isNotBlank(this.physicalExamination)){
 			addPhysicalExamination(encounter,obsGroup);
 		}
@@ -318,7 +305,6 @@ public class Note {
 
 	private void addFacility(Encounter encounter, Obs obsGroup) {
 		Concept facilityConcept = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PROPERTY_FACILITY));
-		//Concept conceptFacility = Context.getConceptService().getConcept("HISTORY OF PRESENT ILLNESS");
 		Obs obsFacility = new Obs();
 		obsFacility.setObsGroup(obsGroup);
 		obsFacility.setConcept(facilityConcept);
