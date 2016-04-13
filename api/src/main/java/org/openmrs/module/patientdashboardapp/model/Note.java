@@ -27,7 +27,8 @@ import org.slf4j.LoggerFactory;
 public class Note {
 
 	private static Logger logger = LoggerFactory.getLogger(Note.class);
-	
+
+
 	public Note () {
 	}
 
@@ -65,11 +66,13 @@ public class Note {
 	private Option referralReasons;
 	private Outcome outcome;
 	private String illnessHistory;
-	private String externalReferral;
-	private String externalReferralComments;
+	private String facility;
+	private String referralComments;
 
 	private String otherInstructions;
 	private String physicalExamination;
+
+	public static String PROPERTY_FACILITY = "patientdashboard.facilityConcept";
 
 	public int getPatientId() {
 		return patientId;
@@ -191,20 +194,20 @@ public class Note {
 		this.illnessHistory = illnessHistory;
 	}
 
-	public String getExternalReferral() {
-		return externalReferral;
+	public String getFacility() {
+		return facility;
 	}
 
-	public void setExternalReferral(String externalReferral) {
-		this.externalReferral = externalReferral;
+	public void setFacility(String facility) {
+		this.facility = facility;
 	}
 
-	public String getExternalReferralComments() {
-		return externalReferralComments;
+	public String getReferralComments() {
+		return referralComments;
 	}
 
-	public void setExternalReferralComments(String externalReferralComments) {
-		this.externalReferralComments = externalReferralComments;
+	public void setReferralComments(String referralComments) {
+		this.referralComments = referralComments;
 	}
 
 	public String getOtherInstructions() {
@@ -264,8 +267,8 @@ public class Note {
 			addOtherInstructions(encounter, obsGroup);
 		}
 
-		if (StringUtils.isNotBlank(this.externalReferral)) {
-			addExternalReferral(encounter,obsGroup);
+		if (StringUtils.isNotBlank(this.facility)) {
+			addFacility(encounter, obsGroup);
 		}
 
 		if(StringUtils.isNotBlank(this.physicalExamination)){
@@ -278,7 +281,7 @@ public class Note {
 		for (Procedure procedure : this.procedures) {
 			procedure.addObs(encounter,obsGroup);
 		}
-		
+
 		for(Investigation investigation : this.investigations) {
 			investigation.addObs(encounter,obsGroup);
 		}
@@ -288,7 +291,7 @@ public class Note {
 		}
 		
 		if (referredTo != null) {
-			Referral.addReferralObs(referredTo, opdId, encounter, obsGroup);
+			Referral.addReferralObs(referredTo, opdId, encounter, referralComments, obsGroup);
 		}
 
 		if (referralReasons != null) {
@@ -299,7 +302,19 @@ public class Note {
 			this.outcome.addObs(encounter, obsGroup);
 		}
 	}
-	
+
+	private void addFacility(Encounter encounter, Obs obsGroup) {
+		Concept facilityConcept = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PROPERTY_FACILITY));
+		Obs obsFacility = new Obs();
+		obsFacility.setObsGroup(obsGroup);
+		obsFacility.setConcept(facilityConcept);
+		obsFacility.setValueText(this.facility);
+		obsFacility.setCreator(encounter.getCreator());
+		obsFacility.setDateCreated(encounter.getDateCreated());
+		obsFacility.setEncounter(encounter);
+		encounter.addObs(obsFacility);
+	}
+
 	private void addIllnessHistory(Encounter encounter, Obs obsGroup) {
 		Concept conceptIllnessHistory = Context.getConceptService().getConcept("HISTORY OF PRESENT ILLNESS");
 		Obs obsIllnessHistory = new Obs();
@@ -311,7 +326,9 @@ public class Note {
 		obsIllnessHistory.setEncounter(encounter);
 		encounter.addObs(obsIllnessHistory);
 	}
-	
+
+
+
 	private void addOtherInstructions(Encounter encounter, Obs obsGroup) {
 		Concept conceptOtherInstructions = Context.getConceptService().getConcept("OTHER INSTRUCTIONS");
 		Obs obsOtherInstructions = new Obs();
@@ -324,18 +341,7 @@ public class Note {
 		encounter.addObs(obsOtherInstructions);
 	}
 
-	private void addExternalReferral(Encounter encounter, Obs obsGroup) {
-		Concept conceptExternalReferral = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL));
-		Obs obsExternalReferral = new Obs();
-		obsExternalReferral.setObsGroup(obsGroup);
-		obsExternalReferral.setConcept(conceptExternalReferral);
-		obsExternalReferral.setValueText(this.externalReferral);
-		obsExternalReferral.setComment(this.externalReferralComments);
-		obsExternalReferral.setCreator(encounter.getCreator());
-		obsExternalReferral.setDateCreated(encounter.getDateCreated());
-		obsExternalReferral.setEncounter(encounter);
-		encounter.addObs(obsExternalReferral);
-	}
+
 
 	public void addPhysicalExamination(Encounter encounter, Obs obsGroup)
 	{

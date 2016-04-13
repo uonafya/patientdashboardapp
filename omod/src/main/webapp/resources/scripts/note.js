@@ -17,9 +17,10 @@ function Note(noteObj) {
 	self.physicalExamination = noteObj.physicalExamination;
 	self.otherInstructions = noteObj.otherInstructions;
 	self.comments = noteObj.comments;
+	self.facility = noteObj.facility;
 	self.referredTo;
 	self.referralReasons;
-	self.externalReferral = noteObj.externalReferral;
+	//self.externalReferral = noteObj.externalReferral;
 
 	self.outcome = ko.observable();
 	self.referredWard = ko.observable();
