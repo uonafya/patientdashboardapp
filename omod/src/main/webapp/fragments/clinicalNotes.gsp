@@ -254,7 +254,7 @@ jq(function() {
                    "opdLogId", "otherInstructions", "patientId",
                    "procedures", "queueId", "signs", "referredTo",
                    "outcome", "admitTo", "followUpDate", "option",
-                   "drugs", "comment" ,"formulation", "frequency",
+                   "drugs", "comment","externalReferral" ,"formulation","dosage", "frequency",
                    "drugName", "numberOfDays"]) },
           dataType: 'json'
         })
@@ -745,7 +745,8 @@ jq(function(){
                             <th>Drug Name</th>
                             <th>Formulation</th>
                             <th>Frequency</th>
-                            <th>Number of Days</th>
+                            <th>Dosage</th>
+                            <th>No of Days</th>
                             <th>Comments</th>
                             <th>Action</th>
                         </tr>
@@ -755,6 +756,7 @@ jq(function(){
                             <td data-bind="text: drugName"></td>
                             <td data-bind="text: formulation().label"></td>
                             <td data-bind="text: frequency().label"></td>
+                            <td data-bind="text: dosage"></td>
                             <td data-bind="text: numberOfDays"></td>
                             <td data-bind="text: comment"></td>
                             <td>
@@ -884,6 +886,10 @@ jq(function(){
             <li>
                 <span>Frequency</span>
                 <select data-bind="options: prescription.drug().frequencyOpts, value: prescription.drug().frequency, optionsText: 'label',  optionsCaption: 'Select Frequency'"></select>
+            </li>
+            <li>
+                <span>Dosage</span>
+                <input type="text" data-bind="value: prescription.drug().dosage" >
             </li>
             <li>
                 <span>Number of Days</span>

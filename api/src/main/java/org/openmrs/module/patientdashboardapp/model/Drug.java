@@ -16,6 +16,12 @@ public class Drug {
 	private Frequency frequency;
 	private Integer numberOfDays;
 	private String comment;
+
+	public String getDosage() {
+		return dosage;
+	}
+
+	private String dosage;
 	public String getDrugName() {
 		return drugName;
 	}
@@ -46,6 +52,9 @@ public class Drug {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	public void setDosage(String dosage){
+		this.dosage = dosage;
+	}
 	
 	public void save(Encounter encounter, String referralWardName) {
 		InventoryCommonService inventoryCommonService = Context.getService(InventoryCommonService.class);
@@ -61,6 +70,7 @@ public class Drug {
 			opdDrugOrder.setFrequency(frequencyConcept);
 			opdDrugOrder.setNoOfDays(this.numberOfDays);
 			opdDrugOrder.setComments(this.comment);
+			opdDrugOrder.setDosage(this.dosage);
 			opdDrugOrder.setCreator(encounter.getCreator());
 			opdDrugOrder.setCreatedOn(encounter.getDateCreated());
 			opdDrugOrder.setReferralWardName(referralWardName);

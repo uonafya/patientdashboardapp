@@ -18,6 +18,7 @@ function Note(noteObj) {
 	self.otherInstructions = noteObj.otherInstructions;
 	self.comments = noteObj.comments;
 	self.facility = noteObj.facility;
+	self.dosage = noteObj.dosage;
 	self.referredTo;
 	self.referralReasons;
 	//self.externalReferral = noteObj.externalReferral;
@@ -153,6 +154,7 @@ function Drug() {
 	this.frequency = ko.observable();
 	this.formulationOpts = ko.observableArray([]);
 	this.formulation = ko.observable();
+	this.dosage = ko.observable();
 	this.comment = ko.observable();
 	this.numberOfDays = ko.observable(0);
 }
