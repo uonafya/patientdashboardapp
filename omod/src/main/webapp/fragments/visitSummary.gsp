@@ -13,8 +13,9 @@
 				jq("#visit-detail").html(visitDetailTemplate(data.notes));
 
 				if (data.drugs.length > 0) {
+					console.log(data.drugs);
 					var drugsTemplate =  _.template(jq("#drugs-template").html());
-					jq("#drugs-detail").html(drugsTemplate(data.drugs));
+					jq("#drugs-detail").html(drugsTemplate(data));
 				}
 			})
 		});
@@ -159,16 +160,16 @@
                 <td>Name</td>
                 <td>Unit</td>
                 <td>Formulation</td>
-                <td>Dosage</td>
             </tr>
         </thead>
         <tbody>
+		{{ _.each(drugs, function(drug) { }}
             <tr>
-                <td>{{-inventoryDrug.name}}</td>
-                <td>{{-inventoryDrug.unit.name}}</td>
-                <td>{{-inventoryDrugFormulation.name}}</td>
-                <td>{{-inventoryDrugFormulation.dozage}}</td>
+                <td>{{-drug.inventoryDrug.name}}</td>
+                <td>{{-drug.inventoryDrug.unit.name}}</td>
+                <td>{{-drug.inventoryDrugFormulation.name}}:{{-drug.inventoryDrugFormulation.dozage}}</td>
             </tr>
+		{{ }); }}
          </tbody>
     </table>
 </script>
