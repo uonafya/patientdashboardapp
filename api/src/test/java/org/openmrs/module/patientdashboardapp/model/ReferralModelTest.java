@@ -18,7 +18,9 @@ public class ReferralModelTest extends AbstractModelTest {
 		Assert.assertThat(queueService.getAllPatientInQueue().size(), Matchers.is(0));
 		
 		Encounter encounter = createEncounter();
-		Referral.addReferralObs(new Option(9986), 9986, encounter, null);
+
+		String referralComments  = "comment";
+		Referral.addReferralObs(new Option(9986), 9986, encounter, referralComments, null);
 		
 		Assert.assertThat(queueService.countOpdPatientQueue(encounter.getPatient().getFamilyName(), null, null, null), Matchers.is(1));
 	}

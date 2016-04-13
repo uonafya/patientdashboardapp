@@ -51,6 +51,7 @@ jQuery(document).ready(function () {
 });
 note.inpatientWards = ${listOfWards.collect { it.toJson() }};
 note.internalReferralOptions = ${internalReferralSources.collect { it.toJson() }};
+note.externalReferralOptions = ${externalReferralSources.collect { it.toJson() }};
 note.referralReasonsOptions = ${referralReasonsSources.collect { it.toJson() }}
 
 
@@ -249,12 +250,12 @@ jq(function() {
           url: '${ ui.actionLink("patientdashboardapp", "clinicalNoteProcessor", "processNote", [ successUrl: successUrl ]) }',
           data :{ note: ko.toJSON(note, 
                   ["label", "id", "admitted", "diagnosisProvisional",
-                   "diagnoses", "illnessHistory","referralReasons" ,"externalReferralComments","physicalExamination",
-                   "inpatientWarads", "investigations", "opdId",
+                   "diagnoses", "illnessHistory","referralReasons" ,"referralComments","physicalExamination",
+                   "inpatientWarads", "investigations", "facility","opdId",
                    "opdLogId", "otherInstructions", "patientId",
                    "procedures", "queueId", "signs", "referredTo",
                    "outcome", "admitTo", "followUpDate", "option",
-                   "drugs", "comment","externalReferral" ,"formulation", "frequency",
+                   "drugs", "comment" ,"formulation", "frequency",
                    "drugName", "numberOfDays"]) },
           dataType: 'json'
         })
@@ -792,7 +793,7 @@ jq(function(){
 				<div class="onerow">
 					<div class="col4"><label for="internalReferral">Internal Referral</label></div>
 					<div class="col4"><label for="externalReferral">External Referral</label></div>
-					<div class="col4 last"><label for="referralReasons"> Referral Reasons</label></div>
+					<div class="col4 last"><label for="facility"> Facility</label></div>
 				</div>
 				
 				<div class="onerow">
@@ -806,23 +807,29 @@ jq(function(){
 					<div class="col4">
 
 						<p class="input-position-class">
-                            <input type="text" id="externalReferral" name="externalReferral" data-bind="value: \$root.externalReferral" >
-
+                            <select id="externalReferral" name="externalReferral" data-bind="options: \$root.externalReferralOptions, optionsText: 'label', value: \$root.referredTo, optionsCaption: 'Please select...'">
+                            </select>
 						</p>
 					</div>
 
                     <div class="col4 last">
                         <p class="input-position-class">
-                            <select id="referralReasons" name="referralReasons" data-bind="options: \$root.referralReasonsOptions, optionsText: 'label', value: \$root.referralReasons, optionsCaption: 'Please select...'">
-                            </select>
+                            <input type="text" id="facility" name="facility" data-bind="value: \$root.facility">
+                            </input>
                         </p>
 
                     </div> <br/> <br/> <br/>
 
+                    <div class="onerow" style="padding-top:-5px;">
+                        <label for="referralReasons" style="margin-top:20px;">Referral Reasons</label>
+                        <select id="referralReasons" name="referralReasons" data-bind="options: \$root.referralReasonsOptions, optionsText: 'label', value: \$root.referralReasons, optionsCaption: 'Please select...'">
+                        </select>
+
+                    </div>
 
                     <div class="onerow" style="padding-top:-5px;">
-                        <label for="externalReferralComments" style="margin-top:20px;">Comments</label>
-                        <textarea type="text" id="externalReferralComments" name="externalReferralComments" data-bind="value: \$root.externalReferralComments" placeholder="COMMENTS"  style="height: 80px; width: 650px;"></textarea>
+                        <label for="referralComments" style="margin-top:20px;">Comments</label>
+                        <textarea type="text" id="referralComments" name="referralComments" data-bind="value: \$root.referralComments" placeholder="COMMENTS"  style="height: 80px; width: 650px;"></textarea>
 
                     </div>
 

@@ -74,6 +74,12 @@
 		<description>
 
 		</description>
+
+		<property>patientdashboard.facilityConcept</property>
+		<defaultValue>Name of where patient was referred to</defaultValue>
+		<description>
+
+		</description>
 	</globalProperty>
 	<!-- /Required Global Properties -->
 </module>
