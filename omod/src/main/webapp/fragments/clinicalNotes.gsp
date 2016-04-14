@@ -85,6 +85,7 @@ note.procedures(mappedProcedures);
 
 jq(function() {
     NavigatorController = new KeyboardController();
+	
     ko.applyBindings(note, jq("#notes-form")[0]);
     jq( "#symptom" ).autocomplete({
          source: function( request, response ) {
@@ -584,49 +585,49 @@ jq(function(){
         <span class="title">Clinical Notes</span>
 
         <fieldset class="no-confirmation">
-            <legend>Symptoms</legend>
-                <p class="input-position-class">
-                    <label for="symptom">Symptom</label>
-                    <input type="text" id="symptom" name="symptom" placeholder="Add Symptoms" />
-                </p>
+			<legend>Symptoms</legend>
+			<p class="input-position-class">
+				<label for="symptom">Symptom</label>
+				<input type="text" id="symptom" name="symptom" placeholder="Add Symptoms" />
+			</p>
 
-                <div class="tasks" id="task-symptom" style="display:none;">
-                    <header class="tasks-header">
-                        <span id="title-symptom" class="tasks-title">PATIENT'S SYMPTOMS</span>
-                        <a class="tasks-lists"></a>
-                    </header>
-                    
-                    <div class="symptoms-qualifiers" data-bind="foreach: signs" >
-                        <div class="symptom-container">
-                            <div class="symptom-label">
-                                <span class="right pointer show-qualifiers"><i class="icon-caret-down small" title="more"></i></span>
-                                <span class="right pointer" data-bind="click: \$root.removeSign"><i class="icon-remove small"></i></span>
-                                <span data-bind="text: label"></span>
-                            </div>
-                            
-                            <div class="qualifier-container" style="display: none;">
-                                <ul class="qualifier" data-bind="foreach: qualifiers">
-                                    <li>
-                                        <span data-bind="text: label"></span>
-                                        <div data-bind="if: options().length >= 1">
-                                            <div data-bind="foreach: options" class="qualifier-option">
-                                                <p class="qualifier-field">
-                                                    <input type="radio" data-bind="checkedValue: \$data, checked: \$parent.answer" >
-                                                    <label data-bind="text: label"></label>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div data-bind="if: options().length === 0" >
-                                            <p>
-                                                <input type="text" data-bind="value: \$parent.freeText" >
-                                            </p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div> 
-                        </div>
-                    </div>
-                </div>
+			<div class="tasks" id="task-symptom" style="display:none;">
+				<header class="tasks-header">
+					<span id="title-symptom" class="tasks-title">PATIENT'S SYMPTOMS</span>
+					<a class="tasks-lists"></a>
+				</header>
+				
+				<div class="symptoms-qualifiers" data-bind="foreach: signs" >
+					<div class="symptom-container">
+						<div class="symptom-label">
+							<span class="right pointer show-qualifiers"><i class="icon-caret-down small" title="more"></i></span>
+							<span class="right pointer" data-bind="click: \$root.removeSign"><i class="icon-remove small"></i></span>
+							<span data-bind="text: label"></span>
+						</div>
+						
+						<div class="qualifier-container" style="display: none;">
+							<ul class="qualifier" data-bind="foreach: qualifiers">
+								<li>
+									<span data-bind="text: label"></span>
+									<div data-bind="if: options().length >= 1">
+										<div data-bind="foreach: options" class="qualifier-option">
+											<p class="qualifier-field">
+												<input type="radio" data-bind="checkedValue: \$data, checked: \$parent.answer" >
+												<label data-bind="text: label"></label>
+											</p>
+										</div>
+									</div>
+									<div data-bind="if: options().length === 0" >
+										<p>
+											<input type="text" data-bind="value: \$parent.freeText" >
+										</p>
+									</div>
+								</li>
+							</ul>
+						</div> 
+					</div>
+				</div>
+			</div>
         </fieldset>
 
         <fieldset class="no-confirmation">
@@ -694,28 +695,25 @@ jq(function(){
 		
         <fieldset class="no-confirmation">
             <legend>Procedures</legend>
-            <div>
-				<h2>Patient Procedures</h2>
-                <p class="input-position-class">
-                    <input type="text" id="procedure" name="procedure" placeholder="Specify a Procedure" />
-                </p>
+			<p class="input-position-class">
+				<label for="procedure">Patient Procedures</label>
+				<input type="text" id="procedure" name="procedure" placeholder="Specify a Procedure" />
+			</p>
+			
+			<div id="task-procedure" class="tasks" style="display:none;">
+				<header class="tasks-header">
+					<span id="title-procedure" class="tasks-title">PROCEDURES</span>
+					<a class="tasks-lists"></a>
+				</header>
 				
-				<div id="task-procedure" class="tasks" style="display:none;">
-					<header class="tasks-header">
-						<span id="title-procedure" class="tasks-title">PROCEDURES</span>
-						<a class="tasks-lists"></a>
-					</header>
-					
-					<div data-bind="foreach: procedures">
-						<div class="procedure-container">
-							<span class="right pointer" data-bind="click: \$root.removeProcedure"><i class="icon-remove small"></i></span>
-							<p data-bind="text: label"></p>
-							<span data-bind="if: schedulable">Schedule:<input type="date"></span>
-						</div>
+				<div data-bind="foreach: procedures">
+					<div class="procedure-container">
+						<span class="right pointer" data-bind="click: \$root.removeProcedure"><i class="icon-remove small"></i></span>
+						<p data-bind="text: label"></p>
+						<span data-bind="if: schedulable">Schedule:<input type="date"></span>
 					</div>
 				</div>
-                
-            </div>
+			</div>
         </fieldset>
 		
         <fieldset class="no-confirmation">
