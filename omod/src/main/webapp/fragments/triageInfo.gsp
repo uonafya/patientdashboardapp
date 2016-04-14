@@ -1,12 +1,16 @@
 <%
+	import java.text.DecimalFormat
+    def formatter = new DecimalFormat("#0.00")
+	
     def returnUrl = ui.pageLink("patientdashboardapp", "main", [patientId: patientId, opdId: opdId, queueId: queueId])
 	ui.includeCss("registration", "onepcssgrid.css")
 %>
 
 <script>
 	jq(document).ready(function () {
-		jq('#vistdate').html(moment('${previousVisit}').format('DD MMM YYYY')+'<br/> &nbsp; &nbsp; (Active since '+moment('${previousVisit}').format('hh:mm')+' hrs)');
-    });
+		jq('#vistdate').html(moment('${previousVisit}').format('DD MMM YYYY')+'<br/> &nbsp; &nbsp; (Active since '+moment('${previousVisit}').format('hh:mm')+' hrs)');    
+		jq('#lastPeriods').text(jq('#lastPeriods').text().substring(0, 11).replaceAt(2, ",").replaceAt(6, " ").insertAt(3, 0, " "));
+	});
 </script>
 
 <style>
@@ -97,6 +101,9 @@
 	.info-body .status.active {
 		margin-right: 10px;
 	}
+	.menu-title a{
+		text-decoration: none;
+	}
 </style>
 
 
@@ -108,11 +115,16 @@
 					<i class="icon-time"></i>
 					<span id="vistdate">2 Mar 2017<br> &nbsp; &nbsp; (Active since 04:10 PM)</span>
 				</span>
+				
+				<span class="menu-title" style="height: 30px">
+					<i class="icon-edit" style="float: left; margin-top: 1px; margin-right: 3px; color: rgb(0, 127, 255);"></i>
+					<a style="float: left;" href="${ ui.pageLink('patientdashboardapp', 'triage', [patientId: patientId, opdId: opdId, queueId: queueId, returnUrl: returnUrl]) }">Edit Triage Details</a>
+				</span>
 				<span class="arrow-border"></span>
 				<span class="arrow"></span>
 			</li>
 		
-			<li style="height: 230px;" class="menu-item" visitid="53">
+			<li style="height: 269px;" class="menu-item" visitid="53">
 			</li>
 		</ul>	
 	</div>
@@ -123,6 +135,7 @@
 				<i class="icon-diagnosis"></i>
 				<h3>TRIAGE INFORMATION</h3>
 			</div>
+			
 			<div class="info-body">
                 <label><span class="status active"></span>Temperature:</label>
                 <span>${triage?.temperature?:"Not Captured"}</span>
@@ -136,17 +149,13 @@
                 <span>${triage?.respiratoryRate?:"Not Captured"}</span>
                 <br>
 
-                <label><span class="status active"></span>Temperature:</label>
-                <span>${triage?.temperature?:"Not Captured"}</span>
-                <br>
-
                 <% if (patient.gender == "F" && patient.age > 10) {%>
                     <label><span class="status active"></span>Last Periods:</label>
-                    <span>${triage?.lastMenstrualDate ?: "Not captured"}</span>
+                    <span id="lastPeriods">${ui.formatDatePretty(triage?.lastMenstrualDate) ?: "Not captured"}</span>
                     <br>
                 <% } %>
 
-                <label><span class"status active"></span> Oxygen Saturation:</label>
+                <label><span class="status active"></span>Oxygen Saturation:</label>
                 <span>${triage?.oxygenSaturation?: "Not captured"}</span>
                 <br>
 
@@ -160,7 +169,7 @@
 				
 				<% if (patient.age >= 2)  {%>
 					<label><span class="status active"></span>BMI:</label>
-					<span>${(triage && triage.weight && triage.height) ? triage?.weight/((triage?.height/100) * (triage?.height/100)) : "" }</span>
+					<span>${(triage && triage.weight && triage.height) ? formatter.format(triage?.weight/((triage?.height/100) * (triage?.height/100))) : "N/A" }</span>
 					<br>
 				<% } %>
 				
@@ -181,53 +190,14 @@
 				<span>${triage?.bloodGroup && triage?.rhesusFactor ? triage?.bloodGroup + "/" + triage?.rhesusFactor : "Not captured"}</span>
 				<br>
 				
-				<label><span class="status active"></span>PITCT:</label>
+				<label><span class="status active"></span>HIV Status:</label>
 				<span>${triage?.pitct ?: "Not Captured"}</span>
 				<br>
 			</div>
 		</div>
-		
-		
-		
-		
-	
-	</div>
-	
-	<div class="dashboard col15 last" style="margin-top: -10px">
-		<div class="action-section">
-			<ul>
-				<h3> &nbsp; General Actions</h3>
-				<li>
-					<i class="icon-edit"></i>
-					<a id="org.openmrs.module.coreapps.createVisit">
-						Edit Patient
-					</a>
-				</li>
-				
-				<li>
-					<i class="icon-print"></i>
-					<a id="org.openmrs.module.coreapps.createVisit">
-						Reprint Receipt
-					</a>
-				</li>
-				<br>
-				
-				<h3> &nbsp; Triage Actions</h3>
-				<a href="${ ui.pageLink("patientdashboardapp", "triage", [patientId: patientId, opdId: opdId, queueId: queueId, returnUrl: returnUrl]) }"><li> <i class="icon-edit"></i> Edit Triage</li></a>
-				
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				
-			</ul>
-		</div>
 	</div>
 </div>
+
 
 <div class="clear">&nbsp; </div>
 

@@ -1,7 +1,6 @@
 <script>
 	jq(function(){
 		jq(".left-menu").on("click", ".visit-summary", function(){
-			console.log("visit-summary clicked");
 			jq("#visit-detail").html("<i class=\"icon-spinner icon-spin icon-2x pull-left\"></i>")
 			var visitSummary = jq(this);
 			jq(".visit-summary").removeClass("selected");
@@ -13,7 +12,6 @@
 				jq("#visit-detail").html(visitDetailTemplate(data.notes));
 
 				if (data.drugs.length > 0) {
-					console.log(data.drugs);
 					var drugsTemplate =  _.template(jq("#drugs-template").html());
 					jq("#drugs-detail").html(drugsTemplate(data));
 				}

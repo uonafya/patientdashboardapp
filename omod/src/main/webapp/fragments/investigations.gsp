@@ -76,14 +76,12 @@ jq(function(){
             detailRows.splice( idx, 1 );
         }
         else {
-            console.log(jq(this).find('.icon-plus'));
             jq(this).find('.icon-plus').removeClass('icon-plus').addClass('icon-minus');
             var orderId = tr[0].dataset.orderId;
             var patientId = tr[0].dataset.patientId;
             jq.getJSON(emr.fragmentActionLink("patientdashboardapp", "investigations", "getInvestigationResults", { "orderId": orderId, "patientId": patientId}))
             .success(function (results) {
                 row.child(format(results)).show();
-                        console.log(results);
             });
  
             // Add to the 'open' array

@@ -99,7 +99,6 @@ jq(function() {
                  var result = { label: data[i].name, value: data[i].id};
                  results.push(result);
               }
-              console.log(data);
               response(results);
           });
          },
@@ -231,7 +230,6 @@ jq(function() {
     });
 
     jq(".symptoms-qualifiers").on("click", "span.show-qualifiers", function(){
-        console.log("Clicked");
         var qualifierContainer = jq(this).parents(".symptom-container").find(".qualifier-container");
         var icon = jq(this).find("i");
         qualifierContainer.toggle();
@@ -298,8 +296,6 @@ jq(function(){
 	    actions: {
 		    confirm: function() {
 				note.addPrescription(prescription.drug());
-				console.log("This is the prescription object:");
-				console.log(prescription);
 				prescription.drug(new Drug());
 				prescriptionDialog.close();
 			},
@@ -341,14 +337,12 @@ jq(function(){
 	        change: function (event, ui) {
 	          event.preventDefault();
 	          jq(selectedInput).val(ui.item.label);
-	          console.log(ui.item.label);
 	          jq.getJSON('${ ui.actionLink("patientdashboardapp", "ClinicalNotes", "getFormulationByDrugName") }',
 	            {
 	              "drugName": ui.item.label
 	            }
 	          ).success(function(data) {
 	            var formulations = jq.map(data, function (formulation) {
-                    console.log(formulation);
 	              return new Formulation({ id: formulation.id, label: formulation.name + ":" + formulation.dozage});
 	            });
 	            prescription.drug().formulationOpts(formulations);
@@ -356,7 +350,6 @@ jq(function(){
 
               //fetch the frequenciesui.
               jq.getJSON('${ui.actionLink("patientdashboardapp","ClinicalNotes","getFrequencies")}').success(function(data){
-                   console.log(data);
                   var frequency = jq.map(data, function (frequency) {
                       return new Frequency({id: frequency.id, label: frequency.name});
                   });

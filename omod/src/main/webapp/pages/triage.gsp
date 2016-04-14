@@ -6,7 +6,8 @@
 	
     ui.includeJavascript("patientdashboardapp", "note.js")
 	
-	ui.includeJavascript("uicommons", "moment.js")
+	ui.includeJavascript("billingui", "moment.js")
+	
     ui.includeJavascript("uicommons", "datetimepicker/bootstrap-datetimepicker.min.js")
     ui.includeJavascript("uicommons", "handlebars/handlebars.min.js", Integer.MAX_VALUE - 1)
     ui.includeJavascript("uicommons", "navigator/validators.js", Integer.MAX_VALUE - 19)
@@ -378,11 +379,13 @@
 			var weight = getFloatValue(jq("#weight-field").val());
 			var bmi = weight/(height * height);
 			console.log("BMI " + bmi);
-			jq(".bmi").html(bmi.toFixed(2));
+			jq(".bmi").html(String(bmi).formatToAccounting());
+			
+			console.log(isNombre(bmi));
 
 			if (isNombre(bmi)){
 				jq('#li17').show();
-				jq('#summ_17').text(bmi);
+				jq('#summ_17').text(String(bmi).formatToAccounting());
 			}
 
         	});
@@ -782,6 +785,7 @@
 		                        </div>
 
 		                        <div class="onerow">
+						<h2>&nbsp;</h2>
 						<h2 style="border-bottom: 1px solid #008394">Body Mass Index</h2>
 						
 						<div class="col4">
@@ -918,8 +922,8 @@
 							<p id="rhesusFactor">
 								<select id="rhesusFactor-field" name="triagePatientData.rhesusFactor">
 									<option value="">- Please select -</option>
-									<option value="Positive (+)">Positive (+)</option>
-									<option value="Negative (-)">Negative (-)</option>
+									<option value="Reactive">Reactive</option>
+									<option value="Non-Reactive">Non-Reactive</option>
 									<option value="Not Known">Not Known</option>
 								</select>
 								<span id="fr2550" class="field-error" style="display: none"></span>
@@ -930,8 +934,8 @@
 							<p id="pitct">
 								<select id="pitct-field" class="focused" name="triagePatientData.pitct">
 									<option value="">- Please select -</option>
-									<option value="Reactive">Reactive</option>
-									<option value="Non-Reactive">Non-Reactive</option>
+									<option value="Positive (+)">Positive (+)</option>
+									<option value="Negative (-)">Negative (-)</option>
 									<option value="Not Known">Not Known</option>
 								</select>
 								<span id="fr4863" class="field-error" style="display: none"></span>

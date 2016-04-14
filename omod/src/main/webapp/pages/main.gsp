@@ -1,6 +1,5 @@
 <% 
 	ui.decorateWith("appui", "standardEmrPage", [title: "OPD Dashboard"]);
-	
 	ui.includeJavascript("billingui", "moment.js")
 %>
 <script>
@@ -139,10 +138,9 @@
 		display: inline-block;
 	}
 	.col16 {
-		min-width: 56%;
-		max-width: 56%;
-		float: left;
 		display: inline-block;
+		float: left;
+		width: 730px;
 	}
 </style>
 
