@@ -11,6 +11,7 @@ function Note(noteObj) {
 	self.investigations = ko.observableArray([]);
 	self.drugs = ko.observableArray([]);
 	self.frequencyOpts = ko.observableArray([]);
+    self.drugUnitsOptions= ko.observableArray([]);
 	self.referralReasonsOptions = ko.observableArray([]);
 	self.admitted = noteObj.admitted;
 	self.illnessHistory = noteObj.illnessHistory;
@@ -151,6 +152,8 @@ function Procedure(procedureObj) {
 function Drug() {
 	this.drugName = ko.observable();
 	this.frequencyOpts = ko.observableArray([]);
+    this.drugUnitsOptions = ko.observableArray([]);
+    this.drugUnit=ko.observable();
 	this.frequency = ko.observable();
 	this.formulationOpts = ko.observableArray([]);
 	this.formulation = ko.observable();
@@ -169,6 +172,11 @@ function Frequency(freqObj) {
 function Formulation(formulationObj) {
 	this.id = formulationObj.id;
 	this.label = formulationObj.label;
+}
+
+function DrugUnit(unitObj) {
+	this.id = unitObj.id;
+	this.label = unitObj.label;
 }
 
 function Outcome(outcomeObj) {
