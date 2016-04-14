@@ -18,5 +18,7 @@
         <mapping resource="OpdPatientQueue.hbm.xml" />
         <mapping resource="TriagePatientData.hbm.xml" />
         <mapping resource="TriagePatientQueueLog.hbm.xml" />
+        <mapping resource="Lab.hbm.xml" />
+        <mapping resource="LabTest.hbm.xml" />
     </session-factory>
 </hibernate-configuration>

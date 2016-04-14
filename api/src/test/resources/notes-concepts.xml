@@ -82,8 +82,13 @@
 
   <billing_billable_service service_id="1" concept_id="9993" name="Allergy Shots" short_name="" price="50" disable="false" category="9995" />
   <billing_billable_service service_id="2" concept_id="9994" name="LAPAROTOMY" short_name="" price="500" disable="false" category="9996" />
-  <billing_billable_service service_id="3" concept_id="9996" name="Maralia Tests" short_name="" price="100" disable="false" category="9996" />
+  <billing_billable_service service_id="3" concept_id="9996" name="Maralia Tests" short_name="" price="0" disable="false" category="9996" />
 
   <inventory_drug_formulation id="1" name="TAB" dozage="250" created_on="2014-07-14 12:23:19" created_by="Super" />
   <inventory_drug id="1" name="AMOX" attribute="2" created_on="2014-07-14 12:55:15" created_by="Super" />
+  
+  <simplelabentry_lab lab_id="1" name="GENERAL LABORATORY" description="General Laboratory" role="System Developer" retired="0" />
+  
+  <simplelabentry_lab_investigations lab_id="1" concept_id="9996" />
+
 </dataset>
