@@ -74,7 +74,8 @@
 		<description>
 
 		</description>
-
+	</globalProperty>
+	<globalProperty>
 		<property>patientdashboard.facilityConcept</property>
 		<defaultValue>Name of where patient was referred to</defaultValue>
 		<description>
