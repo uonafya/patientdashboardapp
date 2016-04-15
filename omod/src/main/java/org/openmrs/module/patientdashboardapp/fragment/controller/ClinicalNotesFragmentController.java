@@ -1,6 +1,7 @@
 package org.openmrs.module.patientdashboardapp.fragment.controller;
 
 
+import org.openmrs.ConceptSet;
 import org.openmrs.api.context.Context;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -72,6 +74,9 @@ public class ClinicalNotesFragmentController {
         List<SimpleObject> symptomsList = SimpleObject.fromCollection(symptoms, ui, "id", "name");
         return symptomsList;
     }
+
+    public static String PROPERTY_DRUGUNIT = "patientdashboard.dosingUnitConceptId";
+
     public List<SimpleObject> getDiagnosis(@RequestParam(value="q") String name,UiUtils ui)
     {
         List<Concept> diagnosis = Context.getService(PatientDashboardService.class).searchDiagnosis(name);
@@ -131,5 +136,15 @@ public class ClinicalNotesFragmentController {
         else{
             return null;
         }
+    }
+
+    public List<SimpleObject> getDrugUnit(UiUtils uiUtils){
+        Concept drugUnit = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PROPERTY_DRUGUNIT));
+        Collection<ConceptSet> unit = drugUnit.getConceptSets();
+        List<Option> drugUnitOptions = new ArrayList<Option>();
+        for (ConceptSet conceptSet: unit) {
+            drugUnitOptions.add(new Option(conceptSet.getConcept().getId(), conceptSet.getConcept().getName().getName()));
+        }
+        return SimpleObject.fromCollection(drugUnitOptions,uiUtils,"id","label") ;
     }
 }

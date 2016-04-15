@@ -1,9 +1,6 @@
 package org.openmrs.module.patientdashboardapp.model;
 
 import org.openmrs.Concept;
-import org.openmrs.Encounter;
-import org.openmrs.Obs;
-
 public class Option {
 
 	private Integer id;

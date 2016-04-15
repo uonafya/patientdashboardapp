@@ -16,6 +16,18 @@ public class Drug {
 	private Frequency frequency;
 	private Integer numberOfDays;
 	private String comment;
+	private String dosage;
+	private Option drugUnit;
+
+	public Option getDrugUnit() {
+		return drugUnit;
+	}
+	public void setDrugUnit(Option drugUnit) {
+		this.drugUnit = drugUnit;
+	}
+	public String getDosage() {
+		return dosage;
+	}
 	public String getDrugName() {
 		return drugName;
 	}
@@ -46,6 +58,9 @@ public class Drug {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	public void setDosage(String dosage){
+		this.dosage = dosage;
+	}
 	
 	public void save(Encounter encounter, String referralWardName) {
 		InventoryCommonService inventoryCommonService = Context.getService(InventoryCommonService.class);
@@ -61,6 +76,10 @@ public class Drug {
 			opdDrugOrder.setFrequency(frequencyConcept);
 			opdDrugOrder.setNoOfDays(this.numberOfDays);
 			opdDrugOrder.setComments(this.comment);
+			opdDrugOrder.setDosage(this.dosage);
+            if (drugUnit !=null){
+                opdDrugOrder.setDosageUnit(Context.getConceptService().getConcept(this.drugUnit.getId()));
+            }
 			opdDrugOrder.setCreator(encounter.getCreator());
 			opdDrugOrder.setCreatedOn(encounter.getDateCreated());
 			opdDrugOrder.setReferralWardName(referralWardName);

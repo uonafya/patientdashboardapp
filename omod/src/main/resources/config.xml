@@ -28,7 +28,7 @@
 		</require_module>
 
 
-		<require_module version="1.5.1">
+		<require_module version="1.5.3-SNAPSHOT">
 			org.openmrs.module.hospitalcore
 		</require_module>
 
@@ -79,7 +79,14 @@
 		<property>patientdashboard.facilityConcept</property>
 		<defaultValue>Name of where patient was referred to</defaultValue>
 		<description>
+		</description>
+	</globalProperty>
 
+	<globalProperty>
+		<property>patientdashboard.dosingUnitConceptId</property>
+		<defaultValue>162384</defaultValue>
+		<description>
+			Dosing Unit Concept Id
 		</description>
 	</globalProperty>
 	<!-- /Required Global Properties -->
