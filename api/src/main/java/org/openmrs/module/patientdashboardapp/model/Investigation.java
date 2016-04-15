@@ -1,20 +1,53 @@
 package org.openmrs.module.patientdashboardapp.model;
 
-import org.openmrs.*;
-import org.openmrs.api.PatientService;
+import org.openmrs.Concept;
+import org.openmrs.Encounter;
+import org.openmrs.EncounterType;
+import org.openmrs.GlobalProperty;
+import org.openmrs.Location;
+import org.openmrs.Obs;
+import org.openmrs.Order;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.hospitalcore.BillingConstants;
 import org.openmrs.module.hospitalcore.BillingService;
+import org.openmrs.module.hospitalcore.LabService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
+import org.openmrs.module.hospitalcore.RadiologyCoreService;
 import org.openmrs.module.hospitalcore.model.BillableService;
 import org.openmrs.module.hospitalcore.model.DepartmentConcept;
+import org.openmrs.module.hospitalcore.model.Lab;
 import org.openmrs.module.hospitalcore.model.OpdTestOrder;
+import org.openmrs.module.hospitalcore.model.RadiologyDepartment;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 
+import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Investigation {
+	
+	private static Set<Integer> collectionOfLabConceptIds = new HashSet<Integer>();
+	private static Set<Integer> collectionOfRadiologyConceptIds = new HashSet<Integer>();
+
+	static {
+		List<Lab> labs = Context.getService(LabService.class).getAllLab();
+		for (Lab lab : labs) {
+			for (Concept labInvestigationConcept : lab.getInvestigationsToDisplay()) {
+				collectionOfLabConceptIds.add(labInvestigationConcept.getConceptId());
+			}
+		}
+		List<RadiologyDepartment> radiologyDepts = Context.getService(RadiologyCoreService.class).getAllRadiologyDepartments();
+		for (RadiologyDepartment department : radiologyDepts) {
+			for (Concept radiologyInvestigationConcept : department.getInvestigations()) {
+				collectionOfRadiologyConceptIds.add(radiologyInvestigationConcept.getConceptId());
+			}
+		}
+	}
 
 	public Investigation(Integer id, String label) {
 		this.id = id;
@@ -62,7 +95,12 @@ public class Investigation {
 		opdTestOrder.setBillableService(billableService);
 		opdTestOrder.setScheduleDate(encounter.getDateCreated());
 		opdTestOrder.setFromDept(departmentName);
-		Context.getService(PatientDashboardService.class).saveOrUpdateOpdOrder(opdTestOrder);
+		if (billableService.getPrice().compareTo(BigDecimal.ZERO) == 0) {
+			opdTestOrder.setBillingStatus(1);
+		}
+		opdTestOrder = Context.getService(PatientDashboardService.class).saveOrUpdateOpdOrder(opdTestOrder);
+		
+		processFreeInvestigations(opdTestOrder, encounter.getLocation());
 	}
 	public void addObs(Encounter encounter, Obs obsGroup) {
 		AdministrationService administrationService = Context
@@ -85,6 +123,69 @@ public class Investigation {
 		encounter.addObs(obsInvestigation);
 	}
 
+	private void processFreeInvestigations(OpdTestOrder opdTestOrder, Location encounterLocation) {
+		if (opdTestOrder.getBillingStatus() == 1) {
+			Integer investigationConceptId = opdTestOrder.getValueCoded().getConceptId();
+			if (Investigation.collectionOfLabConceptIds.contains(investigationConceptId)) {
+				String labEncounterTypeString = Context.getAdministrationService().getGlobalProperty(BillingConstants.GLOBAL_PROPRETY_LAB_ENCOUNTER_TYPE, "LABENCOUNTER");
+				EncounterType labEncounterType = Context.getEncounterService().getEncounterType(labEncounterTypeString);
+				Encounter encounter = getInvestigationEncounter(opdTestOrder,
+						encounterLocation, labEncounterType);
+					
+				String labOrderTypeId = Context.getAdministrationService().getGlobalProperty(BillingConstants.GLOBAL_PROPRETY_LAB_ORDER_TYPE);
+				generateInvestigationOrder(opdTestOrder, encounter, labOrderTypeId);
+				Context.getEncounterService().saveEncounter(encounter);
+			}
+			
+			if (Investigation.collectionOfRadiologyConceptIds.contains(investigationConceptId)) {
+				String radiologyEncounterTypeString = Context.getAdministrationService().getGlobalProperty(BillingConstants.GLOBAL_PROPRETY_RADIOLOGY_ENCOUNTER_TYPE, "RADIOLOGYENCOUNTER");
+				EncounterType radiologyEncounterType = Context.getEncounterService().getEncounterType(radiologyEncounterTypeString);
+				Encounter encounter = getInvestigationEncounter(opdTestOrder,
+						encounterLocation, radiologyEncounterType);
+					
+				String labOrderTypeId = Context.getAdministrationService().getGlobalProperty(BillingConstants.GLOBAL_PROPRETY_RADIOLOGY_ORDER_TYPE);
+				generateInvestigationOrder(opdTestOrder, encounter, labOrderTypeId);
+				Context.getEncounterService().saveEncounter(encounter);
+			}
+		}
+	}
 
+	@SuppressWarnings("deprecation")
+	private void generateInvestigationOrder(OpdTestOrder opdTestOrder,
+			Encounter encounter, String orderTypeId) {
+		Order order = new Order();
+		order.setConcept(opdTestOrder.getConcept());
+		order.setCreator(opdTestOrder.getCreator());
+		order.setDateCreated(opdTestOrder.getCreatedOn());
+		order.setOrderer(opdTestOrder.getCreator());
+		order.setPatient(opdTestOrder.getPatient());
+		order.setStartDate(new Date());
+		order.setAccessionNumber("0");
+		try {
+			order.setOrderType(Context.getOrderService().getOrderType(Integer.parseInt(orderTypeId)));
+		} catch (NumberFormatException nfe) {
+			order.setOrderType(Context.getOrderService().getOrderType(8));
+		}
+		order.setEncounter(encounter);
+		encounter.addOrder(order);
+	}
+
+	private Encounter getInvestigationEncounter(OpdTestOrder opdTestOrder,
+			Location encounterLocation, EncounterType encounterType) {
+		List<Encounter> investigationEncounters = Context.getEncounterService().getEncounters(opdTestOrder.getPatient(), null, opdTestOrder.getCreatedOn(), null, null, Arrays.asList(encounterType), null, null, null, false);
+		Encounter encounter = null;
+		if (investigationEncounters.size() > 0) {
+			encounter = investigationEncounters.get(0);
+		} else {
+			encounter = new Encounter();
+			encounter.setCreator(opdTestOrder.getCreator());
+			encounter.setLocation(encounterLocation);
+			encounter.setDateCreated(opdTestOrder.getCreatedOn());
+			encounter.setEncounterDatetime(opdTestOrder.getCreatedOn());
+			encounter.setEncounterType(encounterType);
+			encounter.setPatient(opdTestOrder.getPatient());
+		}
+		return encounter;
+	}
 
 }
