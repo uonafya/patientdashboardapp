@@ -752,6 +752,25 @@ jq(function(){
 						</label>
 					</p>
 				</div>
+				<div>
+					<p class="input-position-class">
+						<input type="text" id="diagnosis" name="diagnosis" placeholder="Select Diagnosis" />
+					</p>
+
+					<div id="task-diagnosis" class="tasks" style="display:none;">
+						<header class="tasks-header">
+							<span id="title-diagnosis" class="tasks-title">DIAGNOSIS</span>
+							<a class="tasks-lists"></a>
+						</header>
+
+						<div id="diagnosis-carrier" data-bind="foreach: diagnoses" style="margin-top: -2px">
+							<div class="diagnosis-container">
+								<span class="right pointer" data-bind="click: \$root.removeDiagnosis"><i class="icon-remove small"></i></span>
+								<p data-bind="text: label"></p>
+							</div>
+						</div>
+					</div>
+				</div>
                 </div>
             </fieldset>
         <fieldset class="no-confirmation">
