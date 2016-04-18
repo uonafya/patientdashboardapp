@@ -54,7 +54,7 @@ public class ClinicalNotesFragmentController {
 		model.addAttribute("referralReasonsSources", SimpleObject.fromCollection(ReferralReasons.getReferralReasonsOptions(), ui, "label", "id"));
 		Note note = new Note(patientId, queueId, opdId, opdLogId);
 		model.addAttribute("note", SimpleObject.fromObject(note, ui, "signs.id", "signs.label", "diagnoses.id", "diagnoses.label",
-						"investigations", "procedures", "patientId", "queueId",
+						"investigations", "procedures", "patientId", "queueId","specify",
 						"opdId", "opdLogId", "admitted","facility", "illnessHistory","referralComments","physicalExamination", "otherInstructions").toJson());
 	}
 

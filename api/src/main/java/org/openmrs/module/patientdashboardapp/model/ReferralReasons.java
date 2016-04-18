@@ -42,7 +42,7 @@ public class ReferralReasons {
     }
 
 
-    public static void addReferralReasonsObs(Option referralReasons, Encounter encounter, Obs obsGroup) {
+    public static void addReferralReasonsObs(Option referralReasons,String specify, Encounter encounter, Obs obsGroup) {
         Concept referralReasonsConcept = null;
 
         if (referralReasonsOptions.contains(referralReasons)) {
@@ -59,6 +59,7 @@ public class ReferralReasons {
         obsReferralReasons.setObsGroup(obsGroup);
         obsReferralReasons.setConcept(referralReasonsConcept);
         obsReferralReasons.setValueCoded(referralReasonsConceptAnswer);
+        obsReferralReasons.setComment(specify);
         obsReferralReasons.setCreator(encounter.getCreator());
         obsReferralReasons.setDateCreated(encounter.getDateCreated());
         obsReferralReasons.setEncounter(encounter);
