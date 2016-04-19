@@ -15,7 +15,7 @@
     ui.includeJavascript("patientdashboardapp", "knockout-3.4.0.js")
 %>
 
-${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note: note, listOfWards: listOfWards, internalReferralSources: internalReferralSources, externalReferralSources: externalReferralSources, referralReasonsSources: referralReasonsSources ]) }
+${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note: note, listOfWards: listOfWards, internalReferralSources: internalReferralSources, externalReferralSources: externalReferralSources, referralReasonsSources: referralReasonsSources, outcomeOptions: outcomeOptions ]) }
 
 <div id="content">
     <form method="post" id="notes-form" class="simple-form-ui">
