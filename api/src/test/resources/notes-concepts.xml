@@ -6,6 +6,7 @@
   <concept concept_id="9993" retired="false" datatype_id="4" class_id="4" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="7e9c500b-a78a-40f7-a0a1-3c5dd496145c"/>
   <concept concept_id="9994" retired="false" datatype_id="4" class_id="4" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="5421be17-357f-4e97-8b77-81dc545e3a67"/>
   <concept concept_id="9995" retired="false" datatype_id="2" class_id="7" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="97b0b281-d42f-4550-8f1b-998644f193f6"/>
+  <!-- B/S For Malaria -->
   <concept concept_id="9996" retired="false" datatype_id="2" class_id="7" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="17a83f95-49d9-473c-9aeb-c20c874fa5a1"/>
   <concept concept_id="9997" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="f062f4c0-20cd-460b-984f-1e1db4242630"/>
   <concept concept_id="9999" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="122b36a4-9c07-4dfa-81ae-e6a4fe823077"/>
@@ -34,12 +35,15 @@
   <concept concept_id="10006" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="8441794d-dbb4-11e5-a3f2-34e6d77c15d6"/>
   <concept concept_id="10007" retired="false" datatype_id="4" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="8c285a01-dbb4-11e5-a3f2-34e6d77c15d6"/>
   <concept concept_id="10008" retired="false" datatype_id="3" class_id="11" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="aef9752b-dbb9-11e5-a3f2-34e6d77c15d6"/>
+  <!-- PARASITOLOGY -->
+  <concept concept_id="10009" retired="false" datatype_id="2" class_id="7" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" version="" uuid="f9e3d048-0628-11e6-9301-34e6d77c15d6"/>
 
   <concept_class concept_class_id="20" name="Frequency" description="Drug frequency" creator="1" date_created="2008-08-15 13:56:55.0" retired="false" uuid="0fd33d76-8b4b-445f-899e-161c5e85d36c"/>
 
   <concept_answer concept_answer_id="9090" concept_id="9990" answer_concept="9991" creator="1" date_created="2008-08-18 12:34:26.0" uuid="66e16778-a235-11e5-bf7f-feff819cdc9f"/>
   <concept_answer concept_answer_id="9091" concept_id="9991" answer_concept="9992" creator="1" date_created="2008-08-18 12:34:26.0" uuid="66e16854-a235-11e5-bf7f-feff819cdc9f"/>
   <concept_answer concept_answer_id="9060" concept_id="9960" answer_concept="9986" creator="1" date_created="2008-08-18 12:34:26.0" uuid="deed49e4-c049-11e5-9a67-34e6d77c15d6"/>
+  <concept_answer concept_answer_id="10009" concept_id="10009" answer_concept="9996" creator="1" date_created="2008-08-18 12:34:26.0" uuid="30168eb2-0629-11e6-9301-34e6d77c15d6"/>
   <concept_name concept_id="9997" name="Post for procedure" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4003" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="38c3a61f-820b-4cd4-b677-1a9515e338a2"/>
   <concept_name concept_id="9999" name="Investigations" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4004" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="bea3b7c3-cf29-431e-b98d-69e00d4e13c0"/>
   <concept_name concept_id="9980" name="MAJOR OPERATION" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_id="4005" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="dfc104ab-1ec7-44f9-927d-a48baf83c467"/>
@@ -89,6 +93,6 @@
   
   <simplelabentry_lab lab_id="1" name="GENERAL LABORATORY" description="General Laboratory" role="System Developer" retired="0" />
   
-  <simplelabentry_lab_investigations lab_id="1" concept_id="9996" />
+  <simplelabentry_lab_investigations lab_id="1" concept_id="10009" />
 
 </dataset>

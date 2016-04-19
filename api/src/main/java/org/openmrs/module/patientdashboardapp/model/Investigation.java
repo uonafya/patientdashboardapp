@@ -1,6 +1,7 @@
 package org.openmrs.module.patientdashboardapp.model;
 
 import org.openmrs.Concept;
+import org.openmrs.ConceptAnswer;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.GlobalProperty;
@@ -37,14 +38,18 @@ public class Investigation {
 	static {
 		List<Lab> labs = Context.getService(LabService.class).getAllLab();
 		for (Lab lab : labs) {
-			for (Concept labInvestigationConcept : lab.getInvestigationsToDisplay()) {
-				collectionOfLabConceptIds.add(labInvestigationConcept.getConceptId());
+			for (Concept labInvestigationCategoryConcept : lab.getInvestigationsToDisplay()) {
+				for (ConceptAnswer labInvestigationConcept : labInvestigationCategoryConcept.getAnswers()) {
+					collectionOfLabConceptIds.add(labInvestigationConcept.getAnswerConcept().getConceptId());
+				}
 			}
 		}
 		List<RadiologyDepartment> radiologyDepts = Context.getService(RadiologyCoreService.class).getAllRadiologyDepartments();
 		for (RadiologyDepartment department : radiologyDepts) {
-			for (Concept radiologyInvestigationConcept : department.getInvestigations()) {
-				collectionOfRadiologyConceptIds.add(radiologyInvestigationConcept.getConceptId());
+			for (Concept radiologyInvestigationCategoryConcept : department.getInvestigations()) {
+				for (ConceptAnswer radiologyInvestigationConcept : radiologyInvestigationCategoryConcept.getAnswers()) {
+					collectionOfRadiologyConceptIds.add(radiologyInvestigationConcept.getAnswerConcept().getConceptId());
+				}
 			}
 		}
 	}
@@ -136,13 +141,13 @@ public class Investigation {
 				generateInvestigationOrder(opdTestOrder, encounter, labOrderTypeId);
 				Context.getEncounterService().saveEncounter(encounter);
 			}
-			
+
 			if (Investigation.collectionOfRadiologyConceptIds.contains(investigationConceptId)) {
 				String radiologyEncounterTypeString = Context.getAdministrationService().getGlobalProperty(BillingConstants.GLOBAL_PROPRETY_RADIOLOGY_ENCOUNTER_TYPE, "RADIOLOGYENCOUNTER");
 				EncounterType radiologyEncounterType = Context.getEncounterService().getEncounterType(radiologyEncounterTypeString);
 				Encounter encounter = getInvestigationEncounter(opdTestOrder,
 						encounterLocation, radiologyEncounterType);
-					
+
 				String labOrderTypeId = Context.getAdministrationService().getGlobalProperty(BillingConstants.GLOBAL_PROPRETY_RADIOLOGY_ORDER_TYPE);
 				generateInvestigationOrder(opdTestOrder, encounter, labOrderTypeId);
 				Context.getEncounterService().saveEncounter(encounter);
@@ -154,7 +159,7 @@ public class Investigation {
 	private void generateInvestigationOrder(OpdTestOrder opdTestOrder,
 			Encounter encounter, String orderTypeId) {
 		Order order = new Order();
-		order.setConcept(opdTestOrder.getConcept());
+		order.setConcept(opdTestOrder.getValueCoded());
 		order.setCreator(opdTestOrder.getCreator());
 		order.setDateCreated(opdTestOrder.getCreatedOn());
 		order.setOrderer(opdTestOrder.getCreator());
