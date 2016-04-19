@@ -73,7 +73,7 @@ public class Referral {
 		
 		if (isInternal) {
 			Concept referrerConcept = Context.getConceptService().getConcept(referrer);
-			refer(encounter.getPatient(), referrerConcept, referredToConcept);
+			refer(encounter.getPatient(), referredToConcept, referrerConcept);
 		}
 	}
 	
