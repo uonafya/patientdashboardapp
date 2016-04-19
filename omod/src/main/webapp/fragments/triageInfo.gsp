@@ -148,6 +148,10 @@
                 <label><span class="status active"></span>Respiratory Rate:</label>
                 <span>${triage?.respiratoryRate?:"Not Captured"}</span>
                 <br>
+				
+				<label><span class="status active"></span>Pulse Rate:</label>
+                <span>${triage?.pulsRate?:"Not Captured"}</span>
+                <br>
 
                 <% if (patient.gender == "F" && patient.age > 10) {%>
                     <label><span class="status active"></span>Last Periods:</label>
@@ -156,7 +160,7 @@
                 <% } %>
 
                 <label><span class="status active"></span>Oxygen Saturation:</label>
-                <span>${triage?.oxygenSaturation?: "Not captured"}</span>
+                <span>${triage?.oxygenSaturation? triage.oxygenSaturation.toString() + "%": "Not captured"}</span>
                 <br>
 
 				<label><span class="status active"></span>Height:</label>

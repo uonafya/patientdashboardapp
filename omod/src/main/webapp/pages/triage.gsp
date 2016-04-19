@@ -289,7 +289,7 @@
 				}
 				else {
 				    jq('#li16').show();
-				    jq('#summ_16').text(jq(event.target).val());
+				    jq('#summ_16').text(jq(event.target).val().formatToAccounting(2)+'%');
 				}
 			}
         	});
@@ -830,10 +830,10 @@
 					</div>
 
 		                        <div class="onerow" style="padding-top: 10px;">
-						<h2 style="border-bottom: 1px solid #008394">Circumference</h2>
+						<h2 style="border-bottom: 1px solid #008394">Circumferences</h2>
 						
 						<div class="col4">
-							<label for="muac-field"> M.U.A </label>
+							<label for="muac-field"> M.U.A.C </label>
 						</div>
 						
 						<div class="col4">
@@ -885,10 +885,10 @@
 			
 			
 			<fieldset>
-				<legend>Blood Group</legend>
+				<legend>B-G/HIV Status</legend>
 				<div>
 					<div class="onerow">
-						<h2>Blood Measures</h2>
+						
 						
 						<div class="col4">
 							<label for="bloodGroup-field"> Blood Group </label>
@@ -899,7 +899,7 @@
 						</div>
 						
 						<div class="col4 last">
-							<label for="pitct-field"> HIV Status </label>
+							<label for="pitct-field">&nbsp;</label>
 						</div>
 					</div>
 					
@@ -922,8 +922,8 @@
 							<p id="rhesusFactor">
 								<select id="rhesusFactor-field" name="triagePatientData.rhesusFactor">
 									<option value="">- Please select -</option>
-									<option value="Reactive">Reactive</option>
-									<option value="Non-Reactive">Non-Reactive</option>
+									<option value="Positive (+)">Positive (+)</option>
+									<option value="Negative (-)">Negative (-)</option>
 									<option value="Not Known">Not Known</option>
 								</select>
 								<span id="fr2550" class="field-error" style="display: none"></span>
@@ -931,16 +931,35 @@
 						</div>
 						
 						<div class="col4 last">
+							
+						</div>
+					</div>
+					
+					<div class="onerow" style="margin-top:50px">
+						<div class="col4 last">
+							<label for="pitct-field">HIV Status </label>
+						</div>
+						
+						<div class="col4">&nbsp;</div>						
+						<div class="col4">&nbsp;</div>
+					</div>
+					
+					<div class="onerow">
+						<div class="col4">
 							<p id="pitct">
 								<select id="pitct-field" class="focused" name="triagePatientData.pitct">
 									<option value="">- Please select -</option>
-									<option value="Positive (+)">Positive (+)</option>
-									<option value="Negative (-)">Negative (-)</option>
+									<option value="Reactive">Known Positive</option>
+									<option value="Positive at time of visit">Positive at time of visit</option>
+									<option value="Negative">Negative</option>
 									<option value="Not Known">Not Known</option>
 								</select>
 								<span id="fr4863" class="field-error" style="display: none"></span>
 							</p>
 						</div>
+						
+						<div class="col4">&nbsp;</div>
+						<div class="col4 last">&nbsp;</div>						
 					</div>
 					
 					<div class="onerow" style="margin-top: 50px">
@@ -1536,7 +1555,7 @@
 
                                 			<li id="li12"><span class="status active"></span><div>Blood Group:</div>		<small id="summ_12">/</small></li>
                                 			<li id="li13"><span class="status active"></span><div>Rhesus Factor:</div>		<small id="summ_13">/</small></li>
-                                			<li id="li14"><span class="status active"></span><div>HIV STATUS:</div>				<small id="summ_14">/</small></li>
+                                			<li id="li14"><span class="status active"></span><div>HIV Status:</div>				<small id="summ_14">/</small></li>
                                 			<li id="li15"><span class="status active"></span><div>Room to Visit:</div>		<small id="summ_15">/</small></li>
                             			</ul>
                         		</div>
