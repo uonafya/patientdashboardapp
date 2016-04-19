@@ -151,16 +151,20 @@ function Procedure(procedureObj) {
 }
 
 function Drug() {
-	this.drugName = ko.observable();
-	this.frequencyOpts = ko.observableArray([]);
-    this.drugUnitsOptions = ko.observableArray([]);
-    this.drugUnit=ko.observable();
-	this.frequency = ko.observable();
-	this.formulationOpts = ko.observableArray([]);
-	this.formulation = ko.observable();
-	this.dosage = ko.observable();
-	this.comment = ko.observable();
-	this.numberOfDays = ko.observable(0);
+	var self = this;
+	self.drugName = ko.observable();
+	self.frequencyOpts = ko.observableArray([]);
+	self.drugUnitsOptions = ko.observableArray([]);
+	self.drugUnit = ko.observable();
+	self.frequency = ko.observable();
+	self.formulationOpts = ko.observableArray([]);
+	self.formulation = ko.observable();
+	self.dosage = ko.observable();
+	self.comment = ko.observable();
+	self.numberOfDays = ko.observable(0);
+	self.dosageAndUnit = ko.computed(function(){
+		return self.dosage() + " " + (self.drugUnit() && self.drugUnit().label);
+	});
 }
 
 function Frequency(freqObj) {
