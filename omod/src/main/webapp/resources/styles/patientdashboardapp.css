@@ -1,0 +1,218 @@
+.tasks {
+    background: white none repeat scroll 0 0;
+    border: 1px solid #cdd3d7;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    color: #404040;
+    font: 14px/20px "Lucida Grande", Verdana, sans-serif;
+    margin: 10px 0 0 4px;
+    width: 98.6%;
+}
+
+.tasks-header {
+    position: relative;
+    line-height: 24px;
+    padding: 7px 15px;
+    color: #5d6b6c;
+    text-shadow: 0 1px rgba(255, 255, 255, 0.7);
+    background: #f0f1f2;
+    border-bottom: 1px solid #d1d1d1;
+    border-radius: 3px 3px 0 0;
+    background-image: -webkit-linear-gradient(top, #f5f7fd, #e6eaec);
+    background-image: -moz-linear-gradient(top, #f5f7fd, #e6eaec);
+    background-image: -o-linear-gradient(top, #f5f7fd, #e6eaec);
+    background-image: linear-gradient(to bottom, #f5f7fd, #e6eaec);
+    -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), 0 1px rgba(0, 0, 0, 0.03);
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), 0 1px rgba(0, 0, 0, 0.03);
+}
+
+.tasks-title {
+    line-height: inherit;
+    font-size: 14px;
+    font-weight: bold;
+    color: inherit;
+}
+
+.tasks-lists {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    margin-top: -11px;
+    padding: 10px 4px;
+    width: 19px;
+    height: 3px;
+    font: 0/0 serif;
+    text-shadow: none;
+    color: transparent;
+}
+
+.tasks-lists:before {
+    content: '';
+    display: block;
+    height: 3px;
+    background: #8c959d;
+    border-radius: 1px;
+    -webkit-box-shadow: 0 6px #8c959d, 0 -6px #8c959d;
+    box-shadow: 0 6px #8c959d, 0 -6px #8c959d;
+}
+
+.tasks-list {
+    font: 13px/20px 'Lucida Grande', Verdana, sans-serif;
+
+}
+
+.tasks-list-item {
+    display: inline-block;
+    line-height: 24px;
+    padding: 5px 5px;
+    margin-right: 20px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-bottom: 1px solid #aaa;
+    width: 150px;
+}
+
+.tasks-list-cb {
+    display: none;
+}
+
+.tasks-list-mark {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 0px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #c4cbd2;
+    border-radius: 12px;
+}
+
+.tasks-list-mark:before {
+    content: '';
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -5px 0 0 -6px;
+    height: 4px;
+    width: 8px;
+    border: solid #39ca74;
+    border-width: 0 0 4px 4px;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+.tasks-list-cb:checked ~ .tasks-list-mark {
+    border-color: #39ca74;
+}
+
+.tasks-list-cb:checked ~ .tasks-list-mark:before {
+    display: block;
+}
+
+.tasks-list-desc {
+    font-weight: bold;
+    color: #555;
+}
+
+.tasks-list-cb:checked ~ .tasks-list-desc {
+    color: #34bf6e;
+}
+
+.tasks-list input[type="radio"] {
+    position: absolute !important;
+    top: -9999px !important;
+    left: -9999px !important;
+}
+
+#provisional-diagnosis:focus ~ #ts01 {
+    border-bottom: 2px solid #f00 !important;
+}
+
+.symptom-container,
+.diagnosis-container,
+.procedure-container,
+.investigation-container {
+    border-top: 1px solid darkgrey !important;
+    margin: 8px;
+}
+
+.symptom-label span {
+    padding-left: 10px;
+}
+
+.diagnosis-container p,
+.investigation-container p,
+.procedure-container p {
+    margin: -5px 10px -10px !important;
+}
+
+.right {
+    padding-left: 0 !important;
+    padding-right: 5px;
+    padding-top: 3px;
+}
+
+.simple-form-ui section {
+    width: 74%;
+}
+
+.dialog input {
+    display: block;
+    margin: 5px 0;
+    color: #363463;
+    padding: 5px 0 5px 10px;
+    background-color: #FFF;
+    border: 1px solid #DDD;
+    width: 97%;
+}
+
+.symptom-container, .diagnosis-container, .procedure-container, .investigation-container {
+    border-top: darkgrey dashed 1px;
+    margin-top: 8px;
+}
+
+.qualifier-container {
+    background-color: white;
+    border-top: 5px solid #404040;
+    margin-left: 0;
+    margin-top: 5px;
+    padding: 5px 0 5px 25px;
+}
+
+.qualifier-container p.qualifier-field label, .outcomes-container p.outcome {
+    font-size: .95em;
+    line-height: 19px;
+}
+
+.qualifier-option {
+    margin-bottom: 10px;
+}
+
+.pointer :hover {
+    cursor: pointer;
+}
+
+.qualifier li {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 5px;
+}
+
+.dialog select option {
+    font-size: 1em;
+}
+
+#modal-overlay {
+    background: #000 none repeat scroll 0 0;
+    opacity: 0.4 !important;
+}
+
+.dialog {
+    display: none;
+}
