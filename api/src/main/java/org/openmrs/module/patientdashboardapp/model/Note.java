@@ -68,7 +68,7 @@ public class Note {
 	private String illnessHistory;
 	private String facility;
 	private String referralComments;
-
+    private String specify;
 	private String otherInstructions;
 	private String physicalExamination;
 
@@ -202,6 +202,14 @@ public class Note {
 		this.facility = facility;
 	}
 
+	public String getSpecify() {
+		return specify;
+	}
+
+	public void setSpecify(String specify) {
+		this.specify = specify;
+	}
+
 	public String getReferralComments() {
 		return referralComments;
 	}
@@ -295,7 +303,7 @@ public class Note {
 		}
 
 		if (referralReasons != null) {
-			ReferralReasons.addReferralReasonsObs(referralReasons, encounter, obsGroup);
+			ReferralReasons.addReferralReasonsObs(referralReasons, specify, encounter, obsGroup);
 		}
 
 		if (this.outcome != null) {

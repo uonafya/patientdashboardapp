@@ -20,9 +20,10 @@ function Note(noteObj) {
 	self.comments = noteObj.comments;
 	self.facility = noteObj.facility;
 	self.dosage = noteObj.dosage;
+	self.specify = noteObj.specify;
 	self.referredTo;
 	self.referralReasons;
-	//self.externalReferral = noteObj.externalReferral;
+
 
 	self.outcome = ko.observable();
 	self.referredWard = ko.observable();
