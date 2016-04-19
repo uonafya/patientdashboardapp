@@ -17,6 +17,7 @@
 
 ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note: note, listOfWards: listOfWards, internalReferralSources: internalReferralSources, externalReferralSources: externalReferralSources, referralReasonsSources: referralReasonsSources, outcomeOptions: outcomeOptions ]) }
 
+
 <div id="content">
     <form method="post" id="notes-form" class="simple-form-ui">
         <section>
@@ -189,26 +190,24 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
                         <tr>
                             <th>Drug Name</th>
                             <th>Dosage</th>
-                            <th>Dosage Unit</th>
                             <th>Formulation</th>
                             <th>Frequency</th>
-                            <th>No of Days</th>
+                            <th>Days</th>
                             <th>Comments</th>
-                            <th>Action</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody data-bind="foreach: drugs">
                         <tr>
                             <td data-bind="text: drugName"></td>
-                            <td data-bind="text: dosage"></td>
-                            <td data-bind="text: drugUnit().label"></td>
+                            <td data-bind="text: dosageAndUnit" ></td>
                             <td data-bind="text: formulation().label"></td>
                             <td data-bind="text: frequency().label"></td>
                             <td data-bind="text: numberOfDays"></td>
                             <td data-bind="text: comment"></td>
                             <td>
                                 <a href="#" title="Remove"><i data-bind="click: \$root.removePrescription"
-                                                              class="icon-remove small"></i></a>
+                                                              class="icon-remove small" style="color: red" ></i></a>
                                 <!-- <a href="#"><i class="icon-edit small"></i></a> -->
                             </td>
                         </tr>
@@ -328,7 +327,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
     </form>
 </div>
 
-<div id="prescription-dialog" class="dialog">
+<div id="prescription-dialog" class="dialog" style="width: 660px;">
     <div class="dialog-header">
         <i class="icon-folder-open"></i>
 
@@ -338,39 +337,39 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
     <div class="dialog-content">
         <ul>
             <li>
-                <span>Drug</span>
+                <label>Drug</label>
                 <input class="drug-name" type="text"
                        data-bind="value: prescription.drug().drugName, valueUpdate: 'blur'">
             </li>
             <li>
-                <span>Dosage</span>
+                <label>Dosage</label>
                 <input type="text" data-bind="value: prescription.drug().dosage">
             </li>
             <li>
-                <span>Dosage Unit</span>
-                <select data-bind="options: prescription.drug().drugUnitsOptions, value: prescription.drug().drugUnit, optionsText: 'label',  optionsCaption: 'Select Unit'"></select>
+                <label>Dosage Unit</label>
+                <select id="dosage-unit" data-bind="options: prescription.drug().drugUnitsOptions, value: prescription.drug().drugUnit, optionsText: 'label',  optionsCaption: 'Select Unit'"></select>
             </li>
             <li>
-                <span>Formulation</span>
+                <label>Formulation</label>
                 <select data-bind="options: prescription.drug().formulationOpts, value: prescription.drug().formulation, optionsText: 'label',  optionsCaption: 'Select Formulation'"></select>
             </li>
             <li>
-                <span>Frequency</span>
+                <label>Frequency</label>
                 <select data-bind="options: prescription.drug().frequencyOpts, value: prescription.drug().frequency, optionsText: 'label',  optionsCaption: 'Select Frequency'"></select>
             </li>
 
             <li>
-                <span>Number of Days</span>
+                <label>Number of Days</label>
                 <input type="text" data-bind="value: prescription.drug().numberOfDays">
             </li>
             <li>
-                <span>Comment</span>
+                <label>Comment</label>
                 <textarea data-bind="value: prescription.drug().comment"></textarea>
             </li>
         </ul>
 
-        <span class="button confirm right">Confirm</span>
-        <span class="button cancel">Cancel</span>
+        <label class="button confirm right">Confirm</label>
+        <label class="button cancel">Cancel</label>
     </div>
 </div>
 

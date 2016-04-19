@@ -164,15 +164,28 @@
 }
 
 .dialog input {
-    display: block;
+    display: inline-block;
     margin: 5px 0;
     color: #363463;
     padding: 5px 0 5px 10px;
     background-color: #FFF;
     border: 1px solid #DDD;
-    width: 97%;
+
+}
+.dialog-content label{
+    width:130px !important;
+    display:inline-block;
 }
 
+.dialog-content input[type="text"],
+.dialog-content select{
+    width:465px !important;
+    display:inline-block !important;
+}
+.dialog-content textarea{
+    margin: 10px 0;
+    width: 99% !important;
+}
 .symptom-container, .diagnosis-container, .procedure-container, .investigation-container {
     border-top: darkgrey dashed 1px;
     margin-top: 8px;
@@ -205,9 +218,11 @@
 }
 
 .dialog select option {
-    font-size: 1em;
+    font-size: 1em !important;
 }
-
+#dosage-unit option{
+    text-transform: capitalize;
+}
 #modal-overlay {
     background: #000 none repeat scroll 0 0;
     opacity: 0.4 !important;
@@ -215,4 +230,37 @@
 
 .dialog {
     display: none;
+}
+
+table{
+    font-size: 14px;
+}
+table th, table td {
+    padding: 5px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+td:first-child{
+    width: 150px;
+}
+
+th:nth-child(2){
+    width: 55px
+}
+
+th:nth-child(3){
+    min-width: 90px
+}
+th:nth-child(4){
+    width: 80px
+}
+th:nth-child(5){
+    width: 80px
+}
+
+th:nth-child(6){
+    width: 80px
+}
+td:last-child{
+    width: 8px;
 }
