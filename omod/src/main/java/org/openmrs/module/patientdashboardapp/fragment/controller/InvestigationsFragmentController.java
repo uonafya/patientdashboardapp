@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.Sort;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Obs;
@@ -43,7 +42,6 @@ public class InvestigationsFragmentController {
 	public List<SimpleObject> getInvestigationResults(
 			@RequestParam("patientId") Integer patientId,
 			@RequestParam("orderId") Integer orderId,
-			@RequestParam("orderDate") Date orderDate,
 			UiUtils ui
 			){
 		Patient patient = Context.getPatientService().getPatient(patientId);
@@ -64,6 +62,4 @@ public class InvestigationsFragmentController {
 		}
 		return results;
 	}
-
-
    }
