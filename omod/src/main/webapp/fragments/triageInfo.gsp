@@ -9,7 +9,6 @@
 <script>
 	jq(document).ready(function () {
 		jq('#vistdate').html(moment('${previousVisit}').format('DD MMM YYYY')+'<br/> &nbsp; &nbsp; (Active since '+moment('${previousVisit}').format('hh:mm')+' hrs)');    
-		jq('#lastPeriods').text(jq('#lastPeriods').text().substring(0, 11).replaceAt(2, ",").replaceAt(6, " ").insertAt(3, 0, " "));
 	});
 </script>
 
@@ -142,7 +141,7 @@
                 <br>
 
                 <label><span class="status active"></span>Blood Pressure:</label>
-                <span>${ triage?.systolic && triage?.daistolic ? triage?.systolic + "/" + triage?.daistolic : "Not captured" }</span>
+                <span>${ triage?.systolic && triage?.daistolic ? triage?.systolic + "/" + triage?.daistolic : "Not Captured" }</span>
                 <br>
 
                 <label><span class="status active"></span>Respiratory Rate:</label>
@@ -155,12 +154,12 @@
 
                 <% if (patient.gender == "F" && patient.age > 10) {%>
                     <label><span class="status active"></span>Last Periods:</label>
-                    <span id="lastPeriods">${triage?.lastMenstrualDate ? ui.formatDatePretty(triage?.lastMenstrualDate): "Not captured"}</span>
+                    <span id="lastPeriods">${triage?.lastMenstrualDate ? ui.formatDatePretty(triage?.lastMenstrualDate): "Not Captured"}</span>
                     <br>
                 <% } %>
 
                 <label><span class="status active"></span>Oxygen Saturation:</label>
-                <span>${triage?.oxygenSaturation? triage.oxygenSaturation.toString() + "%": "Not captured"}</span>
+                <span>${triage?.oxygenSaturation? triage.oxygenSaturation.toString() + "%": "Not Captured"}</span>
                 <br>
 
 				<label><span class="status active"></span>Height:</label>
@@ -191,7 +190,7 @@
 				
 
 				<label><span class="status active"></span>Blood Group:</label>
-				<span>${triage?.bloodGroup && triage?.rhesusFactor ? triage?.bloodGroup + "/" + triage?.rhesusFactor : "Not captured"}</span>
+				<span>${triage?.bloodGroup && triage?.rhesusFactor ? triage?.bloodGroup + "/" + triage?.rhesusFactor : "Not Captured"}</span>
 				<br>
 				
 				<label><span class="status active"></span>HIV Status:</label>
