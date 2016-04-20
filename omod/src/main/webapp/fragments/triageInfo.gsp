@@ -155,7 +155,7 @@
 
                 <% if (patient.gender == "F" && patient.age > 10) {%>
                     <label><span class="status active"></span>Last Periods:</label>
-                    <span id="lastPeriods">${ui.formatDatePretty(triage?.lastMenstrualDate) ?: "Not captured"}</span>
+                    <span id="lastPeriods">${triage?.lastMenstrualDate ? ui.formatDatePretty(triage?.lastMenstrualDate): "Not captured"}</span>
                     <br>
                 <% } %>
 
