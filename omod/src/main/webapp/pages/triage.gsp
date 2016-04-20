@@ -949,7 +949,7 @@
 							<p id="pitct">
 								<select id="pitct-field" class="focused" name="triagePatientData.pitct">
 									<option value="">- Please select -</option>
-									<option value="Reactive">Known Positive</option>
+									<option value="Known Positive">Known Positive</option>
 									<option value="Positive at time of visit">Positive at time of visit</option>
 									<option value="Negative">Negative</option>
 									<option value="Not Known">Not Known</option>

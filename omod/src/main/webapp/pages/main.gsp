@@ -206,12 +206,6 @@
 		<div class="close"></div>
 	</div>
 	
-	
-	
-	
-	
-	
-	
 	<div class="dashboard-tabs">
 		<ul>
 			<li><a href="#notes">Clinical Notes</a></li>
