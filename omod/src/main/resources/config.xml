@@ -97,6 +97,14 @@
             patients history of present illness
         </description>
     </globalProperty>
+
+    <globalProperty>
+        <property>patientdashboard.examinationConcept</property>
+        <defaultValue>PHYSICAL EXAMINATION</defaultValue>
+        <description>
+            physical examination
+        </description>
+    </globalProperty>
 	<!-- /Required Global Properties -->
 </module>
 
