@@ -42,6 +42,7 @@ public class Note {
 		this.diagnoses = Diagnosis.getPreviousDiagnoses(patientId);
 		this.signs = Sign.getPreviousSigns(patientId);
 		this.physicalExamination = getPreviousPhysicalExamination(patientId);
+		this.illnessHistory = getPreviousIllnessHistory(patientId);
 
 		if (diagnoses.size() > 0) {
 			this.diagnosisProvisional = true;
@@ -50,6 +51,7 @@ public class Note {
 
 
 	private static final String PHYSICAL_EXAMINATION_CONCEPT_NAME = "PHYSICAL EXAMINATION";
+    private static final String PREVIOUS_ILLNESS_HISTORY_CONCEPT_NAME = "HISTORY OF PRESENT ILLNESS"  ;
 
 	private int patientId;
 	private Integer queueId;
@@ -432,4 +434,23 @@ public class Note {
 
 		return  previousPhysicalExamination;
 	}
+
+    private String getPreviousIllnessHistory(int patientId){
+        String previousIllnessHistory = "";
+        Patient patient = Context.getPatientService().getPatient(patientId);
+        PatientQueueService queueService = Context.getService(PatientQueueService.class);
+        Concept conceptPreviousIllnessHistory = Context.getConceptService().getConcept(PREVIOUS_ILLNESS_HISTORY_CONCEPT_NAME);
+        Encounter previousIllnessHistoryEncounter = queueService.getLastOPDEncounter(patient);
+        if (previousIllnessHistoryEncounter!=null){
+            Set<Obs> allPreviousIllnessHistoryObs = previousIllnessHistoryEncounter.getAllObs();
+
+            for (Obs obs :allPreviousIllnessHistoryObs){
+                if (obs.getConcept() == conceptPreviousIllnessHistory ){
+                    previousIllnessHistory = obs.getValueText();
+                }
+            }
+        }
+
+        return previousIllnessHistory;
+    }
 }

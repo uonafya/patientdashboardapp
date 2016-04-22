@@ -17,6 +17,17 @@ public class VisitDetail {
 	private String diagnosis = "No diagnosis";
 	private String investigations = "No Investigations requested";
 	private String procedures = "No procedures";
+	private String physicalExamination = "No physicalExamination";
+
+	public String getPhysicalExamination() {
+		return physicalExamination;
+	}
+
+	public void setPhysicalExamination(String physicalExamination) {
+		this.physicalExamination = physicalExamination;
+	}
+
+
 	private List<Drug> drugs = new ArrayList<Drug>();
 
 	public String getHistory() {
@@ -68,22 +79,28 @@ public class VisitDetail {
 	}
 	
 	public static VisitDetail create(Encounter encounter) {
+        String historyConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_HISTORY_OF_PRESENT_ILLNESS);
 		String symptomConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_SYMPTOM);
 		String provisionalDiagnosisConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
 		String investigationConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_FOR_INVESTIGATION);
 		String procedureConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
+        String physicalExaminationConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_EXAMINATION);
 		
 		Concept symptomConcept = Context.getConceptService().getConcept(symptomConceptName);
 		Concept provisionalDiagnosisConcept = Context.getConceptService().getConcept(provisionalDiagnosisConceptName);
 		Concept finalDiagnosisConcept = Context.getConceptService().getConcept(FINAL_DIAGNOSIS_CONCEPT_NAME);
 		Concept investigationConcept = Context.getConceptService().getConcept(investigationConceptName);
 		Concept procedureConcept = Context.getConceptService().getConcept(procedureConceptName);
+		Concept physicalExaminationConcept = Context.getConceptService().getConcept(physicalExaminationConceptName);
+        Concept historyConcept = Context.getConceptService().getConcept(historyConceptName);
 		
 		StringBuffer symptomList = new StringBuffer();
 		StringBuffer provisionalDiagnosisList = new StringBuffer();
 		StringBuffer finalDiagnosisList = new StringBuffer();
 		StringBuffer investigationList = new StringBuffer();
 		StringBuffer procedureList = new StringBuffer();
+        StringBuffer physicalExamination = new StringBuffer();
+        StringBuffer history = new StringBuffer();
 		for (Obs obs : encounter.getAllObs()) {
 			if (obs.getConcept().equals(symptomConcept)) {
 				symptomList.append(obs.getValueCoded().getDisplayString()).append(", ");
@@ -100,6 +117,12 @@ public class VisitDetail {
 			if (obs.getConcept().equals(procedureConcept)) {
 				procedureList.append(obs.getValueCoded().getDisplayString()).append(", ");
 			}
+            if (obs.getConcept().equals(physicalExaminationConcept)){
+                physicalExamination.append(obs.getValueCoded().getDisplayString()).append(", ");
+            }
+            if (obs.getConcept().equals(historyConcept)){
+                history.append(obs.getValueCoded().getDisplayString()).append(", ");
+            }
 		}
 		
 		VisitDetail visitDetail = new VisitDetail();
@@ -115,6 +138,12 @@ public class VisitDetail {
 		if (investigationList.length() > 0) {
 			visitDetail.setInvestigations(investigationList.substring(0, investigationList.length() - ", ".length()));
 		}
+        if (physicalExamination.length()>0){
+            visitDetail.setPhysicalExamination(physicalExamination.substring(0,physicalExamination.length()-",".length()));
+        }
+        if (history.length()>0){
+            visitDetail.setHistory(history.substring(0,history.length()-",".length()));
+        }
 		return visitDetail;
 	}
 }
