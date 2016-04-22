@@ -1,6 +1,7 @@
 <% 
 	ui.decorateWith("appui", "standardEmrPage", [title: "OPD Dashboard"]);
 	ui.includeJavascript("billingui", "moment.js")
+	ui.includeCss("patientdashboardapp", "patientdashboardapp.css");
 %>
 <script>
     function strReplace(word) {
@@ -34,7 +35,8 @@
 		width: 100% !important;
 	}
 	input[type="text"]:focus, textarea:focus{
-		outline: 2px solid #007fff!important;
+		outline: 2px none #007fff!important;
+		box-shadow: 0 0 2px 0 #888 !important
 	}
 	textarea{
 		width: 97%;
@@ -208,10 +210,10 @@
 	
 	<div class="dashboard-tabs">
 		<ul>
-			<li><a href="#notes">Clinical Notes</a></li>
-			<li><a href="#triage-info">Triage Information</a></li>
-			<li><a href="#summary">Clinical Summary</a></li>
-			<li><a href="#investigations">Lab Reports</a></li>
+			<li id="cn"><a href="#notes">Clinical Notes</a></li>
+			<li id="ti"><a href="#triage-info">Triage Information</a></li>
+			<li id="cs"><a href="#summary">Clinical Summary</a></li>
+			<li id="lr"><a href="#investigations">Lab Reports</a></li>
 		</ul>
 		
 		<div id="notes">

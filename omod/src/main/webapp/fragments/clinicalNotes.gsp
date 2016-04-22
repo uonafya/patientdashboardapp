@@ -1,7 +1,7 @@
 <%
-    ui.includeCss("patientdashboardapp", "patientdashboardapp.css");
     ui.includeCss("uicommons", "datetimepicker.css")
     ui.includeCss("registration", "onepcssgrid.css")
+    
 
     ui.includeJavascript("patientdashboardapp", "note.js")
     ui.includeJavascript("uicommons", "datetimepicker/bootstrap-datetimepicker.min.js")
@@ -83,6 +83,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
                 <textarea data-bind="value: \$root.physicalExamination" id="examination" name="examination" rows="10" cols="74"></textarea>
             </p>
         </fieldset>
+		
         <fieldset class="no-confirmation">
             <legend>Diagnosis</legend>
             <div>
@@ -106,6 +107,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 						</label>
 					</p>
 				</div>
+				
 				<div>
 					<p class="input-position-class">
 						<input type="text" id="diagnosis" name="diagnosis" placeholder="Select Diagnosis" />
@@ -125,8 +127,9 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 						</div>
 					</div>
 				</div>
-                </div>
-            </fieldset>
+            </div>
+        </fieldset>
+		
         <fieldset class="no-confirmation">
             <legend>Procedures</legend>
 			<p class="input-position-class">
@@ -174,49 +177,50 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
                 <div style="display:none">
                     <p><input type="text" ></p>
                 </div>
-		</div>
-            </fieldset>
-            <fieldset class="no-confirmation">
-                <legend>Prescription</legend>
-
-                <div>
-                    <div style="display:none">
-                        <p><input type="text"></p>
-                    </div>
-
-                    <h2>Prescribe Medicine</h2>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>Drug Name</th>
-                            <th>Dosage</th>
-                            <th>Formulation</th>
-                            <th>Frequency</th>
-                            <th>Days</th>
-                            <th>Comments</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody data-bind="foreach: drugs">
-                        <tr>
-                            <td data-bind="text: drugName"></td>
-                            <td data-bind="text: dosageAndUnit" ></td>
-                            <td data-bind="text: formulation().label"></td>
-                            <td data-bind="text: frequency().label"></td>
-                            <td data-bind="text: numberOfDays"></td>
-                            <td data-bind="text: comment"></td>
-                            <td>
-                                <a href="#" title="Remove"><i data-bind="click: \$root.removePrescription"
-                                                              class="icon-remove small" style="color: red" ></i></a>
-                                <!-- <a href="#"><i class="icon-edit small"></i></a> -->
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <br/>
-                <button id="add-prescription">Add</button>
-            </div>
+			</div>
         </fieldset>
+		<fieldset class="no-confirmation">
+			<legend>Prescription</legend>
+
+			<div>
+				<div style="display:none">
+					<p><input type="text"></p>
+				</div>
+
+				<h2>Prescribe Medicine</h2>
+				<table id="addDrugsTable">
+					<thead>
+						<tr>
+							<th>Drug Name</th>
+							<th>Dosage</th>
+							<th>Formulation</th>
+							<th>Frequency</th>
+							<th>Days</th>
+							<th>Comments</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody data-bind="foreach: drugs">
+						<tr>
+							<td data-bind="text: drugName"></td>
+							<td data-bind="text: dosageAndUnit" ></td>
+							<td data-bind="text: formulation().label"></td>
+							<td data-bind="text: frequency().label"></td>
+							<td data-bind="text: numberOfDays"></td>
+							<td data-bind="text: comment"></td>
+							<td>
+								<a href="#" title="Remove">
+									<i data-bind="click: \$root.removePrescription" class="icon-remove small" style="color: red" ></i>
+								</a>
+								<!-- <a href="#"><i class="icon-edit small"></i></a> -->
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<br/>
+				<button id="add-prescription">Add</button>
+			</div>
+		</fieldset>
 		
 		
         <fieldset class="no-confirmation">
@@ -327,7 +331,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
     </form>
 </div>
 
-<div id="prescription-dialog" class="dialog" style="width: 660px;">
+<div id="prescription-dialog" class="dialog" style="display:none;">
     <div class="dialog-header">
         <i class="icon-folder-open"></i>
 
@@ -343,12 +347,10 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
             </li>
             <li>
                 <label>Dosage</label>
-                <input type="text" data-bind="value: prescription.drug().dosage">
+                <input type="text" data-bind="value: prescription.drug().dosage" style="width: 60px!important;">
+                <select id="dosage-unit" data-bind="options: prescription.drug().drugUnitsOptions, value: prescription.drug().drugUnit, optionsText: 'label',  optionsCaption: 'Select Unit'" style="width: 191px!important;"></select>
             </li>
-            <li>
-                <label>Dosage Unit</label>
-                <select id="dosage-unit" data-bind="options: prescription.drug().drugUnitsOptions, value: prescription.drug().drugUnit, optionsText: 'label',  optionsCaption: 'Select Unit'"></select>
-            </li>
+			
             <li>
                 <label>Formulation</label>
                 <select data-bind="options: prescription.drug().formulationOpts, value: prescription.drug().formulation, optionsText: 'label',  optionsCaption: 'Select Formulation'"></select>

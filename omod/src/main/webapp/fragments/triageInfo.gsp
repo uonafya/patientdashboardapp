@@ -116,14 +116,15 @@
 				</span>
 				
 				<span class="menu-title" style="height: 30px">
-					<i class="icon-edit" style="float: left; margin-top: 1px; margin-right: 3px; color: rgb(0, 127, 255);"></i>
+					<i class="icon-edit" style="float: left; margin-top: 1px; margin-right: 3px; color: rgb(0, 127, 255); font-weight: bold;"></i>
 					<a style="float: left;" href="${ ui.pageLink('patientdashboardapp', 'triage', [patientId: patientId, opdId: opdId, queueId: queueId, returnUrl: returnUrl]) }">Edit Triage Details</a>
 				</span>
+				
 				<span class="arrow-border"></span>
 				<span class="arrow"></span>
 			</li>
 		
-			<li style="height: 269px;" class="menu-item" visitid="53">
+			<li style="height: 295px;" class="menu-item" visitid="53">
 			</li>
 		</ul>	
 	</div>
@@ -172,7 +173,7 @@
 				
 				<% if (patient.age >= 2)  {%>
 					<label><span class="status active"></span>BMI:</label>
-					<span>${(triage && triage.weight && triage.height) ? formatter.format(triage?.weight/((triage?.height/100) * (triage?.height/100))) : "N/A" }</span>
+					<span>${(triage && triage.weight && triage.height) ? formatter.format(triage?.weight/((triage?.height/100) * (triage?.height/100))) : "Not Captured"}</span>
 					<br>
 				<% } %>
 				

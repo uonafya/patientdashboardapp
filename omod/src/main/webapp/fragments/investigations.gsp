@@ -3,6 +3,12 @@ ui.includeCss("uicommons", "datatables/dataTables_jui.css")
 ui.includeJavascript("patientqueueapp", "jquery.dataTables.min.js")
 %>
 
+<style>
+	.details-control i{
+		cursor: pointer;
+	}
+</style>
+
 <table id="investigations-table">
     <thead>
         <tr>

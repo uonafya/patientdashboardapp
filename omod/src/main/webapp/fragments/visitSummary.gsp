@@ -1,5 +1,5 @@
 <script>
-	jq(function(){
+	jq(function(){		
 		jq(".left-menu").on("click", ".visit-summary", function(){
 			jq("#visit-detail").html("<i class=\"icon-spinner icon-spin icon-2x pull-left\"></i>")
 			var visitSummary = jq(this);
@@ -14,12 +14,22 @@
 				if (data.drugs.length > 0) {
 					var drugsTemplate =  _.template(jq("#drugs-template").html());
 					jq("#drugs-detail").html(drugsTemplate(data));
+					
+					console.log(data.drugs);
+				}
+				else {
+					var drugsTemplate =  _.template(jq("#empty-template").html());
+					jq("#drugs-detail").html(drugsTemplate(data));
 				}
 			})
 		});
+		
 		var visitSummaries = jq(".visit-summary");
 		if (visitSummaries.length > 0) {
 			visitSummaries[0].click();
+			jq('#cs').show();
+		}else{
+			jq('#cs').hide();
 		}
 	});
 </script>
@@ -88,29 +98,8 @@
 			</div>
 		</div>
 		
-		<div class="info-section" id="drugs-detail">
-			<div class="info-header">
-				<i class="icon-list-ul"></i>
-				<h3>PRESCRIBED DRUGS SUMMARY</h3>
-			</div>
-			<table>
-				<thead>
-					<tr>
-						<td>Name</td>
-						<td>Unit</td>
-						<td>Formulation</td>
-						<td>Dosage</td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>N/A</td>
-						<td>N/A</td>
-						<td>N/A</td>
-						<td>N/A</td>
-					</tr>
-				 </tbody>
-			</table>
+		<div class="info-sections" id="drugs-detail" style="margin: 0px 10px 0px 5px;">			
+			
 		</div>
 	</div>
 </div>
@@ -148,26 +137,57 @@
 	</div>
 </script>
 
-<script id="drugs-template" type="text/template">
-    <p>
-        <small>Drugs</small>
-    </p>
-    <table>
-        <thead>
-            <tr>
-                <td>Name</td>
-                <td>Unit</td>
-                <td>Formulation</td>
-            </tr>
-        </thead>
-        <tbody>
-		{{ _.each(drugs, function(drug) { }}
-            <tr>
-                <td>{{-drug.inventoryDrug.name}}</td>
-                <td>{{-drug.inventoryDrug.unit.name}}</td>
-                <td>{{-drug.inventoryDrugFormulation.name}}:{{-drug.inventoryDrugFormulation.dozage}}</td>
-            </tr>
+<script id="drugs-template" type="text/template">	
+	<div class="info-header">
+		<i class="icon-medicine"></i>
+		<h3>DRUGS PRESCRIPTION SUMMARY INFORMATION</h3>
+	</div>
+	
+	<table id="drugList">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Name</th>
+				<th>Formulation</th>
+				<th>Unit</th>
+				<th>Dosage</th>
+			</tr>
+		</thead>
+		<tbody>
+		{{ _.each(drugs, function(drug, index) { }}
+			<tr>
+				<td>{{=index+1}}</td>
+				<td>{{-drug.inventoryDrug.name}}</td>
+				<td>{{-drug.inventoryDrugFormulation.name}}:{{-drug.inventoryDrugFormulation.dozage}}</td>
+				<td>{{-drug.inventoryDrug.unit.name}}</td>
+				<td>**</td>
+			</tr>
 		{{ }); }}
-         </tbody>
-    </table>
+		 </tbody>
+	</table>		
+</script>
+
+<script id="empty-template" type="text/template">	
+	<div class="info-header">
+		<i class="icon-medicine"></i>
+		<h3>DRUGS PRESCRIPTION SUMMARY INFORMATION</h3>
+	</div>
+	
+	<table id="drugList">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Name</th>
+				<th>Formulation</th>
+				<th>Unit</th>
+				<th>Dosage</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td></td>
+				<td style="text-align: center;" colspan="4">No Drugs Prescribed</td>
+			</tr>
+		 </tbody>
+	</table>		
 </script>

@@ -948,11 +948,11 @@
 						<div class="col4">
 							<p id="pitct">
 								<select id="pitct-field" class="focused" name="triagePatientData.pitct">
-									<option value="">- Please select -</option>
-									<option value="Known Positive">Known Positive</option>
-									<option value="Positive at time of visit">Positive at time of visit</option>
-									<option value="Negative">Negative</option>
-									<option value="Not Known">Not Known</option>
+									<option value=""							>- Please select -</option>
+									<option value="Known Positive"				>Known Positive</option>
+									<option value="Positive at time of visit"	>Positive at time of visit</option>
+									<option value="Negative"					>Negative</option>
+									<option value="Not Known"					>Not Known</option>
 								</select>
 								<span id="fr4863" class="field-error" style="display: none"></span>
 							</p>

@@ -179,12 +179,16 @@
 
 .dialog-content input[type="text"],
 .dialog-content select{
-    width:465px !important;
+    width:255px !important;
     display:inline-block !important;
 }
 .dialog-content textarea{
     margin: 10px 0;
     width: 99% !important;
+}
+
+.dialog .dialog-content li {
+    margin-bottom: 0!important;
 }
 .symptom-container, .diagnosis-container, .procedure-container, .investigation-container {
     border-top: darkgrey dashed 1px;
@@ -235,32 +239,41 @@
 table{
     font-size: 14px;
 }
-table th, table td {
+#addDrugsTable table th, 
+#addDrugsTable table td {
     padding: 5px;
     text-align: center;
     border-bottom: 1px solid #ddd;
 }
-td:first-child{
+#addDrugsTable td:first-child{
     width: 150px;
 }
 
-th:nth-child(2){
+#addDrugsTable th:nth-child(2){
     width: 55px
 }
 
-th:nth-child(3){
+#addDrugsTable th:nth-child(3){
     min-width: 90px
 }
-th:nth-child(4){
+#addDrugsTable th:nth-child(4){
     width: 80px
 }
-th:nth-child(5){
+#addDrugsTable th:nth-child(5){
     width: 80px
 }
 
-th:nth-child(6){
+#addDrugsTable th:nth-child(6){
     width: 80px
 }
-td:last-child{
+#addDrugsTable  td:last-child{
     width: 8px;
+}
+
+#drugList {
+	text-align: left;
+}
+
+#drugList td:first-child{
+	width: 15px;
 }
