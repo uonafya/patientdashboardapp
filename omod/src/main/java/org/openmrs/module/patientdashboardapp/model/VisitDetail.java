@@ -99,8 +99,8 @@ public class VisitDetail {
 		StringBuffer finalDiagnosisList = new StringBuffer();
 		StringBuffer investigationList = new StringBuffer();
 		StringBuffer procedureList = new StringBuffer();
-        StringBuffer physicalExamination = new StringBuffer();
-        StringBuffer history = new StringBuffer();
+		StringBuffer physicalExamination = new StringBuffer();
+		StringBuffer history = new StringBuffer();
 		for (Obs obs : encounter.getAllObs()) {
 			if (obs.getConcept().equals(symptomConcept)) {
 				symptomList.append(obs.getValueCoded().getDisplayString()).append(", ");
@@ -117,12 +117,12 @@ public class VisitDetail {
 			if (obs.getConcept().equals(procedureConcept)) {
 				procedureList.append(obs.getValueCoded().getDisplayString()).append(", ");
 			}
-            if (obs.getConcept().equals(physicalExaminationConcept)){
-                physicalExamination.append(obs.getValueCoded().getDisplayString()).append(", ");
-            }
-            if (obs.getConcept().equals(historyConcept)){
-                history.append(obs.getValueCoded().getDisplayString()).append(", ");
-            }
+			if (obs.getConcept().equals(physicalExaminationConcept)){
+				physicalExamination.append(obs.getValueText()).append(", ");
+			}
+			if (obs.getConcept().equals(historyConcept)){
+				history.append(obs.getValueText()).append(", ");
+			}
 		}
 		
 		VisitDetail visitDetail = new VisitDetail();
