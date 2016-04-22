@@ -89,6 +89,14 @@
 			Dosing Unit Concept Id
 		</description>
 	</globalProperty>
+
+    <globalProperty>
+        <property>patientdashboard.historyOfPresentIllness</property>
+        <defaultValue>HISTORY OF PRESENT ILLNESS</defaultValue>
+        <description>
+            patients history of present illness
+        </description>
+    </globalProperty>
 	<!-- /Required Global Properties -->
 </module>
 
