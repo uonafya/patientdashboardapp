@@ -26,7 +26,7 @@
 	input[type="password"],
 	select {
 		border: 1px solid #aaa;
-		border-radius: 0px !important;
+		border-radius: 2px !important;
 		box-shadow: none !important;
 		box-sizing: border-box !important;
 		height: 38px !important;
@@ -143,6 +143,10 @@
 		display: inline-block;
 		float: left;
 		width: 730px;
+	}
+	
+	.important{
+		color: #f00 !important;
 	}
 </style>
 

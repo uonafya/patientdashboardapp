@@ -116,7 +116,6 @@
 			if (e.keyCode == 9 || e.which == 9) {
 				e.preventDefault();
 				e.stopImmediatePropagation();
-				console.log('Tab Pressed');
 			}
 		});
 		
@@ -124,23 +123,8 @@
 			if (this.value == 'true') {
 				jq('#title-diagnosis').text('PROVISIONAL DIAGNOSIS');
 			} else {
-				if (jq('#title-diagnosis').text() != "DIAGNOSIS") {
-					note.diagnoses.removeAll();
-				}
-
 				jq('#title-diagnosis').text('FINAL DIAGNOSIS');
-			}
-		});
-		
-		jq('input[type=radio][name=diagnosis_type]').change(function() {
-			if (this.value == 'true') {
-				jq('#title-diagnosis').text('PROVISIONAL DIAGNOSIS');
-			} else {
-				if (jq('#title-diagnosis').text() != "DIAGNOSIS") {
-					jq('#diagnosis-carrier').html('');
-				}
-
-				jq('#title-diagnosis').text('FINAL DIAGNOSIS');
+				note.diagnoses.removeAll();
 			}
 		});
 		

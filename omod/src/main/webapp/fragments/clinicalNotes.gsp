@@ -18,6 +18,7 @@
 ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note: note, listOfWards: listOfWards, internalReferralSources: internalReferralSources, externalReferralSources: externalReferralSources, referralReasonsSources: referralReasonsSources, outcomeOptions: outcomeOptions ]) }
 
 
+
 <div id="content">
     <form method="post" id="notes-form" class="simple-form-ui">
         <section>
@@ -25,7 +26,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
         <fieldset class="no-confirmation">
 			<legend>Symptoms</legend>
 			<p class="input-position-class">
-				<label for="symptom">Symptom</label>
+				<label for="symptom">Symptom <span class="important">*</span></label>
 				<input type="text" id="symptom" name="symptom" placeholder="Add Symptoms" />
 			</p>
 

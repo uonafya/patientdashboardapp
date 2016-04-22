@@ -63,17 +63,7 @@
 
 	.dashboard .action-section {
 		margin-top: 35px;
-	}
-
-	input[type="text"], input[type="password"], select {
-		border: 1px solid #888;
-		border-radius: 3px !important;
-		box-shadow: none !important;
-		box-sizing: border-box !important;
-		height: 32px !important;
-		line-height: 18px !important;
-		padding: 0px 10px !important;
-	}
+	}	
 
 	#fileNumberRow {
 		margin: 2px 0px 10px 0px;
