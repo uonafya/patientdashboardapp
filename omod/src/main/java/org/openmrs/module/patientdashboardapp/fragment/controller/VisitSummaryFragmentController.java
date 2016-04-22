@@ -74,11 +74,11 @@ public class VisitSummaryFragmentController {
 		Encounter encounter = Context.getEncounterService().getEncounter(encounterId);
 		VisitDetail visitDetail = VisitDetail.create(encounter);
 		
-		SimpleObject detail = SimpleObject.fromObject(visitDetail, ui, "history","diagnosis", "symptoms", "procedures", "investigations");
+		SimpleObject detail = SimpleObject.fromObject(visitDetail, ui, "history","diagnosis", "symptoms", "procedures", "investigations","physicalExamination");
 		
 		List<OpdDrugOrder> opdDrugs = Context.getService(PatientDashboardService.class).getOpdDrugOrder(encounter);
 		List<SimpleObject> drugs = SimpleObject.fromCollection(opdDrugs, ui, "inventoryDrug.name",
-				"inventoryDrug.unit.name", "inventoryDrugFormulation.name", "inventoryDrugFormulation.dozage");
+				"inventoryDrug.unit.name", "inventoryDrugFormulation.name", "inventoryDrugFormulation.dozage","dosageUnit.name");
 		return SimpleObject.create("notes", detail, "drugs", drugs);
 	}
 }

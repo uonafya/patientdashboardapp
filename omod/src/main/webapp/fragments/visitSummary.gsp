@@ -12,6 +12,7 @@
 				jq("#visit-detail").html(visitDetailTemplate(data.notes));
 
 				if (data.drugs.length > 0) {
+					console.log(data);
 					var drugsTemplate =  _.template(jq("#drugs-template").html());
 					jq("#drugs-detail").html(drugsTemplate(data));
 					
@@ -79,6 +80,9 @@
 				<label><span class="status active"></span>History:</label>
 				<span>N/A</span>
 				<br>
+                <label><span class="status active"></span>physicalExamination:</label>
+                <span>N/A</span>
+                <br>
 				
 				<label><span class="status active"></span>Symptoms:</label>
 				<span>N/A</span>
@@ -95,6 +99,7 @@
 				<label><span class="status active"></span>Procedures:</label>
 				<span>N/A</span>
 				<br>
+
 			</div>
 		</div>
 		
@@ -118,6 +123,10 @@
 		<label><span class='status active'></span>History:</label>
 		<span>{{-history}}</span>
 		<br>
+
+        <label><span class="status active"></span>physicalExamination:</label>
+        <span>{{-physicalExamination}}</span>
+        <br>
 		
 		<label><span class="status active"></span>Symptoms:</label>
 		<span>{{-symptoms}}</span>
@@ -134,6 +143,7 @@
 		<label><span class="status active"></span>Procedures:</label>
 		<span>{{-procedures}}</span>
 		<br>
+
 	</div>
 </script>
 
