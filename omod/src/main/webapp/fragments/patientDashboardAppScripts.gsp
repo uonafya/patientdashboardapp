@@ -109,8 +109,8 @@
 
 
 	jq(function() {
-		NavigatorController = new KeyboardController();
 		ko.applyBindings(note, jq("#notes-form")[0]);
+		NavigatorController = new KeyboardController();
 		
 		jq('.dialog-content input').on('keydown', function(e){
 			if (e.keyCode == 9 || e.which == 9) {
@@ -125,6 +125,7 @@
 			} else {
 				jq('#title-diagnosis').text('FINAL DIAGNOSIS');
 				note.diagnoses.removeAll();
+				jq('#diagnosis-set').val('');
 			}
 		});
 		
@@ -148,6 +149,7 @@
 			select: function(event, ui) {
 				event.preventDefault();
 				jq(this).val(ui.item.label);
+				jq("#symptoms-set").val("Symptom set");
 				jq.getJSON('${ ui.actionLink("patientdashboardapp", "ClinicalNotes", "getQualifiers") }', {
 					signId: ui.item.value
 				}).success(function(data) {
@@ -198,7 +200,7 @@
 					id: ui.item.value,
 					label: ui.item.label
 				}));
-
+				jq("#diagnosis-set").val("Diagnosis set");
 				jq('#diagnosis').val('');
 				jq('#diagnosis').focus();
 				jq('#task-diagnosis').show();
@@ -233,6 +235,7 @@
 			select: function(event, ui) {
 				event.preventDefault();
 				jq(this).val(ui.item.label);
+				jq("#procedure-set").val("Procedure set");
 				var procedure = procedureMatches.find(function(procedureMatch) {
 					return procedureMatch.value === ui.item.value;
 				});
@@ -272,6 +275,7 @@
 			select: function(event, ui) {
 				event.preventDefault();
 				jq(this).val(ui.item.label);
+				jq("#investigation-set").val("Investigation set");
 				note.addInvestigation(new Investigation({
 					id: ui.item.value,
 					label: ui.item.label
@@ -402,6 +406,7 @@
 				change: function(event, ui) {
 					event.preventDefault();
 					jq(selectedInput).val(ui.item.label);
+					jq("#drug-set").val("Drug set");
 					jq.getJSON('${ ui.actionLink("patientdashboardapp", "ClinicalNotes", "getFormulationByDrugName") }', {
 						"drugName": ui.item.label
 					}).success(function(data) {
