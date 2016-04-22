@@ -21,6 +21,7 @@
 	}
 	
 	var prescription = {}
+	var emrMessages = {};
 	
 	note.availableOutcomes = jq.map(outcomeOptions, function(outcomeOption) {
 		return new Outcome(outcomeOption);
@@ -29,8 +30,6 @@
 	function loadExternalReferralCases() {
 		jQuery('#referralReasons').empty();
 		note.referralReasonsOptions.removeAll();
-
-
 
 		if (jQuery("#externalReferral option:selected").text() === "LEVEL 2" || jQuery("#externalReferral option:selected").text() === "LEVEL 3" || jQuery("#externalReferral option:selected").text() === "LEVEL 4") {
 			jQuery("#referralComments").attr("readonly", false);

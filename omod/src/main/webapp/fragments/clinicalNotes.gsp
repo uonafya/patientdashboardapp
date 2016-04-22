@@ -84,7 +84,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
             <legend>Physical Examination</legend>
             <p class="input-position-class">
                 <label>Physical Examination</label>
-                <textarea data-bind="value: \$root.physicalExamination" id="examination" name="examination" rows="10" cols="74"></textarea>
+                <textarea data-bind="value: \$root.physicalExamination" id="examination" name="examination" rows="10" cols="74" class="required"></textarea>
             </p>
         </fieldset>
 		

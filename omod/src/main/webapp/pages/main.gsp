@@ -22,6 +22,9 @@
 </script>
 
 <style>
+	.name {
+		color: #f26522;
+	}
 	input[type="text"], 
 	input[type="password"],
 	select {
