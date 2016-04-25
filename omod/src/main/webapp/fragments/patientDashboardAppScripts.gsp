@@ -22,6 +22,11 @@
 	
 	var prescription = {}
 	var emrMessages = {};
+
+	emrMessages["numericRangeHigh"] = "value should be less than {0}";
+	emrMessages["numericRangeLow"] = "value should be more than {0}";
+	emrMessages["requiredField"] = "Mandatory Field. Kindly provide details";
+	emrMessages["numberField"] = "Value not a number";
 	
 	note.availableOutcomes = jq.map(outcomeOptions, function(outcomeOption) {
 		return new Outcome(outcomeOption);
@@ -118,6 +123,28 @@
 			}
 		});
 		
+		jq('#examination, #history, #instructions').change(function(){
+			var idnt = jq(this).attr('id');
+			var rows = -1;
+			var text = jq(this).val();
+			
+			if (idnt == 'history'){
+				rows = 1;
+			}
+			else if (idnt == 'examination'){
+				rows = 2;
+			}
+			else if (idnt == 'instructions'){
+				rows = 7;
+			}
+			
+			if (text == ''){
+				text = 'N/A';
+			}
+			
+			jq('#summaryTable tr:eq('+ rows +') td:eq(1)').text(text);
+		});
+		
 		jq('input[type=radio][name=diagnosis_type]').change(function() {
 			if (this.value == 'true') {
 				jq('#title-diagnosis').text('PROVISIONAL DIAGNOSIS');
@@ -148,7 +175,6 @@
 			select: function(event, ui) {
 				event.preventDefault();
 				jq(this).val(ui.item.label);
-				jq("#symptoms-set").val("Symptom set");
 				jq.getJSON('${ ui.actionLink("patientdashboardapp", "ClinicalNotes", "getQualifiers") }', {
 					signId: ui.item.value
 				}).success(function(data) {
@@ -163,8 +189,11 @@
 						"label": ui.item.label,
 						"qualifiers": qualifiers
 					}));
+					
 					jq('#symptom').val('');
 					jq('#task-symptom').show();
+					jq("#symptoms-set").val("Symptom set");
+					jq('#symptoms-lbl').hide();
 				});
 			},
 			open: function() {
@@ -199,9 +228,11 @@
 					id: ui.item.value,
 					label: ui.item.label
 				}));
+				
 				jq("#diagnosis-set").val("Diagnosis set");
-				jq('#diagnosis').val('');
+				jq("#diagnosis-lbl").hide();
 				jq('#diagnosis').focus();
+				jq('#diagnosis').val('');
 				jq('#task-diagnosis').show();
 
 			},
@@ -302,11 +333,17 @@
 		});
 
 		jq(".submitButton").on("click", function(event) {
+			if (!jq('input[name="diagnosis_type"]:checked').val()){
+				jq().toastmessage('showErrorToast', "Ensure that Provisional or Final Diagnosis has been selected first before you continue!");
+				return false
+			}
+		
 			event.preventDefault();
 			jq().toastmessage({
 				sticky: true
 			});
-			var savingMessage = jq().toastmessage('showNoticeToast', 'Saving...');
+			var savingMessage = jq().toastmessage('showSuccessToast', 'Please wait as Information is being Saved...');
+			
 			jq.ajax({
 					type: 'POST',
 					url: '${ ui.actionLink("patientdashboardapp", "clinicalNoteProcessor", "processNote", [ successUrl: successUrl ]) }',
@@ -326,7 +363,7 @@
 				.done(function(data) {
 					jq().toastmessage('removeToast', savingMessage);
 					if (data.status == "success") {
-						jq().toastmessage('showNoticeToast', 'Saved!');
+						jq().toastmessage('showSuccessToast', 'Data Successfully Posted!');
 						window.location.href = '${ui.pageLink("patientqueueapp", "opdQueue", [app: "patientdashboardapp.opdqueue"])}';
 					} else if (data.status == "fail") {
 						jq().toastmessage('showErrorToast', data.message);

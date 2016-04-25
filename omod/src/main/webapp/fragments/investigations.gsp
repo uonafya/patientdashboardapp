@@ -23,7 +23,7 @@ ui.includeJavascript("patientqueueapp", "jquery.dataTables.min.js")
             <tr data-order-id="${labOrder.orderId}" data-patient-id="${labOrder.patientId}">
                 <td class="details-control"><i class="icon-plus small"></i></td>
                 <td>${labOrder.orderName}</td>
-                <td>${ui.formatDatePretty(labOrder.orderDate)}</td>
+                <td>${ui.formatDatetimePretty(labOrder.orderDate)}</td>
                 <td>${labOrder.orderer}</td>
             </tr>
         <%
@@ -36,12 +36,12 @@ ui.includeJavascript("patientqueueapp", "jquery.dataTables.min.js")
 var investigationsTable;
 
 function format ( results ) {
-    var display = "RESULTS:<br>";
+    var display = '<div class="result-title">RESULTS</div><div class="result-page">';
     if (results.length == 0) {
         display = "NO RESULTS<br>";
     } else {
         jq.each(results, (function(index, result){
-            display += result.label + ": " + (result.value || "--")+ "<br>Day Performed: "+(result.datePerformed ) + "<br>";
+            display += '<i class="icon-angle-right small"> </i>' + result.label + ": " + (result.value || "--") + "<br/>";
         }));
     }
     return display;

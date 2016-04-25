@@ -17,18 +17,20 @@
 
 ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note: note, listOfWards: listOfWards, internalReferralSources: internalReferralSources, externalReferralSources: externalReferralSources, referralReasonsSources: referralReasonsSources, outcomeOptions: outcomeOptions ]) }
 
-
-
 <div id="content">
     <form method="post" id="notes-form" class="simple-form-ui">
         <section>
             <span class="title">Clinical Notes</span>
         <fieldset class="no-confirmation">
 			<legend>Symptoms</legend>
-			<p class="input-position-class">
-				<label for="symptom">Symptom <span class="important">*</span></label>
+			<div style="padding: 0 4px">
+				<label for="symptom" class="label">Symptoms <span class="important">*</span></label>
 				<input type="text" id="symptom" name="symptom" placeholder="Add Symptoms" />
-			</p>
+				<field>
+					<input type="hidden" id="symptoms-set" class="required"/>
+					<span id="symptoms-lbl" class="field-error" style="display: none"></span>
+				</field>
+			</div>
 
 			<div class="tasks" id="task-symptom" style="display:none;">
 				<header class="tasks-header">
@@ -67,15 +69,12 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 					</div>
 				</div>
 			</div>
-			<p>
-               <input type="hidden" id="symptoms-set" />
-            </p>
         </fieldset>
 
         <fieldset class="no-confirmation">
             <legend>Illness History</legend>
             <p>
-                <label for="history">History of Presenting illness</label>
+                <label class="label" for="history">History of Presenting illness</label>
                 <textarea data-bind="value: \$root.illnessHistory" id="history" name="history" rows="10" cols="74"></textarea>
             </p>
         </fieldset>
@@ -83,15 +82,18 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
         <fieldset class="no-confirmation">
             <legend>Physical Examination</legend>
             <p class="input-position-class">
-                <label>Physical Examination</label>
-                <textarea data-bind="value: \$root.physicalExamination" id="examination" name="examination" rows="10" cols="74" class="required"></textarea>
+                <label class="label">Physical Examination <span class="important">*</span></label>
+				<field>
+					<textarea data-bind="value: \$root.physicalExamination" id="examination" name="examination" rows="10" cols="74" class="required"></textarea>				
+					<span id="examination-lbl" class="field-error" style="display: none"></span>
+				</field>
             </p>
         </fieldset>
 		
         <fieldset class="no-confirmation">
             <legend>Diagnosis</legend>
             <div>
-				<h2>Patient's Diagnosis</h2>
+				<h2>Patient's Diagnosis <span class="important">*</span></h2>
 				<div class="tasks-list">
 					<div class="left">
 						<label id="ts01" class="tasks-list-item" for="provisional-diagnosis">
@@ -115,6 +117,10 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 				<div>
 					<p class="input-position-class">
 						<input type="text" id="diagnosis" name="diagnosis" placeholder="Select Diagnosis" />
+						<field>
+							<input type="hidden" id="diagnosis-set" class="required" />
+							<span id="diagnosis-lbl" class="field-error" style="display: none"></span>
+						</field>
 					</p>
 
 					<div id="task-diagnosis" class="tasks" style="display:none;">
@@ -132,14 +138,12 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 					</div>
 				</div>
             </div>
-            <p>
-                <input type="hidden" id="diagnosis-set" />
-            </p>
         </fieldset>
+		
         <fieldset class="no-confirmation">
             <legend>Procedures</legend>
 			<p class="input-position-class">
-				<label for="procedure">Patient Procedures</label>
+				<label class="label" for="procedure">Patient Procedures</label>
 				<input type="text" id="procedure" name="procedure" placeholder="Specify a Procedure" />
 			</p>
 			
@@ -166,7 +170,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
             <legend>Investigations</legend>
             <div>
                 <p class="input-position-class">
-                    <label for="investigation">Investigation:</label>
+                    <label class="label" for="investigation">Investigation:</label>
                     <input type="text" id="investigation" name="investigation" />
                 </p>
 				
@@ -237,7 +241,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
         <fieldset class="no-confirmation">
             <legend>Other Instructions</legend>
             <p class="input-position-class">
-                <label>Other Instructions</label>
+                <label class="label">Other Instructions</label>
 				<textarea data-bind="value: \$root.otherInstructions" id="instructions" name="instructions" rows="10" cols="74"></textarea>
             </p>
         </fieldset>
@@ -245,6 +249,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
             <legend>Outcome</legend>
             <div>
                 <h2> Patient Referral</h2>
+				
 				<div class="onerow">
 					<div class="col4"><label for="internalReferral">Internal Referral</label></div>
 					<div class="col4"><label for="externalReferral">External Referral</label></div>
@@ -321,22 +326,76 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 
         <div id="confirmation" style="width:74.6%; min-height: 400px;">
             <span id="confirmation_label" class="title">Confirmation</span>
-
-            <div class="before-dataCanvas"></div>
-
-            <div id="dataCanvas"></div>
-
-            <div class="after-data-canvas"></div>
+			
+			<div class="dashboard">
+				<div class="info-section">
+					<div class="info-header">
+						<i class="icon-list-ul"></i>
+						<h3>OPD SUMMARY & CONFIRMATION</h3>
+					</div>					
+					
+					<div class="info-body">
+						<table id="summaryTable">
+							<tr>
+								<td><span class="status active"></span>Symptoms</td>
+								<td>N/A</td>
+							</tr>
+							
+							<tr>
+								<td><span class="status active"></span>History</td>
+								<td>N/A</td>
+							</tr>
+							
+							<tr>
+								<td><span class="status active"></span>Physical Examination</td>
+								<td>N/A</td>
+							</tr>
+							
+							<tr>
+								<td><span class="status active"></span>Diagnosis</td>
+								<td>N/A</td>
+							</tr>
+							
+							<tr>
+								<td><span class="status active"></span>Procedures</td>
+								<td>N/A</td>
+							</tr>
+							
+							<tr>
+								<td><span class="status active"></span>Investigations</td>
+								<td>N/A</td>
+							</tr>
+							
+							<tr>
+								<td><span class="status active"></span>Prescriptions</td>
+								<td>N/A</td>
+							</tr>
+							
+							<tr>
+								<td><span class="status active"></span>Instructions</td>
+								<td>N/A</td>
+							</tr>
+							
+							<tr>
+								<td><span class="status active"></span>Outcome</td>
+								<td>N/A</td>
+							</tr>
+						</table>
+						
+						
+					</div>
+				</div>				
+			</div>			
 
             <div id="confirmationQuestion">
-                &nbsp; &nbsp; Confirm Posting Information?<br/><br/>
-
-                <p style="display: inline">
+			
+			
+                <p style="display: inline;">
                     <button class="submitButton confirm" style="float: right">Submit</button>
                 </p>
 
+                <button class="cancel" style="margin-left: 5px;">Cancel</button>
                 <p style="display: inline">
-                    <button class="cancel">Cancel</button>
                 </p>
             </div>
         </div>

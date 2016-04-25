@@ -28,13 +28,13 @@
 	input[type="text"], 
 	input[type="password"],
 	select {
-		border: 1px solid #aaa;
+		border: 1px solid #aaa !important;
 		border-radius: 2px !important;
 		box-shadow: none !important;
 		box-sizing: border-box !important;
 		height: 38px !important;
 		line-height: 18px !important;
-		padding: 8px 10px !important;
+		padding: 0px 10px !important;
 		width: 100% !important;
 	}
 	input[type="text"]:focus, textarea:focus{
@@ -84,11 +84,6 @@
 	.dashboard .info-body li span{
 		margin-right:10px;
 	}
-
-	.dashboard .info-body li small{
-		
-	}
-
 	.dashboard .info-body li div{
 		width: 150px;
 		display: inline-block;
@@ -136,6 +131,17 @@
 		width: 74.6%;
 		min-height: 400px;
 	}
+	.no-confirmation{
+		margin-top: -10px;
+	}
+	.no-confirmation .label{
+		color: #009384;
+		cursor: pointer;
+		font-size: 1.3em;
+		font-weight: normal;
+		margin: 10px 0 0;
+		padding: 0 5px;
+	}
 	.col15 {
 		min-width: 22%;
 		max-width: 22%;
@@ -150,6 +156,37 @@
 	
 	.important{
 		color: #f00 !important;
+	}
+	#breadcrumbs a, #breadcrumbs a:link, #breadcrumbs a:visited {
+		text-decoration: none;
+	}
+	#summaryTable tr:nth-child(2n),
+	#summaryTable tr:nth-child(2n+1){
+		background: none;
+	}
+	#summaryTable{
+		margin: -5px 0 -6px 0px;
+	}
+	#summaryTable tr, 
+	#summaryTable th, 
+	#summaryTable td {
+		border: 		1px none  #eee;
+		border-bottom: 	1px solid #eee;
+	}
+	#summaryTable td:first-child{
+		vertical-align: top;
+		width: 170px;
+	}
+	.result-title{
+		display: inline-block;
+		float: left;
+		margin: 0 60px 0 0;
+	}
+	.result-page{
+		display: inline-block;
+	}
+	.result-page i{
+		color: #aaa;
 	}
 </style>
 
