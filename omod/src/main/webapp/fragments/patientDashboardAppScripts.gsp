@@ -33,7 +33,7 @@
 	});
 
 	function loadExternalReferralCases() {
-		jQuery('#referralReasons').empty();
+		jq('#referralReasons').empty();
 		note.referralReasonsOptions.removeAll();
 
 		if (jQuery("#externalReferral option:selected").text() === "LEVEL 2" || jQuery("#externalReferral option:selected").text() === "LEVEL 3" || jQuery("#externalReferral option:selected").text() === "LEVEL 4") {
@@ -68,6 +68,8 @@
 			jQuery("#specify").val("N/A");
 			jQuery("#specify").attr("readonly", true);
 		}
+		
+		jq('#referralReasons').change();
 	}
 
 	note.inpatientWards = ${
@@ -115,6 +117,66 @@
 	jq(function() {
 		ko.applyBindings(note, jq("#notes-form")[0]);
 		NavigatorController = new KeyboardController();
+		
+		jq('#referralReasons').change(function(){
+			if (jQuery("#referralReasons option:selected").text().trim() === "OTHER REASONS"){
+				jq('#specify').show();
+				jq('#specify-lbl').show();
+			}
+			else {
+				jq('#specify').hide();
+				jq('#specify-lbl').hide();
+			}
+		}).change();
+		
+		jq('#availableReferral').change(function(){
+			var option = jq('#availableReferral').val();
+			
+			if (option == 1){
+				jq('#refTitle').text('Internal Referral');
+				jq('#refTitle').show();
+				jq('#facTitle').hide();
+				
+				jq('#facility').hide()
+				
+				jq('#refReason1').hide();
+				jq('#refReason2').hide();
+				jq('#refReason3').hide();
+				
+				jq('#internalReferral').show();
+				jq('#externalReferral').hide();
+				
+				
+			}
+			else if (option == 2){
+				jq('#refTitle').text('External Referral');
+				jq('#refTitle').show();
+				jq('#facTitle').show();
+				
+				jq('#facility').show()
+				
+				jq('#refReason1').show();
+				jq('#refReason2').show();
+				jq('#refReason3').show();
+				
+				jq('#externalReferral').show();
+				jq('#internalReferral').hide();
+			}
+			else {
+				jq('#refTitle').hide();
+				jq('#facTitle').hide();
+				
+				jq('#facility').hide()
+				
+				jq('#refReason1').hide();
+				jq('#refReason2').hide();
+				jq('#refReason3').hide();
+				
+				jq('#externalReferral').hide();
+				jq('#internalReferral').hide();
+				
+			}
+		}).change();
 		
 		jq('.dialog-content input').on('keydown', function(e){
 			if (e.keyCode == 9 || e.which == 9) {
