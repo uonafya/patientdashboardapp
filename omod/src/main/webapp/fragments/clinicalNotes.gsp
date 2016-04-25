@@ -381,22 +381,17 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 								<td>N/A</td>
 							</tr>
 						</table>
-						
-						
 					</div>
 				</div>				
 			</div>			
 
             <div id="confirmationQuestion">
-			
-			
                 <p style="display: inline;">
                     <button class="submitButton confirm" style="float: right">Submit</button>
                 </p>
 
                 <button class="cancel" style="margin-left: 5px;">Cancel</button>
-                <p style="display: inline">
-                </p>
+                <p style="display: inline">&nbsp;</p>
             </div>
         </div>
     </form>
