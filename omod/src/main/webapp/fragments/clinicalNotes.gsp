@@ -338,7 +338,10 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 						<table id="summaryTable">
 							<tr>
 								<td><span class="status active"></span>Symptoms</td>
-								<td>N/A</td>
+								<td data-bind="foreach: signs">									
+									<span data-bind="text: label"></span>
+									<span data-bind="if: (\$index() !== (\$parent.signs().length - 1))"><br/></span>
+								</td>
 							</tr>
 							
 							<tr>
@@ -353,22 +356,43 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 							
 							<tr>
 								<td><span class="status active"></span>Diagnosis</td>
-								<td>N/A</td>
+								<td data-bind="foreach: diagnoses">									
+									<span data-bind="text: label"></span>
+									<span data-bind="if: (\$index() !== (\$parent.diagnoses().length - 1))"><br/></span>
+								</td>
 							</tr>
 							
 							<tr>
 								<td><span class="status active"></span>Procedures</td>
-								<td>N/A</td>
+								<td>
+									<span data-bind="foreach: procedures">
+										<span data-bind="text: label"></span>
+										<span data-bind="if: (\$index() !== (\$parent.procedures().length - 1))"><br/></span>									
+									</span>
+									<span data-bind="if: (procedures().length === 0)">N/A</span>
+								</td>
 							</tr>
 							
 							<tr>
 								<td><span class="status active"></span>Investigations</td>
-								<td>N/A</td>
+								<td>
+									<span data-bind="foreach: investigations">
+										<span data-bind="text: label"></span>
+										<span data-bind="if: (\$index() !== (\$parent.investigations().length - 1))"><br/></span>									
+									</span>
+									<span data-bind="if: (investigations().length === 0)">N/A</span>
+								</td>
 							</tr>
 							
 							<tr>
 								<td><span class="status active"></span>Prescriptions</td>
-								<td>N/A</td>
+								<td>
+									<span data-bind="foreach: drugs">
+										<span data-bind="text: drugName()+' '+formulation().label"></span>
+										<span data-bind="if: (\$index() !== (\$parent.drugs().length - 1))"><br/></span>									
+									</span>
+									<span data-bind="if: (drugs().length === 0)">N/A</span>
+								</td>
 							</tr>
 							
 							<tr>
