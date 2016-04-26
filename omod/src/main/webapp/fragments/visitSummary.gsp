@@ -24,7 +24,7 @@
 				}
 			})
 		});
-		
+
 		var visitSummaries = jq(".visit-summary");
 		if (visitSummaries.length > 0) {
 			visitSummaries[0].click();
@@ -69,7 +69,7 @@
 		</ul>
 	</div>
 	
-	<div class="col16 dashboard" style="min-width: 78%">
+	<div class="col16 dashboard opdRecordsPrintDiv" style="min-width: 78%">
 		<div class="info-section" id="visit-detail">
 			<div class="info-header">
 				<i class="icon-user-md"></i>
@@ -118,28 +118,28 @@
 		<i class="icon-user-md"></i>
 		<h3>CLINICAL HISTORY SUMMARY INFORMATION</h3>
 	</div>
-	
+
 	<div class="info-body">
 		<label><span class='status active'></span>History:</label>
 		<span>{{-history}}</span>
 		<br>
 
-        <label><span class="status active"></span>physicalExamination:</label>
-        <span>{{-physicalExamination}}</span>
-        <br>
-		
+		<label><span class="status active"></span>physicalExamination:</label>
+		<span>{{-physicalExamination}}</span>
+		<br>
+
 		<label><span class="status active"></span>Symptoms:</label>
 		<span>{{-symptoms}}</span>
 		<br>
-		
+
 		<label><span class="status active"></span>Diagnosis:</label>
 		<span>{{-diagnosis}}</span>
 		<br>
-		
+
 		<label><span class="status active"></span>Investigations:</label>
 		<span>{{-investigations}}</span>
 		<br>
-		
+
 		<label><span class="status active"></span>Procedures:</label>
 		<span>{{-procedures}}</span>
 		<br>
@@ -147,12 +147,13 @@
 	</div>
 </script>
 
-<script id="drugs-template" type="text/template">	
+
+<script id="drugs-template" type="text/template">
 	<div class="info-header">
 		<i class="icon-medicine"></i>
 		<h3>DRUGS PRESCRIPTION SUMMARY INFORMATION</h3>
 	</div>
-	
+
 	<table id="drugList">
 		<thead>
 			<tr>
@@ -174,15 +175,15 @@
 			</tr>
 		{{ }); }}
 		 </tbody>
-	</table>		
+	</table>
 </script>
 
-<script id="empty-template" type="text/template">	
+<script id="empty-template" type="text/template">
 	<div class="info-header">
 		<i class="icon-medicine"></i>
 		<h3>DRUGS PRESCRIPTION SUMMARY INFORMATION</h3>
 	</div>
-	
+
 	<table id="drugList">
 		<thead>
 			<tr>
@@ -199,5 +200,26 @@
 				<td style="text-align: center;" colspan="4">No Drugs Prescribed</td>
 			</tr>
 		 </tbody>
-	</table>		
+	</table>
 </script>
+
+<div><button id="opdRecordsPrintButton" onclick="printOpdRecords();" class="confirm" style="float: right;">Print</button></div>
+<div style="clear: both;"></div>
+<div style="clear: both;"></div>
+
+<script>
+	var printOpdRecords;
+
+	function printOpdRecords(){
+		var printDiv = jq(".opdRecordsPrintDiv").html();
+		console.log(printDiv);
+		var printWindow = window.open('', '', 'height=400,width=800');
+		printWindow.document.write('<html><head><title>Patient Information</title>');
+		printWindow.document.write(printDiv);
+		printWindow.document.write('</body></html>');
+		printWindow.document.close();
+		printWindow.print();
+	}
+
+</script>
+
