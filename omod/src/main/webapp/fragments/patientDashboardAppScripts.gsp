@@ -133,8 +133,6 @@
 			var option = jq('#availableReferral').val();
 			var outcom = note.outcome()? note.outcome().option.label : '';
 			
-			console.log(outcom);
-			
 			if (option == 1){
 				jq('#refTitle').text('Internal Referral');
 				jq('#refTitle').show();
@@ -429,6 +427,10 @@
 				sticky: true
 			});
 			var savingMessage = jq().toastmessage('showSuccessToast', 'Please wait as Information is being Saved...');
+						
+			if (note.referralReasons === "") {
+				delete note['referralReasons'];
+			}
 			
 			jq.ajax({
 					type: 'POST',
