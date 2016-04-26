@@ -187,8 +187,6 @@ function Frequency(freqObj) {
 	this.label = freqObj.label;
 }
 
-
-
 function Formulation(formulationObj) {
 	this.id = formulationObj.id;
 	this.label = formulationObj.label;
@@ -207,6 +205,14 @@ function Outcome(outcomeObj) {
 	this.updateOutcome = function(data) {
 		note.outcome(this);
 		jq("#outcome-set").val("outcome set");
+		
+		var outcomes = note.outcome().option.label
+		
+		if (jq('#availableReferral').val() > 0 ){			
+			outcomes = outcomes+' ('+jq("#availableReferral option:selected").text()+')'
+		}
+		
+		jq('#summaryTable tr:eq(8) td:eq(1)').text(outcomes);
 		return true;
 	}
 }

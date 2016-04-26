@@ -142,10 +142,10 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 			
 			<fieldset class="no-confirmation">
 				<legend>Procedures</legend>
-				<p class="input-position-class">
+				<div class="input-position-class">
 					<label class="label" for="procedure">Patient Procedures</label>
 					<input type="text" id="procedure" name="procedure" placeholder="Specify a Procedure" />
-				</p>
+				</div>
 				
 				<div id="task-procedure" class="tasks" style="display:none;">
 					<header class="tasks-header">
@@ -169,10 +169,10 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 			<fieldset class="no-confirmation">
 				<legend>Investigations</legend>
 				<div>
-					<p class="input-position-class">
+					<div class="input-position-class">
 						<label class="label" for="investigation">Investigation:</label>
 						<input type="text" id="investigation" name="investigation" />
-					</p>
+					</div>
 					
 					<div id="task-investigation" class="tasks" style="display:none;">
 						<header class="tasks-header">
@@ -259,30 +259,30 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 					
 					<div class="onerow">
 						<div class="col4">
-							<field class="input-position-class">
+							<div class="input-position-class">
 								<select id="availableReferral" name="availableReferral">
 									<option value="0">Select Option</option>
 									<option value="1">Internal Referral</option>
 									<option value="2">External Referral</option>
 								</select>
-							</field>
+							</div>
 						</div>
 						
 						<div class="col4">
-							<field class="input-position-class">
+							<div class="input-position-class">
 								<select id="internalReferral" name="internalReferral" data-bind="options: \$root.internalReferralOptions, optionsText: 'label', value: \$root.referredTo, optionsCaption: 'Please select...'">
 								</select>
 								
 								<select id="externalReferral" name="externalReferral" onchange="loadExternalReferralCases();" data-bind="options: \$root.externalReferralOptions, optionsText: 'label', value: \$root.referredTo, optionsCaption: 'Please select...'">
 								</select>
-							</field>							
+							</div>							
 						</div>
 						
 						<div class="col4 last">
-							<field class="input-position-class">
+							<div class="input-position-class">
 								<input type="text" id="facility" placeholder="Facility Name" name="facility" data-bind="value: \$root.facility">
 								</input>
-							</field>
+							</div>
 						</div>						
 					</div>
 
@@ -311,29 +311,37 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 					</div>
 
 					<div class="onerow" style="padding-top:2px;">
-						<h2>What is the outcome of this visit?</h2>
+						<h2>What is the outcome of this visit? <span class="important">*</span></h2>
 						<div data-bind="foreach: availableOutcomes" class="outcomes-container">
 							<div data-bind="if: !(\$root.admitted !== false && \$data.id !== 2)">
 								<p class="outcome">
-									<input type="radio" name="outcome" data-bind="click: updateOutcome">
-									<label data-bind="text: option.label"></label>
+									<label style="display: inline-block;">										
+										<input type="radio" name="outcome" data-bind="click: updateOutcome"/>										
+										<span data-bind="text: option.label" style="color:#000; font-size: 1em; cursor: pointer"></span>										
+									</label>
+									
+									
 									<span data-bind="if: \$data.option.id === 1 && \$root.outcome() && \$root.outcome().option.id === 1">
-										<span id="follow-up-date" class="date">
-											<input data-bind="value : followUpDate">
+										<span id="follow-up-date" class="date" style="float: right;">
+											<input data-bind="value : followUpDate" style="width: 378px;" class="required">
 											<span class="add-on"><i class="icon-calendar small"></i></span>
 										</span>
 									</span>
+									
 									<span data-bind="if: \$data.option.id === 2 && \$root.outcome() && \$root.outcome().option.id === 2">
-										<select data-bind="options: \$root.inpatientWards, optionsText: 'label', value: admitTo"></select>
+										<select data-bind="options: \$root.inpatientWards, optionsText: 'label', value: admitTo" style="width: 400px !important; float: right;"></select>
 									</span>
 								</p>
 							</div>
 						</div>
 					</div>
+					
+					<field>
+						<input type="hidden" id="outcome-set" class="required" />
+						<span id="outcome-lbl" class="field-error" style="display: none"></span>
+					</field>
+					
 				</div>
-				<p>
-					<input type="hidden" id="outcome-set" />
-			   </p>
 			</fieldset>
 		</section>
 

@@ -50,7 +50,7 @@
 		} else if (jQuery("#externalReferral option:selected").text() === "Please select...") {
 
 			var myOptions = {
-				0: 'N/A'
+				'': 'N/A'
 			};
 			var mySelect = jQuery('#referralReasons');
 			jQuery.each(myOptions, function(val, text) {
@@ -131,6 +131,9 @@
 		
 		jq('#availableReferral').change(function(){
 			var option = jq('#availableReferral').val();
+			var outcom = note.outcome()? note.outcome().option.label : '';
+			
+			console.log(outcom);
 			
 			if (option == 1){
 				jq('#refTitle').text('Internal Referral');
@@ -145,8 +148,8 @@
 				
 				jq('#internalReferral').show();
 				jq('#externalReferral').hide();
-				
-				
+
+				jq("select#externalReferral")[0].selectedIndex = 0;
 			}
 			else if (option == 2){
 				jq('#refTitle').text('External Referral');
@@ -161,6 +164,8 @@
 				
 				jq('#externalReferral').show();
 				jq('#internalReferral').hide();
+				
+				jq("select#internalReferral")[0].selectedIndex = 0;
 			}
 			else {
 				jq('#refTitle').hide();
@@ -175,7 +180,26 @@
 				jq('#externalReferral').hide();
 				jq('#internalReferral').hide();
 				
+				jq("select#internalReferral")[0].selectedIndex = 0;
+				jq("select#externalReferral")[0].selectedIndex = 0;				
 			}
+			
+			if (option == 0){
+				if (outcom == ''){
+					outcom = 'N/A'
+				}
+			}
+			else{
+				if (outcom == ''){
+					outcom = jq("#availableReferral option:selected").text();
+				}
+				else{
+					outcom += ' ('+jq("#availableReferral option:selected").text()+')';
+				}
+			}
+			
+			jq('#summaryTable tr:eq(8) td:eq(1)').text(outcom);
+			
 		}).change();
 		
 		jq('.dialog-content input').on('keydown', function(e){
@@ -556,6 +580,25 @@
 		if (!jq('.diagnosis-container').text().trim() == "") {
 			jq('#task-diagnosis').show();
 		}
-
+		
+		if (note.signs().length > 0){
+			jq('#symptoms-set').val('symptoms-set');
+		}
+		
+		if (note.diagnoses().length > 0){
+			jq('#diagnosis-set').val('diagnosis-set');
+		}
+		
+		if (note.procedures().length > 0){
+			jq('#procedure-set').val('procedure-set');
+		}
+		
+		if (note.investigations().length > 0){
+			jq('#investigation-set').val('investigation-set');
+		}
+		
+		if (note.drugs().length > 0){
+			jq('#drug-set').val('drug-set');
+		}		
 	});
 </script>
