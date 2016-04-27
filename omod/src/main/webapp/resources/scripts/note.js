@@ -246,3 +246,7 @@ if (!Array.prototype.find) {
 		return undefined;
 	};
 }
+
+function jsonEscape(str)  {
+	return str.replace(/\t/g, "\\t").replace(/\r?\n/g, "\\r\\n");
+}

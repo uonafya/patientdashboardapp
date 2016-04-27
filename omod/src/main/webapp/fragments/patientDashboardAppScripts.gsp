@@ -5,7 +5,7 @@
 <script>
 	var jq = jQuery,
 		NavigatorController,
-		previousNote = JSON.parse('${config.note}'),
+		previousNote = JSON.parse(jsonEscape('${config.note}')),
 		note = new Note(previousNote);
 
 	var getJSON = function(dataToParse) {
