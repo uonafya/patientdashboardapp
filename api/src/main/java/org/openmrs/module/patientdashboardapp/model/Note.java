@@ -372,7 +372,7 @@ public class Note {
 	private void saveNoteDetails(Encounter encounter) {
 		for (Drug drug : this.drugs) {
 			String referralWardName = Context.getService(PatientQueueService.class).getOpdPatientQueueById(this.queueId)
-					.getReferralConceptName();
+					.getOpdConceptName();
 			drug.save(encounter, referralWardName);
 		}
 		for (Investigation investigation : this.investigations) {
