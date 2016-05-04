@@ -160,7 +160,6 @@
 				<th>#</th>
 				<th>Name</th>
 				<th>Formulation</th>
-				<th>Unit</th>
 				<th>Dosage</th>
 			</tr>
 		</thead>
@@ -170,8 +169,7 @@
 				<td>{{=index+1}}</td>
 				<td>{{-drug.inventoryDrug.name}}</td>
 				<td>{{-drug.inventoryDrugFormulation.name}}:{{-drug.inventoryDrugFormulation.dozage}}</td>
-				<td>{{-drug.inventoryDrug.unit.name}}</td>
-				<td>**</td>
+				<td>{{-drug.dosage}}:{{-drug.dosageUnit.name}}</td>
 			</tr>
 		{{ }); }}
 		 </tbody>
