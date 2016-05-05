@@ -99,7 +99,7 @@
     </globalProperty>
 
     <globalProperty>
-        <property>patientdashboard.examinationConcept</property>
+        <property>patientdashboard.physicalexaminationConcept</property>
         <defaultValue>PHYSICAL EXAMINATION</defaultValue>
         <description>
             physical examination
