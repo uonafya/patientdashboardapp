@@ -274,6 +274,9 @@
 		
 		<div id="investigations">
             ${ ui.includeFragment("patientdashboardapp", "investigations", [patientId: patientId]) }
+
+			echo "<a href=\"http://localhost/csfello/index.php?section_id=$id\" class=\"list-group-item active\">" . $category_name . "</a>"
+
 		</div>
 	</div>
 </div>

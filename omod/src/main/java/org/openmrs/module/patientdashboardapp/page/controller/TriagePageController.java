@@ -67,7 +67,9 @@ public class TriagePageController {
 		TriagePatientData triagePatientData = getPreviousTriageDetails(queueId, patientQueueService);
 		model.addAttribute("vitals", triagePatientData);
 
-		model.addAttribute("lastVisitDate", hcs.getLastVisitTime(patient));
+		Encounter lastEncounter = patientQueueService.getLastOPDEncounter(patient);
+		Date lastVisitDate = lastEncounter.getEncounterDatetime();
+		model.addAttribute("lastVisitDate", lastVisitDate);
 		PatientMedicalHistory patientMedicalHistory = patientQueueService.getPatientHistoryByPatientId(patient.getPatientId());
 		model.addAttribute("patientMedicalHistory", patientMedicalHistory);
 		

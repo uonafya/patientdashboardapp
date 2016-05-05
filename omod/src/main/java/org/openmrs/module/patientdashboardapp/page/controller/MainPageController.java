@@ -3,6 +3,7 @@ package org.openmrs.module.patientdashboardapp.page.controller;
 import org.apache.commons.collections.CollectionUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
+import org.openmrs.Encounter;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.appui.UiSessionContext;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
 
 public class MainPageController {
 
@@ -37,6 +39,8 @@ public class MainPageController {
         sessionContext.requireAuthentication();
         Patient patient = Context.getPatientService().getPatient(patientId);
         HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+        PatientQueueService patientQueueService = Context.getService(PatientQueueService.class);
+
         Map<String, String> attributes = PatientUtils.getAttributes(patient);
         Concept category = Context.getConceptService().getConceptByName("Patient Category");
         List<ConceptAnswer> categoryList = (category != null ? new ArrayList<ConceptAnswer>(category.getAnswers()) : null);
@@ -52,8 +56,11 @@ public class MainPageController {
         model.addAttribute("category",patient.getAttribute(14));
         model.addAttribute("address",patient.getPersonAddress());
         model.addAttribute("visitStatus",visitStatus);
-        model.addAttribute("previousVisit",hcs.getLastVisitTime(patient));
 
+        Encounter lastEncounter = patientQueueService.getLastOPDEncounter(patient);
+        Date lastVisitDate = lastEncounter.getEncounterDatetime();
+        model.addAttribute("previousVisit", lastVisitDate);
+        
         if (queueId != null) {
             OpdPatientQueue opdPatientQueue = Context.getService(PatientQueueService.class).getOpdPatientQueueById(queueId);
             if (opdPatientQueue != null) {
