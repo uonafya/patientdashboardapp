@@ -58,22 +58,24 @@ public class MainPageController {
         model.addAttribute("visitStatus",visitStatus);
 
         Encounter lastEncounter = patientQueueService.getLastOPDEncounter(patient);
-        Date lastVisitDate = lastEncounter.getEncounterDatetime();
+        Date lastVisitDate = null;
+        if(lastEncounter!=null) {
+            lastVisitDate = lastEncounter.getEncounterDatetime();
+        }
         model.addAttribute("previousVisit", lastVisitDate);
-        
+        String status = null;
         if (queueId != null) {
             OpdPatientQueue opdPatientQueue = Context.getService(PatientQueueService.class).getOpdPatientQueueById(queueId);
             if (opdPatientQueue != null) {
                 opdPatientQueue.setStatus("Dr. "+Context.getAuthenticatedUser().getGivenName());
                 Context.getService(PatientQueueService.class).saveOpdPatientQueue(opdPatientQueue);
-                model.addAttribute("patientStatus", opdPatientQueue.getVisitStatus());
+                status = opdPatientQueue.getVisitStatus();
             }
-            else{
-                model.addAttribute("patientStatus", "Unknown");
+            if (status!= null){
+                model.addAttribute("patientStatus",status);
+            }else{
+                model.addAttribute("patientStatus" ,"Unknown");
             }
-        }
-        else {
-            model.addAttribute("patientStatus", "Unknown");
         }
     }
 }

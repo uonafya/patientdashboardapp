@@ -21,6 +21,11 @@ public class PatientMedicalHistorySaveHandler {
 
                 patientMedicalHistory.setPatientId(patientId);
             }
+
+            if(patientMedicalHistory.getCreatedOn() == null){
+                patientMedicalHistory.setCreatedOn(updatedPatientMedicalHistory.getCreatedOn());
+            }
+
             if(StringUtils.isNotBlank(updatedPatientMedicalHistory.getIllnessExisting())){
 
                 patientMedicalHistory.setIllnessExisting(updatedPatientMedicalHistory.getIllnessExisting());
