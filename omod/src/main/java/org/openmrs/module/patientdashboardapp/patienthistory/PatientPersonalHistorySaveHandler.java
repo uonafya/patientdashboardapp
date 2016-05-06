@@ -6,6 +6,7 @@ import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.PatientMedicalHistory;
 import org.openmrs.module.hospitalcore.model.PatientPersonalHistory;
 
+import java.util.Date;
 /**
  * Created by USER on 2/17/2016.
  */
@@ -18,6 +19,10 @@ public class PatientPersonalHistorySaveHandler {
         if (patientPersonalHistory.getPatientId() == null) {
             patientPersonalHistory.setPatientId(patientId);
         }
+        if(patientPersonalHistory.getCreatedOn() == null){
+            patientPersonalHistory.setCreatedOn(updatedPatientPersonalHistory.getCreatedOn());
+        }
+
         if(StringUtils.isNotBlank(updatedPatientPersonalHistory.getSmoke())){
             patientPersonalHistory.setSmoke(updatedPatientPersonalHistory.getSmoke());
         }

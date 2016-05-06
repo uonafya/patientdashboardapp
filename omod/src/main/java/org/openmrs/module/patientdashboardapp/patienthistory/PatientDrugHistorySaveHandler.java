@@ -5,6 +5,7 @@
     import org.openmrs.module.hospitalcore.PatientQueueService;
     import org.openmrs.module.hospitalcore.model.PatientDrugHistory;
 
+    import java.util.Date;
     /**
      * Created by USER on 2/17/2016.
      */
@@ -17,6 +18,10 @@
 
                 patientDrugHistory.setPatientId(patientId);
             }
+            if(patientDrugHistory.getCreatedOn() == null){
+                patientDrugHistory.setCreatedOn(updatedPatientDrugHistory.getCreatedOn());
+            }
+
             if(StringUtils.isNotBlank(updatedPatientDrugHistory.getCurrentMedication())){
 
                 patientDrugHistory.setCurrentMedication(updatedPatientDrugHistory.getCurrentMedication());
