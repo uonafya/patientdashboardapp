@@ -124,7 +124,7 @@
 		<span>{{-history}}</span>
 		<br>
 
-		<label><span class="status active"></span>physicalExamination:</label>
+		<label><span class="status active"></span>Physical Examination:</label>
 		<span>{{-physicalExamination}}</span>
 		<br>
 
@@ -143,6 +143,18 @@
 		<label><span class="status active"></span>Procedures:</label>
 		<span>{{-procedures}}</span>
 		<br>
+
+		<label><span class="status active"></span>Internal Referral:</label>
+		<span>{{-internalReferral}}</span>
+		<br>
+
+		<label><span class="status active"></span>External Referral:</label>
+		<span>{{-externalReferral}}</span>
+		<br>
+
+        <label><span class="status active"></span>Visit Outcome:</label>
+        <span>{{-visitOutcome}}</span>
+        <br>
 
 	</div>
 </script>

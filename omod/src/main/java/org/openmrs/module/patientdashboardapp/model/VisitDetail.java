@@ -18,6 +18,33 @@ public class VisitDetail {
 	private String investigations = "No Investigations requested";
 	private String procedures = "No procedures";
 	private String physicalExamination = "No physicalExamination";
+    private String visitOutcome = "No Outcome Of Visit";
+    private String internalReferral = "No internal Referral";
+    private String externalReferral = "No external Referral";
+
+    public String getExternalReferral() {
+        return externalReferral;
+    }
+
+    public void setExternalReferral(String externalReferral) {
+        this.externalReferral = externalReferral;
+    }
+
+    public String getInternalReferral() {
+        return internalReferral;
+    }
+
+    public void setInternalReferral(String internalReferral) {
+        this.internalReferral = internalReferral;
+    }
+
+    public String getVisitOutcome() {
+        return visitOutcome;
+    }
+
+    public void setVisitOutcome(String visitOutcome) {
+        this.visitOutcome = visitOutcome;
+    }
 
 	public String getPhysicalExamination() {
 		return physicalExamination;
@@ -85,6 +112,9 @@ public class VisitDetail {
 		String investigationConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_FOR_INVESTIGATION);
 		String procedureConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
         String physicalExaminationConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_PHYSICAL_EXAMINATION);
+        String visitOutcomeName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_VISIT_OUTCOME);
+        String internalReferralConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL);
+        String externalReferralConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL);
 		
 		Concept symptomConcept = Context.getConceptService().getConcept(symptomConceptName);
 		Concept provisionalDiagnosisConcept = Context.getConceptService().getConcept(provisionalDiagnosisConceptName);
@@ -93,6 +123,9 @@ public class VisitDetail {
 		Concept procedureConcept = Context.getConceptService().getConcept(procedureConceptName);
 		Concept physicalExaminationConcept = Context.getConceptService().getConcept(physicalExaminationConceptName);
         Concept historyConcept = Context.getConceptService().getConcept(historyConceptName);
+        Concept visitOutcomeConcept = Context.getConceptService().getConcept(visitOutcomeName);
+        Concept internalReferralConcept = Context.getConceptService().getConcept(internalReferralConceptName);
+        Concept externalReferralConcept = Context.getConceptService().getConcept(externalReferralConceptName);
 		
 		StringBuffer symptomList = new StringBuffer();
 		StringBuffer provisionalDiagnosisList = new StringBuffer();
@@ -101,6 +134,9 @@ public class VisitDetail {
 		StringBuffer procedureList = new StringBuffer();
 		StringBuffer physicalExamination = new StringBuffer();
 		StringBuffer history = new StringBuffer();
+        StringBuffer visitOutcome = new StringBuffer();
+        StringBuffer internalReferral = new StringBuffer();
+        StringBuffer externalReferral = new StringBuffer();
 		for (Obs obs : encounter.getAllObs()) {
 			if (obs.getConcept().equals(symptomConcept)) {
 				symptomList.append(obs.getValueCoded().getDisplayString()).append(", ");
@@ -123,6 +159,15 @@ public class VisitDetail {
 			if (obs.getConcept().equals(historyConcept)){
 				history.append(obs.getValueText()).append(", ");
 			}
+            if (obs.getConcept().equals(visitOutcomeConcept)){
+                visitOutcome.append(obs.getValueText()).append(",");
+            }
+            if (obs.getConcept().equals(internalReferralConcept)){
+                internalReferral.append(obs.getValueCoded().getDisplayString()).append(",");
+            }
+            if(obs.getConcept().equals(externalReferralConcept)){
+                externalReferral.append(obs.getValueCoded().getDisplayString()).append(",");
+            }
 		}
 		
 		VisitDetail visitDetail = new VisitDetail();
@@ -143,6 +188,15 @@ public class VisitDetail {
         }
         if (history.length()>0){
             visitDetail.setHistory(history.substring(0,history.length()-",".length()));
+        }
+        if (visitOutcome.length()>0){
+            visitDetail.setVisitOutcome(visitOutcome.substring(0,visitOutcome.length()-",".length()));
+        }
+        if (internalReferral.length()>0){
+            visitDetail.setInternalReferral(internalReferral.substring(0, internalReferral.length() - ",".length()));
+        }
+        if (externalReferral.length()>0){
+            visitDetail.setExternalReferral(externalReferral.substring(0,externalReferral.length()- ",".length()));
         }
 		return visitDetail;
 	}
