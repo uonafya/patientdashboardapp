@@ -1,5 +1,5 @@
 <script>
-	jq(function(){		
+	jq(function(){
 		jq(".left-menu").on("click", ".visit-summary", function(){
 			jq("#visit-detail").html("<i class=\"icon-spinner icon-spin icon-2x pull-left\"></i>")
 			var visitSummary = jq(this);
@@ -24,8 +24,20 @@
 				}
 			})
 		});
+		
+		jq('#opdRecordsPrintButton').click(function(){
+			jq("#printSection").print({
+				globalStyles: 	false,
+				mediaPrint: 	false,
+				stylesheet: 	'${ui.resourceLink("patientdashboardapp", "styles/printout.css")}',
+				iframe: 		false,
+				width: 			600,
+				height:			700
+			});			
+		});
 
 		var visitSummaries = jq(".visit-summary");
+		
 		if (visitSummaries.length > 0) {
 			visitSummaries[0].click();
 			jq('#cs').show();
@@ -34,8 +46,6 @@
 		}
 	});
 </script>
-
-
 
 <div class="onerow">
 	<div style="padding-top: 15px;" class="col15 clear">
@@ -70,42 +80,52 @@
 	</div>
 	
 	<div class="col16 dashboard opdRecordsPrintDiv" style="min-width: 78%">
-		<div class="info-section" id="visit-detail">
-			<div class="info-header">
-				<i class="icon-user-md"></i>
-				<h3>CLINICAL HISTORY SUMMARY</h3>
+		<div id="printSection">
+			<div id="person-detail">
+				<h3>PATIENT SUMMARY INFORMATION</h3>
+				
+				<label>
+					<span class='status active'></span>
+					Identifier:
+				</label>
+				<span>${patient.getPatientIdentifier()}</span>
+				<br/>
+				
+				<label>
+					<span class='status active'></span>
+					Full Names:
+				</label>
+				<span>${patient.givenName} ${patient.familyName} ${patient.middleName?patient.middleName:''}</span>
+				<br/>
+				
+				<label>
+					<span class='status active'></span>
+					Age:
+				</label>
+				<span>${patient.age} (${ui.formatDatePretty(patient.birthdate)})</span>
+				<br/>
+				
+				<label>
+					<span class='status active'></span>
+					Gender:
+				</label>
+				<span>${gender}</span>
+				<br/>
 			</div>
 			
-			<div class="info-body">
-				<label><span class="status active"></span>History:</label>
-				<span>N/A</span>
-				<br>
-                <label><span class="status active"></span>physicalExamination:</label>
-                <span>N/A</span>
-                <br>
+			<div class="info-section" id="visit-detail">
 				
-				<label><span class="status active"></span>Symptoms:</label>
-				<span>N/A</span>
-				<br>
-				
-				<label><span class="status active"></span>Diagnosis:</label>
-				<span>N/A</span>
-				<br>
-				
-				<label><span class="status active"></span>Investigations:</label>
-				<span>N/A</span>
-				<br>
-				
-				<label><span class="status active"></span>Procedures:</label>
-				<span>N/A</span>
-				<br>
-
 			</div>
+			
+			<div class="info-sections" id="drugs-detail" style="margin: 0px 10px 0px 5px;">			
+				
+			</div>		
 		</div>
 		
-		<div class="info-sections" id="drugs-detail" style="margin: 0px 10px 0px 5px;">			
-			
-		</div>
+		<button id="opdRecordsPrintButton" class="task" style="float: right; margin: 10px;">
+			<i class="icon-print small"></i>
+			Print
+		</button>
 	</div>
 </div>
 
@@ -120,39 +140,39 @@
 	</div>
 
 	<div class="info-body">
-		<label><span class='status active'></span>History:</label>
+		<label style="display: inline-block; font-weight: bold; width: 190px"><span class='status active'></span>History:</label>
 		<span>{{-history}}</span>
 		<br>
 
-		<label><span class="status active"></span>Physical Examination:</label>
+		<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Physical Examination:</label>
 		<span>{{-physicalExamination}}</span>
 		<br>
 
-		<label><span class="status active"></span>Symptoms:</label>
+		<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Symptoms:</label>
 		<span>{{-symptoms}}</span>
 		<br>
 
-		<label><span class="status active"></span>Diagnosis:</label>
+		<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Diagnosis:</label>
 		<span>{{-diagnosis}}</span>
 		<br>
 
-		<label><span class="status active"></span>Investigations:</label>
+		<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Investigations:</label>
 		<span>{{-investigations}}</span>
 		<br>
 
-		<label><span class="status active"></span>Procedures:</label>
+		<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Procedures:</label>
 		<span>{{-procedures}}</span>
 		<br>
 
-		<label><span class="status active"></span>Internal Referral:</label>
+		<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Internal Referral:</label>
 		<span>{{-internalReferral}}</span>
 		<br>
 
-		<label><span class="status active"></span>External Referral:</label>
+		<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>External Referral:</label>
 		<span>{{-externalReferral}}</span>
 		<br>
 
-        <label><span class="status active"></span>Visit Outcome:</label>
+        <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Visit Outcome:</label>
         <span>{{-visitOutcome}}</span>
         <br>
 
@@ -168,20 +188,20 @@
 
 	<table id="drugList">
 		<thead>
-			<tr>
+			<tr style="border-bottom: 1px solid #eee;">
 				<th>#</th>
-				<th>Name</th>
-				<th>Formulation</th>
-				<th>Dosage</th>
+				<th>NAME</th>
+				<th>FORMULATION</th>
+				<th>DOSAGE</th>
 			</tr>
 		</thead>
 		<tbody>
 		{{ _.each(drugs, function(drug, index) { }}
-			<tr>
-				<td>{{=index+1}}</td>
-				<td>{{-drug.inventoryDrug.name}}</td>
-				<td>{{-drug.inventoryDrugFormulation.name}}:{{-drug.inventoryDrugFormulation.dozage}}</td>
-				<td>{{-drug.dosage}}:{{-drug.dosageUnit.name}}</td>
+			<tr style="border: 1px solid #eee;">
+				<td style="border: 1px solid #eee; padding: 5px 10px; margin: 0;">{{=index+1}}</td>
+				<td style="border: 1px solid #eee; padding: 5px 10px; margin: 0;">{{-drug.inventoryDrug.name}}</td>
+				<td style="border: 1px solid #eee; padding: 5px 10px; margin: 0;">{{-drug.inventoryDrugFormulation.name}}:{{-drug.inventoryDrugFormulation.dozage}}</td>
+				<td style="border: 1px solid #eee; padding: 5px 10px; margin: 0;">{{-drug.dosage}}:{{-drug.dosageUnit.name}}</td>
 			</tr>
 		{{ }); }}
 		 </tbody>
@@ -213,23 +233,6 @@
 	</table>
 </script>
 
-<div><button id="opdRecordsPrintButton" onclick="printOpdRecords();" class="confirm" style="float: right;">Print</button></div>
+<div></div>
 <div style="clear: both;"></div>
 <div style="clear: both;"></div>
-
-<script>
-	var printOpdRecords;
-
-	function printOpdRecords(){
-		var printDiv = jq(".opdRecordsPrintDiv").html();
-		console.log(printDiv);
-		var printWindow = window.open('', '', 'height=400,width=800');
-		printWindow.document.write('<html><head><title>Patient Information</title>');
-		printWindow.document.write(printDiv);
-		printWindow.document.write('</body></html>');
-		printWindow.document.close();
-		printWindow.print();
-	}
-
-</script>
-

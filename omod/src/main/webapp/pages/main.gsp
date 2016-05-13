@@ -1,6 +1,7 @@
 <% 
 	ui.decorateWith("appui", "standardEmrPage", [title: "OPD Dashboard"]);
 	ui.includeJavascript("billingui", "moment.js")
+	ui.includeJavascript("patientdashboardapp", "jq.print.js")
 	ui.includeCss("patientdashboardapp", "patientdashboardapp.css");
 %>
 <script>
@@ -18,10 +19,10 @@
 		jq('#agename').html('${patient.age} years ('+ moment('${patient.birthdate}').format('DD,MMM YYYY') +')');
 
 		<% if (previousVisit) { %>
-				jq('.tad').text('Last Visit: ${ui.formatDatetimePretty(previousVisit)}');
-				<% } else { %>
-				jq('.tad').text('Last Visit: N/A');
-				<% } %>
+			jq('.tad').text('Last Visit: ${ui.formatDatetimePretty(previousVisit)}');
+		<% } else { %>
+			jq('.tad').text('Last Visit: N/A');
+		<% } %>
     });
 </script>
 
@@ -191,6 +192,9 @@
 	}
 	.result-page i{
 		color: #aaa;
+	}
+	#person-detail{
+		display: none;
 	}
 </style>
 

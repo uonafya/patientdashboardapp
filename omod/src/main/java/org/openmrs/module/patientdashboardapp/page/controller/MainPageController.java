@@ -1,6 +1,7 @@
 package org.openmrs.module.patientdashboardapp.page.controller;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.hibernate.property.Dom4jAccessor;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Encounter;
@@ -46,6 +47,13 @@ public class MainPageController {
         List<ConceptAnswer> categoryList = (category != null ? new ArrayList<ConceptAnswer>(category.getAnswers()) : null);
         if (CollectionUtils.isNotEmpty(categoryList)) {
             Collections.sort(categoryList, new ConceptAnswerComparator());
+        }
+
+        if (patient.getGender().equals("M")){
+            model.addAttribute("gender", "MALE");
+        }
+        else{
+            model.addAttribute("gender", "FEMALE");
         }
 
         model.addAttribute("patientId", patientId);

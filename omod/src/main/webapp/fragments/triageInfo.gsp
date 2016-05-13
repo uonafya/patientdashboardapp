@@ -42,7 +42,7 @@
 	}
 
 	.dashboard .info-body label {
-		width: 170px;
+		width: 190px;
 		display: inline-block;
 		margin-bottom: 5px;
 		font-size: 90%;
