@@ -1,7 +1,10 @@
 <script>
 	jq(function(){
 		jq(".left-menu").on("click", ".visit-summary", function(){
-			jq("#visit-detail").html("<i class=\"icon-spinner icon-spin icon-2x pull-left\"></i>")
+			jq("#visit-detail").html('<i class=\"icon-spinner icon-spin icon-2x pull-left\"></i> <span style="float: left; margin-top: 12px;">Loading...</span>');	
+			jq("#drugs-detail").html("");
+			jq("#opdRecordsPrintButton").hide();
+			
 			var visitSummary = jq(this);
 			jq(".visit-summary").removeClass("selected");
 			jq(visitSummary).addClass("selected");
@@ -22,6 +25,8 @@
 					var drugsTemplate =  _.template(jq("#empty-template").html());
 					jq("#drugs-detail").html(drugsTemplate(data));
 				}
+				
+				jq("#opdRecordsPrintButton").show(100);
 			})
 		});
 		
@@ -44,14 +49,20 @@
 		}else{
 			jq('#cs').hide();
 		}
+		
+		jq('#ul-left-menu').slimScroll({
+			  allowPageScroll: false,
+			  height: '426px'	  
+		});
 	});
 </script>
 
-<div class="onerow">
-	<div style="padding-top: 15px;" class="col15 clear">
-		<ul id="left-menu" class="left-menu">
-			<% visitSummaries.each { summary -> %>
 
+
+<div class="onerow">
+	<div id="div-left-menu" style="padding-top: 15px;" class="col15 clear">
+		<ul id="ul-left-menu" class="left-menu">
+			<% visitSummaries.each { summary -> %>
 			<li class="menu-item visit-summary" visitid="54">
 				<input type="hidden" class="encounter-id" value="${summary.encounterId}" >
 				<span class="menu-date">
@@ -75,7 +86,7 @@
 			<% } %>
 			
 			<li style="height: 30px;" class="menu-item">
-			</li> 
+			</li>
 		</ul>
 	</div>
 	

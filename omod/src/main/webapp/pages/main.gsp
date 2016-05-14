@@ -1,17 +1,14 @@
 <% 
 	ui.decorateWith("appui", "standardEmrPage", [title: "OPD Dashboard"]);
+	
 	ui.includeJavascript("patientdashboardapp", "jq.print.js")
+	ui.includeJavascript("patientdashboardapp", "jq.slimscroll.js")
+	
 	ui.includeCss("patientdashboardapp", "patientdashboardapp.css");
 %>
 <script>
     jq(document).ready(function () {
-		jq(".dashboard-tabs").tabs();	
-
-		<% if (previousVisit) { %>
-			jq('.tad').text('Last Visit: ${ui.formatDatetimePretty(previousVisit)}');
-		<% } else { %>
-			jq('.tad').text('Last Visit: N/A');
-		<% } %>
+		jq(".dashboard-tabs").tabs();
     });
 </script>
 
@@ -234,7 +231,7 @@
 				Visit Status
 			</div>
 			<div class="tag">${patientStatus}</div>
-			<div class="tad">Last Visit</div>
+			<div class="tad">${previousVisit?ui.formatDatetimePretty(previousVisit):'N/A'}</div>
 		</div>
 
 		<div class="identifiers">
