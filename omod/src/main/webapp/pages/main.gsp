@@ -1,22 +1,11 @@
 <% 
 	ui.decorateWith("appui", "standardEmrPage", [title: "OPD Dashboard"]);
-	ui.includeJavascript("billingui", "moment.js")
 	ui.includeJavascript("patientdashboardapp", "jq.print.js")
 	ui.includeCss("patientdashboardapp", "patientdashboardapp.css");
 %>
 <script>
-    function strReplace(word) {
-        var res = word.replace("[", "");
-        res=res.replace("]","");
-        return res;
-    }
-
-    jQuery(document).ready(function () {
-		jq(".dashboard-tabs").tabs();
-		
-        jq('#surname').html(strReplace('${patient.names.familyName}')+',<em>surname</em>');
-		jq('#othname').html(strReplace('${patient.names.givenName}')+' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <em>other names</em>');
-		jq('#agename').html('${patient.age} years ('+ moment('${patient.birthdate}').format('DD,MMM YYYY') +')');
+    jq(document).ready(function () {
+		jq(".dashboard-tabs").tabs();	
 
 		<% if (previousVisit) { %>
 			jq('.tad').text('Last Visit: ${ui.formatDatetimePretty(previousVisit)}');
@@ -223,8 +212,8 @@
 	<div class="patient-header new-patient-header">
 		<div class="demographics">
 			<h1 class="name">
-				<span id="surname">${patient.names.familyName},<em>surname</em></span>
-				<span id="othname">${patient.names.givenName} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<em>other names</em></span>
+				<span id="surname">${patient.familyName},<em>surname</em></span>
+				<span id="othname">${patient.givenName} ${patient.middleName?patient.middleName:''}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<em>other names</em></span>
 				
 				<span class="gender-age">
 					<span>
@@ -234,7 +223,7 @@
 							Male
 						<% } %>
 						</span>
-					<span id="agename">${patient.age} years (15.Oct.1996) </span>
+					<span id="agename">${patient.age} years (${ui.formatDatePretty(patient.birthdate)}) </span>
 					
 				</span>
 			</h1>

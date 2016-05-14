@@ -57,7 +57,7 @@
 				<span class="menu-date">
 					<i class="icon-time"></i>
 					<span id="vistdate">
-						<script>document.write(moment('${summary.visitDate}').format('DD,MMM YYYY, hh:mm:ss'));</script>
+						${ui.formatDatetimePretty(summary.visitDate)}
 					</span>
 				</span>
 				<span class="menu-title">
