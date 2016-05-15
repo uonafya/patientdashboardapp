@@ -1,0 +1,45 @@
+table, label, span{
+	font-family: "OpenSans",Arial,sans-serif;
+	font-size: 14px;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+	width: 100%;
+}
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+}
+table tr {
+    border: 1px solid #eeeeee;
+}
+table tr:nth-child(2n) {
+    background: #fffdf7 none repeat scroll 0 0;
+}
+table tr:nth-child(2n+1) {
+    background: white none repeat scroll 0 0;
+}
+table tr.hover {
+    background: #75b2f0 none repeat scroll 0 0;
+    color: white;
+    cursor: pointer;
+}
+table tr.selected {
+    background: #007fff none repeat scroll 0 0;
+    color: white;
+}
+table thead th {
+    background: #f3f3f3 none repeat scroll 0 0;
+    border-bottom: 1px solid #ddd;
+    font-family: "OpenSans",Arial,sans-serif;
+    font-weight: bold;
+    text-align: left;
+    width: auto;
+    word-break: break-all;
+}
+label{
+	display: inline-block;
+    font-weight: bold;
+    width: 190px;
+}

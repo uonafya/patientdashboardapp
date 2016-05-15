@@ -48,6 +48,13 @@ public class MainPageController {
             Collections.sort(categoryList, new ConceptAnswerComparator());
         }
 
+        if (patient.getGender().equals("M")){
+            model.addAttribute("gender", "MALE");
+        }
+        else{
+            model.addAttribute("gender", "FEMALE");
+        }
+
         model.addAttribute("patientId", patientId);
         model.addAttribute("opdId", opdId);
         model.addAttribute("queueId", queueId);

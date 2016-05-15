@@ -6,12 +6,6 @@
 	ui.includeCss("registration", "onepcssgrid.css")
 %>
 
-<script>
-	jq(document).ready(function () {
-		jq('#vistdate').html(moment('${previousVisit}').format('DD MMM YYYY')+'<br/> &nbsp; &nbsp; (Active since '+moment('${previousVisit}').format('hh:mm')+' hrs)');    
-	});
-</script>
-
 <style>
 	.donotprint {
 		display: none;
@@ -42,7 +36,7 @@
 	}
 
 	.dashboard .info-body label {
-		width: 170px;
+		width: 190px;
 		display: inline-block;
 		margin-bottom: 5px;
 		font-size: 90%;
@@ -102,7 +96,8 @@
 			<li class="menu-item selected" visitid="54">
 				<span class="menu-date">
 					<i class="icon-time"></i>
-					<span id="vistdate">2 Mar 2017<br> &nbsp; &nbsp; (Active since 04:10 PM)</span>
+					<span id="vistdate">${ui.formatDatePretty(previousVisit)}<br/> 
+					&nbsp; &nbsp; (Active since ${(previousVisit).toString().substring(11,16)} hrs)</span>
 				</span>
 				
 				<span class="menu-title" style="height: 30px">
@@ -114,7 +109,7 @@
 				<span class="arrow"></span>
 			</li>
 		
-			<li style="height: 295px;" class="menu-item" visitid="53">
+			<li style="height: 269px;" class="menu-item" visitid="53">
 			</li>
 		</ul>	
 	</div>
