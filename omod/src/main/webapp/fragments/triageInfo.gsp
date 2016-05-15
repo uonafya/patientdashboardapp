@@ -96,8 +96,8 @@
 			<li class="menu-item selected" visitid="54">
 				<span class="menu-date">
 					<i class="icon-time"></i>
-					<span id="vistdate">${ui.formatDatePretty(previousVisit)}<br/> 
-					&nbsp; &nbsp; (Active since ${(previousVisit).toString().substring(11,16)} hrs)</span>
+					<span id="vistdate">${previousVisit?ui.formatDatePretty(previousVisit):ui.formatDatePretty(date)}<br/> 
+					&nbsp; &nbsp; (Active since ${previousVisit?(previousVisit).toString().substring(11,16):(date).toString().substring(11,16)} hrs)</span>
 				</span>
 				
 				<span class="menu-title" style="height: 30px">

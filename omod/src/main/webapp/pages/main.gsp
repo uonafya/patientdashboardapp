@@ -231,7 +231,7 @@
 				Visit Status
 			</div>
 			<div class="tag">${patientStatus}</div>
-			<div class="tad">${previousVisit?ui.formatDatetimePretty(previousVisit):'N/A'}</div>
+			<div class="tad">Last Visit: ${previousVisit?ui.formatDatetimePretty(previousVisit):'N/A'}</div>
 		</div>
 
 		<div class="identifiers">

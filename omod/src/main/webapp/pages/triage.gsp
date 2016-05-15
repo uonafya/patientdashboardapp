@@ -38,13 +38,7 @@
 		jq('#surname').html(strReplace('${patient.names.familyName}')+',<em>surname</em>');
 		jq('#othname').html(strReplace('${patient.names.givenName}')+' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <em>other names</em>');
 		jq('#agename').html('${patient.age} years ('+ moment('${patient.birthdate}').format('DD,MMM YYYY') +')');
-
-		<% if (lastVisitDate) { %>
-		jq('.tad').text('Last Visit: ${ui.formatDatetimePretty(lastVisitDate)}');
-		<% } else { %>
-		jq('.tad').text('Last Visit: N/A');
-		<% } %>
-
+		
 		function strReplace(word) {
 			var res = word.replace("[", "");
 			res=res.replace("]","");
@@ -456,6 +450,9 @@
 </script>
 
 <style>
+	.name {
+		color: #f26522;
+	}
 	.simple-form-ui section fieldset select:focus, 
 	.simple-form-ui section fieldset input:focus, 
 	.simple-form-ui section #confirmationQuestion select:focus, 
@@ -676,8 +673,8 @@
 				<span class="status active"></span>
 				Visit Status
 			</div>
-			<div class="tag">${visitStatus}</div>
-			<div class="tad">Last Visit</div>
+			<div class="tag">${visitStatus?visitStatus:'Unknown'}</div>
+			<div class="tad">Last Visit: ${lastVisitDate?ui.formatDatetimePretty(lastVisitDate):'N/A'}</div>
 		</div>
 
 		<div class="identifiers">

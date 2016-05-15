@@ -70,6 +70,8 @@ public class MainPageController {
             lastVisitDate = lastEncounter.getEncounterDatetime();
         }
         model.addAttribute("previousVisit", lastVisitDate);
+        model.addAttribute("date", new Date());
+
         String status = null;
         if (queueId != null) {
             OpdPatientQueue opdPatientQueue = Context.getService(PatientQueueService.class).getOpdPatientQueueById(queueId);
