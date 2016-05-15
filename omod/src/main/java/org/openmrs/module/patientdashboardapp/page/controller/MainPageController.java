@@ -1,7 +1,6 @@
 package org.openmrs.module.patientdashboardapp.page.controller;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.hibernate.property.Dom4jAccessor;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Encounter;

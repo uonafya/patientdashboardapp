@@ -109,7 +109,7 @@
 				<span class="arrow"></span>
 			</li>
 		
-			<li style="height: 295px;" class="menu-item" visitid="53">
+			<li style="height: 269px;" class="menu-item" visitid="53">
 			</li>
 		</ul>	
 	</div>
