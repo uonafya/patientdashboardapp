@@ -15,11 +15,8 @@
 				jq("#visit-detail").html(visitDetailTemplate(data.notes));
 
 				if (data.drugs.length > 0) {
-					console.log(data);
 					var drugsTemplate =  _.template(jq("#drugs-template").html());
 					jq("#drugs-detail").html(drugsTemplate(data));
-					
-					console.log(data.drugs);
 				}
 				else {
 					var drugsTemplate =  _.template(jq("#empty-template").html());
@@ -51,19 +48,36 @@
 		}
 		
 		jq('#ul-left-menu').slimScroll({
-			  allowPageScroll: false,
-			  height: '426px'	  
+			allowPageScroll: false,
+			height		   : '426px',
+			distance	   : '11px',
+			color		   : '#363463'
 		});
+		
+		jq('#ul-left-menu').scrollTop(0);
+		jq('#slimScrollDiv').scrollTop(0);
 	});
 </script>
 
-
+<style>
+	#ul-left-menu {
+		border-top: medium none #fff;
+		border-right: 	medium none #fff;
+	}
+	#ul-left-menu li:nth-child(1) { 
+		border-top: 	1px solid #ccc;
+	}
+	#ul-left-menu li:last-child { 
+		border-bottom:	1px solid #ccc;
+		border-right:	1px solid #ccc;
+	}
+</style>
 
 <div class="onerow">
 	<div id="div-left-menu" style="padding-top: 15px;" class="col15 clear">
 		<ul id="ul-left-menu" class="left-menu">
 			<% visitSummaries.each { summary -> %>
-			<li class="menu-item visit-summary" visitid="54">
+			<li class="menu-item visit-summary" visitid="54" style="border-right:1px solid #ccc; margin-right: 15px; width: 168px; height: 18px;">
 				<input type="hidden" class="encounter-id" value="${summary.encounterId}" >
 				<span class="menu-date">
 					<i class="icon-time"></i>
@@ -85,7 +99,7 @@
 			
 			<% } %>
 			
-			<li style="height: 30px;" class="menu-item">
+			<li style="height: 30px; margin-right: 15px; width: 168px;" class="menu-item">
 			</li>
 		</ul>
 	</div>
