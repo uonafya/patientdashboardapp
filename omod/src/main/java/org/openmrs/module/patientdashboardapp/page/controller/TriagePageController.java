@@ -137,27 +137,28 @@ public class TriagePageController {
 			@BindParams("patientFamilyHistory") PatientFamilyHistory patientFamilyHistory,
 			@BindParams("patientDrugHistory") PatientDrugHistory patientDrugHistory,
             @BindParams("patientPersonalHistory") PatientPersonalHistory patientPersonalHistory,
-            @RequestParam("patientId") Integer patientId,
+            @RequestParam("patientId") Patient patient,
             UiUtils ui,
 			Session session) {
 		User user = Context.getAuthenticatedUser();
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
+		triagePatientData.setPatient(patient);
 		triagePatientData.setCreatedOn(new Date());
         patientMedicalHistory.setCreatedOn(new Date());
         patientFamilyHistory.setCreatedOn(new Date());
         patientDrugHistory.setCreatedOn(new Date());
         patientPersonalHistory.setCreatedOn(new Date());
 		triagePatientData = queueService.saveTriagePatientData(triagePatientData);
-        PatientMedicalHistorySaveHandler.save(patientMedicalHistory,patientId);
-		PatientFamilyHistorySaveHandler.save(patientFamilyHistory,patientId);
-		PatientDrugHistorySaveHandler.save(patientDrugHistory,patientId);
-        PatientPersonalHistorySaveHandler.save(patientPersonalHistory,patientId);
+        PatientMedicalHistorySaveHandler.save(patientMedicalHistory,patient.getId());
+		PatientFamilyHistorySaveHandler.save(patientFamilyHistory,patient.getId());
+		PatientDrugHistorySaveHandler.save(patientDrugHistory,patient.getId());
+        PatientPersonalHistorySaveHandler.save(patientPersonalHistory,patient.getId());
 
 		TriagePatientQueue queue = queueService.getTriagePatientQueueById(queueId);
 		String triageEncounterType = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_TRIAGE_ENCOUTNER_TYPE);
 		EncounterType encounterType = Context.getEncounterService().getEncounterType(triageEncounterType);
 
-		if (queue != null && queue.getPatient().getId().equals(patientId)) {
+		if (queue != null && queue.getPatient().getId().equals(patient.getId())) {
 			Encounter encounter = new Encounter();
 			Date date = new Date();
 			encounter.setPatient(queue.getPatient());
