@@ -64,14 +64,14 @@ public class ClinicalNotesFragmentController {
     	for (ConceptAnswer conceptAnswer : signConcept.getAnswers()) {
     		qualifiers.add(new Qualifier(conceptAnswer.getAnswerConcept()));
     	}
-    	return SimpleObject.fromCollection(qualifiers, ui, "id", "label", "options.id", "options.label");
+    	return SimpleObject.fromCollection(qualifiers, ui, "id", "label", "options.id", "options.label", "uuid");
     }
     
     public List<SimpleObject> getSymptoms(@RequestParam(value="q") String name,UiUtils ui)
     {
         List<Concept> symptoms = Context.getService(PatientDashboardService.class).searchSymptom(name);
 
-        List<SimpleObject> symptomsList = SimpleObject.fromCollection(symptoms, ui, "id", "name");
+        List<SimpleObject> symptomsList = SimpleObject.fromCollection(symptoms, ui, "id", "name", "uuid");
         return symptomsList;
     }
 
@@ -81,7 +81,7 @@ public class ClinicalNotesFragmentController {
     {
         List<Concept> diagnosis = Context.getService(PatientDashboardService.class).searchDiagnosis(name);
 
-        List<SimpleObject> diagnosisList = SimpleObject.fromCollection(diagnosis, ui, "id", "name");
+        List<SimpleObject> diagnosisList = SimpleObject.fromCollection(diagnosis, ui, "id", "name", "uuid");
         return diagnosisList;
     }
     public List<SimpleObject> getProcedures(@RequestParam(value="q") String name,UiUtils ui)
@@ -92,20 +92,20 @@ public class ClinicalNotesFragmentController {
             proceduresPriority.add(new Procedure(myConcept));
         }
 
-        List<SimpleObject> proceduresList = SimpleObject.fromCollection(proceduresPriority, ui, "id", "label", "schedulable");
+        List<SimpleObject> proceduresList = SimpleObject.fromCollection(proceduresPriority, ui, "id", "label", "schedulable", "uuid");
         return proceduresList;
     }
 
     public List<SimpleObject> getInvestigations(@RequestParam(value="q") String name,UiUtils ui)
     {
         List<Concept> investigations = Context.getService(PatientDashboardService.class).searchInvestigation(name);
-        List<SimpleObject> investigationsList = SimpleObject.fromCollection(investigations, ui, "id", "name");
+        List<SimpleObject> investigationsList = SimpleObject.fromCollection(investigations, ui, "id", "name", "uuid");
         return investigationsList;
     }
     public List<SimpleObject> getDrugs(@RequestParam(value="q") String name,UiUtils ui)
     {
         List<InventoryDrug> drugs = Context.getService(PatientDashboardService.class).findDrug(name);
-        List<SimpleObject> drugList = SimpleObject.fromCollection(drugs, ui, "id", "name");
+        List<SimpleObject> drugList = SimpleObject.fromCollection(drugs, ui, "id", "name", "uuid");
         return drugList;
     }
     public List<SimpleObject> getFormulationByDrugName(@RequestParam(value="drugName") String drugName,UiUtils ui)
@@ -118,7 +118,7 @@ public class ClinicalNotesFragmentController {
 
         if(drug != null){
             List<InventoryDrugFormulation> formulations = new ArrayList<InventoryDrugFormulation>(drug.getFormulations());
-            formulationsList = SimpleObject.fromCollection(formulations, ui, "id", "name","dozage");
+            formulationsList = SimpleObject.fromCollection(formulations, ui, "id", "name","dozage", "uuid");
         }
 
         return formulationsList;
@@ -130,7 +130,7 @@ public class ClinicalNotesFragmentController {
         List<Concept> drugFrequencyConcept = inventoryCommonService
                 .getDrugFrequency();
         if(drugFrequencyConcept != null){
-            List<SimpleObject> mydrugFrequencyObj = SimpleObject.fromCollection(drugFrequencyConcept,uiUtils, "id", "name");
+            List<SimpleObject> mydrugFrequencyObj = SimpleObject.fromCollection(drugFrequencyConcept,uiUtils, "id", "name", "uuid");
             return mydrugFrequencyObj;
         }
         else{
@@ -145,6 +145,6 @@ public class ClinicalNotesFragmentController {
         for (ConceptSet conceptSet: unit) {
             drugUnitOptions.add(new Option(conceptSet.getConcept().getId(), conceptSet.getConcept().getName().getName()));
         }
-        return SimpleObject.fromCollection(drugUnitOptions,uiUtils,"id","label") ;
+        return SimpleObject.fromCollection(drugUnitOptions,uiUtils,"id","label", "uuid") ;
     }
 }
