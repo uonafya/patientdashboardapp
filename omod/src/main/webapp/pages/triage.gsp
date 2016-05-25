@@ -624,6 +624,10 @@
 	.col6 {
 		display: none;
 	}
+	h2 span{
+		color: #f00 !important;
+		padding-left: 5px;
+	}
 </style>
 
 <openmrs:require privilege="Triage Queue" otherwise="/login.htm" redirect="/module/patientqueueapp/queue.page?app=patientdashboardapp.triage"></openmrs:require>
@@ -999,7 +1003,7 @@
 					<legend>Room to Visit</legend>
 					<div>
 						<div class="onerow">
-							<h2>Room to Visit</h2>
+							<h2>Room to Visit<span>*</span></h2>
 							
 							<div class="col4">
 								<p>

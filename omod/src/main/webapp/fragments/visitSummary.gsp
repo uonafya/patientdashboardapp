@@ -71,6 +71,9 @@
 		border-bottom:	1px solid #ccc;
 		border-right:	1px solid #ccc;
 	}
+	.visit-summary{
+		
+	}
 </style>
 
 <div class="onerow">
