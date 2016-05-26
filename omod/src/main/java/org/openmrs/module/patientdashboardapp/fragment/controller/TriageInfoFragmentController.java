@@ -1,5 +1,7 @@
 package org.openmrs.module.patientdashboardapp.fragment.controller;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.openmrs.Patient;
@@ -39,7 +41,14 @@ public class TriageInfoFragmentController {
 	public List <SimpleObject> getTriageId(
 			@RequestParam("patientId") Patient patientId,UiUtils ui){
 		List<TriagePatientData> triage = Context.getService(TriageService.class).getPatientTriageData(patientId);
+		Collections.sort(triage, new Comparator<TriagePatientData>() {
+			@Override
+			public int compare(TriagePatientData prevEntry, TriagePatientData newEntry) {
+				return newEntry.getCreatedOn().compareTo(prevEntry.getCreatedOn()) ;
+			}
+		});
 		return  SimpleObject.fromCollection(triage, ui, "id" , "createdOn");
+		
 	}	
 	public SimpleObject getTriageSummary(
 			@RequestParam("Id")Integer Id ,UiUtils ui){
