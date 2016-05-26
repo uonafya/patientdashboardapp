@@ -23,6 +23,7 @@ public class Option {
 	public Option(Concept answerConcept) {
 		this.id = answerConcept.getConceptId();
 		this.label = answerConcept.getDisplayString();
+		this.uuid = answerConcept.getUuid();
 	}
 
 	public Option(Integer id) {
