@@ -12,7 +12,7 @@ public class ProcedureModelTest extends AbstractModelTest {
 	public void save_shouldSaveProcedureOrders() throws Exception {
 		executeDataSet("notes-concepts.xml");
 		Encounter encounter = createEncounter();
-		Procedure procedure = new Procedure(9993, "Allergy Shots");
+		Procedure procedure = new Procedure(9993, "Allergy Shots", null);
 		procedure.setScheduledDate("18/12/2015");
 		
 		procedure.save(encounter);
@@ -24,7 +24,7 @@ public class ProcedureModelTest extends AbstractModelTest {
 		Encounter encounter = createEncounter();
 
 		Assert.assertEquals(0, encounter.getObs().size());
-		Procedure procedure = new Procedure(9993, "Allergy Shots");
+		Procedure procedure = new Procedure(9993, "Allergy Shots", null);
 		procedure.setScheduledDate("18/12/2015");
 		procedure.addObs(encounter,null);
 		Assert.assertEquals(1,encounter.getObs().size());

@@ -1,30 +1,30 @@
 package org.openmrs.module.patientdashboardapp.fragment.controller;
 
 
-import org.openmrs.ConceptSet;
-import org.openmrs.api.context.Context;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
+import org.openmrs.ConceptSet;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.InventoryCommonService;
-import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
+import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
-import org.openmrs.module.patientdashboardapp.model.*;
+import org.openmrs.module.patientdashboardapp.model.Note;
+import org.openmrs.module.patientdashboardapp.model.Option;
+import org.openmrs.module.patientdashboardapp.model.Outcome;
+import org.openmrs.module.patientdashboardapp.model.Procedure;
+import org.openmrs.module.patientdashboardapp.model.Qualifier;
+import org.openmrs.module.patientdashboardapp.model.Referral;
+import org.openmrs.module.patientdashboardapp.model.ReferralReasons;
 import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.fragment.FragmentConfiguration;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.springframework.web.bind.annotation.RequestParam;
-
-
-
-
-
-
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by Francis on 12/7/2015.
@@ -105,7 +105,7 @@ public class ClinicalNotesFragmentController {
     public List<SimpleObject> getDrugs(@RequestParam(value="q") String name,UiUtils ui)
     {
         List<InventoryDrug> drugs = Context.getService(PatientDashboardService.class).findDrug(name);
-        List<SimpleObject> drugList = SimpleObject.fromCollection(drugs, ui, "id", "name", "uuid");
+        List<SimpleObject> drugList = SimpleObject.fromCollection(drugs, ui, "id", "name");
         return drugList;
     }
     public List<SimpleObject> getFormulationByDrugName(@RequestParam(value="drugName") String drugName,UiUtils ui)
@@ -118,7 +118,7 @@ public class ClinicalNotesFragmentController {
 
         if(drug != null){
             List<InventoryDrugFormulation> formulations = new ArrayList<InventoryDrugFormulation>(drug.getFormulations());
-            formulationsList = SimpleObject.fromCollection(formulations, ui, "id", "name","dozage", "uuid");
+            formulationsList = SimpleObject.fromCollection(formulations, ui, "id", "name","dozage");
         }
 
         return formulationsList;
@@ -143,7 +143,7 @@ public class ClinicalNotesFragmentController {
         Collection<ConceptSet> unit = drugUnit.getConceptSets();
         List<Option> drugUnitOptions = new ArrayList<Option>();
         for (ConceptSet conceptSet: unit) {
-            drugUnitOptions.add(new Option(conceptSet.getConcept().getId(), conceptSet.getConcept().getName().getName()));
+            drugUnitOptions.add(new Option(conceptSet.getConcept()));
         }
         return SimpleObject.fromCollection(drugUnitOptions,uiUtils,"id","label", "uuid") ;
     }

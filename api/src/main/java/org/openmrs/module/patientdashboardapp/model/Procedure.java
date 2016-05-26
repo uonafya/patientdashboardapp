@@ -22,12 +22,16 @@ public class Procedure {
 	}
 
 	public Procedure(Integer id, String label) {
+		this(id, label, null);
+	}
+
+	public Procedure(Integer id, String label, String uuid) {
 		this.id = id;
 		this.label = label;
 	}
 
 	public Procedure(Concept concept){
-		this(concept.getConceptId(), concept.getDisplayString());
+		this(concept.getConceptId(), concept.getDisplayString(), concept.getUuid());
 		if(majorMinorOperationsConceptIds.contains(concept.getConceptId())) {
 			schedulable = true;
 		}
@@ -47,6 +51,7 @@ public class Procedure {
 
 
 	private Integer id;
+	private String uuid;
 	private String label;
 	private boolean schedulable;
 	private String scheduledDate;
@@ -57,6 +62,14 @@ public class Procedure {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
 	public String getLabel() {
 		return label;
 	}

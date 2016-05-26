@@ -19,7 +19,7 @@ public class NoteModelTest extends BaseModuleContextSensitiveTest {
 		Note note = new Note();
 		note.setPatientId(3009);
 		List<Procedure> procedures = new ArrayList<Procedure>();
-		Procedure procedure = new Procedure(9993, "Allergy Shots");
+		Procedure procedure = new Procedure(9993, "Allergy Shots", null);
 		procedure.setScheduledDate("18/12/2015");
 		procedures.add(procedure);
 		note.setProcedures(procedures);
