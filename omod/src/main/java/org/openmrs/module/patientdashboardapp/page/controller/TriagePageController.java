@@ -46,7 +46,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public class TriagePageController {
-	public void get(
+	public String get(
 			UiSessionContext sessionContext,
 			PageModel model,
 			PageRequest pageRequest,
@@ -57,6 +57,10 @@ public class TriagePageController {
 			@RequestParam(value = "returnUrl", required = false) String returnUrl) {
 		pageRequest.getSession().setAttribute(ReferenceApplicationWebConstants.SESSION_ATTRIBUTE_REDIRECT_URL,ui.thisUrl());
 		sessionContext.requireAuthentication();
+		Boolean isPriviledged = Context.hasPrivilege("Access Triage");
+		if(!isPriviledged){
+			return "redirect: index.htm";
+		}
 		PatientQueueService patientQueueService = Context.getService(PatientQueueService.class);
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 		TriagePatientQueue triagePatientQueue = patientQueueService.getTriagePatientQueueById(queueId);
@@ -116,6 +120,7 @@ public class TriagePageController {
 				 model.addAttribute("selectedCategory",pa.getValue()); 
 			 }
 		 }
+		return null;
 	}
 
 	private TriagePatientData getPreviousTriageDetails(Integer queueId,
