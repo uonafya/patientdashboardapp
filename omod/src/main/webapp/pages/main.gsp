@@ -250,7 +250,7 @@
 		<ul>
 			<li id="cn"><a href="#notes">Clinical Notes</a></li>
 			<li id="ti"><a href="#triage-info">Triage Information</a></li>
-			<li id="cs"><a href="#summary">Clinical Summary</a></li>
+			<li id="cs"><a href="#summary">Clinical History</a></li>
 			<li id="lr"><a href="#investigations">Lab Reports</a></li>
 		</ul>
 		
