@@ -458,26 +458,26 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
             </li>
             <li>
                 <label>Dosage</label>
-                <input type="text" data-bind="value: prescription.drug().dosage" style="width: 60px!important;">
-                <select id="dosage-unit" data-bind="options: prescription.drug().drugUnitsOptions, value: prescription.drug().drugUnit, optionsText: 'label',  optionsCaption: 'Select Unit'" style="width: 191px!important;"></select>
+                <input type="text" class="drug-dosage" data-bind="value: prescription.drug().dosage" style="width: 60px!important;">
+                <select id="dosage-unit" class="drug-dosage-unit" data-bind="options: prescription.drug().drugUnitsOptions, value: prescription.drug().drugUnit, optionsText: 'label',  optionsCaption: 'Select Unit'" style="width: 191px!important;"></select>
             </li>
 			
             <li>
                 <label>Formulation</label>
-                <select data-bind="options: prescription.drug().formulationOpts, value: prescription.drug().formulation, optionsText: 'label',  optionsCaption: 'Select Formulation'"></select>
+                <select class="drug-formulation" data-bind="options: prescription.drug().formulationOpts, value: prescription.drug().formulation, optionsText: 'label',  optionsCaption: 'Select Formulation'"></select>
             </li>
             <li>
                 <label>Frequency</label>
-                <select data-bind="options: prescription.drug().frequencyOpts, value: prescription.drug().frequency, optionsText: 'label',  optionsCaption: 'Select Frequency'"></select>
+                <select class="drug-frequency" data-bind="options: prescription.drug().frequencyOpts, value: prescription.drug().frequency, optionsText: 'label',  optionsCaption: 'Select Frequency'"></select>
             </li>
 
             <li>
                 <label>Number of Days</label>
-                <input type="text" data-bind="value: prescription.drug().numberOfDays">
+                <input type="text" class="drug-number-of-days" data-bind="value: prescription.drug().numberOfDays">
             </li>
             <li>
                 <label>Comment</label>
-                <textarea data-bind="value: prescription.drug().comment"></textarea>
+                <textarea class="drug-comment" data-bind="value: prescription.drug().comment"></textarea>
             </li>
         </ul>
 

@@ -72,6 +72,66 @@
 		jq('#referralReasons').change();
 	}
 
+	function page_verified(){
+		var error = 0;
+
+		if (jq(".drug-name").val().trim() == ''){
+			jq(".drug-name").addClass('red');
+			error ++;
+		}
+		else {
+			jq(".drug-name").removeClass('red');
+		}
+		if (jq(".drug-dosage").val().trim() == ''){
+			jq(".drug-dosage").addClass('red');
+			error ++;
+		}
+		else {
+			jq(".drug-dosage").removeClass('red');
+		}
+		if (jq('.drug-dosage-unit :selected').text() == "Select Unit"){
+			jq(".drug-dosage-unit").addClass('red');
+			error ++;
+		}
+		else {
+			jq(".drug-dosage-unit").removeClass('red');
+		}
+		if (jq('.drug-formulation :selected').text() == "Select Formulation"){
+			jq(".drug-formulation").addClass('red');
+			error ++;
+		}
+		else {
+			jq(".drug-formulation").removeClass('red');
+		}
+		if (jq('.drug-frequency :selected').text() == "Select Frequency"){
+			jq(".drug-frequency").addClass('red');
+			error ++;
+		}
+		else {
+			jq(".drug-frequency").removeClass('red');
+		}
+		if (jq(".drug-number-of-days").val().trim() == '0'){
+			jq(".drug-number-of-days").addClass('red');
+			error ++;
+		}
+		else {
+			jq(".drug-number-of-days").removeClass('red');
+		}
+		if (jq(".drug-comment").val().trim() == ''){
+			jq(".drug-comment").addClass('red');
+			error ++;
+		}
+		else {
+			jq(".drug-comment").removeClass('red');
+		}
+
+		if (error == 0){
+			return true;
+		} else{
+			return false;
+		}
+	}
+
 	note.inpatientWards = ${
 		config.listOfWards.collect {
 			it.toJson()
@@ -492,6 +552,10 @@
 			selector: '#prescription-dialog',
 			actions: {
 				confirm: function() {
+					if (!page_verified()){
+						jq().toastmessage('showErrorToast', 'Ensure fields marked in Red are filled properly');
+						return false;
+					}
 					note.addPrescription(prescription.drug());
 					prescription.drug(new Drug());
 					prescriptionDialog.close();

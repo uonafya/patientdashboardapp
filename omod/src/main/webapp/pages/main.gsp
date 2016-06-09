@@ -19,7 +19,7 @@
 	input[type="text"], 
 	input[type="password"],
 	select {
-		border: 1px solid #aaa !important;
+		border: 1px solid #aaa;
 		border-radius: 2px !important;
 		box-shadow: none !important;
 		box-sizing: border-box !important;
@@ -185,6 +185,9 @@
 	#modal-overlay {
 		background: #000 none repeat scroll 0 0;
 		opacity: 0.4 !important;
+	}
+	.red{
+		border: 1px solid #f00!important;
 	}
 </style>
 
