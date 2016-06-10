@@ -82,6 +82,7 @@
 		else {
 			jq(".drug-name").removeClass('red');
 		}
+		
 		if (jq(".drug-dosage").val().trim() == ''){
 			jq(".drug-dosage").addClass('red');
 			error ++;
@@ -89,6 +90,7 @@
 		else {
 			jq(".drug-dosage").removeClass('red');
 		}
+		
 		if (jq('.drug-dosage-unit :selected').text() == "Select Unit"){
 			jq(".drug-dosage-unit").addClass('red');
 			error ++;
@@ -96,6 +98,7 @@
 		else {
 			jq(".drug-dosage-unit").removeClass('red');
 		}
+		
 		if (jq('.drug-formulation :selected').text() == "Select Formulation"){
 			jq(".drug-formulation").addClass('red');
 			error ++;
@@ -110,19 +113,12 @@
 		else {
 			jq(".drug-frequency").removeClass('red');
 		}
-		if (jq(".drug-number-of-days").val().trim() == '0'){
+		if (jq(".drug-number-of-days").val().trim() == '0' || jq(".drug-number-of-days").val().trim() == ''){
 			jq(".drug-number-of-days").addClass('red');
 			error ++;
 		}
 		else {
 			jq(".drug-number-of-days").removeClass('red');
-		}
-		if (jq(".drug-comment").val().trim() == ''){
-			jq(".drug-comment").addClass('red');
-			error ++;
-		}
-		else {
-			jq(".drug-comment").removeClass('red');
 		}
 
 		if (error == 0){
@@ -553,7 +549,7 @@
 			actions: {
 				confirm: function() {
 					if (!page_verified()){
-						jq().toastmessage('showErrorToast', 'Ensure fields marked in Red are filled properly');
+						jq().toastmessage('showErrorToast', 'Ensure fields marked in red have been properly filled before you continue')
 						return false;
 					}
 					note.addPrescription(prescription.drug());
