@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.ConceptSet;
@@ -53,9 +54,9 @@ public class ClinicalNotesFragmentController {
         model.addAttribute("externalReferralSources", SimpleObject.fromCollection(Referral.getExternalReferralOptions(), ui, "label", "id"));
 		model.addAttribute("referralReasonsSources", SimpleObject.fromCollection(ReferralReasons.getReferralReasonsOptions(), ui, "label", "id"));
 		Note note = new Note(patientId, queueId, opdId, opdLogId);
-		model.addAttribute("note", SimpleObject.fromObject(note, ui, "signs.id", "signs.label", "diagnoses.id", "diagnoses.label",
+		model.addAttribute("note", StringEscapeUtils.escapeJavaScript(SimpleObject.fromObject(note, ui, "signs.id", "signs.label", "diagnoses.id", "diagnoses.label",
 						"investigations", "procedures", "patientId", "queueId","specify",
-						"opdId", "opdLogId", "admitted","facility", "illnessHistory","referralComments","physicalExamination", "otherInstructions").toJson());
+						"opdId", "opdLogId", "admitted","facility", "illnessHistory","referralComments","physicalExamination", "otherInstructions").toJson()));
 	}
 
     public List<SimpleObject> getQualifiers(@RequestParam("signId") Integer signId, UiUtils ui) {

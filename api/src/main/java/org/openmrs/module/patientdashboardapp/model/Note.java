@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
@@ -190,7 +189,7 @@ public class Note {
 	}
 
 	public String getIllnessHistory() {
-		return StringEscapeUtils.escapeJavaScript(illnessHistory);
+		return illnessHistory;
 	}
 
 	public void setIllnessHistory(String illnessHistory) {
@@ -222,7 +221,7 @@ public class Note {
 	}
 
 	public String getOtherInstructions() {
-		return StringEscapeUtils.escapeJavaScript(otherInstructions);
+		return otherInstructions;
 	}
 
 	public void setOtherInstructions(String otherInstructions) {
@@ -230,7 +229,7 @@ public class Note {
 	}
 
 	public String getPhysicalExamination() {
-		return StringEscapeUtils.escapeJavaScript(physicalExamination);
+		return physicalExamination;
 	}
 
 	public void setPhysicalExamination(String physicalExamination) {
