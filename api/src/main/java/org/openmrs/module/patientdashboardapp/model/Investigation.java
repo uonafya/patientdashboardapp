@@ -8,9 +8,11 @@ import org.openmrs.GlobalProperty;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Order;
+import org.openmrs.PersonAttribute;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.BillingConstants;
 import org.openmrs.module.hospitalcore.BillingService;
+import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.LabService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.RadiologyCoreService;
@@ -103,6 +105,17 @@ public class Investigation {
 		if (billableService.getPrice().compareTo(BigDecimal.ZERO) == 0) {
 			opdTestOrder.setBillingStatus(1);
 		}
+		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+		List<PersonAttribute> pas = hcs.getPersonAttributes(encounter.getPatient().getPatientId());
+
+		for (PersonAttribute pa : pas) {
+			String attributeValue = pa.getValue();
+			if(attributeValue.equals("Non-Paying")){
+				opdTestOrder.setBillingStatus(1);
+			}
+		}
+
+
 		opdTestOrder = Context.getService(PatientDashboardService.class).saveOrUpdateOpdOrder(opdTestOrder);
 		
 		processFreeInvestigations(opdTestOrder, encounter.getLocation());
