@@ -30,7 +30,10 @@
 		<module>api</module>
 		<module>omod</module>
 	</modules>
-
+	<properties>
+		<openMRSVersion>1.9.8</openMRSVersion>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencyManagement>
 		<dependencies>
 		
