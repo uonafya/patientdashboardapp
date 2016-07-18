@@ -20,5 +20,6 @@
         <mapping resource="TriagePatientQueueLog.hbm.xml" />
         <mapping resource="Lab.hbm.xml" />
         <mapping resource="LabTest.hbm.xml" />
+        <mapping resource="Examination.hbm.xml" />
     </session-factory>
 </hibernate-configuration>
