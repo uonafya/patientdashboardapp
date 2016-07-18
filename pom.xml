@@ -91,10 +91,15 @@
 			</dependency>
 			
 			<dependency>
+
 				<groupId>org.openmrs.module</groupId>
+
 				<artifactId>hospitalcore-omod</artifactId>
-				<version>1.5.1</version>
+
+				<version>1.5.3</version>
+
 				<scope>test</scope>
+				
 			</dependency>
 
 			<dependency>
