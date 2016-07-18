@@ -46,7 +46,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public class TriagePageController {
-	public void get(
+	public String get(
 			UiSessionContext sessionContext,
 			PageModel model,
 			PageRequest pageRequest,
@@ -57,6 +57,10 @@ public class TriagePageController {
 			@RequestParam(value = "returnUrl", required = false) String returnUrl) {
 		pageRequest.getSession().setAttribute(ReferenceApplicationWebConstants.SESSION_ATTRIBUTE_REDIRECT_URL,ui.thisUrl());
 		sessionContext.requireAuthentication();
+		Boolean isPriviledged = Context.hasPrivilege("Access Triage");
+		if(!isPriviledged){
+			return "redirect: index.htm";
+		}
 		PatientQueueService patientQueueService = Context.getService(PatientQueueService.class);
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 		TriagePatientQueue triagePatientQueue = patientQueueService.getTriagePatientQueueById(queueId);
@@ -67,7 +71,12 @@ public class TriagePageController {
 		TriagePatientData triagePatientData = getPreviousTriageDetails(queueId, patientQueueService);
 		model.addAttribute("vitals", triagePatientData);
 
-		model.addAttribute("lastVisitDate", hcs.getLastVisitTime(patient));
+		Encounter lastEncounter = patientQueueService.getLastOPDEncounter(patient);
+		Date lastVisitDate = null;
+		if(lastEncounter!=null) {
+			lastVisitDate = lastEncounter.getEncounterDatetime();
+		}
+		model.addAttribute("lastVisitDate", lastVisitDate);
 		PatientMedicalHistory patientMedicalHistory = patientQueueService.getPatientHistoryByPatientId(patient.getPatientId());
 		model.addAttribute("patientMedicalHistory", patientMedicalHistory);
 		
@@ -111,6 +120,7 @@ public class TriagePageController {
 				 model.addAttribute("selectedCategory",pa.getValue()); 
 			 }
 		 }
+		return null;
 	}
 
 	private TriagePatientData getPreviousTriageDetails(Integer queueId,
@@ -132,27 +142,28 @@ public class TriagePageController {
 			@BindParams("patientFamilyHistory") PatientFamilyHistory patientFamilyHistory,
 			@BindParams("patientDrugHistory") PatientDrugHistory patientDrugHistory,
             @BindParams("patientPersonalHistory") PatientPersonalHistory patientPersonalHistory,
-            @RequestParam("patientId") Integer patientId,
+            @RequestParam("patientId") Patient patient,
             UiUtils ui,
 			Session session) {
 		User user = Context.getAuthenticatedUser();
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
+		triagePatientData.setPatient(patient);
 		triagePatientData.setCreatedOn(new Date());
         patientMedicalHistory.setCreatedOn(new Date());
         patientFamilyHistory.setCreatedOn(new Date());
         patientDrugHistory.setCreatedOn(new Date());
         patientPersonalHistory.setCreatedOn(new Date());
 		triagePatientData = queueService.saveTriagePatientData(triagePatientData);
-        PatientMedicalHistorySaveHandler.save(patientMedicalHistory,patientId);
-		PatientFamilyHistorySaveHandler.save(patientFamilyHistory,patientId);
-		PatientDrugHistorySaveHandler.save(patientDrugHistory,patientId);
-        PatientPersonalHistorySaveHandler.save(patientPersonalHistory,patientId);
+        PatientMedicalHistorySaveHandler.save(patientMedicalHistory,patient.getId());
+		PatientFamilyHistorySaveHandler.save(patientFamilyHistory,patient.getId());
+		PatientDrugHistorySaveHandler.save(patientDrugHistory,patient.getId());
+        PatientPersonalHistorySaveHandler.save(patientPersonalHistory,patient.getId());
 
 		TriagePatientQueue queue = queueService.getTriagePatientQueueById(queueId);
 		String triageEncounterType = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_TRIAGE_ENCOUTNER_TYPE);
 		EncounterType encounterType = Context.getEncounterService().getEncounterType(triageEncounterType);
 
-		if (queue != null && queue.getPatient().getId().equals(patientId)) {
+		if (queue != null && queue.getPatient().getId().equals(patient.getId())) {
 			Encounter encounter = new Encounter();
 			Date date = new Date();
 			encounter.setPatient(queue.getPatient());

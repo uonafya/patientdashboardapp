@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
@@ -45,19 +47,45 @@ public class InvestigationsFragmentController {
 			UiUtils ui
 			){
 		Patient patient = Context.getPatientService().getPatient(patientId);
-		String nameOfLabEncounterType = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_LAB_ENCOUTNER_TYPE);
-		EncounterType labEncounterType = Context.getEncounterService().getEncounterType(nameOfLabEncounterType);
-		List<Encounter> labOrdersEncounters = Context.getEncounterService().getEncounters(patient, null, null, null, null, Arrays.asList(labEncounterType), null, null, null, false);
+		Order labOrder = Context.getOrderService().getOrder(orderId);
+		Map<String, String> sortedResults = new TreeMap<String, String>();
 		List<SimpleObject> results = new ArrayList<SimpleObject>();
-		for (Encounter encounter: labOrdersEncounters) {
-			for (Obs obs : encounter.getAllObs()) {
-				if (!obs.getOrder().getOrderId().equals(orderId)) {
-					break;
+		if (labOrder.getEncounter() != null) {
+			for (Obs obs : labOrder.getEncounter().getAllObs()) {
+				if (obs.hasGroupMembers()) {
+					continue;
 				}
 				String resultDescription = obs.getConcept().getDisplayString();
+				if (obs.getObsGroup() != null) {
+					resultDescription = obs.getObsGroup().getConcept().getDisplayString() + " (" + resultDescription + ")";
+				}
 				String resultValue = obs.getValueAsString(Context.getLocale());
-				results.add(SimpleObject.create("label", resultDescription, "value", resultValue,"datePerformed",ui.formatDatetimePretty(encounter.getEncounterDatetime()) ));
-
+				sortedResults.put(resultDescription, resultValue);
+			}
+		}
+		if (sortedResults.size() == 0) {
+			String nameOfLabEncounterType = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_LAB_ENCOUTNER_TYPE);
+			EncounterType labEncounterType = Context.getEncounterService().getEncounterType(nameOfLabEncounterType);
+			List<Encounter> labOrdersEncounters = Context.getEncounterService().getEncounters(patient, null, null, null, null, Arrays.asList(labEncounterType), null, null, null, false);
+			Date datePerfomed = null;
+			for (Encounter encounter: labOrdersEncounters) {
+				for (Obs obs : encounter.getAllObs()) {
+					if (obs.getOrder() == null || !obs.getOrder().getOrderId().equals(orderId)) {
+						continue;
+					}
+					String resultDescription = obs.getConcept().getDisplayString();
+					if (obs.getObsGroup() != null) {
+						resultDescription = obs.getObsGroup().getConcept().getDisplayString() + " (" + resultDescription + ")";
+					}
+					String resultValue = obs.getValueAsString(Context.getLocale());
+					sortedResults.put(resultDescription, resultValue);
+					if (datePerfomed == null) {
+						datePerfomed = obs.getObsDatetime();
+					}
+				}
+			}
+			for (Map.Entry<String, String> result : sortedResults.entrySet()) {
+				results.add(SimpleObject.create("label", result.getKey(), "value", result.getValue(), "datePerfomed", ui.formatDatePretty(datePerfomed)));
 			}
 		}
 		return results;

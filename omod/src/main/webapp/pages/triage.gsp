@@ -39,8 +39,6 @@
 		jq('#othname').html(strReplace('${patient.names.givenName}')+' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <em>other names</em>');
 		jq('#agename').html('${patient.age} years ('+ moment('${patient.birthdate}').format('DD,MMM YYYY') +')');
 		
-		jq('.tad').text('Last Visit: '+ moment('${lastVisitDate}').format('DD.MM.YYYY hh:mm')+' HRS');
-		
 		function strReplace(word) {
 			var res = word.replace("[", "");
 			res=res.replace("]","");
@@ -452,6 +450,9 @@
 </script>
 
 <style>
+	.name {
+		color: #f26522;
+	}
 	.simple-form-ui section fieldset select:focus, 
 	.simple-form-ui section fieldset input:focus, 
 	.simple-form-ui section #confirmationQuestion select:focus, 
@@ -623,6 +624,14 @@
 	.col6 {
 		display: none;
 	}
+	h2 span{
+		color: #f00 !important;
+		padding-left: 5px;
+	}
+	#modal-overlay {
+		background: #000 none repeat scroll 0 0;
+		opacity: 0.4 !important;
+	}
 </style>
 
 <openmrs:require privilege="Triage Queue" otherwise="/login.htm" redirect="/module/patientqueueapp/queue.page?app=patientdashboardapp.triage"></openmrs:require>
@@ -672,8 +681,8 @@
 				<span class="status active"></span>
 				Visit Status
 			</div>
-			<div class="tag">${visitStatus}</div>
-			<div class="tad">Last Visit</div>
+			<div class="tag">${visitStatus?visitStatus:'Unknown'}</div>
+			<div class="tad">Last Visit: ${lastVisitDate?ui.formatDatetimePretty(lastVisitDate):'N/A'}</div>
 		</div>
 
 		<div class="identifiers">
@@ -998,7 +1007,7 @@
 					<legend>Room to Visit</legend>
 					<div>
 						<div class="onerow">
-							<h2>Room to Visit</h2>
+							<h2>Room to Visit<span>*</span></h2>
 							
 							<div class="col4">
 								<p>
@@ -1066,22 +1075,22 @@
 						<div id="illness" class="col6 last">
 							<p>
 								<label>What is the problem?</label>
-								<input type="text"id="illnessProblem" name="patientMedicalHistory.illnessProblem" value="${patientMedicalHistory?.illnessProblem}">
+								<input type="text"id="illnessProblem" name="patientMedicalHistory.illnessProblem" value="${patientMedicalHistory?.illnessProblem ?: ""}">
 							</p>
 							
 							<p>
 								<label>How long have you had it?</label>
-								<input type="text"id="illnessLong" name="patientMedicalHistory.illnessLong" value="${patientMedicalHistory?.illnessLong}">
+								<input type="text"id="illnessLong" name="patientMedicalHistory.illnessLong" value="${patientMedicalHistory?.illnessLong ?: ""}">
 							</p>
 							
 							<p>
 								<label>How is your progress?</label> 
-								<input type="text" id="illnessProgress" name="patientMedicalHistory.illnessProgress" value="${patientMedicalHistory?.illnessProgress}">
+								<input type="text" id="illnessProgress" name="patientMedicalHistory.illnessProgress" value="${patientMedicalHistory?.illnessProgress ?: ""}">
 							</p>
 							
 							<p>
 								<label>Where are the Medical Records? </label>
-								<input type="text" id="illnessRecord"name="patientMedicalHistory.illnessRecord" value="${patientMedicalHistory?.illnessRecord}">
+								<input type="text" id="illnessRecord"name="patientMedicalHistory.illnessRecord" value="${patientMedicalHistory?.illnessRecord ?: ""}">
 							</p>
 						</div>
 					</div>
@@ -1090,30 +1099,30 @@
                         			<h2>Suffered from any chronic illness?</h2>
 						
 						<div class="col5">
-							<p><label><input id="chronicIllness" type="radio" value="Yes"  name="patientMedicalHistory.chronicIllness"<% if (patientMedicalHistory?.chronicIllness == "Yes") { %> checked="checked" <% } %>/>Yes </label></p>
-							<p><label><input type="radio" value="No"  name="patientMedicalHistory.chronicIllness"<% if (patientMedicalHistory?.chronicIllness == "No") { %> checked="checked" <% } %>/>No</label></p>
+							<p><label><input type="radio" name="patientMedicalHistory.chronicIllness" value="Yes" id="chronicIllness" <% if (patientMedicalHistory?.chronicIllness == "Yes") { %> checked="checked" <% } %>/>Yes </label></p>
+							<p><label><input type="radio" name="patientMedicalHistory.chronicIllness" value="No"  <% if (patientMedicalHistory?.chronicIllness == "No") { %> checked="checked" <% } %>/>No</label></p>
 						</div>
 						
 
                         			<div class="col6 last" id="chronic">
                             				<p>
 								<label>What is the problem?</label>
-								<input type="text" id="chronicIllnessProblem" name="patientMedicalHistory.chronicIllnessProblem" value="${patientMedicalHistory?.chronicIllnessProblem}">
+								<input type="text" id="chronicIllnessProblem" name="patientMedicalHistory.chronicIllnessProblem" value="${patientMedicalHistory?.chronicIllnessProblem ?: ""}">
 							</p>
 							
 							<p>
 								<label>How long have you had it?</label>
-								<input type="text" id="chronicIllnessOccure" name="patientMedicalHistory.chronicIllnessOccure" value="${patientMedicalHistory?.chronicIllnessOccure}">
+								<input type="text" id="chronicIllnessOccure" name="patientMedicalHistory.chronicIllnessOccure" value="${patientMedicalHistory?.chronicIllnessOccure ?: ""}">
 							</p>
 							
 							<p>
 								<label>How is your progress?</label>
-								<input type="text" id="chronicIllnessOutcome" name="patientMedicalHistory.chronicIllnessOutcome" value="${patientMedicalHistory?.chronicIllnessOutcome}">
+								<input type="text" id="chronicIllnessOutcome" name="patientMedicalHistory.chronicIllnessOutcome" value="${patientMedicalHistory?.chronicIllnessOutcome ?: ""}">
 							</p>
 							
 							<p>
 								<label>Where are the Medical Records?</label>
-								<input type="text" id="chronicIllnessRecord" name="patientMedicalHistory?.chronicIllnessRecord" value="${patientMedicalHistory?.chronicIllnessRecord}">
+								<input type="text" id="chronicIllnessRecord" name="patientMedicalHistory?.chronicIllnessRecord" value="${patientMedicalHistory?.chronicIllnessRecord ?: ""}">
 							</p>
                         			</div>
                     			</div>
@@ -1128,22 +1137,22 @@
                         			<div class="col6 last" id="admissions">
 							<p>
 								<label>When was this?</label>
-								<input type="text" id="previousAdmissionWhen" name="patientMedicalHistory.previousAdmissionWhen" value="${patientMedicalHistory?.previousAdmissionWhen}">
+								<input type="text" id="previousAdmissionWhen" name="patientMedicalHistory.previousAdmissionWhen" value="${patientMedicalHistory?.previousAdmissionWhen ?: ""}">
 							</p>
 							
 							<p>
 								<label>What was the problem?</label>
-								<input type="text" id="previousAdmissionProblem" name="patientMedicalHistory.previousAdmissionProblem" value="${patientMedicalHistory?.previousAdmissionProblem}">
+								<input type="text" id="previousAdmissionProblem" name="patientMedicalHistory.previousAdmissionProblem" value="${patientMedicalHistory?.previousAdmissionProblem ?: ""}">
 							</p>
 							
 							<p>
 								<label>What was the outcome?</label>
-								<input type="text" id="previousAdmissionOutcome" name="patientMedicalHistory.previousAdmissionOutcome" value="${patientMedicalHistory?.previousAdmissionOutcome}">
+								<input type="text" id="previousAdmissionOutcome" name="patientMedicalHistory.previousAdmissionOutcome" value="${patientMedicalHistory?.previousAdmissionOutcome ?: ""}">
 							</p>
 							
 							<p>
 								<label>Where are the Medical Records?</label>
-								<input type="text" id="previousAdmissionRecord" name="patientMedicalHistory.previousAdmissionRecord" value="${patientMedicalHistory?.previousAdmissionRecord}">
+								<input type="text" id="previousAdmissionRecord" name="patientMedicalHistory.previousAdmissionRecord" value="${patientMedicalHistory?.previousAdmissionRecord ?: ""}">
 							</p>
 						</div>
                     			</div>
@@ -1158,22 +1167,22 @@
 						<div class="col6 last" id="operations">
 							<p>
 								<label>When was this?</label>
-								<input type="text" id="previousInvestigationWhen" name="patientMedicalHistory.previousInvestigationWhen" value="${patientMedicalHistory?.previousInvestigationWhen}">
+								<input type="text" id="previousInvestigationWhen" name="patientMedicalHistory.previousInvestigationWhen" value="${patientMedicalHistory?.previousInvestigationWhen ?: ""}">
 							</p>
 							
 							<p>
 								<label>What was the problem?</label>
-								<input type="text" id="previousInvestigationProblem" name="patientMedicalHistory.previousInvestigationProblem" value="${patientMedicalHistory?.previousInvestigationProblem}">
+								<input type="text" id="previousInvestigationProblem" name="patientMedicalHistory.previousInvestigationProblem" value="${patientMedicalHistory?.previousInvestigationProblem ?: ""}">
 							</p>
 							
 							<p>
 								<label>What was the outcome?</label>
-								<input type="text" id="previousInvestigationOutcome" name="patientMedicalHistory.previousInvestigationOutcome" value="${patientMedicalHistory?.previousInvestigationOutcome}">
+								<input type="text" id="previousInvestigationOutcome" name="patientMedicalHistory.previousInvestigationOutcome" value="${patientMedicalHistory?.previousInvestigationOutcome ?: ""}">
 							</p>
 							
 							<p>
 								<label>Where are the Medical Records?</label>
-								<input type="text" id="previousInvestigationRecord" name="patientMedicalHistory.previousInvestigationRecord" value="${patientMedicalHistory?.previousInvestigationRecord}">
+								<input type="text" id="previousInvestigationRecord" name="patientMedicalHistory.previousInvestigationRecord" value="${patientMedicalHistory?.previousInvestigationRecord ?: ""}">
 							</p>
 						</div>
                     			</div>
@@ -1274,22 +1283,22 @@
 				        <div class="col6 last" id="medication">
                 				<p>
                   					<label>What is the medication?</label>
-							<input type="text" id="medicationName" name="patientDrugHistory.medicationName" value="${patientDrugHistory?.medicationName}">
+							<input type="text" id="medicationName" name="patientDrugHistory.medicationName" value="${patientDrugHistory?.medicationName ?: ""}">
                 				</p>
 
 						<p>
 							<label>For how long it has been taken?</label>
-                    					<input type="text" id="medicationPeriod" name="patientDrugHistory.medicationPeriod" value="${patientDrugHistory?.medicationPeriod}">
+                    					<input type="text" id="medicationPeriod" name="patientDrugHistory.medicationPeriod" value="${patientDrugHistory?.medicationPeriod ?: ""}">
                 				</p>
 
 						<p>
 							<label>Why is it being taken?</label>
-                    					<input type="text" id="medicationReason" name="patientDrugHistory.medicationReason" value="${patientDrugHistory?.medicationReason}">
+                    					<input type="text" id="medicationReason" name="patientDrugHistory.medicationReason" value="${patientDrugHistory?.medicationReason ?: ""}">
                 				</p>
 
 						<p>
 							<label>Where are the Medical Records?</label>
-                    					<input type="text" id="medicationRecord" name="patientDrugHistory.medicationRecord" value="${patientDrugHistory?.medicationRecord}">
+                    					<input type="text" id="medicationRecord" name="patientDrugHistory.medicationRecord" value="${patientDrugHistory?.medicationRecord ?: ""}">
                 				</p>
 					</div>
                 		</div>
@@ -1304,12 +1313,12 @@
 					<div class="col6 last" id="sensitives">
 						<p>
 							<label>What is the medication?</label>
-                        				<input type="text" id="sensitiveMedicationName" name="patientDrugHistory.sensitiveMedicationName" value="${patientDrugHistory?.sensitiveMedicationName}">
+                        				<input type="text" id="sensitiveMedicationName" name="patientDrugHistory.sensitiveMedicationName" value="${patientDrugHistory?.sensitiveMedicationName ?: ""}">
                         			</p>
 
 						<p>
 							<label>What are the symptoms you experience?</label>
-                        				<input type="text" id="sensitiveMedicationSymptom" name="patientDrugHistory.sensitiveMedicationSymptom" value="${patientDrugHistory?.sensitiveMedicationSymptom}">
+                        				<input type="text" id="sensitiveMedicationSymptom" name="patientDrugHistory.sensitiveMedicationSymptom" value="${patientDrugHistory?.sensitiveMedicationSymptom ?: ""}">
                         			</p>
 					</div>
                 		</div>
@@ -1323,7 +1332,7 @@
 
                     			<div class="col6 last" id="invasives">
 						<label>What is the medication?</label>
-                        			<input type="text" id="invasiveContraceptionName" name="patientDrugHistory.invasiveContraceptionName" value="${patientDrugHistory?.invasiveContraceptionName}">
+                        			<input type="text" id="invasiveContraceptionName" name="patientDrugHistory.invasiveContraceptionName" value="${patientDrugHistory?.invasiveContraceptionName ?: ""}">
                     			</div>
 				</div>
             		</div>
@@ -1342,12 +1351,12 @@
                     		<div class="col6 last" id="father-status">
                         		<p>
                             			<label>What was the cause of death?</label>
-                            			<input type="text" id="fatherDeathCause" name="patientFamilyHistory.fatherDeathCause" value="${patientFamilyHistory?.fatherDeathCause}">
+                            			<input type="text" id="fatherDeathCause" name="patientFamilyHistory.fatherDeathCause" value="${patientFamilyHistory?.fatherDeathCause ?: ""}">
                         		</p>
 
 					<p>
 						<label>How old were they?</label>
-                            			<input type="text" id="fatherDeathAge" name="patientFamilyHistory.fatherDeathAge" value="${patientFamilyHistory?.fatherDeathAge}">
+                            			<input type="text" id="fatherDeathAge" name="patientFamilyHistory.fatherDeathAge" value="${patientFamilyHistory?.fatherDeathAge ?: ""}">
                         		</p>
 				</div>
                 	</div>
@@ -1362,12 +1371,12 @@
 				<div class="col6 last" id="mother-status">
 					<p>
                         			<label>What was the cause of death?</label>
-                        			<input type="text" id="motherDeathCause" name="patientFamilyHistory.motherDeathCause" value="${patientFamilyHistory?.motherDeathCause}">
+                        			<input type="text" id="motherDeathCause" name="patientFamilyHistory.motherDeathCause" value="${patientFamilyHistory?.motherDeathCause ?: ""}">
                     			</p>
 
 					<p>
                         			<label>How old were they?</label>
-                        			<input type="text" id="motherDeathAge" name="patientFamilyHistory.motherDeathAge" value="${patientFamilyHistory?.motherDeathAge}">
+                        			<input type="text" id="motherDeathAge" name="patientFamilyHistory.motherDeathAge" value="${patientFamilyHistory?.motherDeathAge ?: ""}">
                     			</p>
 				</div>
             		</div>
@@ -1382,11 +1391,11 @@
 				<div class="col6 last" id="sibling-status">
 					<p>
 						<label>What was the cause of death?</label>
-                        			<input type="text" id="siblingDeathCause" name="patientFamilyHistory.siblingDeathCause" value="${patientFamilyHistory?.siblingDeathCause}">
+                        			<input type="text" id="siblingDeathCause" name="patientFamilyHistory.siblingDeathCause" value="${patientFamilyHistory?.siblingDeathCause ?: ""}">
                     			</p>
 					<p>
 						<label>How old were they?</label>
-                        			<input type="text" id="siblingDeathAge" name="patientFamilyHistory.siblingDeathAge" value="${patientFamilyHistory?.siblingDeathAge}">
+                        			<input type="text" id="siblingDeathAge" name="patientFamilyHistory.siblingDeathAge" value="${patientFamilyHistory?.siblingDeathAge ?: ""}">
                     			</p>
                  		</div>
             		</div>
@@ -1424,12 +1433,12 @@
         			<div class="col6 last" id="do-smoke">
             				<p>
                 				<label>What do you smoke?</label>
-                				<input type="text" id="smokeItem" name="patientPersonalHistory.smokeItem" value="${patientPersonalHistory?.smokeItem}">
+                				<input type="text" id="smokeItem" name="patientPersonalHistory.smokeItem" value="${patientPersonalHistory?.smokeItem ?: ""}">
 					</p>
 
             				<p>
                 				<label>What is your average in a day?</label>
-						<input type="text" id="smokeAverage" name="patientPersonalHistory.smokeAverage" value="${patientPersonalHistory?.smokeAverage}">
+						<input type="text" id="smokeAverage" name="patientPersonalHistory.smokeAverage" value="${patientPersonalHistory?.smokeAverage ?: ""}">
 					</p>
         			</div>
          		</div>
@@ -1444,12 +1453,12 @@
                 		<div class="col6 last" id="do-alcohol">
                     			<p>
                         			<label>What alcohol do you drink?</label>
-						<input type="text" id="alcoholItem" name="patientPersonalHistory.alcoholItem" value="${patientPersonalHistory?.alcoholItem}">
+						<input type="text" id="alcoholItem" name="patientPersonalHistory.alcoholItem" value="${patientPersonalHistory?.alcoholItem ?: ""}">
 					</p>
 
                     			<p>
                         			<label>What is your average in a day?</label>
-						<input type="text" id="alcoholAverage" name="patientPersonalHistory.alcoholAverage" value="${patientPersonalHistory?.alcoholAverage}">
+						<input type="text" id="alcoholAverage" name="patientPersonalHistory.alcoholAverage" value="${patientPersonalHistory?.alcoholAverage ?: ""}">
 					</p>
                 		</div>
         		</div>
@@ -1464,12 +1473,12 @@
             			<div class="col6 last" id="do-drugs">
                 			<p>
                     				<label>What drugs do you take?</label>
-                    				<input type="text" id="drugItem" name="patientPersonalHistory.drugItem" value="${patientPersonalHistory?.drugItem}">
+                    				<input type="text" id="drugItem" name="patientPersonalHistory.drugItem" value="${patientPersonalHistory?.drugItem ?: ""}">
 					</p>
 
                 			<p>
                     				<label>What is your average in a day?</label>
-						<input type="text" id="drugAverage" name="patientPersonalHistory.drugAverage" value="${patientPersonalHistory?.drugAverage}">
+						<input type="text" id="drugAverage" name="patientPersonalHistory.drugAverage" value="${patientPersonalHistory?.drugAverage ?: ""}">
 					</p>
             			</div>
         		</div>
@@ -1492,7 +1501,7 @@
             			<div class="col6 last" id="do-exposed">
                 			<p>
                     				<label>Which factors?</label>
-                    				<input type="text" id="exposedHivFactor" name="patientPersonalHistory.exposedHivFactor" value="${patientPersonalHistory?.exposedHivFactor}">
+                    				<input type="text" id="exposedHivFactor" name="patientPersonalHistory.exposedHivFactor" value="${patientPersonalHistory?.exposedHivFactor ?: ""}">
                 			</p>
             			</div>
 			</div>
@@ -1506,7 +1515,7 @@
 
     				<div class="col6 last" id="do-support">
         				<label>Who else can support you during illness?</label>
-					<input type="text" id="otherHelp" name="patientPersonalHistory.otherHelp" value="${patientPersonalHistory?.otherHelp}">
+					<input type="text" id="otherHelp" name="patientPersonalHistory.otherHelp" value="${patientPersonalHistory?.otherHelp ?: ""}">
     				</div>
         		</div>
 

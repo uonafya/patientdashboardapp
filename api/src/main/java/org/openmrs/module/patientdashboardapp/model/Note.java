@@ -228,7 +228,9 @@ public class Note {
 		this.otherInstructions = otherInstructions;
 	}
 
-	public String getPhysicalExamination() {return physicalExamination;}
+	public String getPhysicalExamination() {
+		return physicalExamination;
+	}
 
 	public void setPhysicalExamination(String physicalExamination) {
 		this.physicalExamination = physicalExamination;
@@ -372,7 +374,7 @@ public class Note {
 	private void saveNoteDetails(Encounter encounter) {
 		for (Drug drug : this.drugs) {
 			String referralWardName = Context.getService(PatientQueueService.class).getOpdPatientQueueById(this.queueId)
-					.getReferralConceptName();
+					.getOpdConceptName();
 			drug.save(encounter, referralWardName);
 		}
 		for (Investigation investigation : this.investigations) {

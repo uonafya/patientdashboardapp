@@ -1,23 +1,14 @@
 <% 
 	ui.decorateWith("appui", "standardEmrPage", [title: "OPD Dashboard"]);
-	ui.includeJavascript("billingui", "moment.js")
+	
+	ui.includeJavascript("patientdashboardapp", "jq.print.js")
+	ui.includeJavascript("patientdashboardapp", "jq.slimscroll.js")
+	
 	ui.includeCss("patientdashboardapp", "patientdashboardapp.css");
 %>
 <script>
-    function strReplace(word) {
-        var res = word.replace("[", "");
-        res=res.replace("]","");
-        return res;
-    }
-
-    jQuery(document).ready(function () {
+    jq(document).ready(function () {
 		jq(".dashboard-tabs").tabs();
-		
-        jq('#surname').html(strReplace('${patient.names.familyName}')+',<em>surname</em>');
-		jq('#othname').html(strReplace('${patient.names.givenName}')+' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <em>other names</em>');
-		jq('#agename').html('${patient.age} years ('+ moment('${patient.birthdate}').format('DD,MMM YYYY') +')');
-		
-		jq('.tad').text('Last Visit: '+ moment('${previousVisit}').format('DD.MM.YYYY hh:mm')+' HRS');
     });
 </script>
 
@@ -28,7 +19,7 @@
 	input[type="text"], 
 	input[type="password"],
 	select {
-		border: 1px solid #aaa !important;
+		border: 1px solid #aaa;
 		border-radius: 2px !important;
 		box-shadow: none !important;
 		box-sizing: border-box !important;
@@ -188,6 +179,16 @@
 	.result-page i{
 		color: #aaa;
 	}
+	#person-detail{
+		display: none;
+	}
+	#modal-overlay {
+		background: #000 none repeat scroll 0 0;
+		opacity: 0.4 !important;
+	}
+	.red{
+		border: 1px solid #f00!important;
+	}
 </style>
 
 <openmrs:require privilege="Triage Queue" otherwise="/login.htm" redirect="/module/patientqueueapp/queue.page?app=patientdashboardapp.triage"/>
@@ -215,8 +216,8 @@
 	<div class="patient-header new-patient-header">
 		<div class="demographics">
 			<h1 class="name">
-				<span id="surname">${patient.names.familyName},<em>surname</em></span>
-				<span id="othname">${patient.names.givenName} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<em>other names</em></span>
+				<span id="surname">${patient.familyName},<em>surname</em></span>
+				<span id="othname">${patient.givenName} ${patient.middleName?patient.middleName:''}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<em>other names</em></span>
 				
 				<span class="gender-age">
 					<span>
@@ -226,7 +227,7 @@
 							Male
 						<% } %>
 						</span>
-					<span id="agename">${patient.age} years (15.Oct.1996) </span>
+					<span id="agename">${patient.age} years (${ui.formatDatePretty(patient.birthdate)}) </span>
 					
 				</span>
 			</h1>
@@ -237,7 +238,7 @@
 				Visit Status
 			</div>
 			<div class="tag">${patientStatus}</div>
-			<div class="tad">Last Visit</div>
+			<div class="tad">Last Visit: ${previousVisit?ui.formatDatetimePretty(previousVisit):'N/A'}</div>
 		</div>
 
 		<div class="identifiers">
@@ -256,7 +257,7 @@
 		<ul>
 			<li id="cn"><a href="#notes">Clinical Notes</a></li>
 			<li id="ti"><a href="#triage-info">Triage Information</a></li>
-			<li id="cs"><a href="#summary">Clinical Summary</a></li>
+			<li id="cs"><a href="#summary">Clinical History</a></li>
 			<li id="lr"><a href="#investigations">Lab Reports</a></li>
 		</ul>
 		

@@ -18,7 +18,7 @@ public class OutcomeModelTest extends AbstractModelTest {
     @Test
     public void save_shouldSaveOutcome() throws Exception {
         executeDataSet("notes-concepts.xml");
-        Option option = new Option(3,"Died");
+        Option option = new Option(3,null, "Died");
         Encounter encounter = createEncounter();
         Patient patient = encounter.getPatient();
         Assert.assertEquals(false, patient.getDead());
@@ -33,8 +33,8 @@ public class OutcomeModelTest extends AbstractModelTest {
         executeDataSet("notes-concepts.xml");
         Encounter encounter = createEncounter();
         Outcome outcome = new Outcome();
-        Option option = new Option(2,"Admit");
-        Option admitTo = new Option(9985,null);
+        Option option = new Option(2,null, "Admit");
+        Option admitTo = new Option(9985,null, null);
         outcome.setOption(option);
         outcome.setAdmitTo(admitTo);
         outcome.addObs(encounter, null);
@@ -46,7 +46,7 @@ public class OutcomeModelTest extends AbstractModelTest {
         executeDataSet("notes-concepts.xml");
         Encounter encounter = createEncounter();
         Outcome outcome = new Outcome();
-        Option option = new Option(1,"Follow-up");
+        Option option = new Option(1,null, "Follow-up");
         outcome.setOption(option);
         String dateTime = Context.getDateFormat().format(new Date());
         outcome.setFollowUpDate(dateTime);

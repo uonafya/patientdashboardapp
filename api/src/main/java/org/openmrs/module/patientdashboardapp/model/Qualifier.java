@@ -15,6 +15,7 @@ import org.openmrs.module.hospitalcore.model.Symptom;
 public class Qualifier {
 
 	private Integer id;
+	private String uuid;
 	private String label;
 	private Option answer;
 	private String freeText;
@@ -26,6 +27,7 @@ public class Qualifier {
 	public Qualifier(Concept qualifierConcept) {
 		this.id = qualifierConcept.getConceptId();
 		this.label = qualifierConcept.getDisplayString();
+		this.setUuid(qualifierConcept.getUuid());
 		this.options = new ArrayList<Option>();
 		for (ConceptAnswer conceptAnswer : qualifierConcept.getAnswers()) {
 			options.add(new Option(conceptAnswer.getAnswerConcept()));
@@ -38,6 +40,14 @@ public class Qualifier {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	public String getLabel() {

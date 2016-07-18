@@ -3,6 +3,7 @@ package org.openmrs.module.patientdashboardapp.page.controller;
 import org.apache.commons.collections.CollectionUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
+import org.openmrs.Encounter;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.appui.UiSessionContext;
@@ -21,10 +22,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
 
 public class MainPageController {
 
-    public void get(UiSessionContext sessionContext,
+    public String get(UiSessionContext sessionContext,
                     PageModel model,
                     PageRequest pageRequest,
                     UiUtils ui,
@@ -35,13 +37,26 @@ public class MainPageController {
                     @RequestParam(value = "visitStatus", required = false) String visitStatus) {
         pageRequest.getSession().setAttribute(ReferenceApplicationWebConstants.SESSION_ATTRIBUTE_REDIRECT_URL,ui.thisUrl());
         sessionContext.requireAuthentication();
+        Boolean isPriviledged = Context.hasPrivilege("Access OPD");
+        if(!isPriviledged){
+            return "redirect: index.htm";
+        }
         Patient patient = Context.getPatientService().getPatient(patientId);
         HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+        PatientQueueService patientQueueService = Context.getService(PatientQueueService.class);
+
         Map<String, String> attributes = PatientUtils.getAttributes(patient);
         Concept category = Context.getConceptService().getConceptByName("Patient Category");
         List<ConceptAnswer> categoryList = (category != null ? new ArrayList<ConceptAnswer>(category.getAnswers()) : null);
         if (CollectionUtils.isNotEmpty(categoryList)) {
             Collections.sort(categoryList, new ConceptAnswerComparator());
+        }
+
+        if (patient.getGender().equals("M")){
+            model.addAttribute("gender", "MALE");
+        }
+        else{
+            model.addAttribute("gender", "FEMALE");
         }
 
         model.addAttribute("patientId", patientId);
@@ -52,21 +67,29 @@ public class MainPageController {
         model.addAttribute("category",patient.getAttribute(14));
         model.addAttribute("address",patient.getPersonAddress());
         model.addAttribute("visitStatus",visitStatus);
-        model.addAttribute("previousVisit",hcs.getLastVisitTime(patient));
 
+        Encounter lastEncounter = patientQueueService.getLastOPDEncounter(patient);
+        Date lastVisitDate = null;
+        if(lastEncounter!=null) {
+            lastVisitDate = lastEncounter.getEncounterDatetime();
+        }
+        model.addAttribute("previousVisit", lastVisitDate);
+        model.addAttribute("date", new Date());
+
+        String status = null;
         if (queueId != null) {
             OpdPatientQueue opdPatientQueue = Context.getService(PatientQueueService.class).getOpdPatientQueueById(queueId);
             if (opdPatientQueue != null) {
                 opdPatientQueue.setStatus("Dr. "+Context.getAuthenticatedUser().getGivenName());
                 Context.getService(PatientQueueService.class).saveOpdPatientQueue(opdPatientQueue);
-                model.addAttribute("patientStatus", opdPatientQueue.getVisitStatus());
+                status = opdPatientQueue.getVisitStatus();
             }
-            else{
-                model.addAttribute("patientStatus", "Unknown");
+            if (status!= null){
+                model.addAttribute("patientStatus",status);
+            }else{
+                model.addAttribute("patientStatus" ,"Unknown");
             }
         }
-        else {
-            model.addAttribute("patientStatus", "Unknown");
-        }
+        return null;
     }
 }

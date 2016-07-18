@@ -5,18 +5,25 @@ public class Option {
 
 	private Integer id;
 	private String label;
+	private String uuid;
 
 	public Option() {
 	}
 
 	public Option(int id, String label) {
+		this(id, null, label);
+	}
+
+	public Option(int id, String uuid, String label) {
 		this.id = id;
 		this.label = label;
+		this.setUuid(uuid);
 	}
 
 	public Option(Concept answerConcept) {
 		this.id = answerConcept.getConceptId();
 		this.label = answerConcept.getDisplayString();
+		this.uuid = answerConcept.getUuid();
 	}
 
 	public Option(Integer id) {
@@ -29,6 +36,14 @@ public class Option {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	public String getLabel() {

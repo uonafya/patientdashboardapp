@@ -176,7 +176,7 @@ function Drug() {
 	self.formulation = ko.observable();
 	self.dosage = ko.observable();
 	self.comment = ko.observable();
-	self.numberOfDays = ko.observable(0);
+	self.numberOfDays = ko.observable();
 	self.dosageAndUnit = ko.computed(function(){
 		return self.dosage() + " " + (self.drugUnit() && self.drugUnit().label);
 	});

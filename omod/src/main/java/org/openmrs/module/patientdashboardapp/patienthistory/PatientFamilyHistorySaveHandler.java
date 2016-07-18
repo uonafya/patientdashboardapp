@@ -5,6 +5,7 @@
     import org.openmrs.module.hospitalcore.PatientQueueService;
     import org.openmrs.module.hospitalcore.model.PatientFamilyHistory;
 
+    import java.util.Date;
     /**
      * Created by USER on 2/17/2016.
      */
@@ -18,6 +19,10 @@
             if (patientFamilyHistory.getPatientId() == null) {
                 patientFamilyHistory.setPatientId(patientId);
             }
+            if(patientFamilyHistory.getCreatedOn() == null){
+                patientFamilyHistory.setCreatedOn(updatedPatientFamilyHistory.getCreatedOn());
+            }
+
             if(StringUtils.isNotBlank(updatedPatientFamilyHistory.getFatherStatus())){
                 patientFamilyHistory.setFatherStatus(updatedPatientFamilyHistory.getFatherStatus());
             }
