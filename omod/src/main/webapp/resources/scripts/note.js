@@ -127,6 +127,7 @@ function Note(noteObj) {
 function Sign(signObj) {
 	this.id = signObj.id;
 	this.label = signObj.label;
+	this.uuid = signObj.uuid;
 	this.qualifiers = ko.observableArray([]);
 	this.qualifiers(signObj.qualifiers);
 }

@@ -304,7 +304,8 @@
 					for (var i in data) {
 						var result = {
 							label: data[i].name,
-							value: data[i].id
+							value: data[i].id,
+							uuid: data[i].uuid
 						};
 						results.push(result);
 					}
@@ -327,6 +328,7 @@
 					note.addSign(new Sign({
 						"id": ui.item.value,
 						"label": ui.item.label,
+						"uuid":ui.item.uuid,
 						"qualifiers": qualifiers
 					}));
 					
