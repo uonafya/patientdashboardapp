@@ -518,15 +518,6 @@
 					jq().toastmessage('showErrorToast', "An error occurred while saving. Please contact your system administrator");
 				});
 		});
-
-		jq(".cancel").on("click", function(e) {
-			e.preventDefault();
-		});
-
-		jq(".cancel").on("click", function(e) {
-			e.preventDefault();
-		});
-
 		loadExternalReferralCases();
 		
 		jq("#notes-form").on('focus', '#follow-up-date', function() {
