@@ -23,6 +23,7 @@ import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 public class Note {
 
@@ -236,6 +237,7 @@ public class Note {
 		this.physicalExamination = physicalExamination;
 	}
 
+	@Transactional
 	public Encounter save() {
 		Patient patient = Context.getPatientService().getPatient(this.patientId);
 		Obs obsGroup = Context.getService(HospitalCoreService.class).getObsGroupCurrentDate(patient.getPersonId());
@@ -384,6 +386,10 @@ public class Note {
 			} catch (Exception e) {
 				logger.error("Error saving investigation {}({}): {}", new Object[] { investigation.getId(), investigation.getLabel(), e.getMessage() });
 			}
+		}
+		for(Sign sign: this.signs)
+		{
+			sign.save(encounter);
 		}
 		if (this.outcome != null) {
 			this.outcome.save(encounter);

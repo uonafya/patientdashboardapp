@@ -501,7 +501,7 @@
 							"procedures", "queueId", "signs", "referredTo",
 							"outcome", "admitTo", "followUpDate", "option",
 							"drugs", "comment", "externalReferral", "formulation", "specify", "dosage", "drugUnit", "frequency",
-							"drugName", "numberOfDays"
+							"drugName", "numberOfDays", "qualifiers","answer","freeText"
 						])
 					},
 					dataType: 'json'
