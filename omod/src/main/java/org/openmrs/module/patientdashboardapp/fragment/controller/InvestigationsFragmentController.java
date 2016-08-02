@@ -48,6 +48,7 @@ public class InvestigationsFragmentController {
 			){
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		Order labOrder = Context.getOrderService().getOrder(orderId);
+
 		Map<String, String> sortedResults = new TreeMap<String, String>();
 		List<SimpleObject> results = new ArrayList<SimpleObject>();
 		if (labOrder.getEncounter() != null) {
