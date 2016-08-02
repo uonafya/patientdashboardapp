@@ -171,7 +171,7 @@ public class VisitDetail {
 		}
 		
 		VisitDetail visitDetail = new VisitDetail();
-		if (provisionalDiagnosisList.length() > 0) {
+		if (provisionalDiagnosisList.length() > 0 || finalDiagnosisList.length() > 0) {
 			visitDetail.setDiagnosis(provisionalDiagnosisList.append(finalDiagnosisList).substring(0, provisionalDiagnosisList.length() - ", ".length()));
 		}
 		if (symptomList.length() > 0) {
