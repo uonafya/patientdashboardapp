@@ -104,7 +104,7 @@ public class Qualifier {
 				qualifierHasBeenSaved = true;
 			}
 		}
-		if (!qualifierHasBeenSaved) {
+		if (!qualifierHasBeenSaved && (this.answer != null || StringUtils.isNotBlank(this.freeText))) {
 			Question question = new Question();
 			question.setSymptom(symptom);
 			question.setQuestionConcept(questionConcept);

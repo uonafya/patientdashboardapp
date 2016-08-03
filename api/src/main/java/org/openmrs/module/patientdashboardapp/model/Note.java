@@ -387,8 +387,7 @@ public class Note {
 				logger.error("Error saving investigation {}({}): {}", new Object[] { investigation.getId(), investigation.getLabel(), e.getMessage() });
 			}
 		}
-		for(Sign sign: this.signs)
-		{
+		for(Sign sign: this.signs) {
 			sign.save(encounter);
 		}
 		if (this.outcome != null) {
