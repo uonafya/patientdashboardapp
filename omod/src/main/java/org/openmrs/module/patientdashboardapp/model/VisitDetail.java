@@ -1,13 +1,9 @@
 package org.openmrs.module.patientdashboardapp.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.openmrs.Concept;
-import org.openmrs.ConceptAnswer;
-import org.openmrs.ConceptClass;
 import org.openmrs.Drug;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
@@ -17,7 +13,6 @@ import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 public class VisitDetail {
 	private static final String FINAL_DIAGNOSIS_CONCEPT_NAME = "FINAL DIAGNOSIS";
 	private static final String OTHER_SYMPTOM = "00acdc90-a641-41de-ae3a-e9b8d7a71a0f";
-	private static final String WHAT_IS_THE_OTHER_SYMPTOM = "417c40f1-edbf-457b-8ef1-580f26b699fc";
 	private String history = "No History";
 	private String symptoms = "No symptoms";
 	private String diagnosis = "No diagnosis";
@@ -132,7 +127,6 @@ public class VisitDetail {
         Concept visitOutcomeConcept = Context.getConceptService().getConcept(visitOutcomeName);
         Concept internalReferralConcept = Context.getConceptService().getConcept(internalReferralConceptName);
         Concept externalReferralConcept = Context.getConceptService().getConcept(externalReferralConceptName);
-		Concept whatsTheOtherSymptom = Context.getConceptService().getConceptByUuid(WHAT_IS_THE_OTHER_SYMPTOM);
 		Concept otherSymptom = Context.getConceptService().getConceptByUuid(OTHER_SYMPTOM);
 
 		StringBuffer symptomList = new StringBuffer();
@@ -147,19 +141,12 @@ public class VisitDetail {
         StringBuffer externalReferral = new StringBuffer();
 		for (Obs obs :encounter.getAllObs()) {
 			if (obs.getConcept().equals(symptomConcept)) {
-				symptomList.append(obs.getValueCoded().getDisplayString());
-
-				for(ConceptAnswer conceptAnswer : obs.getConcept().getAnswers())
-				{
-					if(conceptAnswer.getConcept().equals(otherSymptom))
-					{
-						for (Obs obs1 : encounter.getAllObs()) {
-							if(obs.getConcept().getConceptClass().equals(whatsTheOtherSymptom)) {
-								symptomList.append(": ");
-								symptomList.append(obs1.getValueText());
-							}
-						}
+				if (obs.getValueCoded().equals(otherSymptom)) {
+					for (Obs nonCodedObs: obs.getGroupMembers()) {
+						symptomList.append(nonCodedObs.getValueText());
 					}
+				} else {
+					symptomList.append(obs.getValueCoded().getDisplayString());
 				}
 				symptomList.append(", ");
 			}

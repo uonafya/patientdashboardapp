@@ -309,6 +309,12 @@
 						};
 						results.push(result);
 					}
+					var nonCoded = {
+						label: "(Non-coded) " + request.term,
+						value: afyaehmsConstants.OTHER_SYMPTOM_ID,
+						uuid: afyaehmsConstants.OTHER_SYMPTOM_UID
+					};
+					results.push(nonCoded);
 					response(results);
 				});
 			},
