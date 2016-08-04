@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
@@ -14,6 +15,9 @@ import org.openmrs.module.hospitalcore.model.Symptom;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 
 public class Sign {
+
+	private static final int OTHER_NON_CODED_5622 = 5622;
+	private static final int NON_CODED_SYMPTOM_5693 = 5693;
 
 	public Sign() {
 	}
@@ -64,7 +68,18 @@ public class Sign {
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
 		List<Obs> symptomObs = queueService.getAllSymptom(patientId);
 		for (Obs signObs : symptomObs) {
-			previousSigns.add(new Sign(signObs.getValueCoded()));
+			if (signObs.getValueCoded().getConceptId() == NON_CODED_SYMPTOM_5693) {
+				if (signObs.getGroupMembers() != null) {
+					for (Obs nonCodedSignObs : signObs.getGroupMembers()) {
+						Sign nonCodedSign = new Sign();
+						nonCodedSign.id = signObs.getValueCoded().getConceptId();
+						nonCodedSign.label = nonCodedSignObs.getValueText();
+						previousSigns.add(nonCodedSign);
+					}
+				}
+			} else {
+				previousSigns.add(new Sign(signObs.getValueCoded()));
+			}
 		}
 		return previousSigns;
 	}
@@ -85,6 +100,17 @@ public class Sign {
 			obsSymptom.setEncounter(encounter);
 			obsSymptom.setPerson(encounter.getPatient());
 			encounter.addObs(obsSymptom);
+			if (this.id == NON_CODED_SYMPTOM_5693) {
+				Obs nonCodedSymptom = new Obs();
+				nonCodedSymptom.setConcept(Context.getConceptService().getConcept(OTHER_NON_CODED_5622));
+				nonCodedSymptom.setObsGroup(obsSymptom);
+				nonCodedSymptom.setValueText(this.label);
+				nonCodedSymptom.setCreator(encounter.getCreator());
+				nonCodedSymptom.setDateCreated(encounter.getDateCreated());
+				nonCodedSymptom.setEncounter(encounter);
+				nonCodedSymptom.setPerson(encounter.getPatient());
+				encounter.addObs(nonCodedSymptom);
+			}
 		}
 	}
 
@@ -141,10 +167,11 @@ public class Sign {
 			return false;
 		}
 		Sign otherSign = (Sign) obj;
-		return (this.id.equals(otherSign.id))
-				&& ((this.id == null)
-						? otherSign.id == null
-						: this.id.equals(otherSign.id));
+		if (this.id.equals(NON_CODED_SYMPTOM_5693)) {
+			return this.label == null ? otherSign.label == null : StringUtils.equalsIgnoreCase(this.label, otherSign.label);
+		} else {
+			return ((this.id == null) ? otherSign.id == null : this.id.equals(otherSign.id));
+		}
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 
 public class VisitDetail {
 	private static final String FINAL_DIAGNOSIS_CONCEPT_NAME = "FINAL DIAGNOSIS";
+	private static final String OTHER_SYMPTOM = "00acdc90-a641-41de-ae3a-e9b8d7a71a0f";
 	private String history = "No History";
 	private String symptoms = "No symptoms";
 	private String diagnosis = "No diagnosis";
@@ -126,7 +127,8 @@ public class VisitDetail {
         Concept visitOutcomeConcept = Context.getConceptService().getConcept(visitOutcomeName);
         Concept internalReferralConcept = Context.getConceptService().getConcept(internalReferralConceptName);
         Concept externalReferralConcept = Context.getConceptService().getConcept(externalReferralConceptName);
-		
+		Concept otherSymptom = Context.getConceptService().getConceptByUuid(OTHER_SYMPTOM);
+
 		StringBuffer symptomList = new StringBuffer();
 		StringBuffer provisionalDiagnosisList = new StringBuffer();
 		StringBuffer finalDiagnosisList = new StringBuffer();
@@ -137,9 +139,16 @@ public class VisitDetail {
         StringBuffer visitOutcome = new StringBuffer();
         StringBuffer internalReferral = new StringBuffer();
         StringBuffer externalReferral = new StringBuffer();
-		for (Obs obs : encounter.getAllObs()) {
+		for (Obs obs :encounter.getAllObs()) {
 			if (obs.getConcept().equals(symptomConcept)) {
-				symptomList.append(obs.getValueCoded().getDisplayString()).append(", ");
+				if (obs.getValueCoded().equals(otherSymptom)) {
+					for (Obs nonCodedObs: obs.getGroupMembers()) {
+						symptomList.append(nonCodedObs.getValueText());
+					}
+				} else {
+					symptomList.append(obs.getValueCoded().getDisplayString());
+				}
+				symptomList.append(", ");
 			}
 			if (obs.getConcept().equals(provisionalDiagnosisConcept)) {
 				provisionalDiagnosisList.append("(Provisional)").append(obs.getValueCoded().getDisplayString()).append(", ");

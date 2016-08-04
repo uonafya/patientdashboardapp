@@ -72,7 +72,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 										</div>
 										<div data-bind="if: options().length === 0" >
 											<p>
-												<input type="text" data-bind="value: \$parent.freeText" >
+												<input type="text" data-bind="value: freeText" >
 											</p>
 										</div>
 									</li>
@@ -371,7 +371,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 						<table id="summaryTable">
 							<tr>
 								<td><span class="status active"></span>Symptoms</td>
-								<td data-bind="foreach: signs">									
+								<td data-bind="foreach: signs">
 									<span data-bind="text: label"></span>
 									<span data-bind="if: (\$index() !== (\$parent.signs().length - 1))"><br/></span>
 								</td>
