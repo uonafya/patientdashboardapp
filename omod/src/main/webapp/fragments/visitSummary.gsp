@@ -12,6 +12,7 @@
 				{ 'encounterId' : jq(visitSummary).find(".encounter-id").val() }
 			).success(function (data) {
 				var visitDetailTemplate =  _.template(jq("#visit-detail-template").html());
+				console.log(data.notes);
 				jq("#visit-detail").html(visitDetailTemplate(data.notes));
 
 				if (data.drugs.length > 0) {

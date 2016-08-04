@@ -304,10 +304,17 @@
 					for (var i in data) {
 						var result = {
 							label: data[i].name,
-							value: data[i].id
+							value: data[i].id,
+							uuid: data[i].uuid
 						};
 						results.push(result);
 					}
+					var nonCoded = {
+						label: "(Non-coded) " + request.term,
+						value: afyaehmsConstants.OTHER_SYMPTOM_ID,
+						uuid: afyaehmsConstants.OTHER_SYMPTOM_UID
+					};
+					results.push(nonCoded);
 					response(results);
 				});
 			},
@@ -324,9 +331,11 @@
 								return new Option(option.id, option.label);
 							}));
 					});
+					
 					note.addSign(new Sign({
 						"id": ui.item.value,
-						"label": ui.item.label,
+						"label": ui.item.label.replace(/\\(Non-coded\\) /i, ''),
+						"uuid":ui.item.uuid,
 						"qualifiers": qualifiers
 					}));
 					
@@ -499,7 +508,7 @@
 							"procedures", "queueId", "signs", "referredTo",
 							"outcome", "admitTo", "followUpDate", "option",
 							"drugs", "comment", "externalReferral", "formulation", "specify", "dosage", "drugUnit", "frequency",
-							"drugName", "numberOfDays"
+							"drugName", "numberOfDays", "qualifiers","answer","freeText"
 						])
 					},
 					dataType: 'json'
@@ -518,15 +527,6 @@
 					jq().toastmessage('showErrorToast', "An error occurred while saving. Please contact your system administrator");
 				});
 		});
-
-		jq(".cancel").on("click", function(e) {
-			e.preventDefault();
-		});
-
-		jq(".cancel").on("click", function(e) {
-			e.preventDefault();
-		});
-
 		loadExternalReferralCases();
 		
 		jq("#notes-form").on('focus', '#follow-up-date', function() {

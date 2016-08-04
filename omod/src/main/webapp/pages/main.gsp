@@ -7,9 +7,34 @@
 	ui.includeCss("patientdashboardapp", "patientdashboardapp.css");
 %>
 <script>
+	var confirmdialog
     jq(document).ready(function () {
-		jq(".dashboard-tabs").tabs();
-    });
+
+    	confirmdialog = emr.setupConfirmationDialog({
+            dialogOpts: {
+                overlayClose: false,
+                close: true
+            },
+            selector: '#confirmDialog',
+            actions: {
+                confirm: function () {
+                    confirmdialog.close();
+                    window.location.href = '${ui.pageLink("patientqueueapp", "opdQueue", [app: "patientdashboardapp.opdqueue"])}';
+										},
+										cancel : function() {
+											confirmdialog.close();
+										}
+									}
+								});
+
+						jq(".dashboard-tabs").tabs();
+						jq(".cancelButton").on("click", function(e) {
+							e.preventDefault();
+							confirmdialog.show();
+
+						});
+
+					});
 </script>
 
 <style>
@@ -188,6 +213,9 @@
 	}
 	.red{
 		border: 1px solid #f00!important;
+	}
+	#cancelButton{
+		margin-left: 5px;
 	}
 </style>
 

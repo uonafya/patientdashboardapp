@@ -72,7 +72,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 										</div>
 										<div data-bind="if: options().length === 0" >
 											<p>
-												<input type="text" data-bind="value: \$parent.freeText" >
+												<input type="text" data-bind="value: freeText" >
 											</p>
 										</div>
 									</li>
@@ -371,7 +371,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 						<table id="summaryTable">
 							<tr>
 								<td><span class="status active"></span>Symptoms</td>
-								<td data-bind="foreach: signs">									
+								<td data-bind="foreach: signs">
 									<span data-bind="text: label"></span>
 									<span data-bind="if: (\$index() !== (\$parent.signs().length - 1))"><br/></span>
 								</td>
@@ -441,18 +441,33 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 					</div>
 				</div>				
 			</div>			
-
+		
 			<div id="confirmationQuestion">
 				<p style="display: inline;">
 					<button class="submitButton confirm" style="float: right">Submit</button>
 				</p>
 
-				<button class="cancel" style="margin-left: 5px;">Cancel</button>
+				<button id="cancelButton" class="cancel cancelButton" style="margin-left: 5px;">Cancel</button>
 				<p style="display: inline">&nbsp;</p>
 			</div>
 		</div>
     </form>
 </div>
+<div id="confirmDialog" class="dialog" style="display: none;">
+        <div class="dialog-header">
+            <i class="icon-save"></i>
+
+            <h3>Confirm</h3>
+        </div>
+
+
+        <div class="dialog-content">
+            <h3>Cancelling will lead to loss of data,are you sure you want to do this?</h3>
+
+            <span  class="button confirm right" style="float: right">Confrim</span>
+            <span class="button cancel" >Cancel</span>
+        </div>
+    </div>
 
 <div id="prescription-dialog" class="dialog" style="display:none;">
     <div class="dialog-header">

@@ -65,7 +65,7 @@ public class ClinicalNotesFragmentController {
     	for (ConceptAnswer conceptAnswer : signConcept.getAnswers()) {
     		qualifiers.add(new Qualifier(conceptAnswer.getAnswerConcept()));
     	}
-    	return SimpleObject.fromCollection(qualifiers, ui, "id", "label", "options.id", "options.label", "uuid");
+    	return SimpleObject.fromCollection(qualifiers, ui, "id", "label", "uuid", "options.id", "options.label", "options.uuid");
     }
     
     public List<SimpleObject> getSymptoms(@RequestParam(value="q") String name,UiUtils ui)
