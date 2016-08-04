@@ -3,7 +3,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>patientdashboardapp</artifactId>
-	<version>1.1</version>
+	<version>1.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Patient Dashboard App Module</name>
 	<description>Depends on openmrs core version 1.9.8</description>
