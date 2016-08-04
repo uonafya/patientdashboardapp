@@ -331,9 +331,10 @@
 								return new Option(option.id, option.label);
 							}));
 					});
+					
 					note.addSign(new Sign({
 						"id": ui.item.value,
-						"label": ui.item.label,
+						"label": ui.item.label.replace(/\\(Non-coded\\) /i, ''),
 						"uuid":ui.item.uuid,
 						"qualifiers": qualifiers
 					}));
