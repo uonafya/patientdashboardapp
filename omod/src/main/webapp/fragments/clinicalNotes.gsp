@@ -373,13 +373,6 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 								<td><span class="status active"></span>Symptoms</td>
 								<td data-bind="foreach: signs">
 									<span data-bind="text: label"></span>
-									<span data-bind="if: (uuid === '00acdc90-a641-41de-ae3a-e9b8d7a71a0f')" >
-										<span data-bind="foreach: qualifiers">
-											<span> : </span>
-											<span data-bind="text: freeText"></span>
-										</span>
-									</span>
-
 									<span data-bind="if: (\$index() !== (\$parent.signs().length - 1))"><br/></span>
 								</td>
 							</tr>
