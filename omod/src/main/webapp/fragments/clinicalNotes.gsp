@@ -36,6 +36,11 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 		border-color: #404040; 
 		padding: 0px 10px 3px;
 	}
+	#diagnosis-carrier input[type="radio"] {
+		-webkit-appearance: checkbox;
+		-moz-appearance: checkbox;
+		-ms-appearance: checkbox;
+	}
 </style>
 
 <div id="content">
@@ -115,25 +120,6 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 				<legend>Diagnosis</legend>
 				<div>
 					<h2>Patient's Diagnosis <span class="important">*</span></h2>
-					<div class="tasks-list">
-						<div class="left">
-							<label id="ts01" class="tasks-list-item" for="provisional-diagnosis">
-								
-								<input type="radio" name="diagnosis_type" id="provisional-diagnosis" value="true" data-bind="checked: diagnosisProvisional" class="tasks-list-cb focused"/>
-								
-								<span class="tasks-list-mark"></span>
-								<span class="tasks-list-desc">Provisional</span>
-							</label>
-						</div>
-						
-						<div class="left">
-							<label class="tasks-list-item" for="final-diagnosis">
-								<input type="radio" name="diagnosis_type" id="final-diagnosis" value="false" data-bind="checked: diagnosisProvisional" class="tasks-list-cb"/>
-								<span class="tasks-list-mark"></span>
-								<span class="tasks-list-desc">Final</span>
-							</label>
-						</div>
-					</div>
 					
 					<div>
 						<p class="input-position-class">
@@ -157,11 +143,11 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 										<span data-bind="text: label" style="display: block; font-weight: bold;"></span>
 										
 										<label style="display: inline-block; font-size: 11px; padding: 0px; cursor: pointer; margin: 0px 0px 0px -5px;">
-											<input class="chk-provisional" type="checkbox" style="margin-top: 5px"/>Provisional
+											<input value="true"  data-bind="checked: provisional" class="chk-provisional" type="radio" style="margin-top: 3px"/>Provisional
 										</label>
 										
 										<label style="display: inline-block; font-size: 11px; padding: 0px; cursor: pointer; margin: 0">
-											<input class="chk-final" type="checkbox" style="margin-top: 5px"/>Final
+											<input value="false" data-bind="checked: provisional" class="chk-final" type="radio" style="margin-top: 3px"/>Final
 										</label>
 									</div>
 									

@@ -154,11 +154,6 @@
 	});
 	note.diagnoses(mappedDiagnoses);
 
-	// final diagnoses are never returned
-	if (mappedDiagnoses.length > 0) {
-		note.diagnosisProvisional("true");
-	}
-
 	var mappedInvestigations = jq.map(getJSON(previousNote.investigations), function(investigation) {
 		return new Investigation(investigation);
 	});
@@ -481,26 +476,21 @@
 			}
 		});
 		
-		jq("#diagnosis-carrier").on("click", "input", function(){
-			var icon = jq(this).parents(".diagnosis-carrier-div").find("input");
+		jq("#diagnosis-carrier").on("click", "inputs", function(){
+			var provDiagnosisInput = jq(this).parents(".diagnosis-carrier-div").find(".chk-provisional");
 			//
 			var chkbox = jq(this).attr('class');			
 			if (chkbox == 'chk-provisional'){
 				jq(this).parents(".diagnosis-carrier-div").find(".chk-final").prop('checked', false);
-				jq(this).prop('checked', true);
 			}
 			else{
 				jq(this).parents(".diagnosis-carrier-div").find(".chk-provisional").prop('checked', false);
-				jq(this).prop('checked', true);
 			}
 		});
 		
 
 		jq(".submitButton").on("click", function(event) {
-			if (!jq('input[name="diagnosis_type"]:checked').val()){
-				jq().toastmessage('showErrorToast', "Ensure that Provisional or Final Diagnosis has been selected first before you continue!");
-				return false
-			}
+			
 		
 			event.preventDefault();
 			jq().toastmessage({
@@ -516,7 +506,7 @@
 					type: 'POST',
 					url: '${ ui.actionLink("patientdashboardapp", "clinicalNoteProcessor", "processNote", [ successUrl: successUrl ]) }',
 					data: {
-						note: ko.toJSON(note, ["label", "id", "admitted", "diagnosisProvisional",
+						note: ko.toJSON(note, ["label", "id", "admitted","provisional",
 							"diagnoses", "illnessHistory", "referralReasons", "externalReferralComments", "physicalExamination",
 							"inpatientWarads", "investigations", "opdId",
 							"opdLogId", "otherInstructions", "patientId",
