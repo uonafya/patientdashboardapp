@@ -27,6 +27,15 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 		float: right;
 		margin-right: 10px;
 	}
+	.icon-remove{
+		cursor: pointer!important;
+	}
+	.diagnosis-carrier-div{
+		border-width: 1px 1px 1px 10px; 
+		border-style: solid; 
+		border-color: #404040; 
+		padding: 0px 10px 3px;
+	}
 </style>
 
 <div id="content">
@@ -142,9 +151,20 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 							</header>
 
 							<div id="diagnosis-carrier" data-bind="foreach: diagnoses" style="margin-top: -2px">
-								<div class="diagnosis-container">
+								<div class="diagnosis-container" style="border-top: medium none !important;">
 									<span class="right pointer" data-bind="click: \$root.removeDiagnosis"><i class="icon-remove small"></i></span>
-									<div data-bind="text: label"></div>
+									<div class="diagnosis-carrier-div" style="border-width: 1px 1px 1px 10px; border-style: solid; border-color: -moz-use-text-color; padding: 0px 10px 3px;">
+										<span data-bind="text: label" style="display: block; font-weight: bold;"></span>
+										
+										<label style="display: inline-block; font-size: 11px; padding: 0px; cursor: pointer; margin: 0px 0px 0px -5px;">
+											<input class="chk-provisional" type="checkbox" style="margin-top: 5px"/>Provisional
+										</label>
+										
+										<label style="display: inline-block; font-size: 11px; padding: 0px; cursor: pointer; margin: 0">
+											<input class="chk-final" type="checkbox" style="margin-top: 5px"/>Final
+										</label>
+									</div>
+									
 								</div>
 							</div>
 						</div>

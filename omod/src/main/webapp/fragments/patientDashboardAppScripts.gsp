@@ -480,6 +480,21 @@
 				icon.removeClass("icon-caret-up").addClass("icon-caret-down");
 			}
 		});
+		
+		jq("#diagnosis-carrier").on("click", "input", function(){
+			var icon = jq(this).parents(".diagnosis-carrier-div").find("input");
+			//
+			var chkbox = jq(this).attr('class');			
+			if (chkbox == 'chk-provisional'){
+				jq(this).parents(".diagnosis-carrier-div").find(".chk-final").prop('checked', false);
+				jq(this).prop('checked', true);
+			}
+			else{
+				jq(this).parents(".diagnosis-carrier-div").find(".chk-provisional").prop('checked', false);
+				jq(this).prop('checked', true);
+			}
+		});
+		
 
 		jq(".submitButton").on("click", function(event) {
 			if (!jq('input[name="diagnosis_type"]:checked').val()){
@@ -617,16 +632,15 @@
 						});
 						prescription.drug().frequencyOpts(frequency);
 					});
-					jq.getJSON('${ui.actionLink("patientdashboardapp","clinicalNotes","getDrugUnit")}')
-						.success(function(data) {
-							var drugUnit = jq.map(data, function(drugUnit) {
-								return new DrugUnit({
-									id: drugUnit.id,
-									label: drugUnit.label
-								});
+					jq.getJSON('${ui.actionLink("patientdashboardapp","clinicalNotes","getDrugUnit")}').success(function(data) {
+						var drugUnit = jq.map(data, function(drugUnit) {
+							return new DrugUnit({
+								id: drugUnit.id,
+								label: drugUnit.label
 							});
-							prescription.drug().drugUnitsOptions(drugUnit);
 						});
+						prescription.drug().drugUnitsOptions(drugUnit);
+					});
 
 				},
 				open: function() {
