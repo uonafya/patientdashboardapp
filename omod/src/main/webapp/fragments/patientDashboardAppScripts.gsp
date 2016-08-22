@@ -304,17 +304,20 @@
 					for (var i in data) {
 						var result = {
 							label: data[i].name,
-							value: data[i].id,
+							value: data[i].name,
+							id: data[i].id,
 							uuid: data[i].uuid
 						};
 						results.push(result);
 					}
 					var nonCoded = {
 						label: "(Non-coded) " + request.term,
-						value: afyaehmsConstants.OTHER_SYMPTOM_ID,
+						value: "(Non-coded) " + request.term,
+						id: afyaehmsConstants.OTHER_SYMPTOM_ID,
 						uuid: afyaehmsConstants.OTHER_SYMPTOM_UID
 					};
 					results.push(nonCoded);
+					console.log("#######"+results);
 					response(results);
 				});
 			},
@@ -323,12 +326,12 @@
 				event.preventDefault();
 				jq(this).val(ui.item.label);
 				jq.getJSON('${ ui.actionLink("patientdashboardapp", "ClinicalNotes", "getQualifiers") }', {
-					signId: ui.item.value
+					signId: ui.item.id
 				}).success(function(data) {
 					var qualifiers = jq.map(data, function(qualifier) {
-						return new Qualifier(qualifier.id, qualifier.label,
+						return new Qualifier( qualifier.label,qualifier.id,
 							jq.map(qualifier.options, function(option) {
-								return new Option(option.id, option.label);
+								return new Option( option.label, option.id);
 							}));
 					});
 					
