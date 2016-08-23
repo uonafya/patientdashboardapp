@@ -163,7 +163,22 @@
 		return new Procedure(procedure);
 	});
 	note.procedures(mappedProcedures);
-
+	
+	function verifyDiagnosis(){		
+		jq('.diagnosis-container').children('div').each(function () {
+			if (jq(this).find('input:checked').length == 0){
+				jq("#diagnosis-set").val('');
+				return false;
+			}
+		});
+		
+		if (note.diagnoses().length > 0){
+			jq("#diagnosis-set").val('SET');
+		}
+		else{
+			jq("#diagnosis-set").val('');		
+		}
+	}
 
 	jq(function() {
 		ko.applyBindings(note, jq("#notes-form")[0]);
@@ -280,14 +295,8 @@
 			jq('#summaryTable tr:eq('+ rows +') td:eq(1)').text(text);
 		});
 		
-		jq('input[type=radio][name=diagnosis_type]').change(function() {
-			if (this.value == 'true') {
-				jq('#title-diagnosis').text('PROVISIONAL DIAGNOSIS');
-			} else {
-				jq('#title-diagnosis').text('FINAL DIAGNOSIS');
-				note.diagnoses.removeAll();
-				jq('#diagnosis-set').val('');
-			}
+		jq('#diagnosis-carrier input').change(function(){
+			verifyDiagnosis();	
 		});
 		
 		jq("#symptom").autocomplete({
@@ -373,7 +382,8 @@
 					label: ui.item.label
 				}));
 				
-				jq("#diagnosis-set").val("Diagnosis set");
+				verifyDiagnosis();
+				
 				jq("#diagnosis-lbl").hide();
 				jq('#diagnosis').focus();
 				jq('#diagnosis').val('');
@@ -656,7 +666,7 @@
 		}
 		
 		if (note.diagnoses().length > 0){
-			jq('#diagnosis-set').val('diagnosis-set');
+			verifyDiagnosis();
 		}
 		
 		if (note.procedures().length > 0){
