@@ -165,7 +165,7 @@
 	note.procedures(mappedProcedures);
 	
 	function verifyDiagnosis(){
-		var anyUnchecked = false;		
+		var anyUnchecked = false;
 		
 		jq('.diagnosis-container').children('div').each(function () {
 			if (jq(this).find('input:checked').length === 0){
@@ -298,7 +298,7 @@
 			jq('#summaryTable tr:eq('+ rows +') td:eq(1)').text(text);
 		});
 		
-		jq('#diagnosis-carrier input').change(function(){
+		jq('#diagnosis-carrier').on('click', 'input', function(){
 			verifyDiagnosis();	
 		});
 		
