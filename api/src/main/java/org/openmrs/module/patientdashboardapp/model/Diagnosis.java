@@ -31,6 +31,8 @@ public class Diagnosis {
 	public Integer getId() {
 		return id;
 	}
+
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -40,19 +42,22 @@ public class Diagnosis {
 	public void setLabel(String label) {
 		this.label = label;
 	}
+	public boolean isProvisional() { return provisional; }
+	public void setProvisional(boolean provisional) { this.provisional = provisional; }
 
 	private Integer id;
 	private String label;
+	private boolean provisional;
 
-	public void addObs(Encounter encounter, Obs obsGroup, Boolean isProvisional) {
+	public void addObs(Encounter encounter, Obs obsGroup) {
 		List<Diagnosis> previousProvisionalDiagnoses = getPreviousDiagnoses(encounter.getPatient().getPatientId());
-		if (isProvisional && !previousProvisionalDiagnoses.contains(this)) {
+		if (isProvisional() && !previousProvisionalDiagnoses.contains(this)) {
 			String provisionalDiagnosisConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
 			Concept diagnosisConcept = Context.getConceptService().getConcept(provisionalDiagnosisConceptName);
 			addObsToEncounter(encounter, obsGroup, diagnosisConcept);
 		}
 		
-		if (!isProvisional) {
+		if (!isProvisional()) {
 			Concept diagnosisConcept = Context.getConceptService().getConcept(FINAL_DIAGNOSIS_CONCEPT_NAME);
 			addObsToEncounter(encounter, obsGroup, diagnosisConcept);
 		}
@@ -77,7 +82,9 @@ public class Diagnosis {
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
 		List<Obs> diagnosisObsns = queueService.getAllDiagnosis(patientId);
 		for (Obs diagnosisObs : diagnosisObsns) {
-			previousDiagnoses.add(new Diagnosis(diagnosisObs.getValueCoded()));
+			Diagnosis diagnosis = new Diagnosis(diagnosisObs.getValueCoded());
+			diagnosis.setProvisional(true);
+			previousDiagnoses.add(diagnosis);
 		}
 		
 		logger.debug("Found " + previousDiagnoses.size() + " previous provisional diagnoses");

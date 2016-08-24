@@ -10,7 +10,6 @@ function Note(noteObj) {
 	self.opdId = noteObj.opdId;
 	self.opdLogId = noteObj.opdLogId;
 	self.signs = ko.observableArray([]);
-	self.diagnosisProvisional = ko.observable(noteObj.diagnosisProvisional);
 	self.diagnoses = ko.observableArray([]);
 	self.procedures = ko.observableArray([]);
 	self.investigations = ko.observableArray([]);
@@ -164,6 +163,7 @@ function Option(id, label) {
 function Diagnosis(diagnosisObj) {
 	this.id = diagnosisObj.id;
 	this.label = diagnosisObj.label;
+	this.provisional = ko.observable(diagnosisObj.provisional);
 }
 
 function Investigation(investigationObj) {

@@ -25,7 +25,7 @@
 
 	emrMessages["numericRangeHigh"] = "value should be less than {0}";
 	emrMessages["numericRangeLow"] = "value should be more than {0}";
-	emrMessages["requiredField"] = "Mandatory Field. Kindly provide details";
+	emrMessages["requiredField"] = "Ensure details have been filled properly";
 	emrMessages["numberField"] = "Value not a number";
 	
 	note.availableOutcomes = jq.map(outcomeOptions, function(outcomeOption) {
@@ -154,11 +154,6 @@
 	});
 	note.diagnoses(mappedDiagnoses);
 
-	// final diagnoses are never returned
-	if (mappedDiagnoses.length > 0) {
-		note.diagnosisProvisional("true");
-	}
-
 	var mappedInvestigations = jq.map(getJSON(previousNote.investigations), function(investigation) {
 		return new Investigation(investigation);
 	});
@@ -168,7 +163,25 @@
 		return new Procedure(procedure);
 	});
 	note.procedures(mappedProcedures);
-
+	
+	function verifyDiagnosis(){
+		var anyUnchecked = false;		
+		
+		jq('.diagnosis-container').children('div').each(function () {
+			if (jq(this).find('input:checked').length === 0){
+				anyUnchecked = true;
+				jq("#diagnosis-set").val('');
+				return;
+			}
+		});		
+		
+		if (note.diagnoses().length > 0 && !anyUnchecked){
+			jq("#diagnosis-set").val('SET');
+		}
+		else{
+			jq("#diagnosis-set").val('');		
+		}
+	}
 
 	jq(function() {
 		ko.applyBindings(note, jq("#notes-form")[0]);
@@ -285,14 +298,8 @@
 			jq('#summaryTable tr:eq('+ rows +') td:eq(1)').text(text);
 		});
 		
-		jq('input[type=radio][name=diagnosis_type]').change(function() {
-			if (this.value == 'true') {
-				jq('#title-diagnosis').text('PROVISIONAL DIAGNOSIS');
-			} else {
-				jq('#title-diagnosis').text('FINAL DIAGNOSIS');
-				note.diagnoses.removeAll();
-				jq('#diagnosis-set').val('');
-			}
+		jq('#diagnosis-carrier input').change(function(){
+			verifyDiagnosis();	
 		});
 		
 		jq("#symptom").autocomplete({
@@ -378,7 +385,8 @@
 					label: ui.item.label
 				}));
 				
-				jq("#diagnosis-set").val("Diagnosis set");
+				verifyDiagnosis();
+				
 				jq("#diagnosis-lbl").hide();
 				jq('#diagnosis').focus();
 				jq('#diagnosis').val('');
@@ -480,12 +488,22 @@
 				icon.removeClass("icon-caret-up").addClass("icon-caret-down");
 			}
 		});
+		
+		jq("#diagnosis-carrier").on("click", "inputs", function(){
+			var provDiagnosisInput = jq(this).parents(".diagnosis-carrier-div").find(".chk-provisional");
+			//
+			var chkbox = jq(this).attr('class');			
+			if (chkbox == 'chk-provisional'){
+				jq(this).parents(".diagnosis-carrier-div").find(".chk-final").prop('checked', false);
+			}
+			else{
+				jq(this).parents(".diagnosis-carrier-div").find(".chk-provisional").prop('checked', false);
+			}
+		});
+		
 
 		jq(".submitButton").on("click", function(event) {
-			if (!jq('input[name="diagnosis_type"]:checked').val()){
-				jq().toastmessage('showErrorToast', "Ensure that Provisional or Final Diagnosis has been selected first before you continue!");
-				return false
-			}
+			
 		
 			event.preventDefault();
 			jq().toastmessage({
@@ -501,7 +519,7 @@
 					type: 'POST',
 					url: '${ ui.actionLink("patientdashboardapp", "clinicalNoteProcessor", "processNote", [ successUrl: successUrl ]) }',
 					data: {
-						note: ko.toJSON(note, ["label", "id", "admitted", "diagnosisProvisional",
+						note: ko.toJSON(note, ["label", "id", "admitted","provisional",
 							"diagnoses", "illnessHistory", "referralReasons", "externalReferralComments", "physicalExamination",
 							"inpatientWarads", "investigations", "opdId",
 							"opdLogId", "otherInstructions", "patientId",
@@ -617,16 +635,15 @@
 						});
 						prescription.drug().frequencyOpts(frequency);
 					});
-					jq.getJSON('${ui.actionLink("patientdashboardapp","clinicalNotes","getDrugUnit")}')
-						.success(function(data) {
-							var drugUnit = jq.map(data, function(drugUnit) {
-								return new DrugUnit({
-									id: drugUnit.id,
-									label: drugUnit.label
-								});
+					jq.getJSON('${ui.actionLink("patientdashboardapp","clinicalNotes","getDrugUnit")}').success(function(data) {
+						var drugUnit = jq.map(data, function(drugUnit) {
+							return new DrugUnit({
+								id: drugUnit.id,
+								label: drugUnit.label
 							});
-							prescription.drug().drugUnitsOptions(drugUnit);
 						});
+						prescription.drug().drugUnitsOptions(drugUnit);
+					});
 
 				},
 				open: function() {
@@ -652,7 +669,7 @@
 		}
 		
 		if (note.diagnoses().length > 0){
-			jq('#diagnosis-set').val('diagnosis-set');
+			verifyDiagnosis();
 		}
 		
 		if (note.procedures().length > 0){
@@ -665,6 +682,6 @@
 		
 		if (note.drugs().length > 0){
 			jq('#drug-set').val('drug-set');
-		}		
+		}
 	});
 </script>

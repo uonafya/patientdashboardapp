@@ -27,6 +27,20 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 		float: right;
 		margin-right: 10px;
 	}
+	.icon-remove{
+		cursor: pointer!important;
+	}
+	.diagnosis-carrier-div{
+		border-width: 1px 1px 1px 10px; 
+		border-style: solid; 
+		border-color: #404040; 
+		padding: 0px 10px 3px;
+	}
+	#diagnosis-carrier input[type="radio"] {
+		-webkit-appearance: checkbox;
+		-moz-appearance: checkbox;
+		-ms-appearance: checkbox;
+	}
 </style>
 
 <div id="content">
@@ -106,33 +120,10 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 				<legend>Diagnosis</legend>
 				<div>
 					<h2>Patient's Diagnosis <span class="important">*</span></h2>
-					<div class="tasks-list">
-						<div class="left">
-							<label id="ts01" class="tasks-list-item" for="provisional-diagnosis">
-								
-								<input type="radio" name="diagnosis_type" id="provisional-diagnosis" value="true" data-bind="checked: diagnosisProvisional" class="tasks-list-cb focused"/>
-								
-								<span class="tasks-list-mark"></span>
-								<span class="tasks-list-desc">Provisional</span>
-							</label>
-						</div>
-						
-						<div class="left">
-							<label class="tasks-list-item" for="final-diagnosis">
-								<input type="radio" name="diagnosis_type" id="final-diagnosis" value="false" data-bind="checked: diagnosisProvisional" class="tasks-list-cb"/>
-								<span class="tasks-list-mark"></span>
-								<span class="tasks-list-desc">Final</span>
-							</label>
-						</div>
-					</div>
 					
 					<div>
 						<p class="input-position-class">
 							<input type="text" id="diagnosis" name="diagnosis" placeholder="Select Diagnosis" />
-							<field>
-								<input type="hidden" id="diagnosis-set" class="required" />
-								<span id="diagnosis-lbl" class="field-error" style="display: none"></span>
-							</field>
 						</p>
 
 						<div id="task-diagnosis" class="tasks" style="display:none;">
@@ -142,12 +133,30 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 							</header>
 
 							<div id="diagnosis-carrier" data-bind="foreach: diagnoses" style="margin-top: -2px">
-								<div class="diagnosis-container">
+								<div class="diagnosis-container" style="border-top: medium none !important;">
 									<span class="right pointer" data-bind="click: \$root.removeDiagnosis"><i class="icon-remove small"></i></span>
-									<div data-bind="text: label"></div>
+									<div class="diagnosis-carrier-div" style="border-width: 1px 1px 1px 10px; border-style: solid; border-color: -moz-use-text-color; padding: 0px 10px 3px;">
+										<span data-bind="text: label" style="display: block; font-weight: bold;"></span>
+										
+										<label style="display: inline-block; font-size: 11px; padding: 0px; cursor: pointer; margin: 0px 0px 0px -5px;">
+											<input value="true"  data-bind="checked: provisional" class="chk-provisional" type="radio" style="margin-top: 3px"/>Provisional
+										</label>
+										
+										<label style="display: inline-block; font-size: 11px; padding: 0px; cursor: pointer; margin: 0">
+											<input value="false" data-bind="checked: provisional" class="chk-final" type="radio" style="margin-top: 3px"/>Final
+										</label>
+									</div>
+									
 								</div>
 							</div>
 						</div>
+						
+						<p class="input-position-class">
+							<field>
+								<input type="hidden" id="diagnosis-set" class="required" />
+								<span id="diagnosis-lbl" class="field-error" style="display: none"></span>
+							</field>
+						</p>						
 					</div>
 				</div>
 			</fieldset>
