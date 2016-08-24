@@ -124,10 +124,6 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 					<div>
 						<p class="input-position-class">
 							<input type="text" id="diagnosis" name="diagnosis" placeholder="Select Diagnosis" />
-							<field>
-								<input type="hidden" id="diagnosis-set" class="required" />
-								<span id="diagnosis-lbl" class="field-error" style="display: none"></span>
-							</field>
 						</p>
 
 						<div id="task-diagnosis" class="tasks" style="display:none;">
@@ -154,6 +150,13 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 								</div>
 							</div>
 						</div>
+						
+						<p class="input-position-class">
+							<field>
+								<input type="hidden" id="diagnosis-set" class="required" />
+								<span id="diagnosis-lbl" class="field-error" style="display: none"></span>
+							</field>
+						</p>						
 					</div>
 				</div>
 			</fieldset>

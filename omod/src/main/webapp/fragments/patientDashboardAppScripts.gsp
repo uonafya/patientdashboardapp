@@ -25,7 +25,7 @@
 
 	emrMessages["numericRangeHigh"] = "value should be less than {0}";
 	emrMessages["numericRangeLow"] = "value should be more than {0}";
-	emrMessages["requiredField"] = "Mandatory Field. Kindly provide details";
+	emrMessages["requiredField"] = "Ensure details have been filled properly";
 	emrMessages["numberField"] = "Value not a number";
 	
 	note.availableOutcomes = jq.map(outcomeOptions, function(outcomeOption) {
@@ -164,15 +164,18 @@
 	});
 	note.procedures(mappedProcedures);
 	
-	function verifyDiagnosis(){		
-		jq('.diagnosis-container').children('div').each(function () {
-			if (jq(this).find('input:checked').length == 0){
-				jq("#diagnosis-set").val('');
-				return false;
-			}
-		});
+	function verifyDiagnosis(){
+		var anyUnchecked = false;		
 		
-		if (note.diagnoses().length > 0){
+		jq('.diagnosis-container').children('div').each(function () {
+			if (jq(this).find('input:checked').length === 0){
+				anyUnchecked = true;
+				jq("#diagnosis-set").val('');
+				return;
+			}
+		});		
+		
+		if (note.diagnoses().length > 0 && !anyUnchecked){
 			jq("#diagnosis-set").val('SET');
 		}
 		else{
@@ -679,6 +682,6 @@
 		
 		if (note.drugs().length > 0){
 			jq('#drug-set').val('drug-set');
-		}		
+		}
 	});
 </script>
