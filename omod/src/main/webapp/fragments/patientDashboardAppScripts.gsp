@@ -343,7 +343,7 @@
 					});
 					
 					note.addSign(new Sign({
-						"id": ui.item.value,
+						"id": ui.item.id,
 						"label": ui.item.label.replace(/\\(Non-coded\\) /i, ''),
 						"uuid":ui.item.uuid,
 						"qualifiers": qualifiers
