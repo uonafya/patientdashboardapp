@@ -32,6 +32,9 @@ ui.includeJavascript("patientqueueapp", "jquery.dataTables.min.js")
     </tbody>
 </table>
 
+
+
+
 <script>
 var investigationsTable;
 
