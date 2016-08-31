@@ -324,7 +324,6 @@
 						uuid: afyaehmsConstants.OTHER_SYMPTOM_UID
 					};
 					results.push(nonCoded);
-					console.log("#######"+results);
 					response(results);
 				});
 			},
@@ -336,9 +335,9 @@
 					signId: ui.item.id
 				}).success(function(data) {
 					var qualifiers = jq.map(data, function(qualifier) {
-						return new Qualifier( qualifier.label,qualifier.id,
+						return new Qualifier( qualifier.id,qualifier.label,
 							jq.map(qualifier.options, function(option) {
-								return new Option( option.label, option.id);
+								return new Option( option.id, option.label);
 							}));
 					});
 					
