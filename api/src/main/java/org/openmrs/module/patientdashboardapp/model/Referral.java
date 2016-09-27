@@ -1,9 +1,12 @@
 package org.openmrs.module.patientdashboardapp.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.omg.PortableServer.LIFESPAN_POLICY_ID;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Encounter;
@@ -24,13 +27,16 @@ public class Referral {
 	private static Logger logger = LoggerFactory.getLogger(Note.class);
 	private static List<Option> internalReferralOptions;
 	private static List<Option> externalReferralOptions;
-
-
+	private static final List<String> REFFERAL_CLINIC_UUIDS = Collections.unmodifiableList(Arrays.asList("482f0492-aeef-404e-a820-c34cf61db616","8548ca32-ac74-4aa8-b97b-138bd745df0a"));
 	static {
 		internalReferralOptions = new ArrayList<Option>();
-		Concept internalReferralConcept = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_OPDWARD));
-		for (ConceptAnswer conceptAnswer : internalReferralConcept.getAnswers()) {
-			internalReferralOptions.add(new Option(conceptAnswer.getAnswerConcept()));
+		for(String refferalClinicUUID: REFFERAL_CLINIC_UUIDS) {
+			Concept internalReferralConcept = Context.getConceptService().getConceptByUuid(refferalClinicUUID);
+			if(internalReferralConcept != null) {
+				for (ConceptAnswer conceptAnswer : internalReferralConcept.getAnswers()) {
+					internalReferralOptions.add(new Option(conceptAnswer.getAnswerConcept()));
+				}
+			}
 		}
 		externalReferralOptions = new ArrayList<Option>();
 		Concept externalReferralConcept = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL));
