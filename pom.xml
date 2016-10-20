@@ -80,7 +80,7 @@
 
 				<artifactId>hospitalcore-api</artifactId>
 
-				<version>1.6.1-SNAPSHOT</version>
+				<version>1.6.1</version>
 
 				<scope>provided</scope>
 
@@ -92,7 +92,7 @@
 
 				<artifactId>hospitalcore-omod</artifactId>
 
-				<version>1.6.0</version>
+				<version>1.6.1</version>
 
 				<scope>test</scope>
 				
