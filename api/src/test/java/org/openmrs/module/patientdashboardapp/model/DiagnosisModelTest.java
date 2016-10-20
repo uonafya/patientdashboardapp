@@ -12,7 +12,9 @@ public class DiagnosisModelTest extends AbstractModelTest {
 		executeDataSet("notes-concepts.xml");
 		Encounter encounter = createEncounter();
 		Diagnosis malaria = new Diagnosis(Context.getConceptService().getConcept(10003));
-		malaria.addObs(encounter, null, true);
+		malaria.setProvisional(true);
+
+		malaria.addObs(encounter, null);
 		Context.getEncounterService().saveEncounter(encounter);
 		
 		Assert.assertEquals(1, encounter.getObs().size());
@@ -21,7 +23,7 @@ public class DiagnosisModelTest extends AbstractModelTest {
 		Thread.sleep(1000);
 		
 		Encounter anotherEncounter = createEncounter();
-		malaria.addObs(anotherEncounter, null, true);
+		malaria.addObs(anotherEncounter, null);
 		
 		Diagnosis.getPreviousDiagnoses(anotherEncounter.getPatient().getPatientId());
 		
@@ -32,7 +34,9 @@ public class DiagnosisModelTest extends AbstractModelTest {
 		executeDataSet("notes-concepts.xml");
 		Encounter encounter = createEncounter();
 		Diagnosis malaria = new Diagnosis(Context.getConceptService().getConcept(10003));
-		malaria.addObs(encounter, null, true);
+		malaria.setProvisional(false);
+		malaria.addObs(encounter, null);
+
 		Context.getEncounterService().saveEncounter(encounter);
 
 		Assert.assertEquals(1, encounter.getObs().size());
@@ -41,7 +45,7 @@ public class DiagnosisModelTest extends AbstractModelTest {
 		Thread.sleep(1000);
 
 		Encounter anotherEncounter = createEncounter();
-		malaria.addObs(anotherEncounter, null, false);
+		malaria.addObs(anotherEncounter, null);
 
 		Assert.assertEquals(1, anotherEncounter.getObs().size());
 	}

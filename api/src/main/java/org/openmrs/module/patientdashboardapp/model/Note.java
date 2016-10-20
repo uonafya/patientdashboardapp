@@ -44,10 +44,6 @@ public class Note {
 		this.signs = Sign.getPreviousSigns(patientId);
 		this.physicalExamination = getPreviousPhysicalExamination(patientId);
 		this.illnessHistory = getPreviousIllnessHistory(patientId);
-
-		if (diagnoses.size() > 0) {
-			this.diagnosisProvisional = true;
-		}
 	}
 
 
@@ -60,7 +56,6 @@ public class Note {
 	private boolean admitted;
 	private Integer opdLogId;
 	private List<Sign> signs = new ArrayList<Sign>() ;
-	private Boolean diagnosisProvisional;
 	private List<Diagnosis> diagnoses = new ArrayList<Diagnosis>();
 	private List<Investigation> investigations = new ArrayList<Investigation>();
 	private List<Procedure> procedures = new ArrayList<Procedure>();
@@ -123,14 +118,6 @@ public class Note {
 
 	public void setSigns(List<Sign> symptoms) {
 		this.signs = symptoms;
-	}
-
-	public Boolean getDiagnosisProvisional() {
-		return diagnosisProvisional;
-	}
-
-	public void setDiagnosisProvisional(Boolean diagnosisProvisional) {
-		this.diagnosisProvisional = diagnosisProvisional;
 	}
 
 	public List<Diagnosis> getDiagnoses() {
@@ -301,7 +288,7 @@ public class Note {
 		}
 		
 		for (Diagnosis diagnosis : this.diagnoses) {
-			diagnosis.addObs(encounter, obsGroup, this.diagnosisProvisional);
+			diagnosis.addObs(encounter, obsGroup);
 		}
 		
 		if (referredTo != null) {

@@ -287,6 +287,7 @@
 			<li id="ti"><a href="#triage-info">Triage Information</a></li>
 			<li id="cs"><a href="#summary">Clinical History</a></li>
 			<li id="lr"><a href="#investigations">Lab Reports</a></li>
+            <li id="lr"><a href="#radiology">Radiology Reports</a></li>			
 		</ul>
 		
 		<div id="notes">
@@ -304,6 +305,9 @@
 		<div id="investigations">
             ${ ui.includeFragment("patientdashboardapp", "investigations", [patientId: patientId]) }
 		</div>
+        <div id="radiology">
+            ${ ui.includeFragment("patientdashboardapp", "radiology", [patientId: patientId]) }
+        </div>		
 	</div>
 </div>
 
