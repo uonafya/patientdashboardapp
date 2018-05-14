@@ -5,6 +5,7 @@
 <script>
 	var jq = jQuery,
 		NavigatorController,
+        drugIdnt = 0,
 		previousNote = JSON.parse(jsonEscape('${config.note}')),
 		note = new Note(previousNote);
 
@@ -505,8 +506,6 @@
 		
 
 		jq(".submitButton").on("click", function(event) {
-			
-		
 			event.preventDefault();
 			jq().toastmessage({
 				sticky: true
@@ -572,6 +571,7 @@
 						jq().toastmessage('showErrorToast', 'Ensure fields marked in red have been properly filled before you continue')
 						return false;
 					}
+
 					note.addPrescription(prescription.drug());
 					prescription.drug(new Drug());
 					prescriptionDialog.close();
@@ -582,9 +582,11 @@
 				}
 			}
 		});
+
 		jq("#add-prescription").on("click", function(e) {
 			e.preventDefault();
 
+            jq('#prescriptionAlert').hide();
 			prescriptionDialog.show();
 		});
 
@@ -610,6 +612,9 @@
 				select: function(event, ui) {
 					event.preventDefault();
 					jq(selectedInput).val(ui.item.label);
+                    jq('#prescriptionAlert').hide();
+
+                    drugIdnt = ui.item.value;
 				},
 				change: function(event, ui) {
 					event.preventDefault();
@@ -657,6 +662,33 @@
 
 			});
 		});
+
+        jq("#drugFormulation").on("change", function (e) {
+            var formulationName = jq('#drugFormulation :selected').text();
+
+            console.log(formulationName);
+            console.log(drugIdnt);
+
+            jq.ajax({
+                type: "GET"
+                , dataType: "json"
+                , url: '${ ui.actionLink("pharmacyapp", "issueDrugAccountList", "getReceiptDrugBatchCount") }'
+                , data: ({drugId: drugIdnt, name: formulationName})
+                , async: false
+                , success: function (data) {
+                    if (data == 0){
+                        jq('#prescriptionAlert').show(100);
+                    } else {
+                        jq('#prescriptionAlert').hide();
+                    }
+
+
+                },
+                error: function (xhr) {
+                    //alert("An Error occurred");
+                }
+            })
+        });
 
 		if (!jq('.symptoms-qualifiers').text().trim() == "") {
 			jq('#task-symptom').show();

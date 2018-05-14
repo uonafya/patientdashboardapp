@@ -41,6 +41,12 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 		-moz-appearance: checkbox;
 		-ms-appearance: checkbox;
 	}
+    #prescriptionAlert {
+        text-align: center;
+        border:     1px #f00 solid;
+        color:      #f00;
+        padding:    5px 0;
+    }
 </style>
 
 <div id="content">
@@ -487,6 +493,10 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 
     <div class="dialog-content">
         <ul>
+            <li id="prescriptionAlert">
+                <div>No batches found in Pharmacy for the Selected Drug/Formulation combination</div>
+            </li>
+
             <li>
                 <label>Drug<span>*</span></label>
                 <input class="drug-name" type="text"
@@ -500,7 +510,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 			
             <li>
                 <label>Formulation<span>*</span></label>
-                <select class="drug-formulation" data-bind="options: prescription.drug().formulationOpts, value: prescription.drug().formulation, optionsText: 'label',  optionsCaption: 'Select Formulation'"></select>
+                <select id="drugFormulation" class="drug-formulation" data-bind="options: prescription.drug().formulationOpts, value: prescription.drug().formulation, optionsText: 'label',  optionsCaption: 'Select Formulation'"></select>
             </li>
             <li>
                 <label>Frequency<span>*</span></label>
