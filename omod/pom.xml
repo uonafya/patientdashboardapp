@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>patientdashboardapp</artifactId>
-		<version>1.3-SNAPSHOT</version>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>patientdashboardapp-omod</artifactId>
@@ -99,10 +99,10 @@
 			<artifactId>appui-omod</artifactId>
 		</dependency>
 
-		<dependency>
+		<!--dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>referenceapplication-omod</artifactId>
-		</dependency>
+		</dependency-->
 
 
 		<!-- End OpenMRS core -->

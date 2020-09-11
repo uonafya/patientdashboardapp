@@ -1,10 +1,5 @@
 
 
-/**
- * Created by gety on 4/7/2016.
- */
-
-
 package org.openmrs.module.patientdashboardapp.model;
 
 import java.util.ArrayList;
