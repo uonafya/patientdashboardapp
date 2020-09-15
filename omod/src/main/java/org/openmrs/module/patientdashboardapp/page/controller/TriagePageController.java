@@ -36,7 +36,6 @@ import org.openmrs.module.patientdashboardapp.patienthistory.PatientDrugHistoryS
 import org.openmrs.module.patientdashboardapp.patienthistory.PatientFamilyHistorySaveHandler;
 import org.openmrs.module.patientdashboardapp.patienthistory.PatientMedicalHistorySaveHandler;
 import org.openmrs.module.patientdashboardapp.patienthistory.PatientPersonalHistorySaveHandler;
-import org.openmrs.module.referenceapplication.ReferenceApplicationWebConstants;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.annotation.BindParams;
 import org.openmrs.ui.framework.page.PageModel;

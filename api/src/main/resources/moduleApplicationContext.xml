@@ -16,8 +16,9 @@
   		    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
   		    http://www.springframework.org/schema/util
   		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
-
+	<context:component-scan base-package="org.openmrs.module.patientdashboardapp" />
 	<!-- Add here beans related to the API context -->
+
 	<bean id="triageService"
 			class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager">

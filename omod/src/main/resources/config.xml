@@ -7,38 +7,24 @@
 	<name>${project.parent.name}</name>
 	<version>${project.parent.version}</version>
 	<package>${project.parent.groupId}.${project.parent.artifactId}</package>
-	<author>Francis</author>
+	<author>HealthIT</author>
 	<description>
 		${project.parent.description}
 	</description>
-	<updateURL>https://modules.openmrs.org/modules/download/${project.parent.artifactId}/update.rdf</updateURL>
+	<!--updateURL>https://modules.openmrs.org/modules/download/${project.parent.artifactId}/update.rdf</updateURL-->
 	<require_version>${openMRSVersion}</require_version>
 	<!-- / Module Properties -->
 
 	
 	<!-- Required Modules -->
 	<require_modules>
-																											
-		<require_module version="3.3.1">
-			org.openmrs.module.uiframework
-		</require_module>
-																											
-		<require_module version="2.0.4">
-			org.openmrs.module.uilibrary
-		</require_module>
-
-
-		<require_module version="1.5.3-SNAPSHOT">
-			org.openmrs.module.hospitalcore
-		</require_module>
-
-		<require_module version="1.4">
-			org.openmrs.module.appui
-		</require_module>
-		<require_module version="1.0.1">
-			org.openmrs.module.referenceapplication
-		</require_module>
-			
+		<require_module version="${kenyaemrVersion}">org.openmrs.module.kenyaemr</require_module>
+		<require_module version="$hospitalcoreVersion">org.openmrs.module.hospitalcore</require_module>
+		<require_module version="${uiframeworkVersion}">org.openmrs.module.uiframework</require_module>
+		<require_module version="${uilibraryVersion}">org.openmrs.module.uilibrary</require_module>
+		<require_module version="${appuiVersion}">org.openmrs.module.appui</require_module>
+		<require_module version="${inventoryVersion}"> org.openmrs.module.ehrinventory</require_module>
+		<require_module version="${appframeworkVersion}">org.openmrs.module.appframework</require_module>
 	</require_modules>
 	<!-- / Required Modules -->
 	
