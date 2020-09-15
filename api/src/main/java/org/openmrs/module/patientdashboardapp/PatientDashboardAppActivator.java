@@ -32,28 +32,28 @@ public class PatientDashboardAppActivator implements ModuleActivator {
 	 * @see ModuleActivator#willRefreshContext()
 	 */
 	public void willRefreshContext() {
-		log.info("Refreshing patientdashboardui Module");
+		log.info("Refreshing patientdashboardapp Module");
 	}
 	
 	/**
 	 * @see ModuleActivator#contextRefreshed()
 	 */
 	public void contextRefreshed() {
-		log.info("patientdashboardui Module refreshed");
+		log.info("patientdashboardapp Module refreshed");
 	}
 	
 	/**
 	 * @see ModuleActivator#willStart()
 	 */
 	public void willStart() {
-		log.info("Starting patientdashboardui Module");
+		log.info("Starting patientdashboardapp Module");
 	}
 	
 	/**
 	 * @see ModuleActivator#started()
 	 */
 	public void started() {
-		log.info("patientdashboardui Module started");
+		log.info("patientdashboardapp Module started");
 
 	}
 	
@@ -61,14 +61,14 @@ public class PatientDashboardAppActivator implements ModuleActivator {
 	 * @see ModuleActivator#willStop()
 	 */
 	public void willStop() {
-		log.info("Stopping patientdashboardui Module");
+		log.info("Stopping patientdashboardapp Module");
 	}
 	
 	/**
 	 * @see ModuleActivator#stopped()
 	 */
 	public void stopped() {
-		log.info("patientdashboardui Module stopped");
+		log.info("patientdashboardapp Module stopped");
 	}
 		
 }
