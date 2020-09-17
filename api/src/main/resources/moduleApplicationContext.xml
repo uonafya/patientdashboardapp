@@ -25,9 +25,9 @@
 			<ref bean="transactionManager" />
 		</property>
 		<property name="target">
-			<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.TriageServiceImpl">
+			<bean class="org.openmrs.module.patientdashboardapp.api.impl.TriageServiceImpl">
 				<property name="TriageDAO">
-					<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernateTriageDAO">
+					<bean class="org.openmrs.module.patientdashboardapp.api.db.hibernate.HibernateTriageDAO">
 						<property name="sessionFactory">
 							<ref bean="sessionFactory" />
 						</property>
@@ -47,7 +47,7 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.TriageService</value>
+				<value>org.openmrs.module.patientdashboardapp.api.TriageService</value>
 				<ref local="triageService" />
 			</list>
 		</property>

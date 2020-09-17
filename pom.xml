@@ -39,8 +39,6 @@
 		<htmlwidgetsVersion>1.6.6</htmlwidgetsVersion>
 		<hospitalcoreVersion>1.0.0-SNAPSHOT</hospitalcoreVersion>
 		<idgenVersion>2.6</idgenVersion>
-		<metadatadeployVersion>1.2</metadatadeployVersion>
-		<metadatasharingVersion>1.1.8</metadatasharingVersion>
 		<reportingVersion>0.9.8.1</reportingVersion>
 		<serializationxstreamVersion>0.2.7</serializationxstreamVersion>
 		<uiframeworkVersion>3.11.0</uiframeworkVersion>
@@ -122,20 +120,6 @@
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>idgen-api</artifactId>
 				<version>${idgenVersion}</version>
-				<scope>provided</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>metadatadeploy-api</artifactId>
-				<version>${metadatadeployVersion}</version>
-				<scope>provided</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>metadatasharing-api</artifactId>
-				<version>${metadatasharingVersion}</version>
 				<scope>provided</scope>
 			</dependency>
 

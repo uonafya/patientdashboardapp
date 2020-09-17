@@ -28,7 +28,7 @@ import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * Created by Francis on 12/7/2015.
+ *
  */
 public class ClinicalNotesFragmentController {
 

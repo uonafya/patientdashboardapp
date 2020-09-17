@@ -18,7 +18,6 @@
 	
 	<!-- Required Modules -->
 	<require_modules>
-		<require_module version="${kenyaemrVersion}">org.openmrs.module.kenyaemr</require_module>
 		<require_module version="$hospitalcoreVersion">org.openmrs.module.hospitalcore</require_module>
 		<require_module version="${uiframeworkVersion}">org.openmrs.module.uiframework</require_module>
 		<require_module version="${uilibraryVersion}">org.openmrs.module.uilibrary</require_module>
