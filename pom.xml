@@ -6,7 +6,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Patient Dashboard App Module</name>
-	<description>Depends on openmrs core version 1.9.8</description>
+	<description>Useful functionality and summary for the patient</description>
 	
 	<developers>
 		<developer>
@@ -20,9 +20,10 @@
 	</organization>
 
 	<scm>
-		<connection>scm:svn:https://svn.openmrs.org/openmrs-modules/patientdashboardapp/trunk/</connection>
-		<developerConnection>scm:svn:https://svn.openmrs.org/openmrs-modules/patientdashboardapp/trunk/</developerConnection>
-		<url>https://svn.openmrs.org/openmrs-modules/patientdashboardapp/trunk/</url>
+		<connection>scm:git:https://github.com/uonafya/patientdashboardapp.git</connection>
+		<developerConnection>scm:git:https://github.com/uonafya/patientdashboardapp.git</developerConnection>
+		<url>https://github.com/uonafya/patientdashboardapp.git</url>
+		<tag>HEAD</tag>
 	</scm>
 
 	<modules>
@@ -43,12 +44,7 @@
 		<reportingVersion>0.9.8.1</reportingVersion>
 		<serializationxstreamVersion>0.2.7</serializationxstreamVersion>
 		<uiframeworkVersion>3.11.0</uiframeworkVersion>
-		<kenyacoreVersion>2.4.1</kenyacoreVersion>
-		<kenyauiVersion>2.1.1</kenyauiVersion>
-		<kenyaemrVersion>17.0.3</kenyaemrVersion>
-		<jodaTimeVersion>2.9.1</jodaTimeVersion>
 		<webservices.restVersion>2.1</webservices.restVersion>
-		<logicVersion>0.5.2</logicVersion>
 		<uilibraryVersion>2.0.4</uilibraryVersion>
 		<inventoryVersion>1.0.0-SNAPSHOT</inventoryVersion>
 		<appuiVersion>1.8.0</appuiVersion>
@@ -161,26 +157,6 @@
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>uiframework-api</artifactId>
 				<version>${uiframeworkVersion}</version>
-				<scope>provided</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>kenyacore-api</artifactId>
-				<version>${kenyacoreVersion}</version>
-				<scope>provided</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>kenyacore-test</artifactId>
-				<version>${kenyacoreVersion}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>kenyaui-api</artifactId>
-				<version>${kenyauiVersion}</version>
 				<scope>provided</scope>
 			</dependency>
 
