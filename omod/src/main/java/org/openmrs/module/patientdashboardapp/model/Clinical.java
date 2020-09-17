@@ -6,7 +6,7 @@ import java.util.List;
 import org.openmrs.Concept;
 
 /**
- * Created by Francis on 12/7/2015.
+ * 
  */
 public class Clinical {
 

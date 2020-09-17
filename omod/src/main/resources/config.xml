@@ -9,7 +9,7 @@
 	<package>${project.parent.groupId}.${project.parent.artifactId}</package>
 	<author>HealthIT</author>
 	<description>
-		${project.parent.description}
+		Patient dash board UI for the EHR work
 	</description>
 	<!--updateURL>https://modules.openmrs.org/modules/download/${project.parent.artifactId}/update.rdf</updateURL-->
 	<require_version>${openMRSVersion}</require_version>
@@ -28,7 +28,7 @@
 	<!-- / Required Modules -->
 	
 	<!-- Module Activator -->
-	<activator>${project.parent.groupId}.${project.parent.artifactId}.PatientDashboardAppActivator</activator>
+	<activator>org.openmrs.module.patientdashboardapp.PatientDashboardAppActivator</activator>
 	
 	
 	<!-- Maps hibernate file's, if present -->
