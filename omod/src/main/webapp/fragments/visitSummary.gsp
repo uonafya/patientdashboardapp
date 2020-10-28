@@ -4,17 +4,6 @@
 			jq("#visit-detail").html('<i class=\"icon-spinner icon-spin icon-2x pull-left\"></i> <span style="float: left; margin-top: 12px;">Loading...</span>');	
 			jq("#drugs-detail").html("");
 			jq("#opdRecords
-
-
-
-
-
-
-
-
-
-
-
 			Button").hide();
 			
 			var visitSummary = jq(this);

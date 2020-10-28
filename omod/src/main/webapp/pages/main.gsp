@@ -10,7 +10,7 @@
 	var confirmdialog
     jq(document).ready(function () {
 
-    	confirmdialog = emr.setupConfirmationDialog({
+    	confirmdialog = ui.setupConfirmationDialog({
             dialogOpts: {
                 overlayClose: false,
                 close: true
@@ -227,7 +227,7 @@
 	<div class="example">
 		<ul id="breadcrumbs">
 			<li>
-				<a href="${ui.pageLink('referenceapplication','home')}">
+				<a href="${ui.pageLink('kenyaemr','userHome')}">
 					<i class="icon-home small"></i></a>
 			</li>
 			<li>

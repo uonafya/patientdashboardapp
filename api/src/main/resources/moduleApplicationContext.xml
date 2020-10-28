@@ -19,7 +19,7 @@
 	<context:component-scan base-package="org.openmrs.module.patientdashboardapp" />
 	<!-- Add here beans related to the API context -->
 
-	<bean id="triageService"
+	<bean id="patientDashboardTriageService"
 			class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager">
 			<ref bean="transactionManager" />
@@ -48,7 +48,7 @@
 		<property name="moduleService">
 			<list>
 				<value>org.openmrs.module.patientdashboardapp.api.TriageService</value>
-				<ref local="triageService" />
+				<ref local="patientDashboardTriageService" />
 			</list>
 		</property>
 	</bean>
