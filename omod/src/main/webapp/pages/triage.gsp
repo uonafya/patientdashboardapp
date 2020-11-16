@@ -2,11 +2,11 @@
     ui.decorateWith("appui", "standardEmrPage", [title: "Triage Dashboard"])
 	
     ui.includeCss("uicommons", "datetimepicker.css")
-	ui.includeCss("patientdashboardapp", "onepcssgrid.css")
+	ui.includeCss("ehrconfigs", "onepcssgrid.css")
 	
     ui.includeJavascript("patientdashboardapp", "note.js")
 	
-	ui.includeJavascript("billingui", "moment.js")
+	ui.includeJavascript("ehrconfigs", "moment.js")
 	
     ui.includeJavascript("uicommons", "datetimepicker/bootstrap-datetimepicker.min.js")
     ui.includeJavascript("uicommons", "handlebars/handlebars.min.js", Integer.MAX_VALUE - 1)
@@ -46,120 +46,120 @@
 		}
 
 		jq('.col5 input:radio[name]').on('change',function(){
-			if (jq(this).attr('name') == "patientMedicalHistory.illnessExisting"){
-				if (jq('input[name="patientMedicalHistory.illnessExisting"]:checked', '#notes-form').val() == "Yes"){
+			if (jq(this).attr('name') === "patientMedicalHistory.illnessExisting"){
+				if (jq('input[name="patientMedicalHistory.illnessExisting"]:checked', '#notes-form').val() === "Yes"){
 					jq('#illness').show(500)
 				}
 				else {
 					jq('#illness').hide(500)
 				}
 			}
-			else if (jq(this).attr('name') == "patientMedicalHistory.chronicIllness"){
-				if (jq('input[name="patientMedicalHistory.chronicIllness"]:checked', '#notes-form').val() == "Yes"){
+			else if (jq(this).attr('name') === "patientMedicalHistory.chronicIllness"){
+				if (jq('input[name="patientMedicalHistory.chronicIllness"]:checked', '#notes-form').val() === "Yes"){
 					jq('#chronic').show(500)
 				}
 				else {
 					jq('#chronic').hide(500)
 				}
 			}
-			else if (jq(this).attr('name') == "patientMedicalHistory.previousAdmission"){
-				if (jq('input[name="patientMedicalHistory.previousAdmission"]:checked', '#notes-form').val() == "Yes"){
+			else if (jq(this).attr('name') === "patientMedicalHistory.previousAdmission"){
+				if (jq('input[name="patientMedicalHistory.previousAdmission"]:checked', '#notes-form').val() === "Yes"){
 					jq('#admissions').show(500)
 				}
 				else {
 					jq('#admissions').hide(500)
 				}
 			}
-			else if (jq(this).attr('name') == "patientMedicalHistory.previousInvestigation"){
-				if (jq('input[name="patientMedicalHistory.previousInvestigation"]:checked', '#notes-form').val() == "Yes"){
+			else if (jq(this).attr('name') === "patientMedicalHistory.previousInvestigation"){
+				if (jq('input[name="patientMedicalHistory.previousInvestigation"]:checked', '#notes-form').val() === "Yes"){
 					jq('#operations').show(500)
 				}
 				else {
 					jq('#operations').hide(500)
 				}
 			}
-			else if (jq(this).attr('name') == "patientDrugHistory.currentMedication"){
-				if (jq('input[name="patientDrugHistory.currentMedication"]:checked', '#notes-form').val() == "Yes"){
+			else if (jq(this).attr('name') === "patientDrugHistory.currentMedication"){
+				if (jq('input[name="patientDrugHistory.currentMedication"]:checked', '#notes-form').val() === "Yes"){
 					jq('#medication').show(500)
 				}
 				else {
 					jq('#medication').hide(500)
 				}
 			}
-			else if (jq(this).attr('name') == "patientDrugHistory.sensitiveMedication"){
-				if (jq('input[name="patientDrugHistory.sensitiveMedication"]:checked', '#notes-form').val() == "Yes"){
+			else if (jq(this).attr('name') === "patientDrugHistory.sensitiveMedication"){
+				if (jq('input[name="patientDrugHistory.sensitiveMedication"]:checked', '#notes-form').val() === "Yes"){
 					jq('#sensitives').show(500)
 				}
 				else {
 					jq('#sensitives').hide(500)
 				}
 			}
-			else if (jq(this).attr('name') == "patientDrugHistory.invasiveContraception"){
-				if (jq('input[name="patientDrugHistory.invasiveContraception"]:checked', '#notes-form').val() == "Yes"){
+			else if (jq(this).attr('name') === "patientDrugHistory.invasiveContraception"){
+				if (jq('input[name="patientDrugHistory.invasiveContraception"]:checked', '#notes-form').val() === "Yes"){
 					jq('#invasives').show(500)
 				}
 				else {
 					jq('#invasives').hide(500)
 				}
 			}
-			else if (jq(this).attr('name') == "patientFamilyHistory.fatherStatus"){
-				if (jq('input[name="patientFamilyHistory.fatherStatus"]:checked', '#notes-form').val() == "Dead"){
+			else if (jq(this).attr('name') === "patientFamilyHistory.fatherStatus"){
+				if (jq('input[name="patientFamilyHistory.fatherStatus"]:checked', '#notes-form').val() === "Dead"){
 					jq('#father-status').show(500)
 				}
 				else {
 					jq('#father-status').hide(500)
 				}
 			}
-			else if (jq(this).attr('name') == "patientFamilyHistory.motherStatus"){
-				if (jq('input[name="patientFamilyHistory.motherStatus"]:checked', '#notes-form').val() == "Dead"){
+			else if (jq(this).attr('name') === "patientFamilyHistory.motherStatus"){
+				if (jq('input[name="patientFamilyHistory.motherStatus"]:checked', '#notes-form').val() === "Dead"){
 					jq('#mother-status').show(500)
 				}
 				else {
 					jq('#mother-status').hide(500)
 				}
 			}
-			else if (jq(this).attr('name') == "patientFamilyHistory.siblingStatus"){
-				if (jq('input[name="patientFamilyHistory.siblingStatus"]:checked', '#notes-form').val() == "Dead"){
+			else if (jq(this).attr('name') === "patientFamilyHistory.siblingStatus"){
+				if (jq('input[name="patientFamilyHistory.siblingStatus"]:checked', '#notes-form').val() === "Dead"){
 					jq('#sibling-status').show(500)
 				}
 				else {
 					jq('#sibling-status').hide(500)
 				}
 			}
-			else if (jq(this).attr('name') == "patientPersonalHistory.smoke"){
-				if (jq('input[name="patientPersonalHistory.smoke"]:checked', '#notes-form').val() == "Yes"){
+			else if (jq(this).attr('name') === "patientPersonalHistory.smoke"){
+				if (jq('input[name="patientPersonalHistory.smoke"]:checked', '#notes-form').val() === "Yes"){
 					jq('#do-smoke').show(500)
 				}
 				else {
 					jq('#do-smoke').hide(500)
 				}
 			}
-			else if (jq(this).attr('name') == "patientPersonalHistory.alcohol"){
-				if (jq('input[name="patientPersonalHistory.alcohol"]:checked', '#notes-form').val() == "Yes"){
+			else if (jq(this).attr('name') === "patientPersonalHistory.alcohol"){
+				if (jq('input[name="patientPersonalHistory.alcohol"]:checked', '#notes-form').val() === "Yes"){
 					jq('#do-alcohol').show(500)
 				}
 				else {
 					jq('#do-alcohol').hide(500)
 				}
 			}
-			else if (jq(this).attr('name') == "patientPersonalHistory.drug"){
-				if (jq('input[name="patientPersonalHistory.drug"]:checked', '#notes-form').val() == "Yes"){
+			else if (jq(this).attr('name') === "patientPersonalHistory.drug"){
+				if (jq('input[name="patientPersonalHistory.drug"]:checked', '#notes-form').val() === "Yes"){
 					jq('#do-drugs').show(500)
 				}
 				else {
 					jq('#do-drugs').hide(500)
 				}
 			}
-			else if (jq(this).attr('name') == "patientPersonalHistory.exposedHiv"){
-				if (jq('input[name="patientPersonalHistory.exposedHiv"]:checked', '#notes-form').val() == "Yes"){
+			else if (jq(this).attr('name') === "patientPersonalHistory.exposedHiv"){
+				if (jq('input[name="patientPersonalHistory.exposedHiv"]:checked', '#notes-form').val() === "Yes"){
 					jq('#do-exposed').show(500)
 				}
 				else {
 					jq('#do-exposed').hide(500)
 				}
 			}
-			else if (jq(this).attr('name') == "patientPersonalHistory.familyHelp"){
-				if (jq('input[name="patientPersonalHistory.familyHelp"]:checked', '#notes-form').val() == "Yes"){
+			else if (jq(this).attr('name') === "patientPersonalHistory.familyHelp"){
+				if (jq('input[name="patientPersonalHistory.familyHelp"]:checked', '#notes-form').val() === "Yes"){
 					jq('#do-support').show(500)
 				}
 				else {
@@ -169,7 +169,7 @@
 		});
 		
 		jq('.noidnt input:radio[name]').on('change',function(){
-			if (jq('input[name="patientMedicalHistory.otherVaccinations"]:checked', '#notes-form').val() == "Yes"){
+			if (jq('input[name="patientMedicalHistory.otherVaccinations"]:checked', '#notes-form').val() === "Yes"){
 				jq('#p-otherVaccinations').show(500)
 			}
 			else {
@@ -181,8 +181,8 @@
 			var idd = jq(event.target).attr('id');
 			var txt = jq(event.target).val();
             
-			if (idd == 'weight-field'){
-				if (txt == ''){
+			if (idd === 'weight-field'){
+				if (txt === ''){
 					jq('#li01').hide();
 				}
 				else {
@@ -191,8 +191,8 @@
 				}
 			}
 			
-			else if (idd == 'height-field'){
-				if (txt == ''){
+			else if (idd === 'height-field'){
+				if (txt === ''){
 					jq('#li02').hide();
 				}
 				else {
@@ -201,8 +201,8 @@
 				}
 			}
 			
-			else if (idd == 'muac-field'){
-				if (txt == ''){
+			else if (idd === 'muac-field'){
+				if (txt === ''){
 					jq('#li03').hide();
 				}
 				else {
@@ -211,8 +211,8 @@
 				}
 			}
 			
-			else if (idd == 'chest-circum-field'){
-				if (txt == ''){
+			else if (idd === 'chest-circum-field'){
+				if (txt === ''){
 					jq('#li04').hide();
 				}
 				else {
@@ -221,8 +221,8 @@
 				}
 			}
 			
-			else if (idd == 'abdominal-circum-field'){
-				if (txt == ''){
+			else if (idd === 'abdominal-circum-field'){
+				if (txt === ''){
 					jq('#li05').hide();
 				}
 				else {
@@ -231,8 +231,8 @@
 				}
 			}
 			
-			else if (idd == 'temperature-field'){
-				if (txt == ''){
+			else if (idd === 'temperature-field'){
+				if (txt === ''){
 					jq('#li06').hide();
 				}
 				else {
@@ -241,8 +241,8 @@
 				}
 			}
 			
-			else if (idd == 'systolic-bp-field'){
-				if (txt == ''){
+			else if (idd === 'systolic-bp-field'){
+				if (txt === ''){
 					jq('#li07').hide();
 				}
 				else {
@@ -251,8 +251,8 @@
 				}
 			}
 			
-			else if (idd == 'diastolic-bp-field'){
-				if (txt == ''){
+			else if (idd === 'diastolic-bp-field'){
+				if (txt === ''){
 					jq('#li08').hide();
 				}
 				else {
@@ -261,8 +261,8 @@
 				}
 			}
 			
-			else if (idd == 'resp-rate-field'){
-				if (txt == ''){
+			else if (idd === 'resp-rate-field'){
+				if (txt === ''){
 					jq('#li09').hide();
 				}
 				else {
@@ -271,8 +271,8 @@
 				}
 			}
 			
-			else if (idd == 'pulse-rate-field'){
-				if (txt == ''){
+			else if (idd === 'pulse-rate-field'){
+				if (txt === ''){
 					jq('#li10').hide();
 				}
 				else {
@@ -281,8 +281,8 @@
 				}
 			}
 
-			else if (idd == 'oxygenSaturation-field'){
-				if (txt == ''){
+			else if (idd === 'oxygenSaturation-field'){
+				if (txt === ''){
 				    jq('#li16').hide();
 				}
 				else {
@@ -301,8 +301,8 @@
             		var idd = jq(event.target).attr('id');
 			var txt = jq(event.target).val();
 			
-			if (idd == 'bloodGroup-field'){
-				if (txt == ''){
+			if (idd === 'bloodGroup-field'){
+				if (txt === ''){
 					jq('#li12').hide();
 				}
 				else {
@@ -310,8 +310,8 @@
 					jq('#summ_12').text(jq(event.target).val());
 				}
 			}
-			else if (idd == 'rhesusFactor-field'){
-				if (txt == ''){
+			else if (idd === 'rhesusFactor-field'){
+				if (txt === ''){
 					jq('#li13').hide();
 				}
 				else {
@@ -319,8 +319,8 @@
 					jq('#summ_13').text(jq(event.target).val());
 				}
 			}
-			else if (idd == 'pitct-field'){
-				if (txt == ''){
+			else if (idd === 'pitct-field'){
+				if (txt === ''){
 					jq('#li14').hide();
 				}
 				else {
@@ -328,8 +328,8 @@
 					jq('#summ_14').text(jq(event.target).val());
 				}
 			}
-			else if (idd == 'room-to-visit'){
-				if (txt == ''){
+			else if (idd === 'room-to-visit'){
+				if (txt === ''){
 					jq('#li15').hide();
 				}
 				else {
@@ -343,19 +343,19 @@
 		
 		jq('.col5 input:radio').each(function() {
 			var name = jq(this).attr("name");
-			if(jq("input:radio[name='"+name+"']:checked").length == 0){
+			if(jq("input:radio[name='"+name+"']:checked").length === 0){
 			}
-			else if(jq("input:radio[name='"+name+"']:checked").val() == "Yes") {
+			else if(jq("input:radio[name='"+name+"']:checked").val() === "Yes") {
 				jq("input[name='"+name+"'][value='Yes']").attr('checked', 'checked').change();
 			}
-			else if(jq("input:radio[name='"+name+"']:checked").val() == "Dead") {
+			else if(jq("input:radio[name='"+name+"']:checked").val() === "Dead") {
 				jq("input[name='"+name+"'][value='Dead']").attr('checked', 'checked').change();
 			}
 		});
 		
 		jq('.noidnt input:radio').each(function() {
 			var name = jq(this).attr("name");
-			if(jq("input:radio[name='"+name+"']:checked").length == 0){
+			if(jq("input:radio[name='"+name+"']:checked").length === 0){
 				jq("input[name='"+name+"'][value='No']").attr('checked', 'checked').change();
 		  	}
 		});
@@ -441,7 +441,7 @@
 		nextQuestion.toggleSelection();
 		selectedModel(selectedQuestion.fields) && selectedModel(selectedQuestion.fields).toggleSelection();
 		nextQuestion.fields[0] && nextQuestion.fields[0].toggleSelection();
-		if (selectedQuestion.parentSection != nextQuestion.parentSection) {
+		if (selectedQuestion.parentSection !== nextQuestion.parentSection) {
 			selectedQuestion.parentSection.toggleSelection();
 			nextQuestion.parentSection.toggleSelection();
 		}

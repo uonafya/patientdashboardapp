@@ -1,15 +1,7 @@
 package org.openmrs.module.patientdashboardapp.page.controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.Hibernate;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Encounter;
@@ -41,8 +33,14 @@ import org.openmrs.ui.framework.annotation.BindParams;
 import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.openmrs.ui.framework.session.Session;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TriagePageController {
 	public String get(
@@ -112,10 +110,11 @@ public class TriagePageController {
 		}
 		model.addAttribute("listOPD", oList);
 
+		PersonAttributeType paymentCategory = Context.getPersonService().getPersonAttributeTypeByUuid("09cd268a-f0f5-11ea-99a8-b3467ddbf779");
 		List<PersonAttribute> pas = hcs.getPersonAttributes(patient.getPatientId());
 		 for (PersonAttribute pa : pas) {
 			 PersonAttributeType attributeType = pa.getAttributeType(); 
-			 if(attributeType.getPersonAttributeTypeId()==14){
+			 if(attributeType.equals(paymentCategory)){
 				 model.addAttribute("selectedCategory",pa.getValue()); 
 			 }
 		 }
