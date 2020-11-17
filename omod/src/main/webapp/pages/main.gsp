@@ -5,6 +5,7 @@
 	ui.includeJavascript("patientdashboardapp", "jq.slimscroll.js")
 	
 	ui.includeCss("patientdashboardapp", "patientdashboardapp.css");
+	ui.includeCss("ehrconfigs", "referenceapplication.css")
 %>
 <script>
 	var confirmdialog
