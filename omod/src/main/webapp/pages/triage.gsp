@@ -1,5 +1,5 @@
 <%
-    ui.decorateWith("appui", "standardEmrPage", [title: "Triage Dashboard"])
+	ui.decorateWith("kenyaemr", "standardPage")
 	
     ui.includeCss("uicommons", "datetimepicker.css")
 	ui.includeCss("ehrconfigs", "onepcssgrid.css")
@@ -7,6 +7,7 @@
     ui.includeJavascript("patientdashboardapp", "note.js")
 	
 	ui.includeJavascript("ehrconfigs", "moment.js")
+	ui.includeCss("ehrconfigs", "referenceapplication.css")
 	
     ui.includeJavascript("uicommons", "datetimepicker/bootstrap-datetimepicker.min.js")
     ui.includeJavascript("uicommons", "handlebars/handlebars.min.js", Integer.MAX_VALUE - 1)

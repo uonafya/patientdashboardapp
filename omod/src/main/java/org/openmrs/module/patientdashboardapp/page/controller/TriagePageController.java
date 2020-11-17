@@ -109,15 +109,17 @@ public class TriagePageController {
 			Collections.sort(oList, new ConceptAnswerComparator());
 		}
 		model.addAttribute("listOPD", oList);
+		String selectedCategory = "";
 
 		PersonAttributeType paymentCategory = Context.getPersonService().getPersonAttributeTypeByUuid("09cd268a-f0f5-11ea-99a8-b3467ddbf779");
 		List<PersonAttribute> pas = hcs.getPersonAttributes(patient.getPatientId());
 		 for (PersonAttribute pa : pas) {
 			 PersonAttributeType attributeType = pa.getAttributeType(); 
 			 if(attributeType.equals(paymentCategory)){
-				 model.addAttribute("selectedCategory",pa.getValue()); 
+				 selectedCategory = pa.getValue();
 			 }
 		 }
+		 model.addAttribute("selectedCategory", selectedCategory);
 		return null;
 	}
 
