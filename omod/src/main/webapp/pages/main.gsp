@@ -1,8 +1,9 @@
-<% 
-	ui.decorateWith("appui", "standardEmrPage", [title: "OPD Dashboard"]);
+<%
+	ui.decorateWith("kenyaemr", "standardPage")
 	
 	ui.includeJavascript("patientdashboardapp", "jq.print.js")
 	ui.includeJavascript("patientdashboardapp", "jq.slimscroll.js")
+	ui.includeJavascript("ehrconfigs", "emr.js")
 	
 	ui.includeCss("patientdashboardapp", "patientdashboardapp.css");
 	ui.includeCss("ehrconfigs", "referenceapplication.css")
@@ -11,7 +12,7 @@
 	var confirmdialog
     jq(document).ready(function () {
 
-    	confirmdialog = ui.setupConfirmationDialog({
+    	confirmdialog = emr.setupConfirmationDialog({
             dialogOpts: {
                 overlayClose: false,
                 close: true
@@ -288,27 +289,9 @@
 			<li id="ti"><a href="#triage-info">Triage Information</a></li>
 			<li id="cs"><a href="#summary">Clinical History</a></li>
 			<li id="lr"><a href="#investigations">Lab Reports</a></li>
-            <li id="lr"><a href="#radiology">Radiology Reports</a></li>			
+            <li id="rr"><a href="#radiology">Radiology Reports</a></li>
 		</ul>
-		
-		<div id="notes">
-			${ ui.includeFragment("patientdashboardapp", "clinicalNotes", [patientId: patientId, opdId: opdId, queueId: queueId, opdLogId: opdLogId]) }
-		</div>
 
-		<div id="triage-info">
-			${ ui.includeFragment("patientdashboardapp", "triageInfo", [patientId: patientId, opdId: opdId, queueId: queueId]) }
-		</div>
-		
-		<div id="summary">
-			${ ui.includeFragment("patientdashboardapp", "visitSummary", [patientId: patientId]) }
-		</div>
-		
-		<div id="investigations">
-            ${ ui.includeFragment("patientdashboardapp", "investigations", [patientId: patientId]) }
-		</div>
-        <div id="radiology">
-            ${ ui.includeFragment("patientdashboardapp", "radiology", [patientId: patientId]) }
-        </div>		
 	</div>
 </div>
 

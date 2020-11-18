@@ -5,6 +5,7 @@ import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Encounter;
 import org.openmrs.Patient;
+import org.openmrs.PersonAttributeType;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.appui.UiSessionContext;
 import org.openmrs.module.hospitalcore.PatientQueueService;
@@ -57,13 +58,13 @@ public class MainPageController {
         else{
             model.addAttribute("gender", "FEMALE");
         }
-
+        PersonAttributeType paymentCategory = Context.getPersonService().getPersonAttributeTypeByUuid("09cd268a-f0f5-11ea-99a8-b3467ddbf779");
         model.addAttribute("patientId", patientId);
         model.addAttribute("opdId", opdId);
         model.addAttribute("queueId", queueId);
         model.addAttribute("opdLogId", opdLogId);
         model.addAttribute("patientIdentifier",patient.getPatientIdentifier());
-        model.addAttribute("category",patient.getAttribute(14));
+        model.addAttribute("category",patient.getAttribute(paymentCategory));
         model.addAttribute("address",patient.getPersonAddress());
         model.addAttribute("visitStatus",visitStatus);
 
