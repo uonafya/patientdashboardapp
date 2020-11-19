@@ -98,7 +98,7 @@ public class Outcome {
 
     public void save(Encounter encounter) {
         if (this.option.getId() == DIED_OPTION) {
-            Concept causeOfDeath = Context.getConceptService().getConceptByName("NONE");
+            Concept causeOfDeath = Context.getConceptService().getConceptByName("None");
             Patient patient = encounter.getPatient();
             patient.setDead(true);
             patient.setDeathDate(encounter.getDateCreated());

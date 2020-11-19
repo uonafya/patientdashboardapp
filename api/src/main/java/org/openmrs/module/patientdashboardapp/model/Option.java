@@ -72,10 +72,7 @@ public class Option {
 			return false;
 		}
 		Option otherOption = (Option) obj;
-		return (this.id.equals(otherOption.id))
-				&& ((this.id == null)
-						? otherOption.id == null
-						: this.id.equals(otherOption.id));
+		return this.id.equals(otherOption.id);
 	}
 
 

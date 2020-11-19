@@ -47,7 +47,7 @@ public class Note {
 	}
 
 
-	private static final String PHYSICAL_EXAMINATION_CONCEPT_NAME = "PHYSICAL EXAMINATION";
+	private static final String PHYSICAL_EXAMINATION_CONCEPT_NAME = "PHYSICAL EXAM"; // replaced this with PHYSICAL EXAMINATION from afyaehms
     private static final String PREVIOUS_ILLNESS_HISTORY_CONCEPT_NAME = "HISTORY OF PRESENT ILLNESS"  ;
 
 	private int patientId;
@@ -70,7 +70,7 @@ public class Note {
 	private String otherInstructions;
 	private String physicalExamination;
 
-	public static String PROPERTY_FACILITY = "patientdashboard.facilityConcept";
+	public static String PROPERTY_FACILITY = "patientdashboard.facilityConcept"; //Name of where patient was referred to
 
 	public int getPatientId() {
 		return patientId;

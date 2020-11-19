@@ -291,6 +291,24 @@
 			<li id="lr"><a href="#investigations">Lab Reports</a></li>
             <li id="rr"><a href="#radiology">Radiology Reports</a></li>
 		</ul>
+		<div id="notes">
+			<p>Clinical fragment will go here</p>
+		</div>
+
+		<div id="triage-info">
+			<p>Triage information will  fragment will go here</p>
+		</div>
+
+		<div id="summary">
+			<p>Visit summary fragment will go here</p>
+		</div>
+
+		<div id="investigations">
+			<p>Investigations fragment will go here</p>
+		</div>
+		<div id="radiology">
+			<p>Radiology fragment will go here</p>
+		</div>
 
 	</div>
 </div>

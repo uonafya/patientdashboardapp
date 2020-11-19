@@ -17,7 +17,7 @@ import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 public class Sign {
 
 	private static final int OTHER_NON_CODED_5622 = 5622;
-	private static final int NON_CODED_SYMPTOM_5693 = 5693;
+	private static final int NON_CODED_SYMPTOM_5693 = 165430;
 
 	public Sign() {
 	}
@@ -119,6 +119,7 @@ public class Sign {
 			previousSigns = getPreviousSigns(encounter.getPatient().getPatientId());
 		}
 		Symptom savedSymptom = null;
+		assert previousSigns != null;
 		if (!previousSigns.contains(this)) {
 
 			Symptom symptom = new Symptom();
@@ -170,7 +171,7 @@ public class Sign {
 		if (this.id.equals(NON_CODED_SYMPTOM_5693)) {
 			return this.label == null ? otherSign.label == null : StringUtils.equalsIgnoreCase(this.label, otherSign.label);
 		} else {
-			return ((this.id == null) ? otherSign.id == null : this.id.equals(otherSign.id));
+			return this.id.equals(otherSign.id);
 		}
 	}
 

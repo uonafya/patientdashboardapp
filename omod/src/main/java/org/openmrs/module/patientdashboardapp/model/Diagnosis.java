@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 public class Diagnosis {
 
     //TODO: move to global properties
-    private static final String FINAL_DIAGNOSIS_CONCEPT_NAME = "FINAL DIAGNOSIS";
+    private static final String FINAL_DIAGNOSIS_CONCEPT_NAME = "Final diagnosis";
 
     private static final Logger logger = LoggerFactory.getLogger(Diagnosis.class);
 

@@ -55,9 +55,9 @@
 	<!-- Required Global Properties -->
 	<globalProperty>
 		<property>patientdashboard.referralReasonsConcept</property>
-		<defaultValue>REASON FOR REFERRAL</defaultValue>
+		<defaultValue>Reasons for Referral</defaultValue>
 		<description>
-
+		A set of reasons that could trigger a referral for a patient
 		</description>
 	</globalProperty>
 	<globalProperty>
@@ -85,7 +85,7 @@
 
     <globalProperty>
         <property>patientdashboard.physicalexaminationConcept</property>
-        <defaultValue>PHYSICAL EXAMINATION</defaultValue>
+        <defaultValue>PHYSICAL EXAM</defaultValue>
         <description>
             physical examination
         </description>
