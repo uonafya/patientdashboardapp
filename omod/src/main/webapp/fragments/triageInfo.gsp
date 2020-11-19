@@ -3,7 +3,7 @@
     def formatter = new DecimalFormat("#0.00")
 	
     def returnUrl = ui.pageLink("patientdashboardapp", "main", [patientId: patientId, opdId: opdId, queueId: queueId])
-	ui.includeCss("registration", "onepcssgrid.css")
+	ui.includeCss("ehrconfigs", "onepcssgrid.css")
 %>
 
 <script>
