@@ -296,18 +296,18 @@
 		</div>
 
 		<div id="triage-info">
-			<p>Triage information will  fragment will go here</p>
+			${ ui.includeFragment("patientdashboardapp", "triageInfo", [patientId: patientId, opdId: opdId, queueId: queueId]) }
 		</div>
 
 		<div id="summary">
-			<p>Visit summary fragment will go here</p>
+			${ ui.includeFragment("patientdashboardapp", "visitSummary", [patientId: patientId]) }
 		</div>
 
 		<div id="investigations">
-			<p>Investigations fragment will go here</p>
+			${ ui.includeFragment("patientdashboardapp", "investigations", [patientId: patientId]) }
 		</div>
 		<div id="radiology">
-			<p>Radiology fragment will go here</p>
+			${ ui.includeFragment("patientdashboardapp", "radiology", [patientId: patientId]) }
 		</div>
 
 	</div>
