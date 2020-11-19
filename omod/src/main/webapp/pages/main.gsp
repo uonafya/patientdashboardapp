@@ -292,7 +292,7 @@
             <li id="rr"><a href="#radiology">Radiology Reports</a></li>
 		</ul>
 		<div id="notes">
-			<p>Clinical fragment will go here</p>
+			${ ui.includeFragment("patientdashboardapp", "clinicalNotes", [patientId: patientId, opdId: opdId, queueId: queueId, opdLogId: opdLogId]) }
 		</div>
 
 		<div id="triage-info">

@@ -1,6 +1,6 @@
 <%
     ui.includeCss("uicommons", "datetimepicker.css")
-    ui.includeCss("registration", "onepcssgrid.css")
+    ui.includeCss("ehrconfigs", "onepcssgrid.css")
     
 
     ui.includeJavascript("patientdashboardapp", "note.js")
