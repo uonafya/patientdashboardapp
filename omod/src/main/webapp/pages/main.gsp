@@ -1,10 +1,11 @@
 <%
-	ui.decorateWith("kenyaemr", "standardPage")
-	
+	ui.decorateWith("appui", "standardEmrPage", [title: "OPD Dashboard"]);
+
 	ui.includeJavascript("patientdashboardapp", "jq.print.js")
 	ui.includeJavascript("patientdashboardapp", "jq.slimscroll.js")
 	ui.includeJavascript("ehrconfigs", "emr.js")
-	
+	ui.includeJavascript("uicommons", "jquery.simplemodal.1.4.4.min.js")
+
 	ui.includeCss("patientdashboardapp", "patientdashboardapp.css");
 	ui.includeCss("ehrconfigs", "referenceapplication.css")
 %>
