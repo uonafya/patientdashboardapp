@@ -46,6 +46,8 @@
 		<uilibraryVersion>2.0.4</uilibraryVersion>
 		<inventoryVersion>1.0.0-SNAPSHOT</inventoryVersion>
 		<appuiVersion>1.8.0</appuiVersion>
+		<kenyaemrVersion>17.0.3</kenyaemrVersion>
+		<jodaTimeVersion>2.9.1</jodaTimeVersion>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>

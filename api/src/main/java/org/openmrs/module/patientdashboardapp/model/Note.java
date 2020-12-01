@@ -21,6 +21,7 @@ import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
+import org.openmrs.module.kenyaemr.api.KenyaEmrService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -238,10 +239,10 @@ public class Note {
 
 	private Encounter createEncounter(Patient patient) {
 		Encounter encounter = new Encounter();
+		KenyaEmrService kenyaEmrService =Context.getService(KenyaEmrService.class);
 		User user = Context.getAuthenticatedUser();
 		String encounterTypeName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_OPD_ENCOUTNER_TYPE);
 		EncounterType encounterType = Context.getEncounterService().getEncounterType(encounterTypeName);
-		Location location = new Location(1);
 		if (this.opdLogId != null) {
 			OpdPatientQueueLog opdPatientQueueLog = Context.getService(PatientQueueService.class)
 					.getOpdPatientQueueLogById(opdLogId);
@@ -253,7 +254,7 @@ public class Note {
 			encounter.setCreator(user);
 			encounter.setEncounterDatetime(new Date());
 			encounter.setEncounterType(encounterType);
-			encounter.setLocation(location);
+			encounter.setLocation(kenyaEmrService.getDefaultLocation());
 			encounter.setDateCreated(new Date());
 		}
 		return encounter;

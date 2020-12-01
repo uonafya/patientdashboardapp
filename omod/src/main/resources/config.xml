@@ -24,6 +24,7 @@
 		<require_module version="${appuiVersion}">org.openmrs.module.appui</require_module>
 		<require_module version="${inventoryVersion}"> org.openmrs.module.ehrinventory</require_module>
 		<require_module version="${appframeworkVersion}">org.openmrs.module.appframework</require_module>
+		<require_module version="${kenyaemrVersion}">org.openmrs.module.kenyaemr</require_module>
 	</require_modules>
 	<!-- / Required Modules -->
 	
@@ -90,6 +91,13 @@
             physical examination
         </description>
     </globalProperty>
+	<globalProperty>
+		<property>patientdashboard.symptomConcept</property>
+		<defaultValue>symptom</defaultValue>
+		<description>
+			symptom concept name
+		</description>
+	</globalProperty>
 	<!-- /Required Global Properties -->
 </module>
 

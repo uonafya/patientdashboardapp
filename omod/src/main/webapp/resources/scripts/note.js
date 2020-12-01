@@ -1,6 +1,6 @@
 (function(afyaehmsConstants){
-	afyaehmsConstants.OTHER_SYMPTOM_ID = 5693
-	afyaehmsConstants.OTHER_SYMPTOM_UID = "00acdc90-a641-41de-ae3a-e9b8d7a71a0f"
+	afyaehmsConstants.OTHER_SYMPTOM_ID = 165430
+	afyaehmsConstants.OTHER_SYMPTOM_UID = "b8e04026-c1dc-46a8-916a-d61408605444"
 })(window.afyaehmsConstants = window.afyaehmsConstants || {})
 
 function Note(noteObj) {
@@ -51,7 +51,7 @@ function Note(noteObj) {
 
 	this.removeSign = function(symptom) {
 		self.signs.remove(symptom);
-		if (self.signs().length == 0) {
+		if (self.signs().length === 0) {
             jq("#symptoms-set").val('');
         }
 	};
@@ -69,7 +69,7 @@ function Note(noteObj) {
 
 	this.removeDiagnosis = function(diagnosis) {
 		self.diagnoses.remove(diagnosis);
-		if (self.diagnoses().length == 0) {
+		if (self.diagnoses().length === 0) {
             jq("#diagnosis-set").val('');
         }
 	};
@@ -87,7 +87,7 @@ function Note(noteObj) {
 
 	this.removeProcedure = function(procedure) {
 		self.procedures.remove(procedure);
-		if (self.procedures().length == 0) {
+		if (self.procedures().length === 0) {
             jq("#procedure-set").val('');
         }
 	};
@@ -105,7 +105,7 @@ function Note(noteObj) {
 
 	this.removeInvestigation = function(investigation) {
 		self.investigations.remove(investigation);
-		if (self.investigations().length == 0) {
+		if (self.investigations().length === 0) {
             jq("#investigation-set").val('');
         }
 	};
@@ -123,7 +123,7 @@ function Note(noteObj) {
 
 	this.removePrescription = function(drug) {
 		self.drugs.remove(drug);
-		if (self.drugs().length == 0) {
+		if (self.drugs().length === 0) {
             jq("#drug-set").val('');
         }
 	};
