@@ -447,6 +447,11 @@
 			nextQuestion.parentSection.toggleSelection();
 		}
 	}
+	jq(onsubmit)
+		document.getElementById("submit").onclick = function () {
+		location.href = "triageQueue.page";
+	};
+
 
 </script>
 
