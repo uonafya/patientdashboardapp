@@ -138,10 +138,10 @@ public class TriagePageController {
 			@RequestParam(value = "roomToVisit", required = false) Integer roomToVisit,
 			@RequestParam(value = "returnUrl", required = false) String returnUrl,
 			@BindParams ("triagePatientData") TriagePatientData triagePatientData,
-			@BindParams("patientMedicalHistory") PatientMedicalHistory patientMedicalHistory,
-			@BindParams("patientFamilyHistory") PatientFamilyHistory patientFamilyHistory,
-			@BindParams("patientDrugHistory") PatientDrugHistory patientDrugHistory,
-            @BindParams("patientPersonalHistory") PatientPersonalHistory patientPersonalHistory,
+			//@BindParams("patientMedicalHistory") PatientMedicalHistory patientMedicalHistory,
+			//@BindParams("patientFamilyHistory") PatientFamilyHistory patientFamilyHistory,
+			//@BindParams("patientDrugHistory") PatientDrugHistory patientDrugHistory,
+            //@BindParams("patientPersonalHistory") PatientPersonalHistory patientPersonalHistory,
             @RequestParam("patientId") Patient patient,
             UiUtils ui,
 			Session session) {
@@ -149,15 +149,15 @@ public class TriagePageController {
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
 		triagePatientData.setPatient(patient);
 		triagePatientData.setCreatedOn(new Date());
-        patientMedicalHistory.setCreatedOn(new Date());
-        patientFamilyHistory.setCreatedOn(new Date());
-        patientDrugHistory.setCreatedOn(new Date());
-        patientPersonalHistory.setCreatedOn(new Date());
+        //patientMedicalHistory.setCreatedOn(new Date());
+        //patientFamilyHistory.setCreatedOn(new Date());
+        //patientDrugHistory.setCreatedOn(new Date());
+        //patientPersonalHistory.setCreatedOn(new Date());
 		triagePatientData = queueService.saveTriagePatientData(triagePatientData);
-        PatientMedicalHistorySaveHandler.save(patientMedicalHistory,patient.getId());
-		PatientFamilyHistorySaveHandler.save(patientFamilyHistory,patient.getId());
-		PatientDrugHistorySaveHandler.save(patientDrugHistory,patient.getId());
-        PatientPersonalHistorySaveHandler.save(patientPersonalHistory,patient.getId());
+        //PatientMedicalHistorySaveHandler.save(patientMedicalHistory,patient.getId());
+		//PatientFamilyHistorySaveHandler.save(patientFamilyHistory,patient.getId());
+		//PatientDrugHistorySaveHandler.save(patientDrugHistory,patient.getId());
+        //PatientPersonalHistorySaveHandler.save(patientPersonalHistory,patient.getId());
 
 		TriagePatientQueue queue = queueService.getTriagePatientQueueById(queueId);
 		String triageEncounterType = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_TRIAGE_ENCOUTNER_TYPE);
