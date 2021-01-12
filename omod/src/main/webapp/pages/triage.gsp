@@ -288,7 +288,7 @@
 				}
 				else {
 				    jq('#li16').show();
-				    jq('#summ_16').text(jq(event.target).val().formatToAccounting(2)+'%');
+					jq('#summ_16').text(formatToAccounting(jq(event.target).val())+'%');
 				}
 			}
         	});
