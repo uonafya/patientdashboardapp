@@ -378,13 +378,13 @@
 			var weight = getFloatValue(jq("#weight-field").val());
 			var bmi = weight/(height * height);
 			console.log("BMI " + bmi);
-			jq(".bmi").html(String(bmi).formatToAccounting());
+			jq(".bmi").html(formatToAccounting(String(bmi)));
 			
 			console.log(isNombre(bmi));
 
 			if (isNombre(bmi)){
 				jq('#li17').show();
-				jq('#summ_17').text(String(bmi).formatToAccounting());
+				jq('#summ_17').text(formatToAccounting(String(bmi)));
 			}
 
         	});
@@ -427,7 +427,20 @@
 		var res = word.replace("null", "");
 		res=res.replace("null","");
 		return res;
-	}		
+	}
+
+	function formatToAccounting(nStr) {
+		nStr = parseFloat(nStr).toFixed(2);
+		nStr += '';
+		x = nStr.split('.');
+		x1 = x[0];
+		x2 = x.length > 1 ? '.' + x[1] : '';
+		var rgx = /(\\d+)(\\d{3})/;
+		while (rgx.test(x1)) {
+			x1 = x1.replace(rgx, '\$1' + ',' + '\$2');
+		}
+		return x1 + x2;
+	}
 
 	function navigateToQuestion(step) {
 		var questions = NavigatorController.getQuestions();
@@ -447,6 +460,12 @@
 			nextQuestion.parentSection.toggleSelection();
 		}
 	}
+	PAGE = {
+		/** SUBMIT */
+		submit: function () {
+			jq("#notes-form").submit();
+		}
+	};
 
 </script>
 
@@ -754,7 +773,7 @@
 								<label for="pulse-rate-field"> Pulse Rate </label>
 							</div>
 			
-				                        <div class="col4 last>
+				                        <div class="col4 last">
 				                                <label for="oxygenSaturation-field">Oxygen Saturation </label>
 				                        </div>
 			                        </div>
@@ -778,7 +797,7 @@
 			                                <p>
 				                                <input id="oxygenSaturation-field" class="numeric-range" type="text" max="100" min="0" value="${vitals?.oxygenSaturation?:''}" name="triagePatientData.oxygenSaturation">
 				                                <span class="append-to-value">%</span>
-				                                <span id="fr8998" class="field-error" style="display: non"></span>
+				                                <span id="fr89981" class="field-error" style="display: none"></span>
 			                                </p>
 		                            	</div>
 		                        </div>
@@ -802,8 +821,7 @@
 						                                initialValue: vitals?.lastMenstrualDate?:'',
 						                                useTime: false,
 						                                defaultToday: false,
-						                                endDate: new Date()])
-					                                }
+						                                endDate: new Date()])}
 								<% } %>
 			                            	</p>
 						</div>
@@ -1588,7 +1606,7 @@
                 	</div>
 
                 	<div class="onerow" style="margin-top: 150px">
-                    		<input id="submit" type="submit" class="submitButton confirm right" value="FINISH" style="float:right; display:inline-block; margin-left: 5px;" />
+                    		<input id="submit" type="submit" class="submitButton confirm right" value="FINISH" onclick="PAGE.submit();" style="float:right; display:inline-block; margin-left: 5px;" />
                     		<a class="button cancel" onclick=" toggleSelection();">
                         		<span style="padding: 15px;">REVIEW</span>
                     		</a>
