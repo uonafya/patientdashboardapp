@@ -14,7 +14,7 @@ public class LabOrderViewModel {
 	public LabOrderViewModel(Order order) {
 		orderId = order.getId();
 		orderName = order.getConcept().getDisplayString();
-		orderDate = order.getStartDate();
+		orderDate = order.getEffectiveStartDate();
 		orderer = order.getCreator().getDisplayString();
 		patientId = order.getPatient().getId();
 	}

@@ -8,7 +8,10 @@ import org.openmrs.GlobalProperty;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Order;
+import org.openmrs.Person;
 import org.openmrs.PersonAttribute;
+import org.openmrs.Provider;
+import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.BillingConstants;
 import org.openmrs.module.hospitalcore.BillingService;
@@ -26,6 +29,7 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -168,16 +172,16 @@ public class Investigation {
         }
     }
 
-    @SuppressWarnings("deprecation")
+
     private void generateInvestigationOrder(OpdTestOrder opdTestOrder,
                                             Encounter encounter, String orderTypeId) {
         Order order = new Order();
         order.setConcept(opdTestOrder.getValueCoded());
         order.setCreator(opdTestOrder.getCreator());
         order.setDateCreated(opdTestOrder.getCreatedOn());
-        order.setOrderer(opdTestOrder.getCreator());
+        order.setOrderer(getProvider(opdTestOrder.getCreator().getPerson()));
         order.setPatient(opdTestOrder.getPatient());
-        order.setStartDate(new Date());
+        order.setDateActivated(new Date());
         order.setAccessionNumber("0");
         try {
             order.setOrderType(Context.getOrderService().getOrderType(Integer.parseInt(orderTypeId)));
@@ -204,6 +208,16 @@ public class Investigation {
             encounter.setPatient(opdTestOrder.getPatient());
         }
         return encounter;
+    }
+
+    private Provider getProvider(Person person) {
+        Provider provider = null;
+        ProviderService providerService = Context.getProviderService();
+        List<Provider> providerList = new ArrayList<Provider>(providerService.getProvidersByPerson(person));
+        if(providerList.size() > 0){
+            provider = providerList.get(0);
+        }
+        return provider;
     }
 
 }
