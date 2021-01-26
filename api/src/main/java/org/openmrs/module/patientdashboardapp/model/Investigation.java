@@ -114,7 +114,7 @@ public class Investigation {
 
 		for (PersonAttribute pa : pas) {
 			String attributeValue = pa.getValue();
-			if(attributeValue.equals("Non-Paying")){
+			if(attributeValue.equals("Non Paying")){
 				opdTestOrder.setBillingStatus(1);
 			}
 		}
