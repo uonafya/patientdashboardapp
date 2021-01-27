@@ -37,10 +37,6 @@ public class MainPageController {
                     @RequestParam(value = "visitStatus", required = false) String visitStatus) {
         pageRequest.getSession().setAttribute(ReferenceApplicationWebConstants.SESSION_ATTRIBUTE_REDIRECT_URL,ui.thisUrl());
         sessionContext.requireAuthentication();
-        Boolean isPriviledged = Context.hasPrivilege("Access OPD");
-        if(!isPriviledged){
-            return "redirect: index.htm";
-        }
         Patient patient = Context.getPatientService().getPatient(patientId);
         HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
         PatientQueueService patientQueueService = Context.getService(PatientQueueService.class);

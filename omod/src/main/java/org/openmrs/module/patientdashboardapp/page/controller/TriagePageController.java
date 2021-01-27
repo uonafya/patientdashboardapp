@@ -7,7 +7,6 @@ import org.openmrs.ConceptAnswer;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Patient;
-import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
@@ -24,10 +23,6 @@ import org.openmrs.module.hospitalcore.model.TriagePatientQueue;
 import org.openmrs.module.hospitalcore.model.TriagePatientQueueLog;
 import org.openmrs.module.hospitalcore.util.ConceptAnswerComparator;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
-import org.openmrs.module.patientdashboardapp.patienthistory.PatientDrugHistorySaveHandler;
-import org.openmrs.module.patientdashboardapp.patienthistory.PatientFamilyHistorySaveHandler;
-import org.openmrs.module.patientdashboardapp.patienthistory.PatientMedicalHistorySaveHandler;
-import org.openmrs.module.patientdashboardapp.patienthistory.PatientPersonalHistorySaveHandler;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.annotation.BindParams;
 import org.openmrs.ui.framework.page.PageModel;
@@ -53,11 +48,7 @@ public class TriagePageController {
 			@RequestParam(value = "opdId", required = false) Integer opdId,
 			@RequestParam(value = "returnUrl", required = false) String returnUrl) {
 		pageRequest.getSession().setAttribute(ReferenceApplicationWebConstants.SESSION_ATTRIBUTE_REDIRECT_URL,ui.thisUrl());
-		sessionContext.requireAuthentication();
-		Boolean isPriviledged = Context.hasPrivilege("Access Triage");
-		if(!isPriviledged){
-			return "redirect: index.htm";
-		}
+
 		PatientQueueService patientQueueService = Context.getService(PatientQueueService.class);
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 		TriagePatientQueue triagePatientQueue = patientQueueService.getTriagePatientQueueById(queueId);
@@ -112,14 +103,8 @@ public class TriagePageController {
 		String selectedCategory = "";
 
 		PersonAttributeType paymentCategory = Context.getPersonService().getPersonAttributeTypeByUuid("09cd268a-f0f5-11ea-99a8-b3467ddbf779");
-		List<PersonAttribute> pas = hcs.getPersonAttributes(patient.getPatientId());
-		 for (PersonAttribute pa : pas) {
-			 PersonAttributeType attributeType = pa.getAttributeType(); 
-			 if(attributeType.equals(paymentCategory)){
-				 selectedCategory = pa.getValue();
-			 }
-		 }
-		 model.addAttribute("selectedCategory", selectedCategory);
+
+		 model.addAttribute("selectedCategory", patient.getAttribute(paymentCategory));
 		return null;
 	}
 

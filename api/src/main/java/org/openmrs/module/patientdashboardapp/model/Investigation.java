@@ -146,7 +146,7 @@ public class Investigation {
 	}
 
 	private void processFreeInvestigations(OpdTestOrder opdTestOrder, Location encounterLocation) {
-		if (opdTestOrder.getBillingStatus() == 1) {
+		//if (opdTestOrder.getBillingStatus() == 1) {
 			Integer investigationConceptId = opdTestOrder.getValueCoded().getConceptId();
 			if (Investigation.collectionOfLabConceptIds.contains(investigationConceptId)) {
 				String labEncounterTypeString = Context.getAdministrationService().getGlobalProperty(BillingConstants.GLOBAL_PROPRETY_LAB_ENCOUNTER_TYPE, "LABENCOUNTER");
@@ -169,7 +169,7 @@ public class Investigation {
 				generateInvestigationOrder(opdTestOrder, encounter, labOrderTypeId);
 				Context.getEncounterService().saveEncounter(encounter);
 			}
-		}
+		//}
 	}
 	private void generateInvestigationOrder(OpdTestOrder opdTestOrder,
 			Encounter encounter, String orderTypeId) {
