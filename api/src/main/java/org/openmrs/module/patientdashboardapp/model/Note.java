@@ -1,25 +1,48 @@
 package org.openmrs.module.patientdashboardapp.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openmrs.CareSetting;
 import org.openmrs.Concept;
+import org.openmrs.ConceptAnswer;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Obs;
+import org.openmrs.Order;
+import org.openmrs.OrderType;
 import org.openmrs.Patient;
+import org.openmrs.Person;
+import org.openmrs.PersonAttribute;
+import org.openmrs.Provider;
+import org.openmrs.TestOrder;
 import org.openmrs.User;
+import org.openmrs.api.ConceptService;
+import org.openmrs.api.OrderService;
+import org.openmrs.api.PatientService;
+import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.hospitalcore.BillingConstants;
+import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.IpdService;
+import org.openmrs.module.hospitalcore.LabService;
+import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
+import org.openmrs.module.hospitalcore.model.BillableService;
+import org.openmrs.module.hospitalcore.model.DepartmentConcept;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
+import org.openmrs.module.hospitalcore.model.Lab;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
+import org.openmrs.module.hospitalcore.model.OpdTestOrder;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.openmrs.module.kenyaemr.api.KenyaEmrService;
 import org.slf4j.Logger;
@@ -29,6 +52,23 @@ import org.springframework.transaction.annotation.Transactional;
 public class Note {
 
 	private static Logger logger = LoggerFactory.getLogger(Note.class);
+
+	private static Set<Integer> collectionOfLabConceptIds = new HashSet<Integer>();
+
+	static {
+		List<Lab> labs = Context.getService(LabService.class).getAllLab();
+		System.out.println("All labs have been found here>."+labs);
+		for (Lab lab : labs) {
+			System.out.println("This for each of the labs that are being done>>>"+lab);
+			for (Concept labInvestigationCategoryConcept : lab.getInvestigationsToDisplay()) {
+				System.out.println("For every concept to display is this>>"+labInvestigationCategoryConcept);
+				for (ConceptAnswer labInvestigationConcept : labInvestigationCategoryConcept.getAnswers()) {
+					System.out.println("For every answer we get this one>."+labInvestigationConcept);
+					collectionOfLabConceptIds.add(labInvestigationConcept.getAnswerConcept().getConceptId());
+				}
+			}
+		}
+	}
 
 
 	public Note () {
@@ -370,7 +410,7 @@ public class Note {
 		for (Investigation investigation : this.investigations) {
 			String departmentName = Context.getConceptService().getConcept(this.opdId).getName().toString();
 			try {
-				investigation.save(encounter, departmentName);
+				save(encounter, departmentName, investigation);
 			} catch (Exception e) {
 				logger.error("Error saving investigation {}({}): {}", new Object[] { investigation.getId(), investigation.getLabel(), e.getMessage() });
 			}
@@ -448,4 +488,110 @@ public class Note {
 
         return previousIllnessHistory;
     }
+
+	public void save(Encounter encounter, String departmentName, Investigation investigation) throws Exception {
+		Concept investigationConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_FOR_INVESTIGATION));
+		if (investigationConcept == null) {
+			throw new Exception("Investigation concept null");
+		}
+		BillableService billableService = Context.getService(BillingService.class).getServiceByConceptId(investigation.getId());
+		OpdTestOrder opdTestOrder = new OpdTestOrder();
+		opdTestOrder.setPatient(encounter.getPatient());
+		opdTestOrder.setEncounter(encounter);
+		opdTestOrder.setConcept(investigationConcept);
+		opdTestOrder.setTypeConcept(DepartmentConcept.TYPES[2]);
+		opdTestOrder.setValueCoded(Context.getConceptService().getConcept(investigation.getId()));
+		opdTestOrder.setCreator(encounter.getCreator());
+		opdTestOrder.setCreatedOn(encounter.getDateCreated());
+		opdTestOrder.setBillableService(billableService);
+		opdTestOrder.setScheduleDate(encounter.getDateCreated());
+		opdTestOrder.setFromDept(departmentName);
+		if (billableService.getPrice().compareTo(BigDecimal.ZERO) == 0) {
+			opdTestOrder.setBillingStatus(1);
+		}
+		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+		List<PersonAttribute> pas = hcs.getPersonAttributes(encounter.getPatient().getPatientId());
+
+		for (PersonAttribute pa : pas) {
+			String attributeValue = pa.getValue();
+			if(attributeValue.equals("Non Paying")){
+				opdTestOrder.setBillingStatus(1);
+			}
+		}
+
+
+		opdTestOrder = Context.getService(PatientDashboardService.class).saveOrUpdateOpdOrder(opdTestOrder);
+
+		processInvestigationsForBilling(opdTestOrder, encounter.getLocation());
+	}
+
+	private void processInvestigationsForBilling(OpdTestOrder opdTestOrder, Location encounterLocation) {
+		Integer investigationConceptId = opdTestOrder.getValueCoded().getConceptId();
+		if (collectionOfLabConceptIds.contains(investigationConceptId)) {
+			System.out.println("The bills for processing comes in here with this value coded>>"+investigationConceptId);
+			String labEncounterTypeString = Context.getAdministrationService().getGlobalProperty(BillingConstants.GLOBAL_PROPRETY_LAB_ENCOUNTER_TYPE, "LABENCOUNTER");
+			EncounterType labEncounterType = Context.getEncounterService().getEncounterType(labEncounterTypeString);
+			Encounter encounter = getInvestigationEncounter(opdTestOrder,
+					encounterLocation, labEncounterType);
+
+			String labOrderTypeId = Context.getAdministrationService().getGlobalProperty(BillingConstants.GLOBAL_PROPRETY_LAB_ORDER_TYPE);
+			System.out.println("The lab order Id found is >>"+labOrderTypeId);
+			generateInvestigationOrder(opdTestOrder, encounter, labOrderTypeId);
+			Context.getEncounterService().saveEncounter(encounter);
+		}
+
+	}
+
+	private Encounter getInvestigationEncounter(OpdTestOrder opdTestOrder,
+												Location encounterLocation, EncounterType encounterType) {
+		List<Encounter> investigationEncounters = Context.getEncounterService().getEncounters(opdTestOrder.getPatient(), null, opdTestOrder.getCreatedOn(), null, null, Arrays.asList(encounterType), null, null, null, false);
+		Encounter encounter = null;
+		if (investigationEncounters.size() > 0) {
+			encounter = investigationEncounters.get(0);
+		} else {
+			encounter = new Encounter();
+			encounter.setCreator(opdTestOrder.getCreator());
+			encounter.setLocation(encounterLocation);
+			encounter.setDateCreated(opdTestOrder.getCreatedOn());
+			encounter.setEncounterDatetime(opdTestOrder.getCreatedOn());
+			encounter.setEncounterType(encounterType);
+			encounter.setPatient(opdTestOrder.getPatient());
+		}
+		return encounter;
+	}
+
+	private void generateInvestigationOrder(OpdTestOrder opdTestOrder,
+											Encounter encounter, String orderTypeId) {
+		Order order = new TestOrder();
+		order.setConcept(opdTestOrder.getValueCoded());
+		order.setCreator(opdTestOrder.getCreator());
+		order.setDateCreated(opdTestOrder.getCreatedOn());
+		order.setOrderer(getProvider(opdTestOrder.getCreator().getPerson()));
+		order.setPatient(opdTestOrder.getPatient());
+		order.setDateActivated(new Date());
+		order.setAccessionNumber("0");
+		order.setOrderType(Context.getOrderService().getOrderTypeByUuid("52a447d3-a64a-11e3-9aeb-50e549534c5e"));
+		order.setCareSetting(Context.getOrderService().getCareSettingByUuid("6f0c9a92-6f24-11e3-af88-005056821db0"));
+		order.setEncounter(encounter);
+		encounter.addOrder(order);
+	}
+
+	private Provider getProvider(Person person) {
+		Provider provider = null;
+		ProviderService providerService = Context.getProviderService();
+		List<Provider> providerList = new ArrayList<Provider>(providerService.getProvidersByPerson(person));
+		if(providerList.size() > 0){
+			provider = providerList.get(0);
+		}
+		return provider;
+	}
+
+	private OrderType getLabOrderType() {
+		//Test with Integer class
+		Class clazz = Integer.class;
+		OrderType orderType = new OrderType();
+		orderType.setName("Lab order type");
+		orderType.setJavaClassName("org.openmrs.TestOrder");
+		return orderType;
+	}
 }

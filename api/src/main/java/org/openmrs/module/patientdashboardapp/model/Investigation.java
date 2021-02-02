@@ -89,41 +89,7 @@ public class Investigation {
 	private String label;
 
 
-	public void save(Encounter encounter, String departmentName) throws Exception {
-		Concept investigationConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_FOR_INVESTIGATION));
-		if (investigationConcept == null) {
-			throw new Exception("Investigation concept null");
-		}
-		BillableService billableService = Context.getService(BillingService.class).getServiceByConceptId(this.getId());
-		OpdTestOrder opdTestOrder = new OpdTestOrder();
-		opdTestOrder.setPatient(encounter.getPatient());
-		opdTestOrder.setEncounter(encounter);
-		opdTestOrder.setConcept(investigationConcept);
-		opdTestOrder.setTypeConcept(DepartmentConcept.TYPES[2]);
-		opdTestOrder.setValueCoded(Context.getConceptService().getConcept(this.getId()));
-		opdTestOrder.setCreator(encounter.getCreator());
-		opdTestOrder.setCreatedOn(encounter.getDateCreated());
-		opdTestOrder.setBillableService(billableService);
-		opdTestOrder.setScheduleDate(encounter.getDateCreated());
-		opdTestOrder.setFromDept(departmentName);
-		if (billableService.getPrice().compareTo(BigDecimal.ZERO) == 0) {
-			opdTestOrder.setBillingStatus(1);
-		}
-		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
-		List<PersonAttribute> pas = hcs.getPersonAttributes(encounter.getPatient().getPatientId());
 
-		for (PersonAttribute pa : pas) {
-			String attributeValue = pa.getValue();
-			if(attributeValue.equals("Non Paying")){
-				opdTestOrder.setBillingStatus(1);
-			}
-		}
-
-
-		opdTestOrder = Context.getService(PatientDashboardService.class).saveOrUpdateOpdOrder(opdTestOrder);
-		
-		processFreeInvestigations(opdTestOrder, encounter.getLocation());
-	}
 	public void addObs(Encounter encounter, Obs obsGroup) {
 		AdministrationService administrationService = Context
 				.getAdministrationService();
