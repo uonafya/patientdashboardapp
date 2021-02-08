@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openmrs.CareSetting;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Encounter;
@@ -24,9 +23,6 @@ import org.openmrs.PersonAttribute;
 import org.openmrs.Provider;
 import org.openmrs.TestOrder;
 import org.openmrs.User;
-import org.openmrs.api.ConceptService;
-import org.openmrs.api.OrderService;
-import org.openmrs.api.PatientService;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.BillingConstants;
@@ -514,30 +510,31 @@ public class Note {
 
 		for (PersonAttribute pa : pas) {
 			String attributeValue = pa.getValue();
-			if(attributeValue.equals("Non Paying")){
+			if(attributeValue.equals("Non paying")){
 				opdTestOrder.setBillingStatus(1);
+				break;
 			}
 		}
 
 
 		opdTestOrder = Context.getService(PatientDashboardService.class).saveOrUpdateOpdOrder(opdTestOrder);
 
-		processInvestigationsForBilling(opdTestOrder, encounter.getLocation());
+		processInvestigationsForBillingFree(opdTestOrder, encounter.getLocation());
 	}
 
-	private void processInvestigationsForBilling(OpdTestOrder opdTestOrder, Location encounterLocation) {
-		Integer investigationConceptId = opdTestOrder.getValueCoded().getConceptId();
-		if (collectionOfLabConceptIds.contains(investigationConceptId)) {
-			System.out.println("The bills for processing comes in here with this value coded>>"+investigationConceptId);
-			String labEncounterTypeString = Context.getAdministrationService().getGlobalProperty(BillingConstants.GLOBAL_PROPRETY_LAB_ENCOUNTER_TYPE, "LABENCOUNTER");
-			EncounterType labEncounterType = Context.getEncounterService().getEncounterType(labEncounterTypeString);
-			Encounter encounter = getInvestigationEncounter(opdTestOrder,
-					encounterLocation, labEncounterType);
+	private void processInvestigationsForBillingFree(OpdTestOrder opdTestOrder, Location encounterLocation) {
+		if(opdTestOrder.getBillingStatus() == 1) {
+			Integer investigationConceptId = opdTestOrder.getValueCoded().getConceptId();
+			if (collectionOfLabConceptIds.contains(investigationConceptId)) {
+				String labEncounterTypeString = Context.getAdministrationService().getGlobalProperty(BillingConstants.GLOBAL_PROPRETY_LAB_ENCOUNTER_TYPE, "LABENCOUNTER");
+				EncounterType labEncounterType = Context.getEncounterService().getEncounterType(labEncounterTypeString);
+				Encounter encounter = getInvestigationEncounter(opdTestOrder,
+						encounterLocation, labEncounterType);
 
-			String labOrderTypeId = Context.getAdministrationService().getGlobalProperty(BillingConstants.GLOBAL_PROPRETY_LAB_ORDER_TYPE);
-			System.out.println("The lab order Id found is >>"+labOrderTypeId);
-			generateInvestigationOrder(opdTestOrder, encounter, labOrderTypeId);
-			Context.getEncounterService().saveEncounter(encounter);
+				String labOrderTypeId = Context.getAdministrationService().getGlobalProperty(BillingConstants.GLOBAL_PROPRETY_LAB_ORDER_TYPE);
+				generateInvestigationOrder(opdTestOrder, encounter, labOrderTypeId);
+				Context.getEncounterService().saveEncounter(encounter);
+			}
 		}
 
 	}
