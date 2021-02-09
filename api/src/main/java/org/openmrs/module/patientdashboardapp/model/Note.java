@@ -16,7 +16,6 @@ import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Order;
-import org.openmrs.OrderType;
 import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.PersonAttribute;
@@ -53,13 +52,9 @@ public class Note {
 
 	static {
 		List<Lab> labs = Context.getService(LabService.class).getAllLab();
-		System.out.println("All labs have been found here>."+labs);
 		for (Lab lab : labs) {
-			System.out.println("This for each of the labs that are being done>>>"+lab);
 			for (Concept labInvestigationCategoryConcept : lab.getInvestigationsToDisplay()) {
-				System.out.println("For every concept to display is this>>"+labInvestigationCategoryConcept);
 				for (ConceptAnswer labInvestigationConcept : labInvestigationCategoryConcept.getAnswers()) {
-					System.out.println("For every answer we get this one>."+labInvestigationConcept);
 					collectionOfLabConceptIds.add(labInvestigationConcept.getAnswerConcept().getConceptId());
 				}
 			}
@@ -262,7 +257,7 @@ public class Note {
 	}
 
 	@Transactional
-	public Encounter save() {
+	public Encounter saveInvestigations() {
 		Patient patient = Context.getPatientService().getPatient(this.patientId);
 		Obs obsGroup = Context.getService(HospitalCoreService.class).getObsGroupCurrentDate(patient.getPersonId());
 		Encounter encounter = createEncounter(patient);
@@ -317,7 +312,7 @@ public class Note {
 			sign.addObs(encounter, obsGroup);
 		}
 		for (Procedure procedure : this.procedures) {
-			procedure.addObs(encounter,obsGroup);
+			addObsForProcedures(encounter,obsGroup, procedure);
 		}
 
 		for(Investigation investigation : this.investigations) {
@@ -406,9 +401,17 @@ public class Note {
 		for (Investigation investigation : this.investigations) {
 			String departmentName = Context.getConceptService().getConcept(this.opdId).getName().toString();
 			try {
-				save(encounter, departmentName, investigation);
+				saveInvestigations(encounter, departmentName, investigation);
 			} catch (Exception e) {
 				logger.error("Error saving investigation {}({}): {}", new Object[] { investigation.getId(), investigation.getLabel(), e.getMessage() });
+			}
+		}
+		for(Procedure procedure : this.procedures) {
+			try {
+				saveProcedures(encounter, procedure);
+			}
+			catch (Exception e) {
+				logger.error("Error saving procedure {}({}): {}", new Object[] { procedure.getId(), procedure.getLabel(), e.getMessage() });
 			}
 		}
 		for(Sign sign: this.signs) {
@@ -485,7 +488,7 @@ public class Note {
         return previousIllnessHistory;
     }
 
-	public void save(Encounter encounter, String departmentName, Investigation investigation) throws Exception {
+	public void saveInvestigations(Encounter encounter, String departmentName, Investigation investigation) throws Exception {
 		Concept investigationConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_FOR_INVESTIGATION));
 		if (investigationConcept == null) {
 			throw new Exception("Investigation concept null");
@@ -583,12 +586,52 @@ public class Note {
 		return provider;
 	}
 
-	private OrderType getLabOrderType() {
-		//Test with Integer class
-		Class clazz = Integer.class;
-		OrderType orderType = new OrderType();
-		orderType.setName("Lab order type");
-		orderType.setJavaClassName("org.openmrs.TestOrder");
-		return orderType;
+	private void saveProcedures(Encounter encounter, Procedure procedure) throws Exception {
+		Concept procedureConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE, null));
+		if (procedureConcept == null) {
+			throw new Exception("Post for procedure concept null");
+		}
+		BillableService billableService = Context.getService(BillingService.class).getServiceByConceptId(procedure.getId());
+		if(billableService == null) {
+			throw new Exception("This service is NOT billed, it is null");
+		}
+		OpdTestOrder opdTestOrder = new OpdTestOrder();
+		opdTestOrder.setPatient(encounter.getPatient());
+		opdTestOrder.setEncounter(encounter);
+		opdTestOrder.setConcept(procedureConcept);
+		opdTestOrder.setTypeConcept(DepartmentConcept.TYPES[1]);
+		opdTestOrder.setValueCoded(Context.getConceptService().getConcept(procedure.getId()));
+		opdTestOrder.setCreator(encounter.getCreator());
+		opdTestOrder.setCreatedOn(encounter.getDateCreated());
+		opdTestOrder.setBillableService(billableService);
+		opdTestOrder.setScheduleDate(encounter.getDateCreated());
+		if (billableService.getPrice().compareTo(BigDecimal.ZERO) == 0) {
+			opdTestOrder.setBillingStatus(1);
+		}
+		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+		List<PersonAttribute> pas = hcs.getPersonAttributes(encounter.getPatient().getPatientId());
+
+		for (PersonAttribute pa : pas) {
+			String attributeValue = pa.getValue();
+			if(attributeValue.equals("Non paying")){
+				opdTestOrder.setBillingStatus(1);
+				break;
+			}
+		}
+
+		Context.getService(PatientDashboardService.class).saveOrUpdateOpdOrder(opdTestOrder);
+
+	}
+
+	private void addObsForProcedures(Encounter encounter, Obs obsGroup, Procedure procedure) {
+		Obs obsProcedure = new Obs();
+		obsProcedure.setObsGroup(obsGroup);
+		obsProcedure.setConcept(Context.getConceptService().getConcept(procedure.getId()));
+		obsProcedure.setValueCoded(Context.getConceptService().getConcept(procedure.getId()));
+		obsProcedure.setCreator(encounter.getCreator());
+		obsProcedure.setDateCreated(encounter.getDateCreated());
+		obsProcedure.setEncounter(encounter);
+		obsProcedure.setPerson(encounter.getPatient());
+		encounter.addObs(obsProcedure);
 	}
 }

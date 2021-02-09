@@ -84,38 +84,4 @@ public class Procedure {
 	public void setScheduledDate(String scheduledDate) {
 		this.scheduledDate = scheduledDate;
 	}
-
-
-
-	public void save(Encounter encounter) throws Exception {
-		Concept procedureConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE, null));
-		if (procedureConcept == null) {
-			throw new Exception("Post for procedure concept null");
-		}
-		BillableService billableService = Context.getService(BillingService.class).getServiceByConceptId(this.getId());
-		OpdTestOrder opdTestOrder = new OpdTestOrder();
-		opdTestOrder.setPatient(encounter.getPatient());
-		opdTestOrder.setEncounter(encounter);
-		opdTestOrder.setConcept(procedureConcept);
-		opdTestOrder.setTypeConcept(DepartmentConcept.TYPES[1]);
-		opdTestOrder.setValueCoded(Context.getConceptService().getConcept(this.getId()));
-		opdTestOrder.setCreator(encounter.getCreator());
-		opdTestOrder.setCreatedOn(encounter.getDateCreated());
-		opdTestOrder.setBillableService(billableService);
-		opdTestOrder.setScheduleDate(Context.getDateFormat().parse(this.getScheduledDate()));
-		
-		Context.getService(PatientDashboardService.class).saveOrUpdateOpdOrder(opdTestOrder);
-	}
-
-	public void addObs(Encounter encounter, Obs obsGroup) {
-		Obs obsProcedure = new Obs();
-		obsProcedure.setObsGroup(obsGroup);
-		obsProcedure.setConcept(Context.getConceptService().getConcept(this.id));
-		obsProcedure.setValueCoded(Context.getConceptService().getConcept(this.id));
-		obsProcedure.setCreator(encounter.getCreator());
-		obsProcedure.setDateCreated(encounter.getDateCreated());
-		obsProcedure.setEncounter(encounter);
-		obsProcedure.setPerson(encounter.getPatient());
-		encounter.addObs(obsProcedure);
-	}
 }

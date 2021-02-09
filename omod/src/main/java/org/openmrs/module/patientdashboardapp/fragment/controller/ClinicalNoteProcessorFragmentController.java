@@ -21,7 +21,7 @@ public class ClinicalNoteProcessorFragmentController {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			Note note = mapper.readValue(noteJSON, Note.class);
-			note.save();
+			note.saveInvestigations();
 		} catch (JsonParseException e) {
 			log.error("Unable to parse JSON string: {}.\n Error: {}", new Object[] { noteJSON, e.getMessage() });
 			return SimpleObject.create("status", "fail", "message", e.getMessage());
