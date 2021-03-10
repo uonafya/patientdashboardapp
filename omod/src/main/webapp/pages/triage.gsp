@@ -276,6 +276,11 @@
 		}
 		return x1 + x2;
 	}
+	jq(onsubmit)
+		document.getElementById("submit").onclick = function () {
+		location.href = "triageQueue.page";
+	};
+
 
 	PAGE = {
 		/** SUBMIT */
