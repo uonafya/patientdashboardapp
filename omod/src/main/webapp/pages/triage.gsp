@@ -159,6 +159,34 @@
 			jq('#summ_11').text(jq('#datetime-display').val());
 		});
 
+		//Validation of temp on lose focus
+		jq('#temperature-field').on("focusout",()=>{
+			const maxVal =43;
+			const minVal=25;
+			let tempVal =jq('#temperature-field').val();
+			if(tempVal>maxVal){
+				showErrorOnTemp('max',maxVal);
+			}
+			else if(tempVal<minVal){
+				showErrorOnTemp('min',minVal);
+			}
+			else{
+				jq(".button.confirm").removeClass("disabled");
+				jq(".button.confirm").attr("onclick","PAGE.submit();");
+				jq('#temperature-field').prop("style","");
+				jq("#fr89981").hide();
+			}
+		});
+		let showErrorOnTemp = (type,valTemp)=>{
+			jq(".button.confirm").addClass("disabled")
+			jq(".button.confirm").attr("onclick","");
+			jq('#temperature-field').prop("style","border-color:red");
+			let error = type==='max'?'greater':'lower';
+			jq("#fr89981").html(`<span style="color:red">Temperature cannot be ${error} than ${valTemp}°C</span>`)
+			jq("#fr89981").show();
+		};
+		//end of validation of temperature
+
 		jq('select').bind('change keyup', function(event) {
 			var idd = jq(event.target).attr('id');
 			var txt = jq(event.target).val();
