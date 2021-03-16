@@ -173,6 +173,8 @@
 			else{
 				jq(".button.confirm").removeClass("disabled");
 				jq(".button.confirm").attr("onclick","PAGE.submit();");
+				jq('#temperature-field').prop("style","");
+				jq("#fr89981").hide();
 			}
 		});
 		let showErrorOnTemp = (type,valTemp)=>{
