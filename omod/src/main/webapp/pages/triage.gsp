@@ -163,7 +163,7 @@
 		jq('#temperature-field').on("focusout",()=>{
 			const maxVal =43;
 			const minVal=25;
-			let tempval =jq('#temperature-field').val();
+			let tempVal =jq('#temperature-field').val();
 			if(tempVal>maxVal){
 				showErrorOnTemp('max',maxVal);
 			}
@@ -755,7 +755,7 @@ h2 span{
 						<div class="onerow" style="margin-top: 100px">
 
 							<a class="button confirm" onclick="PAGE.submit();"
-							   style="float:right; display:inline-block; margin-left: 5px;" id="triageFormSubmit">
+							   style="float:right; display:inline-block; margin-left: 5px;">
 								<span>FINISH</span>
 							</a>
 
