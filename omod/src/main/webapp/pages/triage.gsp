@@ -159,6 +159,32 @@
 			jq('#summ_11').text(jq('#datetime-display').val());
 		});
 
+		//Validation of temp on lose focus
+		jq('#temperature-field').on("focusout",()=>{
+			const maxVal =43;
+			const minVal=25;
+			let tempval =jq('#temperature-field').val();
+			if(tempVal>maxVal){
+				showErrorOnTemp('max',maxVal);
+			}
+			else if(tempVal<minVal){
+				showErrorOnTemp('min',minVal);
+			}
+			else{
+				jq(".button.confirm").removeClass("disabled");
+				jq(".button.confirm").attr("onclick","PAGE.submit();");
+			}
+		});
+		let showErrorOnTemp = (type,valTemp)=>{
+			jq(".button.confirm").addClass("disabled")
+			jq(".button.confirm").attr("onclick","");
+			jq('#temperature-field').prop("style","border-color:red");
+			let error = type==='max'?'greater':'lower';
+			jq("#fr89981").html(`<span style="color:red">Temperature cannot be ${error} than ${valTemp}°C</span>`)
+			jq("#fr89981").show();
+		};
+		//end of validation of temperature
+
 		jq('select').bind('change keyup', function(event) {
 			var idd = jq(event.target).attr('id');
 			var txt = jq(event.target).val();
@@ -729,7 +755,7 @@ h2 span{
 						<div class="onerow" style="margin-top: 100px">
 
 							<a class="button confirm" onclick="PAGE.submit();"
-							   style="float:right; display:inline-block; margin-left: 5px;">
+							   style="float:right; display:inline-block; margin-left: 5px;" id="triageFormSubmit">
 								<span>FINISH</span>
 							</a>
 
