@@ -16,6 +16,12 @@
 <script>
 
 	var emrMessages = {};
+	var filledFields = {
+		"Temperature":null,
+		"Blood Pressure (Systolic)":null,
+		"Blood Pressure (Diastolic)":null,
+		"room":null
+	};
 
 	emrMessages["numericRangeHigh"] = "value should be less than {0}";
 	emrMessages["numericRangeLow"] = "value should be more than {0}";
@@ -27,6 +33,8 @@
 	}
 
 	jq(document).ready(function () {
+		jq(".button.confirm").addClass("disabled");
+		jq(".button.confirm").attr("onclick","");
 		jq(".lab-tabs").tabs();
 
 		jq('#surname').html(strReplace('${patient.names.familyName}')+',<em>surname</em>');
@@ -159,6 +167,144 @@
 			jq('#summ_11').text(jq('#datetime-display').val());
 		});
 
+		jq('#temperature-field').on("focusout", function(){
+			var maxVal =43;
+			var minVal=25;
+			var fieldTypeVal="Temperature";
+			var idVal="#temperature-field";
+			var localid ="#fr89981";
+			checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
+		});
+
+		jq('#systolic-bp-field').on("focusout", function(){
+			var maxVal =250;
+			var minVal=0;
+			var fieldTypeVal="Blood Pressure (Systolic)";
+			var idVal="#systolic-bp-field";
+			var localid ="#fr5882";
+			checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
+		});
+
+		jq('#diastolic-bp-field').on("focusout", function(){
+		var maxVal =150;
+		var minVal=0;
+		var fieldTypeVal="Blood Pressure (Diastolic)";
+		var idVal="#diastolic-bp-field";
+		var localid ="#fr9945";
+		checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
+		});
+
+		jq('#resp-rate-field').on("focusout", function(){
+		var maxVal =99;
+		var minVal=0;
+		var fieldTypeVal="Respiratory Rate";
+		var idVal="#resp-rate-field";
+		var localid ="#fr1753";
+		checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
+		});
+
+		jq('#oxygenSaturation-field').on("focusout", function(){
+		var maxVal =100;
+		var minVal=0;
+		var fieldTypeVal="Oxygen Saturation";
+		var idVal="#oxygenSaturation-field";
+		var localid ="#fr8998";
+		checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
+		});
+
+		jq('#pulse-rate-field').on("focusout", function(){
+		var maxVal =230;
+		var minVal=0;
+		var fieldTypeVal="Pulse Rate";
+		var idVal="#pulse-rate-field";
+		var localid ="#fr8917";
+		checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
+		});
+
+		jq('#weight-field').on("focusout", function(){
+		var maxVal =250;
+		var minVal=0;
+		var fieldTypeVal="Weight";
+		var idVal="#weight-field";
+		var localid ="#fr1139";
+		checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
+		});
+
+		jq('#height-field').on("focusout", function(){
+		var maxVal =272;
+		var minVal=10;
+		var fieldTypeVal="Height";
+		var idVal="#height-field";
+		var localid ="#fr9875";
+		checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
+		});
+
+		jq('#room-to-visit').on("change", function () {
+		var roomVar= '#room-to-visit';
+			var tempVal =jq(roomVar).val()
+		if(tempVal!==''){
+		filledFields["room"]=tempVal;
+		checkFilled();
+		}
+		else{
+		delete filledFields["room"];
+		jq(roomVar).prop("style","border-color:red");
+		jq("#fr3417").html('<span style="color:#ff0000">Please Select a room</span>');
+		checkFilled();
+		}
+		});
+
+		function checkError(minVal, maxVal,idField, idError,fieldType){
+		var tempVal =jq(idField).val();
+		var errorLocal='';
+		var valTemp=0;
+		if(tempVal>maxVal){
+		errorLocal='greater';
+		valTemp=maxVal;
+		}
+		else if(tempVal<minVal){
+		errorLocal ='lower';
+		valTemp=minVal;
+		}
+		else{
+		if(filledFields[fieldType]!==undefined && tempVal!==""){
+			filledFields[fieldType]=tempVal;
+			checkFilled();
+			noError(idError,idField);
+		}
+		else if(filledFields[fieldType]!==undefined && tempVal===""){
+		jq(idField).prop("style","border-color:red");
+		jq(idError).html('<span style="color:#ff0000">'+fieldType+' must be filled in!</span>');
+		jq(idError).show();
+		}
+		else{
+		noError(idError,idField);
+		}
+		return;
+		}
+		jq(idField).prop("style","border-color:red");
+		jq(idError).html('<span style="color:#ff0000">'+fieldType+' cannot be '+errorLocal+' than '+ valTemp+'</span>');
+		jq(idError).show();
+		}
+
+		function noError(idField,fieldTypeid){
+		jq(fieldTypeid).prop("style","border-color:green");
+		jq(idField).hide();
+		}
+
+		function checkFilled(){
+			var checkComplete =true;
+			for (let items in filledFields) {
+				if(filledFields[items]===null){
+					checkComplete=false;
+				}
+			}
+			if(checkComplete){
+			jq(".button.confirm").removeClass("disabled");
+			jq(".button.confirm").attr("onclick","PAGE.submit();");
+			}
+		}
+
 		jq('select').bind('change keyup', function(event) {
 			var idd = jq(event.target).attr('id');
 			var txt = jq(event.target).val();
@@ -200,8 +346,6 @@
 				}
 			}
 		});
-
-
 
 		jq('.col5 input:radio').each(function() {
 			var name = jq(this).attr("name");
@@ -549,15 +693,18 @@ h2 span{
 								<h2 style="border-bottom: 1px solid #008394">Vital Summary</h2>
 
 								<div class="col4">
-									<label for="temperature-field"> Temperature </label>
+									<label for="temperature-field"> Temperature <span style="color: #f00 !important;
+									padding-left: 5px;">*</span></label>
 								</div>
 
 								<div class="col4">
-									<label for="systolic-bp-field">Blood Pressure (Systolic)</label>
+									<label for="systolic-bp-field">Blood Pressure (Systolic)<span style="color: #f00 !important;
+									padding-left: 5px;">*</span></label>
 								</div>
 
 								<div class="col4 last">
-									<label for="diastolic-bp-field">Blood Pressure (Diastolic)</label>
+									<label for="diastolic-bp-field">Blood Pressure (Diastolic)<span style="color: #f00 !important;
+									padding-left: 5px;">*</span></label>
 								</div>
 							</div>
 							<div class="onerow">
