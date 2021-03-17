@@ -11,7 +11,6 @@ import org.openmrs.module.patientdashboardapp.api.db.TriageDAO;
 
 public class HibernateTriageDAO implements TriageDAO {
 
-	@Override
 	public List<TriagePatientData> getPatientTriageData(Patient patient) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TriagePatientData.class);
 		criteria.add(Restrictions.eq("patient", patient));
