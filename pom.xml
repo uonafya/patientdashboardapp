@@ -97,6 +97,13 @@
 				<version>${hospitalcoreVersion}</version>
 				<scope>provided</scope>
 			</dependency>
+
+			<dependency>
+				<groupId>org.openmrs.module</groupId>
+				<artifactId>hospitalcore-omod</artifactId>
+				<version>${hospitalcoreVersion}</version>
+				<scope>provided</scope>
+			</dependency>
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>ehrinventory-api</artifactId>

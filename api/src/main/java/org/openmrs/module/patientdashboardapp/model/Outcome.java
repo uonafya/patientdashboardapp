@@ -86,7 +86,8 @@ public class Outcome {
                 obsOutcome.setValueDatetime(Context.getDateFormat().parse(this.followUpDate));
             } else if (this.option.getId() == ADMIT_OPTION) {
                 obsOutcome.setValueCoded(Context.getConceptService().getConcept(this.admitTo.getId()));
-            }
+            }//add the rest of the options here reviewed and cured
+
         } catch (ParseException e) {
             logger.error("Error saving outcome obs: {}", new Object[]{e.getMessage()});
         }
@@ -98,10 +99,10 @@ public class Outcome {
 
     public void save(Encounter encounter) {
         if (this.option.getId() == DIED_OPTION) {
-            Concept causeOfDeath = Context.getConceptService().getConceptByName("None");
+            Concept causeOfDeath = Context.getConceptService().getConceptByName("None");//provide cause of death as a concept
             Patient patient = encounter.getPatient();
             patient.setDead(true);
-            patient.setDeathDate(encounter.getDateCreated());
+            patient.setDeathDate(encounter.getDateCreated());// please provide a date picker to allow someone to enter the death date
             patient.setCauseOfDeath(causeOfDeath);
             Context.getPatientService().savePatient(patient);
             PatientSearch patientSearch = Context.getService(HospitalCoreService.class).getPatient(encounter.getPatient().getId());
