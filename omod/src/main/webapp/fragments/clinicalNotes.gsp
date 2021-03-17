@@ -1,7 +1,8 @@
 <%
     ui.includeCss("uicommons", "datetimepicker.css")
     ui.includeCss("ehrconfigs", "onepcssgrid.css")
-    
+    ui.includeCss("patientdashboardapp", "custom.css")
+
 
     ui.includeJavascript("patientdashboardapp", "note.js")
     ui.includeJavascript("uicommons", "datetimepicker/bootstrap-datetimepicker.min.js")
@@ -499,8 +500,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 
             <li>
                 <label>Drug<span>*</span></label>
-                <input class="drug-name" type="text"
-                       data-bind="value: prescription.drug().drugName, valueUpdate: 'blur'">
+                <input class="drug-name" id="drugSearch" type="text" data-bind="value: prescription.drug().drugName, valueUpdate: 'blur'">
             </li>
             <li>
                 <label>Dosage<span>*</span></label>
