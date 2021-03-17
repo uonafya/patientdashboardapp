@@ -15,14 +15,13 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>org.openmrs.api</groupId>
-			<artifactId>openmrs-api</artifactId>
-			<type>jar</type>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>hospitalcore-api</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
-			<artifactId>hospitalcore-api</artifactId>
+			<artifactId>hospitalcore-omod</artifactId>
 		</dependency>
 
 		<dependency>
@@ -33,6 +32,12 @@
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>kenyaemr-api</artifactId>
 		</dependency>
+<!--OpenMRS core modules-->
+		<dependency>
+			<groupId>org.openmrs.api</groupId>
+			<artifactId>openmrs-api</artifactId>
+			<type>jar</type>
+		</dependency>
 
 		<dependency>
 			<groupId>org.openmrs.web</groupId>
@@ -43,15 +48,6 @@
 		<dependency>
 			<groupId>org.openmrs.api</groupId>
 			<artifactId>openmrs-api</artifactId>
-			<version>${openMRSVersion}</version>
-			<type>test-jar</type>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.openmrs.web</groupId>
-			<artifactId>openmrs-web</artifactId>
-			<version>${openMRSVersion}</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
@@ -59,11 +55,12 @@
 		<dependency>
 			<groupId>org.openmrs.test</groupId>
 			<artifactId>openmrs-test</artifactId>
-			<version>${openMRSVersion}</version>
 			<type>pom</type>
 			<scope>test</scope>
 		</dependency>
+		<!-- End OpenMRS core -->
 	</dependencies>
+
 	
 	<build>
 		<resources>
