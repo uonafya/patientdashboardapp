@@ -298,6 +298,7 @@
 			jq(idField).prop("style", "border-color:red");
 			jq(idError).html('<span style="color:#ff0000">' + fieldType + ' cannot be ' + errorLocal + ' than ' + valTemp + '</span>');
 			jq(idError).show();
+			checkFilled();
 		}
 
 		function noError(idField, fieldTypeid) {
