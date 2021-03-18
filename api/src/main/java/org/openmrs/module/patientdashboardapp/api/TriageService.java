@@ -10,6 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 public interface TriageService extends OpenmrsService {
-	List<TriagePatientData> getPatientTriageData(Patient patient);
-	TriagePatientData getPatientTriageData(Integer id);
+	/*List<TriagePatientData> getPatientTriageData(Patient patient);
+	TriagePatientData getPatientTriageData(Integer id);*/
 }

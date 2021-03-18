@@ -40,7 +40,7 @@ public class TriageInfoFragmentController {
 	
 	public List <SimpleObject> getTriageId(
 			@RequestParam("patientId") Patient patientId,UiUtils ui){
-		List<TriagePatientData> triage = Context.getService(TriageService.class).getPatientTriageData(patientId);
+		List<TriagePatientData> triage = Context.getService(PatientQueueService.class).getPatientTriageData(patientId);
 		Collections.sort(triage, new Comparator<TriagePatientData>() {
 			@Override
 			public int compare(TriagePatientData prevEntry, TriagePatientData newEntry) {
@@ -52,7 +52,7 @@ public class TriageInfoFragmentController {
 	}	
 	public SimpleObject getTriageSummary(
 			@RequestParam("Id")Integer Id ,UiUtils ui){
-		TriagePatientData triad = Context.getService(TriageService.class).getPatientTriageData(Id);
+		TriagePatientData triad = Context.getService(PatientQueueService.class).getPatientTriageData(Id);
 		return SimpleObject.fromObject(triad, ui, "temperature" ,"weight" ,"height" ,"BMI" ,"mua" ,"chest" ,"abdominal", "systolic" ,"daistolic", "respiratoryRate" ,"pulsRate" ,"bloodGroup","lastMenstrualDate", "rhesusFactor","pitct", "createdOn", "encounterOpd","oxygenSaturation");
 	}
 }
