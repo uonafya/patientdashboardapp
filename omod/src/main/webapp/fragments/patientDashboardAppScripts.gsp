@@ -363,6 +363,8 @@
 			}
 		});
 
+
+
 		jq("#diagnosis").autocomplete({
 			source: function(request, response) {
 				jq.getJSON('${ ui.actionLink("patientdashboardapp", "ClinicalNotes", "getDiagnosis") }', {
@@ -387,9 +389,9 @@
 					id: ui.item.value,
 					label: ui.item.label
 				}));
-				
+
 				verifyDiagnosis();
-				
+
 				jq("#diagnosis-lbl").hide();
 				jq('#diagnosis').focus();
 				jq('#diagnosis').val('');
@@ -590,78 +592,82 @@
 			prescriptionDialog.show();
 		});
 
+
+
 		jq(".drug-name").on("focus.autocomplete", function() {
-			var selectedInput = this;
-			jq(this).autocomplete({
-				source: function(request, response) {
-					jq.getJSON('${ ui.actionLink("patientdashboardapp", "ClinicalNotes", "getDrugs") }', {
-						q: request.term
-					}).success(function(data) {
-						var results = [];
-						for (var i in data) {
-							var result = {
-								label: data[i].name,
-								value: data[i].id
-							};
-							results.push(result);
-						}
-						response(results);
-					});
-				},
-				minLength: 3,
-				select: function(event, ui) {
-					event.preventDefault();
-					jq(selectedInput).val(ui.item.label);
-                    jq('#prescriptionAlert').hide();
-
-                    drugIdnt = ui.item.value;
-				},
-				change: function(event, ui) {
-					event.preventDefault();
-					jq(selectedInput).val(ui.item.label);
-					jq("#drug-set").val("Drug set");
-					jq.getJSON('${ ui.actionLink("patientdashboardapp", "ClinicalNotes", "getFormulationByDrugName") }', {
-						"drugName": ui.item.label
-					}).success(function(data) {
-						var formulations = jq.map(data, function(formulation) {
-							return new Formulation({
-								id: formulation.id,
-								label: formulation.name + ":" + formulation.dozage
-							});
+				var selectedInput = this;
+				jq(this).autocomplete({
+					source: function(request, response) {
+						jq.getJSON('${ ui.actionLink("patientdashboardapp", "ClinicalNotes", "getDrugs") }', {
+							q: request.term
+						}).success(function(data) {
+							var results = [];
+							for (var i in data) {
+								var result = {
+									label: data[i].name,
+									name: data[i].name,
+									value: data[i].id.toString(),
+									id: data[i].id.toString()
+								};
+								results.push(result);
+							}
+							response(results);
 						});
-						prescription.drug().formulationOpts(formulations);
-					});
-
-					// fetch the frequenciesui.
-					jq.getJSON('${ui.actionLink("patientdashboardapp","ClinicalNotes","getFrequencies")}').success(function(data) {
-						var frequency = jq.map(data, function(frequency) {
-							return new Frequency({
-								id: frequency.id,
-								label: frequency.name
+					},
+					minLength: 3,
+					select: function(event, ui) {
+						event.preventDefault();
+						var lval = ui.item.label || ""
+						jq(selectedInput).val(lval);
+						jq('#prescriptionAlert').hide();
+						drugIdnt = ui.item.value;
+					},
+					change: function(event, ui) {
+						event.preventDefault();
+						var lval = ui.item.label || ""
+						jq(selectedInput).val(lval);
+						jq("#drug-set").val("Drug set");
+						jq.getJSON('${ ui.actionLink("patientdashboardapp", "ClinicalNotes", "getFormulationByDrugName") }', {
+							"drugName": lval
+						}).success(function(data) {
+							var formulations = jq.map(data, function(formulation) {
+								return new Formulation({
+									id: formulation.id,
+									label: formulation.name + ":" + formulation.dozage
+								});
 							});
+							prescription.drug().formulationOpts(formulations);
 						});
-						prescription.drug().frequencyOpts(frequency);
-					});
-					jq.getJSON('${ui.actionLink("patientdashboardapp","clinicalNotes","getDrugUnit")}').success(function(data) {
-						var drugUnit = jq.map(data, function(drugUnit) {
-							return new DrugUnit({
-								id: drugUnit.id,
-								label: drugUnit.label
+
+						// fetch the frequenciesui.
+						jq.getJSON('${ui.actionLink("patientdashboardapp","ClinicalNotes","getFrequencies")}').success(function(data) {
+							var frequency = jq.map(data, function(frequency) {
+								return new Frequency({
+									id: frequency.id,
+									label: frequency.name
+								});
 							});
+							prescription.drug().frequencyOpts(frequency);
 						});
-						prescription.drug().drugUnitsOptions(drugUnit);
-					});
+						jq.getJSON('${ui.actionLink("patientdashboardapp","clinicalNotes","getDrugUnit")}').success(function(data) {
+							var drugUnit = jq.map(data, function(drugUnit) {
+								return new DrugUnit({
+									id: drugUnit.id,
+									label: drugUnit.label
+								});
+							});
+							prescription.drug().drugUnitsOptions(drugUnit);
+						});
 
-				},
-				open: function() {
-					jq(this).removeClass("ui-corner-all").addClass("ui-corner-top");
-				},
-				close: function() {
-					jq(this).removeClass("ui-corner-top").addClass("ui-corner-all");
-				}
-
+					},
+					open: function() {
+						jq(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+					},
+					close: function() {
+						jq(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+					}
+				});
 			});
-		});
 
         jq("#drugFormulation").on("change", function (e) {
             var formulationName = jq('#drugFormulation :selected').text();
