@@ -22,7 +22,6 @@
 		"Blood Pressure (Diastolic)":null,
 		"room":null
 	};
-
 	emrMessages["numericRangeHigh"] = "value should be less than {0}";
 	emrMessages["numericRangeLow"] = "value should be more than {0}";
 	emrMessages["requiredField"] = "Required Field";
@@ -36,7 +35,11 @@
 		jq(".button.confirm").addClass("disabled");
 		jq(".button.confirm").attr("onclick","");
 		jq(".lab-tabs").tabs();
-
+		jq.fn.exists = function(){ return this.length > 0; }
+		if(!jq("select[name='roomToVisit']").exists()){
+			delete filledFields['room'];
+			checkValues();
+		}
 		jq('#surname').html(strReplace('${patient.names.familyName}')+',<em>surname</em>');
 		jq('#othname').html(strReplace('${patient.names.givenName}')+' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <em>other names</em>');
 		jq('#agename').html('${patient.age} years ('+ moment('${patient.birthdate}').format('DD,MMM YYYY') +')');
@@ -167,142 +170,159 @@
 			jq('#summ_11').text(jq('#datetime-display').val());
 		});
 
+		jq("input[type='text']").on("keyup", function() {
+			var inputText = jq(this).val();
+			inputText = inputText.replace(/[^0-9.]/g, '');
+			jq(this).val(inputText);
+		});
+
 		jq('#temperature-field').on("focusout", function(){
 			var maxVal =43;
 			var minVal=25;
 			var fieldTypeVal="Temperature";
-			var idVal="#temperature-field";
+			var idVal = jq(this).attr("id");
 			var localid ="#fr89981";
 			checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
 		});
 
-		jq('#systolic-bp-field').on("focusout", function(){
-			var maxVal =250;
-			var minVal=0;
-			var fieldTypeVal="Blood Pressure (Systolic)";
-			var idVal="#systolic-bp-field";
-			var localid ="#fr5882";
-			checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
+		jq('#systolic-bp-field').on("focusout", function() {
+			var maxVal = 250;
+			var minVal = 0;
+			var fieldTypeVal = "Blood Pressure (Systolic)";
+			var idVal = jq(this).attr("id");
+			var localid = "#fr5882";
+			checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
 		});
 
-		jq('#diastolic-bp-field').on("focusout", function(){
-		var maxVal =150;
-		var minVal=0;
-		var fieldTypeVal="Blood Pressure (Diastolic)";
-		var idVal="#diastolic-bp-field";
-		var localid ="#fr9945";
-		checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
+		jq('#diastolic-bp-field').on("focusout", function() {
+			var maxVal = 150;
+			var minVal = 0;
+			var fieldTypeVal = "Blood Pressure (Diastolic)";
+			var idVal = jq(this).attr("id")
+			var localid = "#fr9945";
+			checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
 		});
 
-		jq('#resp-rate-field').on("focusout", function(){
-		var maxVal =99;
-		var minVal=0;
-		var fieldTypeVal="Respiratory Rate";
-		var idVal="#resp-rate-field";
-		var localid ="#fr1753";
-		checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
+		jq('#resp-rate-field').on("focusout", function() {
+			var maxVal = 99;
+			var minVal = 0;
+			var fieldTypeVal = "Respiratory Rate";
+			var idVal = jq(this).attr("id")
+			var localid = "#fr1753";
+			checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
 		});
 
-		jq('#oxygenSaturation-field').on("focusout", function(){
-		var maxVal =100;
-		var minVal=0;
-		var fieldTypeVal="Oxygen Saturation";
-		var idVal="#oxygenSaturation-field";
-		var localid ="#fr8998";
-		checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
+		jq('#oxygenSaturation-field').on("focusout", function() {
+			var maxVal = 100;
+			var minVal = 0;
+			var fieldTypeVal = "Oxygen Saturation";
+			var idVal = jq(this).attr("id")
+			var localid = "#fr8998";
+			checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
 		});
 
-		jq('#pulse-rate-field').on("focusout", function(){
-		var maxVal =230;
-		var minVal=0;
-		var fieldTypeVal="Pulse Rate";
-		var idVal="#pulse-rate-field";
-		var localid ="#fr8917";
-		checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
+		jq('#pulse-rate-field').on("focusout", function() {
+			var maxVal = 230;
+			var minVal = 0;
+			var fieldTypeVal = "Pulse Rate";
+			var idVal = jq(this).attr("id")
+			var localid = "#fr8917";
+			checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
 		});
 
-		jq('#weight-field').on("focusout", function(){
-		var maxVal =250;
-		var minVal=0;
-		var fieldTypeVal="Weight";
-		var idVal="#weight-field";
-		var localid ="#fr1139";
-		checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
+		jq('#weight-field').on("focusout", function() {
+			var maxVal = 250;
+			var minVal = 0;
+			var fieldTypeVal = "Weight";
+			var idVal = jq(this).attr("id")
+			var localid = "#fr1139";
+			checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
 		});
 
-		jq('#height-field').on("focusout", function(){
-		var maxVal =272;
-		var minVal=10;
-		var fieldTypeVal="Height";
-		var idVal="#height-field";
-		var localid ="#fr9875";
-		checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
+		jq('#height-field').on("focusout", function() {
+			var maxVal = 272;
+			var minVal = 10;
+			var fieldTypeVal = "Height";
+			var idVal = jq(this).attr("id")
+			var localid = "#fr9875";
+			checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
 		});
 
-		jq('#room-to-visit').on("change", function () {
-		var roomVar= '#room-to-visit';
-			var tempVal =jq(roomVar).val()
-		if(tempVal!==''){
-		filledFields["room"]=tempVal;
-		checkFilled();
-		}
-		else{
-		delete filledFields["room"];
-		jq(roomVar).prop("style","border-color:red");
-		jq("#fr3417").html('<span style="color:#ff0000">Please Select a room</span>');
-		checkFilled();
-		}
+		jq('#room-to-visit').on("change", function() {
+			var roomVar = '#room-to-visit';
+			var tempVal = jq(roomVar).val()
+			if (tempVal !== '') {
+				filledFields["room"] = tempVal;
+				checkFilled();
+			} else {
+				filledFields["room"] = null;
+				jq(roomVar).prop("style", "border-color:red");
+				jq("#fr3417").html('<span style="color:#ff0000">Please Select a room</span>');
+				checkFilled();
+			}
 		});
 
-		function checkError(minVal, maxVal,idField, idError,fieldType){
-		var tempVal =jq(idField).val();
-		var errorLocal='';
-		var valTemp=0;
-		if(tempVal>maxVal){
-		errorLocal='greater';
-		valTemp=maxVal;
-		}
-		else if(tempVal<minVal){
-		errorLocal ='lower';
-		valTemp=minVal;
-		}
-		else{
-		if(filledFields[fieldType]!==undefined && tempVal!==""){
-			filledFields[fieldType]=tempVal;
+		function checkError(minVal, maxVal, idField, idError, fieldType) {
+			var tempVal = jq('#'+idField).val();
+			var errorLocal = '';
+			var valTemp = 0;
+			if (isNaN(tempVal) && tempVal !== "") {
+				jq(idError).html('<span style="color:#ff0000">' + fieldType + ' must be a number!</span>');
+				jq(idError).show();
+			} else if (tempVal > maxVal && !isNaN(tempVal)) {
+				errorLocal = 'greater';
+				valTemp = maxVal;
+				filledFields[fieldType] = null;
+			} else if (tempVal < minVal && !isNaN(tempVal)) {
+				errorLocal = 'lower';
+				valTemp = minVal;
+				filledFields[fieldType] = null;
+			} else {
+				if (filledFields[fieldType] !== undefined && tempVal !== "") {
+					filledFields[fieldType] = tempVal;
+					noError(idError, idField);
+				} else if (filledFields[fieldType] !== undefined && tempVal === "") {
+					jq(idField).prop("style", "border-color:red");
+					jq(idError).html('<span style="color:#ff0000">' + fieldType + ' must be filled in!</span>');
+					jq(idError).show();
+				} else {
+					noError(idError, idField);
+				}
+				checkFilled();
+				return;
+			}
+			jq(idField).prop("style", "border-color:red");
+			jq(idError).html('<span style="color:#ff0000">' + fieldType + ' cannot be ' + errorLocal + ' than ' + valTemp + '</span>');
+			jq(idError).show();
 			checkFilled();
-			noError(idError,idField);
-		}
-		else if(filledFields[fieldType]!==undefined && tempVal===""){
-		jq(idField).prop("style","border-color:red");
-		jq(idError).html('<span style="color:#ff0000">'+fieldType+' must be filled in!</span>');
-		jq(idError).show();
-		}
-		else{
-		noError(idError,idField);
-		}
-		return;
-		}
-		jq(idField).prop("style","border-color:red");
-		jq(idError).html('<span style="color:#ff0000">'+fieldType+' cannot be '+errorLocal+' than '+ valTemp+'</span>');
-		jq(idError).show();
 		}
 
-		function noError(idField,fieldTypeid){
-		jq(fieldTypeid).prop("style","border-color:green");
-		jq(idField).hide();
+		function noError(idField, fieldTypeid) {
+			jq(fieldTypeid).prop("style", "background-color: #ddffdd;");
+			jq(idField).hide();
 		}
 
-		function checkFilled(){
-			var checkComplete =true;
+		function checkFilled() {
+			var checkComplete = true;
 			for (let items in filledFields) {
-				if(filledFields[items]===null){
-					checkComplete=false;
+				if (filledFields[items] === null) {
+						checkComplete = false;
 				}
 			}
-			if(checkComplete){
-			jq(".button.confirm").removeClass("disabled");
-			jq(".button.confirm").attr("onclick","PAGE.submit();");
+			if (checkComplete) {
+				jq(".button.confirm").removeClass("disabled");
+				jq(".button.confirm").attr("onclick", "PAGE.submit();");
 			}
+			else{
+				jq(".button.confirm").addClass("disabled");
+				jq(".button.confirm").attr("onclick", "");
+			}
+			console.log(checkComplete);
+		}
+		function checkValues(){
+			filledFields['Temperature']=jq("#temperature-field").val();
+			filledFields['Blood Pressure (Systolic)']=jq("#systolic-bp-field").val();
+			filledFields['Blood Pressure (Diastolic)']=jq("#diastolic-bp-field").val();
 		}
 
 		jq('select').bind('change keyup', function(event) {
@@ -420,12 +440,6 @@
 		}
 		return x1 + x2;
 	}
-	jq(onsubmit)
-		document.getElementById("submit").onclick = function () {
-		location.href = "triageQueue.page";
-	};
-
-
 	PAGE = {
 		/** SUBMIT */
 		submit: function () {

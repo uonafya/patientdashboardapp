@@ -173,7 +173,16 @@ public class TriagePageController {
 			OpdPatientQueue opdPatientQueue = Context.getService(PatientQueueService.class).getOpdPatientQueueById(queueId);
 			Encounter encounter = new Encounter();
 			Date date = new Date();
-			encounter.setPatient(opdPatientQueue.getPatient());
+			try {
+				encounter.setPatient(opdPatientQueue.getPatient());
+			}
+			catch(Exception ex){
+				// Handle the error when empty.
+				Map<String,Object> params = new HashMap<String, Object>();
+				params.put("app", "patientdashboardapp.triage");
+				returnUrl = ui.pageLink("patientqueueapp", "triageQueue", params);
+				return "redirect:" + returnUrl;
+			}
 			encounter.setCreator(user);
 			encounter.setEncounterDatetime(date);
 			encounter.setEncounterType(encounterType);
