@@ -11,8 +11,7 @@ import org.openmrs.module.patientdashboardapp.api.db.TriageDAO;
 
 public class HibernateTriageDAO implements TriageDAO {
 
-	@Override
-	public List<TriagePatientData> getPatientTriageData(Patient patient) {
+	/*public List<TriagePatientData> getPatientTriageData(Patient patient) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TriagePatientData.class);
 		criteria.add(Restrictions.eq("patient", patient));
 		return criteria.list();
@@ -20,8 +19,8 @@ public class HibernateTriageDAO implements TriageDAO {
 	public TriagePatientData getPatientTriageData(Integer id) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TriagePatientData.class);
 		criteria.add(Restrictions.eq("id", id));
-		return (TriagePatientData) criteria.list().get(0);
-	}
+		return (TriagePatientData) criteria.list().get(0);*/
+	//}
 	private SessionFactory sessionFactory;
    
     public void setSessionFactory(SessionFactory sessionFactory) {
