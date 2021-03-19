@@ -22,7 +22,6 @@
 		"Blood Pressure (Diastolic)":null,
 		"room":null
 	};
-
 	emrMessages["numericRangeHigh"] = "value should be less than {0}";
 	emrMessages["numericRangeLow"] = "value should be more than {0}";
 	emrMessages["requiredField"] = "Required Field";
@@ -36,7 +35,11 @@
 		jq(".button.confirm").addClass("disabled");
 		jq(".button.confirm").attr("onclick","");
 		jq(".lab-tabs").tabs();
-
+		jq.fn.exists = function(){ return this.length > 0; }
+		if(!jq("select[name='roomToVisit']").exists()){
+			delete filledFields['room'];
+			checkValues();
+		}
 		jq('#surname').html(strReplace('${patient.names.familyName}')+',<em>surname</em>');
 		jq('#othname').html(strReplace('${patient.names.givenName}')+' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <em>other names</em>');
 		jq('#agename').html('${patient.age} years ('+ moment('${patient.birthdate}').format('DD,MMM YYYY') +')');
@@ -166,13 +169,6 @@
 			jq('#li11').show();
 			jq('#summ_11').text(jq('#datetime-display').val());
 		});
-
-		var filledFields = {
-			"Temperature": null,
-			"Blood Pressure (Systolic)": null,
-			"Blood Pressure (Diastolic)": null,
-			"room": null
-		};
 
 		jq("input[type='text']").on("keyup", function() {
 			var inputText = jq(this).val();
@@ -310,7 +306,7 @@
 			var checkComplete = true;
 			for (let items in filledFields) {
 				if (filledFields[items] === null) {
-					checkComplete = false;
+						checkComplete = false;
 				}
 			}
 			if (checkComplete) {
@@ -321,7 +317,14 @@
 				jq(".button.confirm").addClass("disabled");
 				jq(".button.confirm").attr("onclick", "");
 			}
+			console.log(checkComplete);
 		}
+		function checkValues(){
+			filledFields['Temperature']=jq("#temperature-field").val();
+			filledFields['Blood Pressure (Systolic)']=jq("#systolic-bp-field").val();
+			filledFields['Blood Pressure (Diastolic)']=jq("#diastolic-bp-field").val();
+		}
+
 		jq('select').bind('change keyup', function(event) {
 			var idd = jq(event.target).attr('id');
 			var txt = jq(event.target).val();
