@@ -285,6 +285,7 @@
 					jq(idField).prop("style", "border-color:red");
 					jq(idError).html('<span style="color:#ff0000">' + fieldType + ' must be filled in!</span>');
 					jq(idError).show();
+					jq("#"+idField).prop("style", "background-color: #f2bebe;");
 				} else {
 					noError(idError, idField);
 				}
@@ -294,11 +295,12 @@
 			jq(idField).prop("style", "border-color:red");
 			jq(idError).html('<span style="color:#ff0000">' + fieldType + ' cannot be ' + errorLocal + ' than ' + valTemp + '</span>');
 			jq(idError).show();
+			jq("#"+idField).prop("style", "background-color: #f2bebe;");
 			checkFilled();
 		}
 
 		function noError(idField, fieldTypeid) {
-			jq(fieldTypeid).prop("style", "background-color: #ddffdd;");
+			jq("#"+fieldTypeid).prop("style", "background-color: #ddffdd;");
 			jq(idField).hide();
 		}
 
@@ -724,7 +726,7 @@ h2 span{
 							<div class="onerow">
 								<div class="col4">
 									<p>
-										<input id="temperature-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.temperature?:''}" name="triagePatientData.temperature">
+										<input id="temperature-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.temperature?:''}" name="triagePatientData.temperature" required>
 										<span class="append-to-value">..&#8451;</span>
 										<span id="fr89981" class="field-error" style="display: none"></span>
 									</p>
@@ -732,14 +734,14 @@ h2 span{
 
 								<div class="col4">
 									<p>
-										<input id="systolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="${vitals?.systolic?:''}" name="triagePatientData.systolic">
+										<input id="systolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="${vitals?.systolic?:''}" name="triagePatientData.systolic" required>
 										<span id="fr5882" class="field-error" style="display: none"></span>
 									</p>
 								</div>
 
 								<div class="col4 last">
 									<p>
-										<input id="diastolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="${vitals?.daistolic?:''}" name="triagePatientData.daistolic">
+										<input id="diastolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="${vitals?.daistolic?:''}" name="triagePatientData.daistolic" required>
 										<span id="fr9945" class="field-error" style="display: none"></span>
 									</p>
 								</div>
@@ -871,7 +873,7 @@ h2 span{
 
 								<div class="col4">
 									<p>
-										<select id="room-to-visit" name="roomToVisit" class="required">
+										<select id="room-to-visit" name="roomToVisit" class="required" required>
 											<option value="">-Please select-</option>
 											<% listOPD.each { opd -> %>
 											<option value="${opd.answerConcept.id }">${opd.answerConcept.name}</option>
