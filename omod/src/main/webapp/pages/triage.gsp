@@ -16,7 +16,12 @@
 <script>
 
 	var emrMessages = {};
-
+	var filledFields = {
+		"Temperature":null,
+		"Blood Pressure (Systolic)":null,
+		"Blood Pressure (Diastolic)":null,
+		"room":null
+	};
 	emrMessages["numericRangeHigh"] = "value should be less than {0}";
 	emrMessages["numericRangeLow"] = "value should be more than {0}";
 	emrMessages["requiredField"] = "Required Field";
@@ -27,8 +32,14 @@
 	}
 
 	jq(document).ready(function () {
+		jq(".button.confirm").addClass("disabled");
+		jq(".button.confirm").attr("onclick","");
 		jq(".lab-tabs").tabs();
-
+		jq.fn.exists = function(){ return this.length > 0; }
+		if(!jq("select[name='roomToVisit']").exists()){
+			delete filledFields['room'];
+			checkValues();
+		}
 		jq('#surname').html(strReplace('${patient.names.familyName}')+',<em>surname</em>');
 		jq('#othname').html(strReplace('${patient.names.givenName}')+' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <em>other names</em>');
 		jq('#agename').html('${patient.age} years ('+ moment('${patient.birthdate}').format('DD,MMM YYYY') +')');
@@ -159,6 +170,163 @@
 			jq('#summ_11').text(jq('#datetime-display').val());
 		});
 
+		jq("input[type='text']").on("keyup", function() {
+			var inputText = jq(this).val();
+			inputText = inputText.replace(/[^0-9.]/g, '');
+			jq(this).val(inputText);
+		});
+
+		jq('#temperature-field').on("focusout", function(){
+			var maxVal =43;
+			var minVal=25;
+			var fieldTypeVal="Temperature";
+			var idVal = jq(this).attr("id");
+			var localid ="#fr89981";
+			checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
+		});
+
+		jq('#systolic-bp-field').on("focusout", function() {
+			var maxVal = 250;
+			var minVal = 0;
+			var fieldTypeVal = "Blood Pressure (Systolic)";
+			var idVal = jq(this).attr("id");
+			var localid = "#fr5882";
+			checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
+		});
+
+		jq('#diastolic-bp-field').on("focusout", function() {
+			var maxVal = 150;
+			var minVal = 0;
+			var fieldTypeVal = "Blood Pressure (Diastolic)";
+			var idVal = jq(this).attr("id")
+			var localid = "#fr9945";
+			checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
+		});
+
+		jq('#resp-rate-field').on("focusout", function() {
+			var maxVal = 99;
+			var minVal = 0;
+			var fieldTypeVal = "Respiratory Rate";
+			var idVal = jq(this).attr("id")
+			var localid = "#fr1753";
+			checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
+		});
+
+		jq('#oxygenSaturation-field').on("focusout", function() {
+			var maxVal = 100;
+			var minVal = 0;
+			var fieldTypeVal = "Oxygen Saturation";
+			var idVal = jq(this).attr("id")
+			var localid = "#fr8998";
+			checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
+		});
+
+		jq('#pulse-rate-field').on("focusout", function() {
+			var maxVal = 230;
+			var minVal = 0;
+			var fieldTypeVal = "Pulse Rate";
+			var idVal = jq(this).attr("id")
+			var localid = "#fr8917";
+			checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
+		});
+
+		jq('#weight-field').on("focusout", function() {
+			var maxVal = 250;
+			var minVal = 0;
+			var fieldTypeVal = "Weight";
+			var idVal = jq(this).attr("id")
+			var localid = "#fr1139";
+			checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
+		});
+
+		jq('#height-field').on("focusout", function() {
+			var maxVal = 272;
+			var minVal = 10;
+			var fieldTypeVal = "Height";
+			var idVal = jq(this).attr("id")
+			var localid = "#fr9875";
+			checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
+		});
+
+		jq('#room-to-visit').on("change", function() {
+			var roomVar = '#room-to-visit';
+			var tempVal = jq(roomVar).val()
+			if (tempVal !== '') {
+				filledFields["room"] = tempVal;
+				checkFilled();
+			} else {
+				filledFields["room"] = null;
+				jq(roomVar).prop("style", "border-color:red");
+				jq("#fr3417").html('<span style="color:#ff0000">Please Select a room</span>');
+				checkFilled();
+			}
+		});
+
+		function checkError(minVal, maxVal, idField, idError, fieldType) {
+			var tempVal = jq('#'+idField).val();
+			var errorLocal = '';
+			var valTemp = 0;
+			if (isNaN(tempVal) && tempVal !== "") {
+				jq(idError).html('<span style="color:#ff0000">' + fieldType + ' must be a number!</span>');
+				jq(idError).show();
+			} else if (tempVal > maxVal && !isNaN(tempVal)) {
+				errorLocal = 'greater';
+				valTemp = maxVal;
+				filledFields[fieldType] = null;
+			} else if (tempVal < minVal && !isNaN(tempVal)) {
+				errorLocal = 'lower';
+				valTemp = minVal;
+				filledFields[fieldType] = null;
+			} else {
+				if (filledFields[fieldType] !== undefined && tempVal !== "") {
+					filledFields[fieldType] = tempVal;
+					noError(idError, idField);
+				} else if (filledFields[fieldType] !== undefined && tempVal === "") {
+					jq(idField).prop("style", "border-color:red");
+					jq(idError).html('<span style="color:#ff0000">' + fieldType + ' must be filled in!</span>');
+					jq(idError).show();
+					jq("#"+idField).prop("style", "background-color: #f2bebe;");
+				} else {
+					noError(idError, idField);
+				}
+				checkFilled();
+				return;
+			}
+			jq(idField).prop("style", "border-color:red");
+			jq(idError).html('<span style="color:#ff0000">' + fieldType + ' cannot be ' + errorLocal + ' than ' + valTemp + '</span>');
+			jq(idError).show();
+			jq("#"+idField).prop("style", "background-color: #f2bebe;");
+			checkFilled();
+		}
+
+		function noError(idField, fieldTypeid) {
+			jq("#"+fieldTypeid).prop("style", "background-color: #ddffdd;");
+			jq(idField).hide();
+		}
+
+		function checkFilled() {
+			var checkComplete = true;
+			for (let items in filledFields) {
+				if (filledFields[items] === null) {
+						checkComplete = false;
+				}
+			}
+			if (checkComplete) {
+				jq(".button.confirm").removeClass("disabled");
+				jq(".button.confirm").attr("onclick", "PAGE.submit();");
+			}
+			else{
+				jq(".button.confirm").addClass("disabled");
+				jq(".button.confirm").attr("onclick", "");
+			}
+			console.log(checkComplete);
+		}
+		function checkValues(){
+			filledFields['Temperature']=jq("#temperature-field").val();
+			filledFields['Blood Pressure (Systolic)']=jq("#systolic-bp-field").val();
+			filledFields['Blood Pressure (Diastolic)']=jq("#diastolic-bp-field").val();
+		}
+
 		jq('select').bind('change keyup', function(event) {
 			var idd = jq(event.target).attr('id');
 			var txt = jq(event.target).val();
@@ -200,8 +368,6 @@
 				}
 			}
 		});
-
-
 
 		jq('.col5 input:radio').each(function() {
 			var name = jq(this).attr("name");
@@ -276,7 +442,6 @@
 		}
 		return x1 + x2;
 	}
-
 	PAGE = {
 		/** SUBMIT */
 		submit: function () {
@@ -544,21 +709,24 @@ h2 span{
 								<h2 style="border-bottom: 1px solid #008394">Vital Summary</h2>
 
 								<div class="col4">
-									<label for="temperature-field"> Temperature </label>
+									<label for="temperature-field"> Temperature <span style="color: #f00 !important;
+									padding-left: 5px;">*</span></label>
 								</div>
 
 								<div class="col4">
-									<label for="systolic-bp-field">Blood Pressure (Systolic)</label>
+									<label for="systolic-bp-field">Blood Pressure (Systolic)<span style="color: #f00 !important;
+									padding-left: 5px;">*</span></label>
 								</div>
 
 								<div class="col4 last">
-									<label for="diastolic-bp-field">Blood Pressure (Diastolic)</label>
+									<label for="diastolic-bp-field">Blood Pressure (Diastolic)<span style="color: #f00 !important;
+									padding-left: 5px;">*</span></label>
 								</div>
 							</div>
 							<div class="onerow">
 								<div class="col4">
 									<p>
-										<input id="temperature-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.temperature?:''}" name="triagePatientData.temperature">
+										<input id="temperature-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.temperature?:''}" name="triagePatientData.temperature" required>
 										<span class="append-to-value">..&#8451;</span>
 										<span id="fr89981" class="field-error" style="display: none"></span>
 									</p>
@@ -566,14 +734,14 @@ h2 span{
 
 								<div class="col4">
 									<p>
-										<input id="systolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="${vitals?.systolic?:''}" name="triagePatientData.systolic">
+										<input id="systolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="${vitals?.systolic?:''}" name="triagePatientData.systolic" required>
 										<span id="fr5882" class="field-error" style="display: none"></span>
 									</p>
 								</div>
 
 								<div class="col4 last">
 									<p>
-										<input id="diastolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="${vitals?.daistolic?:''}" name="triagePatientData.daistolic">
+										<input id="diastolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="${vitals?.daistolic?:''}" name="triagePatientData.daistolic" required>
 										<span id="fr9945" class="field-error" style="display: none"></span>
 									</p>
 								</div>
@@ -705,7 +873,7 @@ h2 span{
 
 								<div class="col4">
 									<p>
-										<select id="room-to-visit" name="roomToVisit" class="required">
+										<select id="room-to-visit" name="roomToVisit" class="required" required>
 											<option value="">-Please select-</option>
 											<% listOPD.each { opd -> %>
 											<option value="${opd.answerConcept.id }">${opd.answerConcept.name}</option>
