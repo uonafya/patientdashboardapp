@@ -20,6 +20,7 @@
     emrMessages["numericRangeLow"] = "value should be more than {0}";
     emrMessages["requiredField"] = "Required Field";
     emrMessages["numberField"] = "Value not a number";
+    var errorList ={};
 
     function isNombre(numb){
         return !isNaN(parseFloat(numb));
@@ -172,7 +173,7 @@
             var minVal=25;
             var fieldTypeVal="Temperature";
             var idVal = jq(this).attr("id");
-            var localid ="#fr89981";
+            var localid ="fr89981";
             checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
         });
 
@@ -181,7 +182,7 @@
             var minVal = 0;
             var fieldTypeVal = "Blood Pressure (Systolic)";
             var idVal = jq(this).attr("id");
-            var localid = "#fr5882";
+            var localid = "fr5882";
             checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
         });
 
@@ -190,7 +191,7 @@
             var minVal = 0;
             var fieldTypeVal = "Blood Pressure (Diastolic)";
             var idVal = jq(this).attr("id")
-            var localid = "#fr9945";
+            var localid = "fr9945";
             checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
         });
 
@@ -199,7 +200,7 @@
             var minVal = 0;
             var fieldTypeVal = "Respiratory Rate";
             var idVal = jq(this).attr("id")
-            var localid = "#fr1753";
+            var localid = "fr1753";
             checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
         });
 
@@ -208,7 +209,7 @@
             var minVal = 0;
             var fieldTypeVal = "Oxygen Saturation";
             var idVal = jq(this).attr("id")
-            var localid = "#fr8998";
+            var localid = "fr8998";
             checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
         });
 
@@ -217,7 +218,7 @@
             var minVal = 0;
             var fieldTypeVal = "Pulse Rate";
             var idVal = jq(this).attr("id")
-            var localid = "#fr8917";
+            var localid = "fr8917";
             checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
         });
 
@@ -226,7 +227,7 @@
             var minVal = 0;
             var fieldTypeVal = "Weight";
             var idVal = jq(this).attr("id")
-            var localid = "#fr1139";
+            var localid = "fr1139";
             checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
         });
 
@@ -235,20 +236,27 @@
             var minVal = 10;
             var fieldTypeVal = "Height";
             var idVal = jq(this).attr("id")
-            var localid = "#fr9875";
+            var localid = "fr9875";
             checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
         });
 
         jq('#room-to-visit').on("change", function() {
             var roomVar = '#room-to-visit';
+            var roomErrorId="#fr3417";
             var tempVal = jq(roomVar).val()
             if (tempVal !== '') {
-                checkFilled();
+                jq(roomErrorId).hide();
+                jq(roomVar).prop("style", "border-color:green");
+                jq(roomVar).prop("style", "background-color: #ddffdd;");
+                delete errorList["Room to Visit"];
             } else {
                 jq(roomVar).prop("style", "border-color:red");
-                jq("#fr3417").html('<span style="color:#ff0000">Please Select a room</span>');
-                checkFilled();
+                jq(roomErrorId).html('<span style="color:#ff0000">Please Select a room to visit</span>');
+                jq(roomVar).prop("style", "background-color: #f2bebe;");
+                jq(roomErrorId).show();
+                errorList["Room to Visit"]="<i>Please Select a room to visit</i><br/>";
             }
+            checkFilled();
         });
 
         jq('select').bind('change keyup', function(event) {
@@ -317,36 +325,46 @@
         var errorLocal = '';
         var valTemp = 0;
         if (isNaN(tempVal) && tempVal !== "") {
-            jq(idError).html('<span style="color:#ff0000">' + fieldType + ' must be a number!</span>');
-            jq(idError).show();
+            jq("#"+idError).html('<span style="color:#ff0000">' + fieldType + ' must be a number!</span>');
+            jq("#"+idError).show();
+            jq('#'+idField).attr("validation","false");
+            errorList[fieldType]= "<i>"+fieldType+" must be a number</i><br>";
         } else if (tempVal > maxVal && !isNaN(tempVal)) {
             errorLocal = 'greater';
             valTemp = maxVal;
+            jq('#'+idField).attr("validation","false");
         } else if (tempVal < minVal && !isNaN(tempVal)) {
             errorLocal = 'lower';
             valTemp = minVal;
+            jq('#'+idField).attr("validation","false");
         } else {
-            if (tempVal === "") {
-                jq(idField).prop("style", "border-color:red");
-                jq(idError).html('<span style="color:#ff0000">' + fieldType + ' must be filled in!</span>');
-                jq(idError).show();
+            if (tempVal === "" && jq('#'+idField).attr("required")==="required") {
+                jq("#"+idField).prop("style", "border-color:red");
+                jq("#"+idError).html('<span style="color:#ff0000">' + fieldType + ' must be filled in!</span>');
+                jq("#"+idError).show();
                 jq("#"+idField).prop("style", "background-color: #f2bebe;");
+                jq('#'+idField).attr("validation","false");
+                errorList[fieldType]= "<i>"+fieldType+" must be filled in!</i><br/>";
             } else {
+                delete errorList[fieldType];
                 noError(idError, idField);
             }
             checkFilled();
             return;
         }
-        jq(idField).prop("style", "border-color:red");
-        jq(idError).html('<span style="color:#ff0000">' + fieldType + ' cannot be ' + errorLocal + ' than ' + valTemp + '</span>');
-        jq(idError).show();
+        jq("#"+idField).prop("style", "border-color:red");
+        jq("#"+idError).html('<span style="color:#ff0000">' + fieldType + ' cannot be ' + errorLocal + ' than ' + valTemp + '</span>');
+        jq("#"+idError).show();
         jq("#"+idField).prop("style", "background-color: #f2bebe;");
+        errorList[fieldType]= '<i>'+fieldType+' cannot be ' + errorLocal + ' than ' + valTemp + '</i></br>';
         checkFilled();
     }
 
     function noError(idField, fieldTypeid) {
+        jq('#'+idField).attr("validation","true");
         jq("#"+fieldTypeid).prop("style", "background-color: #ddffdd;");
-        jq(idField).hide();
+        jq("#"+idField).hide();
+        jq('#'+fieldTypeid).attr("validation","true");
     }
 
     function checkFilled() {
@@ -356,21 +374,48 @@
                 checkComplete=false;
             }
         }).get();
-        jq.fn.exists = function(){ return this.length > 0; }
-        if(jq("select[name='roomToVisit']").exists() && jq("select[required]").val()===""){
-            checkComplete=false;
-        }
+        jq("input[validation='false']").map(function(idx, elem) {
+            if(jq(elem).attr("validation")==='false'){
+                checkComplete=false;
+            }
+        }).get();
+        if(!checkRoomFilled()){checkComplete = false;}
         if (checkComplete) {
             jq(".button.confirm").removeClass("disabled");
             jq(".button.confirm").attr("onclick", "PAGE.submit();");
+            jq("#errorsHere").html("");
+            jq("#errorAlert").hide();
+            errorList={};
         }
         else{
             jq(".button.confirm").addClass("disabled");
             jq(".button.confirm").attr("onclick", "");
+            var count = 0;
+            var i;
+            var allErrors='';
+            for (i in errorList) {
+                if (errorList.hasOwnProperty(i)) {
+                    count++;
+                    allErrors+=errorList[i];
+                }
+            }
+            if(count!==0) {
+                jq("#errorsHere").html(allErrors);
+                jq("#errorAlert").show();
+            }
         }
         console.log(checkComplete);
     }
 
+    function checkRoomFilled(){
+        jq.fn.exists = function(){ return this.length > 0; }
+        if(jq("select[name='roomToVisit']").exists() && jq("select[name='roomToVisit']").val()==="" ){
+           return false;
+        }
+        else{
+            return true;
+        }
+    }
     function injectRequired(){
         var elements =['input[id="temperature-field"]','input[id="systolic-bp-field"]','input[id="diastolic-bp-field"]','select[id="room-to-visit"]'];
         for(var i in elements){
@@ -622,6 +667,24 @@ h2 span{
     background: #000 none repeat scroll 0 0;
     opacity: 0.4 !important;
 }
+.alert{
+    position: relative;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    border-radius: .25rem;
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
 </style>
 
 <openmrs:require privilege="Triage Queue" otherwise="/login.htm" redirect="/module/patientqueueapp/queue.page?app=patientdashboardapp.triage"></openmrs:require>
@@ -692,6 +755,11 @@ h2 span{
             <td>
                 <form form id="vitalRegistrationForm" method="post">
                     <div class="container">
+                        <div>
+                            <div id="errorAlert" class="alert" style="display: none"><b>Please correct the following errors:</b><hr>
+                            <ul id="errorsHere"></ul>
+                            </div>
+                        </div>
                         <section>
                             <div class="onerow" style="padding-top: 10px;">
                                 <h2 style="border-bottom: 1px solid #008394">Vital Summary</h2>
@@ -714,7 +782,7 @@ h2 span{
                             <div class="onerow">
                                 <div class="col4">
                                     <p>
-                                        <input id="temperature-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.temperature?:''}" name="triagePatientData.temperature" required>
+                                        <input id="temperature-field" class="numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.temperature?:''}" name="triagePatientData.temperature" >
                                         <span class="append-to-value">..&#8451;</span>
                                         <span id="fr89981" class="field-error" style="display: none"></span>
                                     </p>
@@ -722,14 +790,14 @@ h2 span{
 
                                 <div class="col4">
                                     <p>
-                                        <input id="systolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="${vitals?.systolic?:''}" name="triagePatientData.systolic" required>
+                                        <input id="systolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="${vitals?.systolic?:''}" name="triagePatientData.systolic" >
                                         <span id="fr5882" class="field-error" style="display: none"></span>
                                     </p>
                                 </div>
 
                                 <div class="col4 last">
                                     <p>
-                                        <input id="diastolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="${vitals?.daistolic?:''}" name="triagePatientData.daistolic" required>
+                                        <input id="diastolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" value="${vitals?.daistolic?:''}" name="triagePatientData.daistolic" >
                                         <span id="fr9945" class="field-error" style="display: none"></span>
                                     </p>
                                 </div>
@@ -861,7 +929,7 @@ h2 span{
 
                                 <div class="col4">
                                     <p>
-                                        <select id="room-to-visit" name="roomToVisit" class="required" required>
+                                        <select id="room-to-visit" name="roomToVisit" class="required" >
                                             <option value="">-Please select-</option>
                                             <% listOPD.each { opd -> %>
                                             <option value="${opd.answerConcept.id }">${opd.answerConcept.name}</option>
