@@ -901,7 +901,7 @@ h2 span{
                             <div class="onerow">
                                 <div class="col4">
                                     <p>
-                                        <input id="muac-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.mua?:''}" name="triagePatientData.mua">
+                                        <input id="muac-field" class="number numeric-range" type="text" max="999" min="0" maxlength="3" value="${vitals?.mua?:''}" name="triagePatientData.mua">
                                         <span class="append-to-value">cm</span>
                                         <span id="fr801" class="field-error" style="display: none"></span>
                                     </p>
@@ -909,7 +909,7 @@ h2 span{
 
                                 <div class="col4">
                                     <p>
-                                        <input id="chest-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.chest?:''}" name="triagePatientData.chest">
+                                        <input id="chest-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="3" value="${vitals?.chest?:''}" name="triagePatientData.chest">
                                         <span class="append-to-value">cm</span>
                                         <span id="fr3193" class="field-error" style="display: none"></span>
                                     </p>
@@ -917,7 +917,7 @@ h2 span{
 
                                 <div class="col4 last">
                                     <p>
-                                        <input id="abdominal-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" value="${vitals?.abdominal?:''}" name="triagePatientData.abdominal">
+                                        <input id="abdominal-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="3" value="${vitals?.abdominal?:''}" name="triagePatientData.abdominal">
                                         <span class="append-to-value">cm</span>
                                         <span id="fr76" class="field-error" style="display: none"></span>
                                     </p>
