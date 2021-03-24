@@ -37,6 +37,7 @@ public class VisitSummaryFragmentController {
 
         AdministrationService administrationService = Context.getAdministrationService();
         String gpOPDEncType = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_OPD_ENCOUTNER_TYPE);
+
         EncounterType labOPDType = Context.getEncounterService().getEncounterType(gpOPDEncType);
         List<Encounter> encounters = dashboardService.getEncounter(patient, location, labOPDType, null);
         
