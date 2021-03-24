@@ -14,6 +14,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
+import org.openmrs.module.kenyaemr.api.KenyaEmrService;
 import org.openmrs.module.patientdashboardapp.model.VisitDetail;
 import org.openmrs.module.patientdashboardapp.model.VisitSummary;
 import org.openmrs.ui.framework.SimpleObject;
@@ -24,15 +25,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 public class VisitSummaryFragmentController {
 
-	private static final int ORDER_LOCATION_ID = 1;
+
 
 	public void controller(FragmentConfiguration config,
 			FragmentModel model) {
 		config.require("patientId");
 		Integer patientId = Integer.parseInt(config.get("patientId").toString());
         PatientDashboardService dashboardService = Context.getService(PatientDashboardService.class);
-        Location location = Context.getLocationService().getLocation(ORDER_LOCATION_ID);
-
+        Location location = Context.getService(KenyaEmrService.class).getDefaultLocation();
         Patient patient = Context.getPatientService().getPatient(patientId);
 
         AdministrationService administrationService = Context.getAdministrationService();
@@ -64,21 +64,25 @@ public class VisitSummaryFragmentController {
             }
         }
         model.addAttribute("patient", patient);
+        System.out.println("Patient " +patient);
         model.addAttribute("visitSummaries", visitSummaries);
+        System.out.println("Visist Summaries........."+visitSummaries);
 	}
 
 	public SimpleObject getVisitSummaryDetails(
-			@RequestParam("encounterId") Integer encounterId,
-			UiUtils ui
-			) {
+			@RequestParam("encounterId") Integer encounterId,UiUtils ui) {
+	    //System.out.println("The encounter id is ........."+encounterId);
 		Encounter encounter = Context.getEncounterService().getEncounter(encounterId);
 		VisitDetail visitDetail = VisitDetail.create(encounter);
+        System.out.println("The encounter........."+encounter);
+
 		
 		SimpleObject detail = SimpleObject.fromObject(visitDetail, ui, "history","diagnosis", "symptoms", "procedures", "investigations","physicalExamination","visitOutcome","internalReferral","externalReferral");
-		
+        System.out.println("detail is ...."+detail);
 		List<OpdDrugOrder> opdDrugs = Context.getService(PatientDashboardService.class).getOpdDrugOrder(encounter);
 		List<SimpleObject> drugs = SimpleObject.fromCollection(opdDrugs, ui, "inventoryDrug.name",
 				"inventoryDrug.unit.name", "inventoryDrugFormulation.name", "inventoryDrugFormulation.dozage","dosage", "dosageUnit.name");
+        System.out.println("The drug  ........."+drugs);
 		return SimpleObject.create("notes", detail, "drugs", drugs);
 	}
 }
