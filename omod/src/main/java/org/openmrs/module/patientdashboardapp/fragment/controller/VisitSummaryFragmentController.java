@@ -65,25 +65,20 @@ public class VisitSummaryFragmentController {
             }
         }
         model.addAttribute("patient", patient);
-        System.out.println("Patient " +patient);
+
         model.addAttribute("visitSummaries", visitSummaries);
-        System.out.println("Visist Summaries........."+visitSummaries);
+
 	}
 
 	public SimpleObject getVisitSummaryDetails(
 			@RequestParam("encounterId") Integer encounterId,UiUtils ui) {
-	    //System.out.println("The encounter id is ........."+encounterId);
 		Encounter encounter = Context.getEncounterService().getEncounter(encounterId);
 		VisitDetail visitDetail = VisitDetail.create(encounter);
-        System.out.println("The encounter........."+encounter);
 
-		
 		SimpleObject detail = SimpleObject.fromObject(visitDetail, ui, "history","diagnosis", "symptoms", "procedures", "investigations","physicalExamination","visitOutcome","internalReferral","externalReferral");
-        System.out.println("detail is ...."+detail);
 		List<OpdDrugOrder> opdDrugs = Context.getService(PatientDashboardService.class).getOpdDrugOrder(encounter);
 		List<SimpleObject> drugs = SimpleObject.fromCollection(opdDrugs, ui, "inventoryDrug.name",
 				"inventoryDrug.unit.name", "inventoryDrugFormulation.name", "inventoryDrugFormulation.dozage","dosage", "dosageUnit.name");
-        System.out.println("The drug  ........."+drugs);
 		return SimpleObject.create("notes", detail, "drugs", drugs);
 	}
 }
