@@ -4,6 +4,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
+import org.openmrs.ConceptNumeric;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Patient;
@@ -30,12 +31,15 @@ import org.openmrs.ui.framework.page.PageRequest;
 import org.openmrs.ui.framework.session.Session;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.openmrs.Obs;
 
 public class TriagePageController {
 	public String get(
@@ -95,6 +99,19 @@ public class TriagePageController {
 		}
 
 		Concept opdWardConcept = Context.getConceptService().getConceptByName("OPD WARD");
+		// ConceptNumeric concepttemp = Context.getConceptService().getConceptNumericByUuid("5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		// ConceptNumeric conceptSytolic = Context.getConceptService().getConceptNumericByUuid("5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		// ConceptNumeric conceptDiastolic = Context.getConceptService().getConceptNumericByUuid("5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		// ConceptNumeric conceptPulse = Context.getConceptService().getConceptNumericByUuid("5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		// tempHi = concepttemp.getHiAbsolute();
+		// tempLo = concepttemp.getLowAbsolute();
+		// sysHi = conceptSytolic.getHiAbsolute();
+		// sysLo = conceptSytolic.getLowAbsolute();
+		// diaHi = conceptDiastolic.getHiAbsolute();
+		// diaLo = conceptDiastolic.getLowAbsolute();
+		// pulseHi = conceptPulse.getHiAbsolute();
+		// pulseLo = conceptPulse.getLowAbsolute();
+
 		List<ConceptAnswer> oList = (opdWardConcept != null ? new ArrayList<ConceptAnswer>(opdWardConcept.getAnswers()) : null);
 		if (CollectionUtils.isNotEmpty(oList)) {
 			Collections.sort(oList, new ConceptAnswerComparator());
@@ -156,7 +173,19 @@ public class TriagePageController {
 			encounter.setEncounterDatetime(date);
 			encounter.setEncounterType(encounterType);
 			encounter.setLocation(session.getLocation());
-			Context.getEncounterService().saveEncounter(encounter);		
+			Context.getEncounterService().saveEncounter(encounter);	
+
+			if(triagePatientData.getTemperature()!=null){addObs(encounter,"5088",triagePatientData.getTemperature().doubleValue());};
+			if(triagePatientData.getSystolic()!=null){addObs(encounter,"5085",triagePatientData.getSystolic().doubleValue());}
+			if(triagePatientData.getDaistolic()!=null){addObs(encounter,"5086",triagePatientData.getDaistolic().doubleValue());}
+			if(triagePatientData.getRespiratoryRate()!=null){addObs(encounter,"5242",triagePatientData.getRespiratoryRate().doubleValue());}
+			if(triagePatientData.getHeight()!=null){addObs(encounter,"5090",triagePatientData.getHeight().doubleValue());}
+			if(triagePatientData.getWeight()!=null){addObs(encounter,"5089",triagePatientData.getWeight().doubleValue());}
+			if(triagePatientData.getPulsRate()!=null){addObs(encounter,"5242",triagePatientData.getPulsRate().doubleValue());}	
+			if(triagePatientData.getOxygenSaturation()!=null){addObs(encounter,"5092",triagePatientData.getOxygenSaturation().doubleValue());}	
+			if(triagePatientData.getMua()!=null){addObs(encounter,"1343",triagePatientData.getMua().doubleValue());	}
+			
+
 			TriagePatientQueueLog triagePatientLog = logTriagePatient(
 					queueService, queue, encounter);
 			boolean visitStatus = false;
@@ -190,6 +219,17 @@ public class TriagePageController {
 			Context.getEncounterService().saveEncounter(encounter);
 			opdPatientQueue.setTriageDataId(triagePatientData);
 			Context.getService(PatientQueueService.class).saveOpdPatientQueue(opdPatientQueue);
+
+			if(triagePatientData.getTemperature()!=null){addObs(encounter,"5088",triagePatientData.getTemperature().doubleValue());};
+			if(triagePatientData.getSystolic()!=null){addObs(encounter,"5085",triagePatientData.getSystolic().doubleValue());}
+			if(triagePatientData.getDaistolic()!=null){addObs(encounter,"5086",triagePatientData.getDaistolic().doubleValue());}
+			if(triagePatientData.getRespiratoryRate()!=null){addObs(encounter,"5242",triagePatientData.getRespiratoryRate().doubleValue());}
+			if(triagePatientData.getHeight()!=null){addObs(encounter,"5090",triagePatientData.getHeight().doubleValue());}
+			if(triagePatientData.getWeight()!=null){addObs(encounter,"5089",triagePatientData.getWeight().doubleValue());}
+			if(triagePatientData.getPulsRate()!=null){addObs(encounter,"5242",triagePatientData.getPulsRate().doubleValue());}	
+			if(triagePatientData.getOxygenSaturation()!=null){addObs(encounter,"5092",triagePatientData.getOxygenSaturation().doubleValue());}	
+			if(triagePatientData.getMua()!=null){addObs(encounter,"1343",triagePatientData.getMua().doubleValue());	}
+		
 		}
 		
 		if (StringUtils.isBlank(returnUrl)) {
@@ -199,6 +239,19 @@ public class TriagePageController {
 		}
 		return "redirect:" + returnUrl;
 	}
+	public void addObs(Encounter encounter, String conceptGot, Double valueVital) {
+        Obs obsTriage = new Obs();
+		obsTriage.setObsDatetime(new Date());
+		obsTriage.setValueNumeric(valueVital);
+		obsTriage.setConcept(Context.getConceptService().getConcept(conceptGot));
+        obsTriage.setCreator(encounter.getCreator());
+		obsTriage.setLocation(encounter.getLocation());
+        obsTriage.setDateCreated(encounter.getDateCreated());
+        obsTriage.setEncounter(encounter);
+        obsTriage.setPerson(encounter.getPatient());
+		Context.getObsService().saveObs(obsTriage, "Vitals");
+        encounter.addObs(obsTriage);
+    }
 
 	private TriagePatientQueueLog logTriagePatient(PatientQueueService queueService,
 			TriagePatientQueue queue, Encounter encounter) {
