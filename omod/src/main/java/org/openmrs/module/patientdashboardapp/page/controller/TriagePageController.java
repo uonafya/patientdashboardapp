@@ -181,7 +181,7 @@ public class TriagePageController {
 			if(triagePatientData.getRespiratoryRate()!=null){addObs(encounter,"5242",triagePatientData.getRespiratoryRate().doubleValue());}
 			if(triagePatientData.getHeight()!=null){addObs(encounter,"5090",triagePatientData.getHeight().doubleValue());}
 			if(triagePatientData.getWeight()!=null){addObs(encounter,"5089",triagePatientData.getWeight().doubleValue());}
-			if(triagePatientData.getPulsRate()!=null){addObs(encounter,"5242",triagePatientData.getPulsRate().doubleValue());}	
+			if(triagePatientData.getPulsRate()!=null){addObs(encounter,"5087",triagePatientData.getPulsRate().doubleValue());}	
 			if(triagePatientData.getOxygenSaturation()!=null){addObs(encounter,"5092",triagePatientData.getOxygenSaturation().doubleValue());}	
 			if(triagePatientData.getMua()!=null){addObs(encounter,"1343",triagePatientData.getMua().doubleValue());	}
 			
@@ -226,7 +226,7 @@ public class TriagePageController {
 			if(triagePatientData.getRespiratoryRate()!=null){addObs(encounter,"5242",triagePatientData.getRespiratoryRate().doubleValue());}
 			if(triagePatientData.getHeight()!=null){addObs(encounter,"5090",triagePatientData.getHeight().doubleValue());}
 			if(triagePatientData.getWeight()!=null){addObs(encounter,"5089",triagePatientData.getWeight().doubleValue());}
-			if(triagePatientData.getPulsRate()!=null){addObs(encounter,"5242",triagePatientData.getPulsRate().doubleValue());}	
+			if(triagePatientData.getPulsRate()!=null){addObs(encounter,"5087",triagePatientData.getPulsRate().doubleValue());}	
 			if(triagePatientData.getOxygenSaturation()!=null){addObs(encounter,"5092",triagePatientData.getOxygenSaturation().doubleValue());}	
 			if(triagePatientData.getMua()!=null){addObs(encounter,"1343",triagePatientData.getMua().doubleValue());	}
 		
