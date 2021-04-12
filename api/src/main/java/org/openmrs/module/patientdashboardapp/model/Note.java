@@ -31,6 +31,7 @@ import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.LabService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
+import org.openmrs.module.hospitalcore.RadiologyCoreService;
 import org.openmrs.module.hospitalcore.model.BillableService;
 import org.openmrs.module.hospitalcore.model.DepartmentConcept;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
@@ -38,6 +39,7 @@ import org.openmrs.module.hospitalcore.model.Lab;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.model.OpdTestOrder;
+import org.openmrs.module.hospitalcore.model.RadiologyDepartment;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.openmrs.module.kenyaemr.api.KenyaEmrService;
 import org.slf4j.Logger;
@@ -49,6 +51,7 @@ public class Note {
 	private static Logger logger = LoggerFactory.getLogger(Note.class);
 
 	private static Set<Integer> collectionOfLabConceptIds = new HashSet<Integer>();
+	private static Set<Integer> collectionOfRadiologyConceptIds = new HashSet<Integer>();
 
 	static {
 		List<Lab> labs = Context.getService(LabService.class).getAllLab();
@@ -56,6 +59,14 @@ public class Note {
 			for (Concept labInvestigationCategoryConcept : lab.getInvestigationsToDisplay()) {
 				for (ConceptAnswer labInvestigationConcept : labInvestigationCategoryConcept.getAnswers()) {
 					collectionOfLabConceptIds.add(labInvestigationConcept.getAnswerConcept().getConceptId());
+				}
+			}
+		}
+		List<RadiologyDepartment> radiologyDepts = Context.getService(RadiologyCoreService.class).getAllRadiologyDepartments();
+		for (RadiologyDepartment department : radiologyDepts) {
+			for (Concept radiologyInvestigationCategoryConcept : department.getInvestigations()) {
+				for (ConceptAnswer radiologyInvestigationConcept : radiologyInvestigationCategoryConcept.getAnswers()) {
+					collectionOfRadiologyConceptIds.add(radiologyInvestigationConcept.getAnswerConcept().getConceptId());
 				}
 			}
 		}
@@ -407,8 +418,9 @@ public class Note {
 			}
 		}
 		for(Procedure procedure : this.procedures) {
+			String departmentName = Context.getConceptService().getConcept(this.opdId).getName().toString();
 			try {
-				saveProcedures(encounter, procedure);
+				saveProcedures(encounter, departmentName, procedure);
 			}
 			catch (Exception e) {
 				logger.error("Error saving procedure {}({}): {}", new Object[] { procedure.getId(), procedure.getLabel(), e.getMessage() });
@@ -538,6 +550,17 @@ public class Note {
 				generateInvestigationOrder(opdTestOrder, encounter, labOrderTypeId);
 				Context.getEncounterService().saveEncounter(encounter);
 			}
+
+			if (collectionOfRadiologyConceptIds.contains(investigationConceptId)) {
+				String radiologyEncounterTypeString = Context.getAdministrationService().getGlobalProperty(BillingConstants.GLOBAL_PROPRETY_RADIOLOGY_ENCOUNTER_TYPE, "RADIOLOGYENCOUNTER");
+				EncounterType radiologyEncounterType = Context.getEncounterService().getEncounterType(radiologyEncounterTypeString);
+				Encounter encounter = getInvestigationEncounter(opdTestOrder,
+						encounterLocation, radiologyEncounterType);
+
+				String labOrderTypeId = Context.getAdministrationService().getGlobalProperty(BillingConstants.GLOBAL_PROPRETY_RADIOLOGY_ORDER_TYPE);
+				generateInvestigationOrder(opdTestOrder, encounter, labOrderTypeId);
+				Context.getEncounterService().saveEncounter(encounter);
+			}
 		}
 
 	}
@@ -586,7 +609,7 @@ public class Note {
 		return provider;
 	}
 
-	private void saveProcedures(Encounter encounter, Procedure procedure) throws Exception {
+	private void saveProcedures(Encounter encounter, String departmentName, Procedure procedure) throws Exception {
 		Concept procedureConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE, null));
 		if (procedureConcept == null) {
 			throw new Exception("Post for procedure concept null");
@@ -605,6 +628,7 @@ public class Note {
 		opdTestOrder.setCreatedOn(encounter.getDateCreated());
 		opdTestOrder.setBillableService(billableService);
 		opdTestOrder.setScheduleDate(encounter.getDateCreated());
+		opdTestOrder.setFromDept(departmentName);
 		if (billableService.getPrice().compareTo(BigDecimal.ZERO) == 0) {
 			opdTestOrder.setBillingStatus(1);
 		}
