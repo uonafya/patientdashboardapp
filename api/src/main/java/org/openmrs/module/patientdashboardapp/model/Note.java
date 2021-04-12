@@ -610,7 +610,7 @@ public class Note {
 	}
 
 	private void saveProcedures(Encounter encounter, String departmentName, Procedure procedure) throws Exception {
-		Concept procedureConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE, null));
+		Concept procedureConcept = Context.getConceptService().getConceptByUuid("1651AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		if (procedureConcept == null) {
 			throw new Exception("Post for procedure concept null");
 		}
@@ -650,7 +650,7 @@ public class Note {
 	private void addObsForProcedures(Encounter encounter, Obs obsGroup, Procedure procedure) {
 		Obs obsProcedure = new Obs();
 		obsProcedure.setObsGroup(obsGroup);
-		obsProcedure.setConcept(Context.getConceptService().getConcept(procedure.getId()));
+		obsProcedure.setConcept(Context.getConceptService().getConceptByUuid("1651AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
 		obsProcedure.setValueCoded(Context.getConceptService().getConcept(procedure.getId()));
 		obsProcedure.setCreator(encounter.getCreator());
 		obsProcedure.setDateCreated(encounter.getDateCreated());
