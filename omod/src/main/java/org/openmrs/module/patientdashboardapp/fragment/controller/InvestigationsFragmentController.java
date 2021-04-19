@@ -34,8 +34,11 @@ public class InvestigationsFragmentController {
 		List<LabOrderViewModel> labOrders = new ArrayList<LabOrderViewModel>();
 		for (Encounter encounter: labOrdersEncounters) {
 			for (Order labOrder: encounter.getOrders()) {
-				labOrders.add(new LabOrderViewModel(labOrder));
-
+                if (labOrder.getDateStopped() != null) {
+                    labOrders.add(new LabOrderViewModel(labOrder));
+                }else if (labOrder.getAction().equals(Order.Action.NEW)){
+                    labOrders.add(new LabOrderViewModel(labOrder));
+                }
 			}
 		}
 		model.addAttribute("labOrders", labOrders);
