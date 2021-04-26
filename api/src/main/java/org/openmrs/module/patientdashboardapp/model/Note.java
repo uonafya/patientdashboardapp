@@ -22,7 +22,9 @@ import org.openmrs.PersonAttribute;
 import org.openmrs.Provider;
 import org.openmrs.TestOrder;
 import org.openmrs.User;
+import org.openmrs.Visit;
 import org.openmrs.api.ProviderService;
+import org.openmrs.api.VisitService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.BillingConstants;
 import org.openmrs.module.hospitalcore.BillingService;
@@ -273,6 +275,7 @@ public class Note {
 		Obs obsGroup = Context.getService(HospitalCoreService.class).getObsGroupCurrentDate(patient.getPersonId());
 		Encounter encounter = createEncounter(patient);
 		addObs(obsGroup, encounter);
+		encounter.setVisit(getLastVisitForPatient(patient));
 		Context.getEncounterService().saveEncounter(encounter);
 		saveNoteDetails(encounter);
 		endEncounter(encounter);
@@ -657,5 +660,10 @@ public class Note {
 		obsProcedure.setEncounter(encounter);
 		obsProcedure.setPerson(encounter.getPatient());
 		encounter.addObs(obsProcedure);
+	}
+
+	private Visit getLastVisitForPatient(Patient patient) {
+		VisitService visitService = Context.getVisitService();
+		return visitService.getActiveVisitsByPatient(patient).get(visitService.getActiveVisitsByPatient(patient).size() - 1);
 	}
 }
