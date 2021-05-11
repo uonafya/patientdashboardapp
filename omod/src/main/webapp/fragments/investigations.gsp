@@ -40,7 +40,7 @@ var investigationsTable;
 
 function format ( results ) {
     var display = '<div class="result-title">RESULTS</div><div class="result-page">';
-    if (results.length == 0) {
+    if (results.length === 0) {
         display = "NO RESULTS<br>";
     } else {
         jq.each(results, (function(index, result){

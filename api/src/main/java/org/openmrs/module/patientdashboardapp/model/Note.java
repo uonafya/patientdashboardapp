@@ -22,7 +22,9 @@ import org.openmrs.PersonAttribute;
 import org.openmrs.Provider;
 import org.openmrs.TestOrder;
 import org.openmrs.User;
+import org.openmrs.Visit;
 import org.openmrs.api.ProviderService;
+import org.openmrs.api.VisitService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.BillingConstants;
 import org.openmrs.module.hospitalcore.BillingService;
@@ -273,6 +275,7 @@ public class Note {
 		Obs obsGroup = Context.getService(HospitalCoreService.class).getObsGroupCurrentDate(patient.getPersonId());
 		Encounter encounter = createEncounter(patient);
 		addObs(obsGroup, encounter);
+		encounter.setVisit(getLastVisitForPatient(patient));
 		Context.getEncounterService().saveEncounter(encounter);
 		saveNoteDetails(encounter);
 		endEncounter(encounter);
@@ -610,7 +613,7 @@ public class Note {
 	}
 
 	private void saveProcedures(Encounter encounter, String departmentName, Procedure procedure) throws Exception {
-		Concept procedureConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE, null));
+		Concept procedureConcept = Context.getConceptService().getConceptByUuid("1651AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		if (procedureConcept == null) {
 			throw new Exception("Post for procedure concept null");
 		}
@@ -650,12 +653,17 @@ public class Note {
 	private void addObsForProcedures(Encounter encounter, Obs obsGroup, Procedure procedure) {
 		Obs obsProcedure = new Obs();
 		obsProcedure.setObsGroup(obsGroup);
-		obsProcedure.setConcept(Context.getConceptService().getConcept(procedure.getId()));
+		obsProcedure.setConcept(Context.getConceptService().getConceptByUuid("1651AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
 		obsProcedure.setValueCoded(Context.getConceptService().getConcept(procedure.getId()));
 		obsProcedure.setCreator(encounter.getCreator());
 		obsProcedure.setDateCreated(encounter.getDateCreated());
 		obsProcedure.setEncounter(encounter);
 		obsProcedure.setPerson(encounter.getPatient());
 		encounter.addObs(obsProcedure);
+	}
+
+	private Visit getLastVisitForPatient(Patient patient) {
+		VisitService visitService = Context.getVisitService();
+		return visitService.getActiveVisitsByPatient(patient).get(visitService.getActiveVisitsByPatient(patient).size() - 1);
 	}
 }

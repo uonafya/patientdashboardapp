@@ -11,6 +11,8 @@ import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
+import org.openmrs.Visit;
+import org.openmrs.api.VisitService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.appui.UiSessionContext;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
@@ -221,6 +223,7 @@ public class TriagePageController {
 			encounter.setEncounterType(encounterType);
 			encounter.setLocation(location);
 			encounter.setProvider(user);
+			encounter.setVisit(getLastVisitForPatient(patient));
 			Context.getEncounterService().saveEncounter(encounter);
 			opdPatientQueue.setTriageDataId(triagePatientData);
 			Context.getService(PatientQueueService.class).saveOpdPatientQueue(opdPatientQueue);
@@ -232,7 +235,7 @@ public class TriagePageController {
 			if(triagePatientData.getHeight()!=null){addObs(encounter,HEIGHT,triagePatientData.getHeight().doubleValue());}
 			if(triagePatientData.getWeight()!=null){addObs(encounter,WEIGHT,triagePatientData.getWeight().doubleValue());}
 			if(triagePatientData.getPulsRate()!=null){addObs(encounter,PULSE,triagePatientData.getPulsRate().doubleValue());}	
-			if(triagePatientData.getOxygenSaturation()!=null){addObs(encounter,BLOODOXYGEN,triagePatientData.getOxygenSaturation().doubleValue());}	
+			if(triagePatientData.getOxygenSaturation()!=null){addObs(encounter,BLOODOXYGEN, triagePatientData.getOxygenSaturation());}
 			if(triagePatientData.getMua()!=null){addObs(encounter,MUAC,triagePatientData.getMua().doubleValue());	}
 		
 		}
@@ -312,5 +315,9 @@ public class TriagePageController {
 			
 		}
 		
+	}
+	private Visit getLastVisitForPatient(Patient patient) {
+		VisitService visitService = Context.getVisitService();
+		return visitService.getActiveVisitsByPatient(patient).get(visitService.getActiveVisitsByPatient(patient).size() - 1);
 	}
 }

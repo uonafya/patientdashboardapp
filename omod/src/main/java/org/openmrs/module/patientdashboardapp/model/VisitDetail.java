@@ -121,7 +121,7 @@ public class VisitDetail {
 		Concept provisionalDiagnosisConcept = Context.getConceptService().getConcept(provisionalDiagnosisConceptName);
 		Concept finalDiagnosisConcept = Context.getConceptService().getConcept(FINAL_DIAGNOSIS_CONCEPT_NAME);
 		Concept investigationConcept = Context.getConceptService().getConcept(investigationConceptName);
-		Concept procedureConcept = Context.getConceptService().getConcept(procedureConceptName);
+		Concept procedureConcept = Context.getConceptService().getConceptByUuid("1651AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		Concept physicalExaminationConcept = Context.getConceptService().getConcept(physicalExaminationConceptName);
         Concept historyConcept = Context.getConceptService().getConcept(historyConceptName);
         Concept visitOutcomeConcept = Context.getConceptService().getConcept(visitOutcomeName);
