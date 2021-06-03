@@ -19,12 +19,12 @@ public class ReferralReasons {
 
     private static Logger logger = LoggerFactory.getLogger(Note.class);
     private static List<Option> referralReasonsOptions;
-    public static String PROPERTY_REFERRAL_REASONS = "ehrconfigs.referralReasonsConcept";
+    public static String PROPERTY_REFERRAL_REASONS = "1887AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
 
     static {
         referralReasonsOptions = new ArrayList<Option>();
-        Concept referralReasonsConcept = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PROPERTY_REFERRAL_REASONS));
+        Concept referralReasonsConcept = Context.getConceptService().getConceptByUuid(PROPERTY_REFERRAL_REASONS);
         for (ConceptAnswer conceptAnswer : referralReasonsConcept.getAnswers()) {
             referralReasonsOptions.add(new Option(conceptAnswer.getAnswerConcept()));
         }
@@ -41,7 +41,7 @@ public class ReferralReasons {
 
         if (referralReasonsOptions.contains(referralReasons)) {
 
-            referralReasonsConcept = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PROPERTY_REFERRAL_REASONS));
+            referralReasonsConcept = Context.getConceptService().getConceptByUuid(PROPERTY_REFERRAL_REASONS);
         }
         if (referralReasonsConcept == null) {
             logger.error("Global property: " + PROPERTY_REFERRAL_REASONS + " not defined ");
