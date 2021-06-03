@@ -35,10 +35,7 @@ public class VisitSummaryFragmentController {
         Location location = Context.getService(KenyaEmrService.class).getDefaultLocation();
         Patient patient = Context.getPatientService().getPatient(patientId);
 
-        AdministrationService administrationService = Context.getAdministrationService();
-        String gpOPDEncType = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_OPD_ENCOUTNER_TYPE);
-
-        EncounterType labOPDType = Context.getEncounterService().getEncounterType(gpOPDEncType);
+        EncounterType labOPDType = Context.getEncounterService().getEncounterTypeByUuid("ba45c278-f290-11ea-9666-1b3e6e848887");
         List<Encounter> encounters = dashboardService.getEncounter(patient, location, labOPDType, null);
         
         List<VisitSummary> visitSummaries = new ArrayList<VisitSummary>();
@@ -49,8 +46,7 @@ public class VisitSummaryFragmentController {
             VisitSummary visitSummary = new VisitSummary();
             visitSummary.setVisitDate(enc.getDateCreated());
             visitSummary.setEncounterId(enc.getEncounterId());
-            String outcomeConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_VISIT_OUTCOME);
-            Concept outcomeConcept = Context.getConceptService().getConcept(outcomeConceptName);
+            Concept outcomeConcept = Context.getConceptService().getConceptByUuid("160433AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             for (Obs obs : enc.getAllObs()) {
                 if (obs.getConcept().equals(outcomeConcept)) {
                     visitSummary.setOutcome(obs.getValueText());

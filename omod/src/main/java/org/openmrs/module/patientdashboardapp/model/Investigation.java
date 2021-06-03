@@ -90,7 +90,7 @@ public class Investigation {
 
 
     public void save(Encounter encounter, String departmentName) throws Exception {
-        Concept investigationConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_FOR_INVESTIGATION));
+        Concept investigationConcept = Context.getConceptService().getConceptByUuid("0179f241-8c1d-47c1-8128-841f6508e251");
         if (investigationConcept == null) {
             throw new Exception("Investigation concept null");
         }
@@ -125,14 +125,10 @@ public class Investigation {
         processFreeInvestigations(opdTestOrder, encounter.getLocation());
     }
     public void addObs(Encounter encounter, Obs obsGroup) {
-        AdministrationService administrationService = Context
-                .getAdministrationService();
-        GlobalProperty investigationConceptName = administrationService
-                .getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_FOR_INVESTIGATION);
+
         ConceptService conceptService = Context.getConceptService();
 
-        Concept investigationConceptId = conceptService.getConceptByName(investigationConceptName
-                .getPropertyValue());
+        Concept investigationConceptId = conceptService.getConceptByUuid("0179f241-8c1d-47c1-8128-841f6508e251");
 
         Obs obsInvestigation = new Obs();
         obsInvestigation.setObsGroup(obsGroup);
@@ -149,8 +145,7 @@ public class Investigation {
         if (opdTestOrder.getBillingStatus() == 1) {
             Integer investigationConceptId = opdTestOrder.getValueCoded().getConceptId();
             if (Investigation.collectionOfLabConceptIds.contains(investigationConceptId)) {
-                String labEncounterTypeString = Context.getAdministrationService().getGlobalProperty(BillingConstants.GLOBAL_PROPRETY_LAB_ENCOUNTER_TYPE, "LABENCOUNTER");
-                EncounterType labEncounterType = Context.getEncounterService().getEncounterType(labEncounterTypeString);
+                EncounterType labEncounterType = Context.getEncounterService().getEncounterTypeByUuid("11d3f37a-f282-11ea-a825-1b5b1ff1b854");
                 Encounter encounter = getInvestigationEncounter(opdTestOrder,
                         encounterLocation, labEncounterType);
 
@@ -160,8 +155,7 @@ public class Investigation {
             }
 
             if (Investigation.collectionOfRadiologyConceptIds.contains(investigationConceptId)) {
-                String radiologyEncounterTypeString = Context.getAdministrationService().getGlobalProperty(BillingConstants.GLOBAL_PROPRETY_RADIOLOGY_ENCOUNTER_TYPE, "RADIOLOGYENCOUNTER");
-                EncounterType radiologyEncounterType = Context.getEncounterService().getEncounterType(radiologyEncounterTypeString);
+                EncounterType radiologyEncounterType = Context.getEncounterService().getEncounterTypeByUuid("012bb9f4-f282-11ea-a6d6-3b4fa4aefb5a");
                 Encounter encounter = getInvestigationEncounter(opdTestOrder,
                         encounterLocation, radiologyEncounterType);
 

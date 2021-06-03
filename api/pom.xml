@@ -32,6 +32,14 @@
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>kenyaemr-api</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>ehrconfigs-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>metadatadeploy-api</artifactId>
+		</dependency>
 <!--OpenMRS core modules-->
 		<dependency>
 			<groupId>org.openmrs.api</groupId>

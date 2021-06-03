@@ -115,7 +115,7 @@ public class TriagePageController {
 			model.addAttribute("visitStatus", "Unknown");
 		}
 
-		Concept opdWardConcept = Context.getConceptService().getConceptByName("OPD WARD");
+		Concept opdWardConcept = Context.getConceptService().getConceptByUuid("03880388-07ce-4961-abe7-0e58f787dd23");
 
 		List<ConceptAnswer> oList = (opdWardConcept != null ? new ArrayList<ConceptAnswer>(opdWardConcept.getAnswers()) : null);
 		if (CollectionUtils.isNotEmpty(oList)) {
@@ -195,7 +195,7 @@ public class TriagePageController {
 			TriagePatientQueueLog triagePatientLog = logTriagePatient(
 					queueService, queue, encounter);
 			boolean visitStatus = false;
-			if (triagePatientLog.getVisitStatus().equalsIgnoreCase("REVISIT")) {
+			if (triagePatientLog.getVisitStatus().equalsIgnoreCase("Revisit patient")) {
 				visitStatus = true;
 			} else {
 				visitStatus = false;
@@ -286,9 +286,9 @@ public class TriagePageController {
 	public static void sendPatientToOPDQueue(Patient patient, Concept selectedOPDConcept, TriagePatientData triagePatientData, boolean revisit, String selectedCategory) {
 		Concept visitStatus = null;
 		if (!revisit) {
-			visitStatus = Context.getConceptService().getConcept("NEW PATIENT");
+			visitStatus = Context.getConceptService().getConceptByUuid("164144AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		} else {
-			visitStatus = Context.getConceptService().getConcept("REVISIT");
+			visitStatus = Context.getConceptService().getConceptByUuid("d5ea1533-7346-4e0b-8626-9bff6cd183b2");
 		}
 		
 		OpdPatientQueue queue = Context.getService(PatientQueueService.class).getOpdPatientQueue(patient.getPatientIdentifier().getIdentifier(), selectedOPDConcept.getConceptId());
@@ -318,6 +318,6 @@ public class TriagePageController {
 	}
 	private Visit getLastVisitForPatient(Patient patient) {
 		VisitService visitService = Context.getVisitService();
-		return visitService.getActiveVisitsByPatient(patient).get(visitService.getActiveVisitsByPatient(patient).size() - 1);
+		return visitService.getActiveVisitsByPatient(patient).get(0);
 	}
 }
