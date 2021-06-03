@@ -25,6 +25,8 @@
 		<require_module version="${inventoryVersion}"> org.openmrs.module.ehrinventory</require_module>
 		<require_module version="${appframeworkVersion}">org.openmrs.module.appframework</require_module>
 		<require_module version="${kenyaemrVersion}">org.openmrs.module.kenyaemr</require_module>
+		<require_module version="${ehrconfigisVersion}">org.openmrs.module.ehrconfigs</require_module>
+		<require_module>org.openmrs.module.metadatadeploy</require_module>
 	</require_modules>
 	<!-- / Required Modules -->
 	

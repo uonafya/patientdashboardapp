@@ -27,8 +27,7 @@ public class InvestigationsFragmentController {
 		config.require("patientId");
 		
 		Patient patient = Context.getPatientService().getPatient(Integer.valueOf(config.get("patientId").toString()));
-		String nameOfLabEncounterType = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_LAB_ENCOUTNER_TYPE);
-		EncounterType labEncounterType = Context.getEncounterService().getEncounterType(nameOfLabEncounterType);
+		EncounterType labEncounterType = Context.getEncounterService().getEncounterTypeByUuid("11d3f37a-f282-11ea-a825-1b5b1ff1b854");
 		List<Encounter> labOrdersEncounters = Context.getEncounterService().getEncounters(patient, null, null, null, null, Arrays.asList(labEncounterType), null, null, null, false);
 
 		List<LabOrderViewModel> labOrders = new ArrayList<LabOrderViewModel>();
@@ -69,7 +68,7 @@ public class InvestigationsFragmentController {
 		}
 		if (sortedResults.size() == 0) {
 			String nameOfLabEncounterType = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_LAB_ENCOUTNER_TYPE);
-			EncounterType labEncounterType = Context.getEncounterService().getEncounterType(nameOfLabEncounterType);
+			EncounterType labEncounterType = Context.getEncounterService().getEncounterTypeByUuid("11d3f37a-f282-11ea-a825-1b5b1ff1b854");
 			List<Encounter> labOrdersEncounters = Context.getEncounterService().getEncounters(patient, null, null, null, null, Arrays.asList(labEncounterType), null, null, null, false);
 			Date datePerfomed = null;
 			for (Encounter encounter: labOrdersEncounters) {

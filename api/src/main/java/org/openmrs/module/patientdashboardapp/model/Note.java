@@ -1,13 +1,5 @@
 package org.openmrs.module.patientdashboardapp.model;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
@@ -17,15 +9,14 @@ import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Order;
 import org.openmrs.Patient;
-import org.openmrs.Person;
 import org.openmrs.PersonAttribute;
-import org.openmrs.Provider;
 import org.openmrs.TestOrder;
 import org.openmrs.User;
 import org.openmrs.Visit;
-import org.openmrs.api.ProviderService;
 import org.openmrs.api.VisitService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.ehrconfigs.metadata.EhrCommonMetadata;
+import org.openmrs.module.ehrconfigs.utils.EhrConfigsUtils;
 import org.openmrs.module.hospitalcore.BillingConstants;
 import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
@@ -47,6 +38,14 @@ import org.openmrs.module.kenyaemr.api.KenyaEmrService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Note {
 
@@ -520,7 +519,7 @@ public class Note {
 		opdTestOrder.setBillableService(billableService);
 		opdTestOrder.setScheduleDate(encounter.getDateCreated());
 		opdTestOrder.setFromDept(departmentName);
-		if (billableService.getPrice().compareTo(BigDecimal.ZERO) == 0) {
+		if (billableService.getPrice() != null && billableService.getPrice().compareTo(BigDecimal.ZERO) == 0) {
 			opdTestOrder.setBillingStatus(1);
 		}
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
@@ -541,11 +540,13 @@ public class Note {
 	}
 
 	private void processInvestigationsForBillingFree(OpdTestOrder opdTestOrder, Location encounterLocation) {
+		String radiologyClass = "8caa332c-efe4-4025-8b18-3398328e1323";
+		String labSet = "8d492026-c2cc-11de-8d13-0010c6dffd0f";
+		String test = "8d4907b2-c2cc-11de-8d13-0010c6dffd0f";
+
 		if(opdTestOrder.getBillingStatus() == 1) {
-			Integer investigationConceptId = opdTestOrder.getValueCoded().getConceptId();
-			if (collectionOfLabConceptIds.contains(investigationConceptId)) {
-				String labEncounterTypeString = Context.getAdministrationService().getGlobalProperty(BillingConstants.GLOBAL_PROPRETY_LAB_ENCOUNTER_TYPE, "LABENCOUNTER");
-				EncounterType labEncounterType = Context.getEncounterService().getEncounterType(labEncounterTypeString);
+			if (opdTestOrder.getValueCoded().getConceptClass().getUuid().equals(labSet) || opdTestOrder.getValueCoded().getConceptClass().getUuid().equals(test)) {
+				EncounterType labEncounterType = Context.getEncounterService().getEncounterTypeByUuid(EhrCommonMetadata._EhrEncounterTypes.LABENCOUNTER);
 				Encounter encounter = getInvestigationEncounter(opdTestOrder,
 						encounterLocation, labEncounterType);
 
@@ -554,9 +555,8 @@ public class Note {
 				Context.getEncounterService().saveEncounter(encounter);
 			}
 
-			if (collectionOfRadiologyConceptIds.contains(investigationConceptId)) {
-				String radiologyEncounterTypeString = Context.getAdministrationService().getGlobalProperty(BillingConstants.GLOBAL_PROPRETY_RADIOLOGY_ENCOUNTER_TYPE, "RADIOLOGYENCOUNTER");
-				EncounterType radiologyEncounterType = Context.getEncounterService().getEncounterType(radiologyEncounterTypeString);
+			if (opdTestOrder.getValueCoded().getConceptClass().getUuid().equals(radiologyClass)) {
+				EncounterType radiologyEncounterType = Context.getEncounterService().getEncounterTypeByUuid(EhrCommonMetadata._EhrEncounterTypes.RADIOLOGYENCOUNTER);
 				Encounter encounter = getInvestigationEncounter(opdTestOrder,
 						encounterLocation, radiologyEncounterType);
 
@@ -582,6 +582,7 @@ public class Note {
 			encounter.setEncounterDatetime(opdTestOrder.getCreatedOn());
 			encounter.setEncounterType(encounterType);
 			encounter.setPatient(opdTestOrder.getPatient());
+			encounter.setProvider(EhrConfigsUtils.getDefaultEncounterRole(), EhrConfigsUtils.getProvider(opdTestOrder.getCreator().getPerson()));
 		}
 		return encounter;
 	}
@@ -592,7 +593,7 @@ public class Note {
 		order.setConcept(opdTestOrder.getValueCoded());
 		order.setCreator(opdTestOrder.getCreator());
 		order.setDateCreated(opdTestOrder.getCreatedOn());
-		order.setOrderer(getProvider(opdTestOrder.getCreator().getPerson()));
+		order.setOrderer(EhrConfigsUtils.getProvider(opdTestOrder.getCreator().getPerson()));
 		order.setPatient(opdTestOrder.getPatient());
 		order.setDateActivated(new Date());
 		order.setAccessionNumber("0");
@@ -602,25 +603,12 @@ public class Note {
 		encounter.addOrder(order);
 	}
 
-	private Provider getProvider(Person person) {
-		Provider provider = null;
-		ProviderService providerService = Context.getProviderService();
-		List<Provider> providerList = new ArrayList<Provider>(providerService.getProvidersByPerson(person));
-		if(providerList.size() > 0){
-			provider = providerList.get(0);
-		}
-		return provider;
-	}
-
 	private void saveProcedures(Encounter encounter, String departmentName, Procedure procedure) throws Exception {
 		Concept procedureConcept = Context.getConceptService().getConceptByUuid("1651AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		if (procedureConcept == null) {
 			throw new Exception("Post for procedure concept null");
 		}
 		BillableService billableService = Context.getService(BillingService.class).getServiceByConceptId(procedure.getId());
-		if(billableService == null) {
-			throw new Exception("This service is NOT billed, it is null");
-		}
 		OpdTestOrder opdTestOrder = new OpdTestOrder();
 		opdTestOrder.setPatient(encounter.getPatient());
 		opdTestOrder.setEncounter(encounter);
@@ -632,7 +620,7 @@ public class Note {
 		opdTestOrder.setBillableService(billableService);
 		opdTestOrder.setScheduleDate(encounter.getDateCreated());
 		opdTestOrder.setFromDept(departmentName);
-		if (billableService.getPrice().compareTo(BigDecimal.ZERO) == 0) {
+		if (billableService.getPrice() != null && billableService.getPrice().compareTo(BigDecimal.ZERO) == 0) {
 			opdTestOrder.setBillingStatus(1);
 		}
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
@@ -647,7 +635,6 @@ public class Note {
 		}
 
 		Context.getService(PatientDashboardService.class).saveOrUpdateOpdOrder(opdTestOrder);
-
 	}
 
 	private void addObsForProcedures(Encounter encounter, Obs obsGroup, Procedure procedure) {
