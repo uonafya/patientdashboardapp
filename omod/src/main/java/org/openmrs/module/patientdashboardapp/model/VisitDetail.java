@@ -11,8 +11,8 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 
 public class VisitDetail {
-	private static final String FINAL_DIAGNOSIS_CONCEPT_NAME = "FINAL DIAGNOSIS";
-	private static final String OTHER_SYMPTOM = "00acdc90-a641-41de-ae3a-e9b8d7a71a0f";
+	private static final String FINAL_DIAGNOSIS_CONCEPT_NAME = "160250AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+	private static final String OTHER_SYMPTOM = "cb46888c-586a-4ba0-98d5-f2e7e49a60f6";
 	private String history = "No History";
 	private String symptoms = "No symptoms";
 	private String diagnosis = "No diagnosis";
@@ -107,26 +107,17 @@ public class VisitDetail {
 	}
 	
 	public static VisitDetail create(Encounter encounter) {
-        String historyConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_HISTORY_OF_PRESENT_ILLNESS);
-		String symptomConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_SYMPTOM);
-		String provisionalDiagnosisConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
-		String investigationConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_FOR_INVESTIGATION);
-		String procedureConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
-        String physicalExaminationConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_PHYSICAL_EXAMINATION);
-        String visitOutcomeName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_VISIT_OUTCOME);
-        String internalReferralConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL);
-        String externalReferralConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL);
 		
-		Concept symptomConcept = Context.getConceptService().getConcept(symptomConceptName);
-		Concept provisionalDiagnosisConcept = Context.getConceptService().getConcept(provisionalDiagnosisConceptName);
-		Concept finalDiagnosisConcept = Context.getConceptService().getConcept(FINAL_DIAGNOSIS_CONCEPT_NAME);
-		Concept investigationConcept = Context.getConceptService().getConcept(investigationConceptName);
+		Concept symptomConcept = Context.getConceptService().getConceptByUuid("c91a7e0e-4622-4eeb-9edc-00f8ececf428");
+		Concept provisionalDiagnosisConcept = Context.getConceptService().getConceptByUuid("160249AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		Concept finalDiagnosisConcept = Context.getConceptService().getConceptByUuid("160250AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		Concept investigationConcept = Context.getConceptService().getConceptByUuid("0179f241-8c1d-47c1-8128-841f6508e251");
 		Concept procedureConcept = Context.getConceptService().getConceptByUuid("1651AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		Concept physicalExaminationConcept = Context.getConceptService().getConcept(physicalExaminationConceptName);
-        Concept historyConcept = Context.getConceptService().getConcept(historyConceptName);
-        Concept visitOutcomeConcept = Context.getConceptService().getConcept(visitOutcomeName);
-        Concept internalReferralConcept = Context.getConceptService().getConcept(internalReferralConceptName);
-        Concept externalReferralConcept = Context.getConceptService().getConcept(externalReferralConceptName);
+		Concept physicalExaminationConcept = Context.getConceptService().getConceptByUuid("1391AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        Concept historyConcept = Context.getConceptService().getConceptByUuid("1390AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        Concept visitOutcomeConcept = Context.getConceptService().getConceptByUuid("160433AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        Concept internalReferralConcept = Context.getConceptService().getConceptByUuid("cf37b5f8-d2a8-4185-9a0d-cebe996d9b80");
+        Concept externalReferralConcept = Context.getConceptService().getConceptByUuid("477a7484-0f99-4026-b37c-261be587a70b");
 		Concept otherSymptom = Context.getConceptService().getConceptByUuid(OTHER_SYMPTOM);
 
 		StringBuffer symptomList = new StringBuffer();

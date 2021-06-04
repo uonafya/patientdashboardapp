@@ -26,7 +26,7 @@ public class Referral {
     private static Logger logger = LoggerFactory.getLogger(Note.class);
     private static List<Option> internalReferralOptions;
     private static List<Option> externalReferralOptions;
-    private static final List<String> REFFERAL_CLINIC_UUIDS = Collections.unmodifiableList(Arrays.asList("70285bed-156b-47ed-9704-493f10149e84","f5c89e8c-c79e-4e20-9048-b7ef8f30b272"));
+    private static final List<String> REFFERAL_CLINIC_UUIDS = Collections.unmodifiableList(Arrays.asList("03880388-07ce-4961-abe7-0e58f787dd23","b5e0cfd3-1009-4527-8e36-83b5e902b3ea"));
     static {
         internalReferralOptions = new ArrayList<Option>();
         for(String refferalClinicUUID: REFFERAL_CLINIC_UUIDS) {
@@ -38,7 +38,7 @@ public class Referral {
             }
         }
         externalReferralOptions = new ArrayList<Option>();
-        Concept externalReferralConcept = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL));
+        Concept externalReferralConcept = Context.getConceptService().getConceptByUuid("477a7484-0f99-4026-b37c-261be587a70b");
         for (ConceptAnswer conceptAnswer : externalReferralConcept.getAnswers()) {
             externalReferralOptions.add(new Option(conceptAnswer.getAnswerConcept()));
         }
@@ -56,9 +56,9 @@ public class Referral {
         boolean isInternal = false;
         if (internalReferralOptions.contains(referredTo)) {
             isInternal = true;
-            referralConcept = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL));
+            referralConcept = Context.getConceptService().getConceptByUuid("cf37b5f8-d2a8-4185-9a0d-cebe996d9b80");
         }else {
-            referralConcept = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL));
+            referralConcept = Context.getConceptService().getConceptByUuid("477a7484-0f99-4026-b37c-261be587a70b");
         }
         if (referralConcept == null) {
             logger.error("Global property: " + PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL + " not defined OR\n Internal/External Referral concept not defined");
