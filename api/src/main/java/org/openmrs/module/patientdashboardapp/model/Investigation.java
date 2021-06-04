@@ -84,14 +84,8 @@ public class Investigation {
 
 
 	public void addObs(Encounter encounter, Obs obsGroup) {
-		AdministrationService administrationService = Context
-				.getAdministrationService();
-		GlobalProperty investigationConceptName = administrationService
-				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_FOR_INVESTIGATION);
-		ConceptService conceptService = Context.getConceptService();
 
-		Concept investigationConceptId = conceptService.getConceptByName(investigationConceptName
-				.getPropertyValue());
+		Concept investigationConceptId = Context.getConceptService().getConceptByUuid("0179f241-8c1d-47c1-8128-841f6508e251");
 
 		Obs obsInvestigation = new Obs();
 		obsInvestigation.setObsGroup(obsGroup);

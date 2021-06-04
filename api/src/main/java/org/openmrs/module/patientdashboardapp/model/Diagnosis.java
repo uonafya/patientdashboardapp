@@ -1,21 +1,17 @@
 package org.openmrs.module.patientdashboardapp.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.PatientQueueService;
-import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Diagnosis {
+import java.util.ArrayList;
+import java.util.List;
 
-	//TODO: move to global properties
-	private static final String FINAL_DIAGNOSIS_CONCEPT_NAME = "FINAL DIAGNOSIS";
+public class Diagnosis {
 	
 	private static final Logger logger = LoggerFactory.getLogger(Diagnosis.class);
 
@@ -52,13 +48,12 @@ public class Diagnosis {
 	public void addObs(Encounter encounter, Obs obsGroup) {
 		List<Diagnosis> previousProvisionalDiagnoses = getPreviousDiagnoses(encounter.getPatient().getPatientId());
 		if (isProvisional() && !previousProvisionalDiagnoses.contains(this)) {
-			String provisionalDiagnosisConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
-			Concept diagnosisConcept = Context.getConceptService().getConcept(provisionalDiagnosisConceptName);
+			Concept diagnosisConcept = Context.getConceptService().getConceptByUuid("160249AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 			addObsToEncounter(encounter, obsGroup, diagnosisConcept);
 		}
 		
 		if (!isProvisional()) {
-			Concept diagnosisConcept = Context.getConceptService().getConcept(FINAL_DIAGNOSIS_CONCEPT_NAME);
+			Concept diagnosisConcept = Context.getConceptService().getConceptByUuid("160250AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 			addObsToEncounter(encounter, obsGroup, diagnosisConcept);
 		}
 	}

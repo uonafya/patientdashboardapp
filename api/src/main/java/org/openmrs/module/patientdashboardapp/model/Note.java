@@ -90,10 +90,6 @@ public class Note {
 		this.illnessHistory = getPreviousIllnessHistory(patientId);
 	}
 
-
-	private static final String PHYSICAL_EXAMINATION_CONCEPT_NAME = "PHYSICAL EXAM"; // replaced this with PHYSICAL EXAMINATION from afyaehms
-    private static final String PREVIOUS_ILLNESS_HISTORY_CONCEPT_NAME = "HISTORY OF PRESENT ILLNESS"  ;
-
 	private int patientId;
 	private Integer queueId;
 	private Integer opdId;
@@ -285,8 +281,7 @@ public class Note {
 		Encounter encounter = new Encounter();
 		KenyaEmrService kenyaEmrService =Context.getService(KenyaEmrService.class);
 		User user = Context.getAuthenticatedUser();
-		String encounterTypeName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_OPD_ENCOUTNER_TYPE);
-		EncounterType encounterType = Context.getEncounterService().getEncounterType(encounterTypeName);
+		EncounterType encounterType = Context.getEncounterService().getEncounterTypeByUuid("ba45c278-f290-11ea-9666-1b3e6e848887");
 		if (this.opdLogId != null) {
 			OpdPatientQueueLog opdPatientQueueLog = Context.getService(PatientQueueService.class)
 					.getOpdPatientQueueLogById(opdLogId);
@@ -362,7 +357,7 @@ public class Note {
 	}
 
 	private void addIllnessHistory(Encounter encounter, Obs obsGroup) {
-		Concept conceptIllnessHistory = Context.getConceptService().getConcept("HISTORY OF PRESENT ILLNESS");
+		Concept conceptIllnessHistory = Context.getConceptService().getConceptByUuid("1390AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		Obs obsIllnessHistory = new Obs();
 		obsIllnessHistory.setObsGroup(obsGroup);
 		obsIllnessHistory.setConcept(conceptIllnessHistory);
@@ -376,7 +371,7 @@ public class Note {
 
 
 	private void addOtherInstructions(Encounter encounter, Obs obsGroup) {
-		Concept conceptOtherInstructions = Context.getConceptService().getConcept("OTHER INSTRUCTIONS");
+		Concept conceptOtherInstructions = Context.getConceptService().getConceptByUuid("163106AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		Obs obsOtherInstructions = new Obs();
 		obsOtherInstructions.setObsGroup(obsGroup);
 		obsOtherInstructions.setConcept(conceptOtherInstructions);
@@ -391,7 +386,7 @@ public class Note {
 
 	public void addPhysicalExamination(Encounter encounter, Obs obsGroup)
 	{
-		Concept conceptPhysicalExamination = Context.getConceptService().getConcept(PHYSICAL_EXAMINATION_CONCEPT_NAME);
+		Concept conceptPhysicalExamination = Context.getConceptService().getConceptByUuid("1391AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		if (conceptPhysicalExamination == null) {
 			throw new NullPointerException("Physical examination concept is not defined");
 		}
@@ -466,7 +461,7 @@ public class Note {
 		String previousPhysicalExamination = "";
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
-		Concept conceptPhysicalExamination = Context.getConceptService().getConcept(PHYSICAL_EXAMINATION_CONCEPT_NAME);
+		Concept conceptPhysicalExamination = Context.getConceptService().getConceptByUuid("1391AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		Encounter physicalExaminationEncounter = queueService.getLastOPDEncounter(patient);
 
 		if(physicalExaminationEncounter!=null) {
@@ -487,7 +482,7 @@ public class Note {
         String previousIllnessHistory = "";
         Patient patient = Context.getPatientService().getPatient(patientId);
         PatientQueueService queueService = Context.getService(PatientQueueService.class);
-        Concept conceptPreviousIllnessHistory = Context.getConceptService().getConcept(PREVIOUS_ILLNESS_HISTORY_CONCEPT_NAME);
+        Concept conceptPreviousIllnessHistory = Context.getConceptService().getConceptByUuid("1390AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         Encounter previousIllnessHistoryEncounter = queueService.getLastOPDEncounter(patient);
         if (previousIllnessHistoryEncounter!=null){
             Set<Obs> allPreviousIllnessHistoryObs = previousIllnessHistoryEncounter.getAllObs();
@@ -503,7 +498,7 @@ public class Note {
     }
 
 	public void saveInvestigations(Encounter encounter, String departmentName, Investigation investigation) throws Exception {
-		Concept investigationConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_FOR_INVESTIGATION));
+		Concept investigationConcept = Context.getConceptService().getConceptByUuid("0179f241-8c1d-47c1-8128-841f6508e251");
 		if (investigationConcept == null) {
 			throw new Exception("Investigation concept null");
 		}
@@ -651,6 +646,6 @@ public class Note {
 
 	private Visit getLastVisitForPatient(Patient patient) {
 		VisitService visitService = Context.getVisitService();
-		return visitService.getActiveVisitsByPatient(patient).get(visitService.getActiveVisitsByPatient(patient).size() - 1);
+		return visitService.getActiveVisitsByPatient(patient).get(0);
 	}
 }
