@@ -89,10 +89,8 @@ public class Sign {
 			previousSigns = getPreviousSigns(encounter.getPatient().getPatientId());
 		}
 		if (!previousSigns.contains(this)) {
-			String symptomConceptName = Context.getAdministrationService()
-					.getGlobalProperty(PatientDashboardConstants.PROPERTY_SYMPTOM);
 			Obs obsSymptom = new Obs();
-			obsSymptom.setConcept(Context.getConceptService().getConcept(symptomConceptName));
+			obsSymptom.setConcept(Context.getConceptService().getConceptByUuid("c91a7e0e-4622-4eeb-9edc-00f8ececf428"));
 			obsSymptom.setValueCoded(getSymtomConcept());
 			obsSymptom.setObsGroup(obsGroup);
 			obsSymptom.setCreator(encounter.getCreator());

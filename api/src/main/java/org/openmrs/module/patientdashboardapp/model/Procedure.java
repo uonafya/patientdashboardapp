@@ -41,8 +41,8 @@ public class Procedure {
 	private static List<Integer> majorMinorOperationsConceptIds;
 	static{
 		majorMinorOperationsConceptIds = new ArrayList<Integer>();
-		Collection<ConceptAnswer> minorOperationConcepts = Context.getConceptService().getConceptByName("MINOR OPERATION").getAnswers();
-		Collection<ConceptAnswer> majorOperationConcepts = Context.getConceptService().getConceptByName("MAJOR OPERATION").getAnswers();
+		Collection<ConceptAnswer> minorOperationConcepts = Context.getConceptService().getConceptByUuid("3c3946b1-d71d-41b3-a2e4-2d755006200a").getAnswers();
+		Collection<ConceptAnswer> majorOperationConcepts = Context.getConceptService().getConceptByUuid("3798940f-87b8-464e-b36a-17da246f034e").getAnswers();
 		minorOperationConcepts.addAll(majorOperationConcepts);
 		for(ConceptAnswer conceptAnswer : minorOperationConcepts){
 			majorMinorOperationsConceptIds.add(conceptAnswer.getAnswerConcept().getConceptId());

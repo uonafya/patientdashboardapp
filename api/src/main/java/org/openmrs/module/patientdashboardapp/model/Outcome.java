@@ -1,9 +1,5 @@
 package org.openmrs.module.patientdashboardapp.model;
 
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Encounter;
@@ -14,9 +10,12 @@ import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmission;
 import org.openmrs.module.hospitalcore.model.PatientSearch;
-import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Outcome {
@@ -67,7 +66,7 @@ public class Outcome {
 
     public static List<Option> getInpatientWards() {
         List<Option> inpatientWards = new ArrayList<Option>();
-        Concept ipdConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_IPDWARD));
+        Concept ipdConcept = Context.getConceptService().getConceptByUuid("5fc29316-0869-4b3b-ae2f-cc37c6014eb7");
         for (ConceptAnswer inpatientConceptAnswer : ipdConcept.getAnswers()) {
             inpatientWards.add(new Option(inpatientConceptAnswer.getAnswerConcept()));
         }
@@ -75,8 +74,7 @@ public class Outcome {
     }
 
     public void addObs(Encounter encounter, Obs obsGroup) {
-        String outcomeConceptName = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_VISIT_OUTCOME);
-        Concept outcomeConcept = Context.getConceptService().getConceptByName(outcomeConceptName);
+        Concept outcomeConcept = Context.getConceptService().getConceptByUuid("160433AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         Obs obsOutcome = new Obs();
         obsOutcome.setObsGroup(obsGroup);
         obsOutcome.setConcept(outcomeConcept);
@@ -99,7 +97,7 @@ public class Outcome {
 
     public void save(Encounter encounter) {
         if (this.option.getId() == DIED_OPTION) {
-            Concept causeOfDeath = Context.getConceptService().getConceptByName("None");//provide cause of death as a concept
+            Concept causeOfDeath = Context.getConceptService().getConceptByUuid("1107AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");//provide cause of death as a concept
             Patient patient = encounter.getPatient();
             patient.setDead(true);
             patient.setDeathDate(encounter.getDateCreated());// please provide a date picker to allow someone to enter the death date
