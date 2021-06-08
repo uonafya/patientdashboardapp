@@ -37,18 +37,18 @@
 		<calculationVersion>1.0</calculationVersion>
 		<htmlformentryVersion>2.3</htmlformentryVersion>
 		<htmlwidgetsVersion>1.6.6</htmlwidgetsVersion>
-		<hospitalcoreVersion>1.0.0-SNAPSHOT</hospitalcoreVersion>
+		<hospitalcoreVersion>1.0.0</hospitalcoreVersion>
 		<idgenVersion>2.6</idgenVersion>
 		<reportingVersion>0.9.8.1</reportingVersion>
 		<serializationxstreamVersion>0.2.7</serializationxstreamVersion>
-		<uiframeworkVersion>3.11.0</uiframeworkVersion>
+		<uiframeworkVersion>3.8</uiframeworkVersion>
 		<webservices.restVersion>2.1</webservices.restVersion>
 		<uilibraryVersion>2.0.4</uilibraryVersion>
-		<inventoryVersion>1.0.0-SNAPSHOT</inventoryVersion>
+		<inventoryVersion>1.0.0</inventoryVersion>
 		<appuiVersion>1.8.0</appuiVersion>
 		<kenyaemrVersion>17.0.3</kenyaemrVersion>
 		<jodaTimeVersion>2.9.1</jodaTimeVersion>
-		<ehrconfigisVersion>1.0.0-SNAPSHOT</ehrconfigisVersion>
+		<ehrconfigisVersion>1.0.0</ehrconfigisVersion>
 		<metadatadeployVersion>1.3</metadatadeployVersion>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
