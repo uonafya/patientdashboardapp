@@ -62,7 +62,7 @@ public class InvestigationsFragmentController {
 				if (obs.getObsGroup() != null) {
 					resultDescription = obs.getObsGroup().getConcept().getDisplayString() + " (" + resultDescription + ")";
 				}
-				String resultValue = obs.getValueAsString(Context.getLocale());
+				String resultValue = obs.getValueAsString(Context.getLocale()) +" :-->"+obs.getComment();
 				sortedResults.put(resultDescription, resultValue);
 			}
 		}
@@ -80,7 +80,7 @@ public class InvestigationsFragmentController {
 					if (obs.getObsGroup() != null) {
 						resultDescription = obs.getObsGroup().getConcept().getDisplayString() + " (" + resultDescription + ")";
 					}
-					String resultValue = obs.getValueAsString(Context.getLocale());
+					String resultValue = obs.getValueAsString(Context.getLocale()) +":-->"+obs.getComment();
 					sortedResults.put(resultDescription, resultValue);
 					if (datePerfomed == null) {
 						datePerfomed = obs.getObsDatetime();
