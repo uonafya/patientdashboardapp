@@ -417,7 +417,7 @@
         }
     }
     function injectRequired(){
-        var elements =['input[id="temperature-field"]','input[id="systolic-bp-field"]','input[id="diastolic-bp-field"]','select[id="room-to-visit"]'];
+        var elements =['input[id="temperature-field"]','select[id="room-to-visit"]'];
         for(var i in elements){
             jq(elements[i]).attr("required","");
         }
@@ -771,12 +771,12 @@ h2 span{
 
                                 <div class="col4">
                                     <label for="systolic-bp-field">Blood Pressure (Systolic)<span style="color: #f00 !important;
-                                    padding-left: 5px;">*</span></label>
+                                    padding-left: 5px;"></span></label>
                                 </div>
 
                                 <div class="col4 last">
                                     <label for="diastolic-bp-field">Blood Pressure (Diastolic)<span style="color: #f00 !important;
-                                    padding-left: 5px;">*</span></label>
+                                    padding-left: 5px;"></span></label>
                                 </div>
                             </div>
                             <div class="onerow">
