@@ -3,7 +3,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>patientdashboardapp</artifactId>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0.3</version>
 	<packaging>pom</packaging>
 	<name>Patient Dashboard App Module</name>
 	<description>Useful functionality and summary for the patient</description>
@@ -23,7 +23,7 @@
 		<connection>scm:git:https://github.com/uonafya/patientdashboardapp.git</connection>
 		<developerConnection>scm:git:https://github.com/uonafya/patientdashboardapp.git</developerConnection>
 		<url>https://github.com/uonafya/patientdashboardapp.git</url>
-		<tag>HEAD</tag>
+		<tag>patientdashboardapp-1.0.3</tag>
 	</scm>
 
 	<modules>
