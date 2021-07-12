@@ -1,7 +1,7 @@
-(function(afyaehmsConstants){
-	afyaehmsConstants.OTHER_SYMPTOM_ID = 165430
-	afyaehmsConstants.OTHER_SYMPTOM_UID = "b8e04026-c1dc-46a8-916a-d61408605444"
-})(window.afyaehmsConstants = window.afyaehmsConstants || {})
+(function(emrPlusConstants){
+    emrPlusConstants.OTHER_SYMPTOM_ID = 1000033
+    emrPlusConstants.OTHER_SYMPTOM_UID = "cb46888c-586a-4ba0-98d5-f2e7e49a60f6"
+})(window.emrPlusConstants = window.emrPlusConstants || {})
 
 function Note(noteObj) {
 	var self = this;
@@ -37,7 +37,7 @@ function Note(noteObj) {
 		var match = ko.utils.arrayFirst(self.signs(), function(item) {
 			console.log(symptom);
 			console.log(item);
-			if (symptom.id === afyaehmsConstants.OTHER_SYMPTOM_ID && symptom.id === item.id && symptom.label !== item.label) {
+			if (symptom.id === emrPlusConstants.OTHER_SYMPTOM_ID && symptom.id === item.id && symptom.label !== item.label) {
 				return false;
 			} else if (symptom.id === item.id) {
 				return true;
