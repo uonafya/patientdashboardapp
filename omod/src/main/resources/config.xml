@@ -18,7 +18,7 @@
 	
 	<!-- Required Modules -->
 	<require_modules>
-		<require_module version="$hospitalcoreVersion">org.openmrs.module.hospitalcore</require_module>
+		<require_module version="${hospitalcoreVersion}">org.openmrs.module.hospitalcore</require_module>
 		<require_module version="${uiframeworkVersion}">org.openmrs.module.uiframework</require_module>
 		<require_module version="${uilibraryVersion}">org.openmrs.module.uilibrary</require_module>
 		<require_module version="${appuiVersion}">org.openmrs.module.appui</require_module>
