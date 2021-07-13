@@ -321,8 +321,8 @@
 					var nonCoded = {
 						label: "(Non-coded) " + request.term,
 						value: "(Non-coded) " + request.term,
-						id: afyaehmsConstants.OTHER_SYMPTOM_ID,
-						uuid: afyaehmsConstants.OTHER_SYMPTOM_UID
+						id: emrPlusConstants.OTHER_SYMPTOM_ID,
+						uuid: emrPlusConstants.OTHER_SYMPTOM_UID
 					};
 					results.push(nonCoded);
 					response(results);
