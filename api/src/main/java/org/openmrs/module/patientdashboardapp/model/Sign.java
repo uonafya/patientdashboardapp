@@ -17,7 +17,7 @@ import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 public class Sign {
 
 	private static final int OTHER_NON_CODED_5622 = 5622;
-	private static final int NON_CODED_SYMPTOM_5693 = 165430;
+	private static final int NON_CODED_SYMPTOM_5693 = 1000033;
 
 	public Sign() {
 	}
@@ -98,6 +98,7 @@ public class Sign {
 			obsSymptom.setEncounter(encounter);
 			obsSymptom.setPerson(encounter.getPatient());
 			encounter.addObs(obsSymptom);
+			System.out.println("Return the value of this object>>"+this.id);
 			if (this.id == NON_CODED_SYMPTOM_5693) {
 				Obs nonCodedSymptom = new Obs();
 				nonCodedSymptom.setConcept(Context.getConceptService().getConcept(OTHER_NON_CODED_5622));
