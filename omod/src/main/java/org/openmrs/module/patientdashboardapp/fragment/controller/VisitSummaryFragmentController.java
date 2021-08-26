@@ -3,6 +3,7 @@ package org.openmrs.module.patientdashboardapp.fragment.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
@@ -60,8 +61,12 @@ public class VisitSummaryFragmentController {
                 break;
             }
         }
-        model.addAttribute("patient", patient);
+        KenyaEmrService service =Context.getService(KenyaEmrService.class);
+        String mfl =service.getDefaultLocationMflCode();
 
+        model.addAttribute("userLocation",service.getDefaultLocation());
+        model.addAttribute("mfl",mfl);
+        model.addAttribute("patient", patient);
         model.addAttribute("visitSummaries", visitSummaries);
 
 	}
