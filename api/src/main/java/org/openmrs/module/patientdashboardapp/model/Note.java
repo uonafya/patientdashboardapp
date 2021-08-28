@@ -269,8 +269,12 @@ public class Note {
 		Obs obsGroup = Context.getService(HospitalCoreService.class).getObsGroupCurrentDate(patient.getPersonId());
 		Encounter encounter = createEncounter(patient);
 		addObs(obsGroup, encounter);
-		encounter.setVisit(getLastVisitForPatient(patient));
-		Context.getEncounterService().saveEncounter(encounter);
+        try {
+            encounter.setVisit(getLastVisitForPatient(patient));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Context.getEncounterService().saveEncounter(encounter);
 		saveNoteDetails(encounter);
 		endEncounter(encounter);
 		return encounter;
@@ -643,8 +647,11 @@ public class Note {
 		encounter.addObs(obsProcedure);
 	}
 
-	private Visit getLastVisitForPatient(Patient patient) {
+	private Visit getLastVisitForPatient(Patient patient) throws Exception {
 		VisitService visitService = Context.getVisitService();
+		if (visitService.getActiveVisitsByPatient(patient) == null){
+		    throw new Exception("patient not checked-in");
+        }
 		return visitService.getActiveVisitsByPatient(patient).get(0);
 	}
 }
