@@ -205,6 +205,10 @@
 	<span>{{-externalReferral}}</span>
 	<br>
 
+	<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Other Instruction:</label>
+	<span>{{-otherInstructions}}</span>
+	<br>
+
 	<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Visit Outcome:</label>
 	<span>{{-visitOutcome}}</span>
 	<br>
