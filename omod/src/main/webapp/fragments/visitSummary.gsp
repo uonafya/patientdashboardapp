@@ -111,6 +111,10 @@
 	<div class="col16 dashboard opdRecordsPrintDiv" style="min-width: 78%">
 		<div id="printSection">
 			<div id="person-detail">
+				<center>
+					<img width="100" height="100" align="center" title="Integrated KenyaEMR" alt="Integrated KenyaEMR" src="${ui.resourceLink('ehrinventoryapp', 'images/kenya_logo.bmp')}">
+					<h2>${userLocation}(${mfl}) </h2>
+				</center>
 				<h3>PATIENT SUMMARY INFORMATION</h3>
 
 				<label>
@@ -199,6 +203,10 @@
 
 	<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>External Referral:</label>
 	<span>{{-externalReferral}}</span>
+	<br>
+
+	<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Other Instruction:</label>
+	<span>{{-otherInstructions}}</span>
 	<br>
 
 	<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Visit Outcome:</label>

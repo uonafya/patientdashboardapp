@@ -22,6 +22,7 @@ public class VisitDetail {
     private String visitOutcome = "No Outcome Of Visit";
     private String internalReferral = "No internal Referral";
     private String externalReferral = "No external Referral";
+    private String otherInstructions = "No Other instructions given";
 
     public String getExternalReferral() {
         return externalReferral;
@@ -61,6 +62,10 @@ public class VisitDetail {
 	public String getHistory() {
 		return history;
 	}
+
+	public String getOtherInstructions() { return otherInstructions; }
+
+	public void setOtherInstructions(String otherInstructions) { this.otherInstructions = otherInstructions; }
 
 	public void setHistory(String history) {
 		this.history = history;
@@ -119,6 +124,7 @@ public class VisitDetail {
         Concept internalReferralConcept = Context.getConceptService().getConceptByUuid("cf37b5f8-d2a8-4185-9a0d-cebe996d9b80");
         Concept externalReferralConcept = Context.getConceptService().getConceptByUuid("477a7484-0f99-4026-b37c-261be587a70b");
 		Concept otherSymptom = Context.getConceptService().getConceptByUuid(OTHER_SYMPTOM);
+		Concept otherInstructionsConcept = Context.getConceptService().getConceptByUuid("163106AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
 		StringBuffer symptomList = new StringBuffer();
 		StringBuffer provisionalDiagnosisList = new StringBuffer();
@@ -130,6 +136,7 @@ public class VisitDetail {
         StringBuffer visitOutcome = new StringBuffer();
         StringBuffer internalReferral = new StringBuffer();
         StringBuffer externalReferral = new StringBuffer();
+        StringBuffer otherInstructions = new StringBuffer();
 		for (Obs obs :encounter.getAllObs()) {
 			if (obs.getConcept().equals(symptomConcept)) {
 				if (obs.getValueCoded().equals(otherSymptom)) {
@@ -158,6 +165,9 @@ public class VisitDetail {
 			}
 			if (obs.getConcept().equals(historyConcept)){
 				history.append(obs.getValueText()).append(", ");
+			}
+			if (obs.getConcept().equals(otherInstructionsConcept)){
+				otherInstructions.append(obs.getValueText()).append(", ");
 			}
             if (obs.getConcept().equals(visitOutcomeConcept)){
                 visitOutcome.append(obs.getValueText()).append(",");
@@ -189,6 +199,9 @@ public class VisitDetail {
         if (history.length()>0){
             visitDetail.setHistory(history.substring(0,history.length()-",".length()));
         }
+        if (otherInstructions.length()>0){
+            visitDetail.setOtherInstructions(otherInstructions.substring(0,otherInstructions.length()-",".length()));
+        }
         if (visitOutcome.length()>0){
             visitDetail.setVisitOutcome(visitOutcome.substring(0,visitOutcome.length()-",".length()));
         }
@@ -200,4 +213,6 @@ public class VisitDetail {
         }
 		return visitDetail;
 	}
+
+
 }
