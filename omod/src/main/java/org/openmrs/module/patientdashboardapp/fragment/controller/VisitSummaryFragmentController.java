@@ -3,6 +3,7 @@ package org.openmrs.module.patientdashboardapp.fragment.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
@@ -60,8 +61,12 @@ public class VisitSummaryFragmentController {
                 break;
             }
         }
-        model.addAttribute("patient", patient);
+        KenyaEmrService service =Context.getService(KenyaEmrService.class);
+        String mfl =service.getDefaultLocationMflCode();
 
+        model.addAttribute("userLocation",service.getDefaultLocation());
+        model.addAttribute("mfl",mfl);
+        model.addAttribute("patient", patient);
         model.addAttribute("visitSummaries", visitSummaries);
 
 	}
@@ -71,7 +76,7 @@ public class VisitSummaryFragmentController {
 		Encounter encounter = Context.getEncounterService().getEncounter(encounterId);
 		VisitDetail visitDetail = VisitDetail.create(encounter);
 
-		SimpleObject detail = SimpleObject.fromObject(visitDetail, ui, "history","diagnosis", "symptoms", "procedures", "investigations","physicalExamination","visitOutcome","internalReferral","externalReferral");
+		SimpleObject detail = SimpleObject.fromObject(visitDetail, ui, "history","diagnosis", "symptoms", "procedures", "investigations","physicalExamination","visitOutcome","internalReferral","externalReferral","otherInstructions");
 		List<OpdDrugOrder> opdDrugs = Context.getService(PatientDashboardService.class).getOpdDrugOrder(encounter);
 		List<SimpleObject> drugs = SimpleObject.fromCollection(opdDrugs, ui, "inventoryDrug.name",
 				"inventoryDrug.unit.name", "inventoryDrugFormulation.name", "inventoryDrugFormulation.dozage","dosage", "dosageUnit.name");

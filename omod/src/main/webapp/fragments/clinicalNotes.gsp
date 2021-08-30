@@ -48,6 +48,24 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
         color:      #f00;
         padding:    5px 0;
     }
+	.alert{
+		position: relative;
+		padding: .75rem 1.25rem;
+		margin-bottom: 1rem;
+		border: 1px solid transparent;
+		border-top-color: transparent;
+		border-right-color: transparent;
+		border-bottom-color: transparent;
+		border-left-color: transparent;
+		border-top-color: transparent;
+		border-right-color: transparent;
+		border-bottom-color: transparent;
+		border-left-color: transparent;
+		border-radius: .25rem;
+		color: #721c24;
+		background-color: #f8d7da;
+		border-color: #f5c6cb;
+	}
 </style>
 
 <div id="content">
@@ -55,6 +73,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
         <section>
             <span class="title">Clinical Notes</span>
 			<fieldset class="no-confirmation">
+			<div data-bind="if: !(\$root.admitted !== true)"><div id="errorAlert" class="alert">The patient has been admitted. Cannot proceed!</div></div>
 				<legend>Symptoms</legend>
 				<div style="padding: 0 4px">
 					<label for="symptom" class="label">Symptoms <span class="important">*</span></label>
