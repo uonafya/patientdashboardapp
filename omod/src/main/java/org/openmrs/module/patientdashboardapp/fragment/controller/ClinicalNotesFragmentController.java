@@ -1,17 +1,18 @@
 package org.openmrs.module.patientdashboardapp.fragment.controller;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.ConceptSet;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.InventoryCommonService;
+import org.openmrs.module.hospitalcore.LaboratoryCoreService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
+import org.openmrs.module.hospitalcore.model.BillableService;
 import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
 import org.openmrs.module.patientdashboardapp.model.Note;
@@ -21,6 +22,7 @@ import org.openmrs.module.patientdashboardapp.model.Procedure;
 import org.openmrs.module.patientdashboardapp.model.Qualifier;
 import org.openmrs.module.patientdashboardapp.model.Referral;
 import org.openmrs.module.patientdashboardapp.model.ReferralReasons;
+import org.openmrs.module.patientdashboardapp.util.LabTestUtil;
 import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.fragment.FragmentConfiguration;
@@ -67,7 +69,7 @@ public class ClinicalNotesFragmentController {
     	}
     	return SimpleObject.fromCollection(qualifiers, ui, "id", "label", "uuid", "options.id", "options.label", "options.uuid");
     }
-    
+
     public List<SimpleObject> getSymptoms(@RequestParam(value="q") String name,UiUtils ui)
     {
         List<Concept> symptoms = Context.getService(PatientDashboardService.class).searchSymptom(name);
@@ -99,8 +101,9 @@ public class ClinicalNotesFragmentController {
 
     public List<SimpleObject> getInvestigations(@RequestParam(value="q") String name,UiUtils ui)
     {
-        List<Concept> investigations = Context.getService(PatientDashboardService.class).searchInvestigation(name);
-        List<SimpleObject> investigationsList = SimpleObject.fromCollection(investigations, ui, "id", "name", "uuid");
+        BillingService investigations = Context.getService(BillingService.class);
+        List<BillableService> investigation = investigations.searchService(name);
+        List<SimpleObject> investigationsList = SimpleObject.fromCollection(investigation, ui, "conceptId", "name");
         return investigationsList;
     }
     public List<SimpleObject> getDrugs(@RequestParam(value="q") String name,UiUtils ui)

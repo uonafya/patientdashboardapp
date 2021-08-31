@@ -456,7 +456,7 @@
 					for (var i in data) {
 						var result = {
 							label: data[i].name,
-							value: data[i].id
+							value: data[i].conceptId
 						};
 						results.push(result);
 					}
