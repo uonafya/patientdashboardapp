@@ -14,6 +14,16 @@
     ui.includeJavascript("uicommons", "navigator/navigatorTemplates.js")
     ui.includeJavascript("uicommons", "navigator/exitHandlers.js")
     ui.includeJavascript("patientdashboardapp", "knockout-3.4.0.js")
+
+
+	def fields = [
+			[
+					label: "What facility is this installation managing?",
+					formFieldName: "defaultLocation",
+					class: org.openmrs.Location,
+					initialValue: defaultLocation
+			]
+	]
 %>
 
 ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note: note, listOfWards: listOfWards, internalReferralSources: internalReferralSources, externalReferralSources: externalReferralSources, referralReasonsSources: referralReasonsSources, outcomeOptions: outcomeOptions ]) }
@@ -301,7 +311,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 					<div class="onerow">
 						<div class="col4"><label for="internalReferral"						>Referral Available</label></div>
 						<div class="col4"><label for="internalReferral" id="refTitle"		>Internal Referral</label></div>
-						<div class="col4 last"><label for="internalReferral" id="facTitle"	>Facility</label></div>
+%{--						<div class="col4 last"><label for="internalReferral" id="facTitle"	>Facility</label></div>--}%
 					</div>
 					
 					<div class="onerow">
@@ -327,8 +337,11 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 						
 						<div class="col4 last">
 							<div class="input-position-class">
-								<input type="text" id="facility" placeholder="Facility Name" name="facility" data-bind="value: \$root.facility">
-								</input>
+								<% fields.each { %>
+									${ ui.includeFragment("kenyaui", "widget/labeledField", it) }
+								<% } %>
+%{--								<input type="text" id="facility" placeholder="Facility Name" name="facility" data-bind="value: \$root.facility">--}%
+%{--								</input>--}%
 							</div>
 						</div>						
 					</div>

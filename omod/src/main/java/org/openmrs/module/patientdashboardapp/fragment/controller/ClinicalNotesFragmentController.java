@@ -22,7 +22,6 @@ import org.openmrs.module.patientdashboardapp.model.Procedure;
 import org.openmrs.module.patientdashboardapp.model.Qualifier;
 import org.openmrs.module.patientdashboardapp.model.Referral;
 import org.openmrs.module.patientdashboardapp.model.ReferralReasons;
-import org.openmrs.module.patientdashboardapp.util.LabTestUtil;
 import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.fragment.FragmentConfiguration;
