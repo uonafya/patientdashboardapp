@@ -15,8 +15,6 @@
     ui.includeJavascript("uicommons", "navigator/exitHandlers.js")
     ui.includeJavascript("patientdashboardapp", "knockout-3.4.0.js")
 
-//	ui.decorateWith("kenyaemr", "standardPage")
-
 	def fields = [
 			[
 					label: "Facility the patient is being referred to?",
