@@ -5,6 +5,7 @@ import java.util.*;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.openmrs.Concept;
+import org.openmrs.Location;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.ConceptSet;
 import org.openmrs.api.context.Context;
@@ -14,6 +15,7 @@ import org.openmrs.module.hospitalcore.LaboratoryCoreService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.BillableService;
 import org.openmrs.module.hospitalcore.model.InventoryDrug;
+import org.openmrs.module.kenyaemr.api.KenyaEmrService;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
 import org.openmrs.module.patientdashboardapp.model.Note;
 import org.openmrs.module.patientdashboardapp.model.Option;
@@ -49,6 +51,11 @@ public class ClinicalNotesFragmentController {
 		if (config.containsKey("opdLogId") && config.get("opdLogId") != null) {
 			opdLogId = Integer.parseInt(config.get("opdLogId").toString());
 		}
+
+        KenyaEmrService service = Context.getService(KenyaEmrService.class);
+        Location defaultLocation = service.getDefaultLocation();
+
+        model.addAttribute("defaultLocation", defaultLocation);
 		model.addAttribute("outcomeOptions", SimpleObject.fromCollection(Outcome.getAvailableOutcomes(), ui, "label", "id"));
 		model.addAttribute("listOfWards", SimpleObject.fromCollection(Outcome.getInpatientWards(), ui, "label", "id"));
 		model.addAttribute("internalReferralSources", SimpleObject.fromCollection(Referral.getInternalReferralOptions(), ui, "label", "id"));
