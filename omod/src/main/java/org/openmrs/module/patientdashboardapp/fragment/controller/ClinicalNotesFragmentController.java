@@ -1,8 +1,6 @@
 package org.openmrs.module.patientdashboardapp.fragment.controller;
 
 
-import java.util.*;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
@@ -10,7 +8,6 @@ import org.openmrs.ConceptSet;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.InventoryCommonService;
-import org.openmrs.module.hospitalcore.LaboratoryCoreService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.BillableService;
 import org.openmrs.module.hospitalcore.model.InventoryDrug;
@@ -22,12 +19,15 @@ import org.openmrs.module.patientdashboardapp.model.Procedure;
 import org.openmrs.module.patientdashboardapp.model.Qualifier;
 import org.openmrs.module.patientdashboardapp.model.Referral;
 import org.openmrs.module.patientdashboardapp.model.ReferralReasons;
-import org.openmrs.module.patientdashboardapp.util.LabTestUtil;
 import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.fragment.FragmentConfiguration;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  *
