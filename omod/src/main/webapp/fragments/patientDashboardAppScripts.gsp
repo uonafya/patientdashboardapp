@@ -37,7 +37,7 @@
 		jq('#referralReasons').empty();
 		note.referralReasonsOptions.removeAll();
 
-		if (jQuery("#externalReferral option:selected").text() === "LEVEL 2" || jQuery("#externalReferral option:selected").text() === "LEVEL 3" || jQuery("#externalReferral option:selected").text() === "LEVEL 4") {
+		if (!(jQuery("#externalReferral option:selected").text() === "Please select...")){
 			jQuery("#referralComments").attr("readonly", false);
 			jQuery("#referralComments").val("");
 			jQuery("#facility").attr("readonly", false);
@@ -48,7 +48,7 @@
 			<% config.referralReasonsSources.collect { it.toJson() }.each {%>
 				note.referralReasonsOptions.push(${it});
 			<%}%>
-		} else if (jQuery("#externalReferral option:selected").text() === "Please select...") {
+		} else  {
 
 			var myOptions = {
 				'': 'N/A'
