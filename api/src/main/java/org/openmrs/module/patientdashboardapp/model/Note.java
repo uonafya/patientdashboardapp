@@ -10,6 +10,7 @@ import org.openmrs.Obs;
 import org.openmrs.Order;
 import org.openmrs.Patient;
 import org.openmrs.PersonAttribute;
+import org.openmrs.LocationAttribute;
 import org.openmrs.TestOrder;
 import org.openmrs.User;
 import org.openmrs.Visit;
@@ -345,10 +346,19 @@ public class Note {
 
 	private void addFacility(Encounter encounter, Obs obsGroup) {
 		Concept facilityConcept = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PROPERTY_FACILITY));
+		System.out.println("Facility referred to: "+facilityConcept.getUuid());
 		Obs obsFacility = new Obs();
 		obsFacility.setObsGroup(obsGroup);
 		obsFacility.setConcept(facilityConcept);
-		obsFacility.setValueText(this.facility);
+		Location location = Context.getLocationService().getLocation(Integer.parseInt(facility));
+		String mflCode = " ";
+		for (LocationAttribute locationAttribute :
+				location.getAttributes()) {
+			if (locationAttribute.getAttributeType().equals(Context.getLocationService().getLocationAttributeTypeByUuid("8a845a89-6aa5-4111-81d3-0af31c45c002"))){
+				mflCode=locationAttribute.getValueReference();
+			}
+		}
+		obsFacility.setValueText(location.getName()+" "+mflCode);
 		obsFacility.setCreator(encounter.getCreator());
 		obsFacility.setDateCreated(encounter.getDateCreated());
 		obsFacility.setEncounter(encounter);

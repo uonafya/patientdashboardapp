@@ -8,7 +8,7 @@ import org.openmrs.Drug;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
+import static org.openmrs.module.patientdashboardapp.model.Note.PROPERTY_FACILITY;
 
 public class VisitDetail {
 	private static final String FINAL_DIAGNOSIS_CONCEPT_NAME = "160250AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
@@ -118,6 +118,7 @@ public class VisitDetail {
         Concept visitOutcomeConcept = Context.getConceptService().getConceptByUuid("160433AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         Concept internalReferralConcept = Context.getConceptService().getConceptByUuid("cf37b5f8-d2a8-4185-9a0d-cebe996d9b80");
         Concept externalReferralConcept = Context.getConceptService().getConceptByUuid("477a7484-0f99-4026-b37c-261be587a70b");
+        Concept facilityReferredToConcept = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PROPERTY_FACILITY));
 		Concept otherSymptom = Context.getConceptService().getConceptByUuid(OTHER_SYMPTOM);
 
 		StringBuffer symptomList = new StringBuffer();
@@ -166,8 +167,12 @@ public class VisitDetail {
                 internalReferral.append(obs.getValueCoded().getDisplayString()).append(",");
             }
             if(obs.getConcept().equals(externalReferralConcept)){
-                externalReferral.append(obs.getValueCoded().getDisplayString()).append(",");
+                externalReferral.append(obs.getValueCoded().getDisplayString());
             }
+            if (obs.getConcept().equals(facilityReferredToConcept)){
+				externalReferral.append("("+obs.getValueText()+")");
+			}
+
 		}
 		
 		VisitDetail visitDetail = new VisitDetail();
@@ -196,7 +201,7 @@ public class VisitDetail {
             visitDetail.setInternalReferral(internalReferral.substring(0, internalReferral.length() - ",".length()));
         }
         if (externalReferral.length()>0){
-            visitDetail.setExternalReferral(externalReferral.substring(0,externalReferral.length()- ",".length()));
+            visitDetail.setExternalReferral(externalReferral.substring(0));
         }
 		return visitDetail;
 	}

@@ -189,9 +189,10 @@
 		NavigatorController = new KeyboardController();
 		
 		jq('#referralReasons').change(function(){
-			if (jQuery("#referralReasons option:selected").text().trim() === "OTHER REASONS"){
+			if (jQuery("#referralReasons option:selected").text().trim() === "Other"){
 				jq('#specify').show();
 				jq('#specify-lbl').show();
+
 			}
 			else {
 				jq('#specify').hide();
@@ -516,6 +517,8 @@
 						
 			if (note.referralReasons === "") {
 				delete note['referralReasons'];
+			}else {
+				note['facility'] = jq('#facility').val();
 			}
 			
 			jq.ajax({
@@ -526,7 +529,7 @@
 							"diagnoses", "illnessHistory", "referralReasons", "externalReferralComments", "physicalExamination",
 							"inpatientWarads", "investigations", "opdId",
 							"opdLogId", "otherInstructions", "patientId",
-							"procedures", "queueId", "signs", "referredTo",
+							"procedures", "queueId", "signs", "referredTo","facility",
 							"outcome", "admitTo", "followUpDate", "option",
 							"drugs", "comment", "externalReferral", "formulation", "specify", "dosage", "drugUnit", "frequency",
 							"drugName", "numberOfDays", "qualifiers","answer","freeText"
