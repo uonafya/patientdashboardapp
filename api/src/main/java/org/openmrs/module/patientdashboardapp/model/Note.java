@@ -110,7 +110,7 @@ public class Note {
 	private String otherInstructions;
 	private String physicalExamination;
 
-	public static String PROPERTY_FACILITY = "patientdashboard.facilityConcept"; //Name of where patient was referred to
+	public static String PROPERTY_FACILITY = "161562AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"; //Name of where patient was referred to
 
 	public int getPatientId() {
 		return patientId;
@@ -345,8 +345,7 @@ public class Note {
 	}
 
 	private void addFacility(Encounter encounter, Obs obsGroup) {
-		Concept facilityConcept = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PROPERTY_FACILITY));
-		System.out.println("Facility referred to: "+facilityConcept.getUuid());
+		Concept facilityConcept = Context.getConceptService().getConceptByUuid(PROPERTY_FACILITY);
 		Obs obsFacility = new Obs();
 		obsFacility.setObsGroup(obsGroup);
 		obsFacility.setConcept(facilityConcept);
