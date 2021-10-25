@@ -8,7 +8,7 @@ import org.openmrs.Drug;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
+import static org.openmrs.module.patientdashboardapp.model.Note.PROPERTY_FACILITY;
 
 public class VisitDetail {
 	private static final String FINAL_DIAGNOSIS_CONCEPT_NAME = "160250AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
@@ -123,6 +123,7 @@ public class VisitDetail {
         Concept visitOutcomeConcept = Context.getConceptService().getConceptByUuid("160433AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         Concept internalReferralConcept = Context.getConceptService().getConceptByUuid("cf37b5f8-d2a8-4185-9a0d-cebe996d9b80");
         Concept externalReferralConcept = Context.getConceptService().getConceptByUuid("477a7484-0f99-4026-b37c-261be587a70b");
+        Concept facilityReferredToConcept = Context.getConceptService().getConceptByUuid(PROPERTY_FACILITY);
 		Concept otherSymptom = Context.getConceptService().getConceptByUuid(OTHER_SYMPTOM);
 		Concept otherInstructionsConcept = Context.getConceptService().getConceptByUuid("163106AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
@@ -176,8 +177,12 @@ public class VisitDetail {
                 internalReferral.append(obs.getValueCoded().getDisplayString()).append(",");
             }
             if(obs.getConcept().equals(externalReferralConcept)){
-                externalReferral.append(obs.getValueCoded().getDisplayString()).append(",");
+                externalReferral.append(obs.getValueCoded().getDisplayString());
             }
+            if (obs.getConcept().equals(facilityReferredToConcept)){
+				externalReferral.append("("+obs.getValueText()+")");
+			}
+
 		}
 		
 		VisitDetail visitDetail = new VisitDetail();
@@ -193,23 +198,23 @@ public class VisitDetail {
 		if (investigationList.length() > 0) {
 			visitDetail.setInvestigations(investigationList.substring(0, investigationList.length() - ", ".length()));
 		}
-        if (physicalExamination.length()>0){
+        if (physicalExamination.length() > 0){
             visitDetail.setPhysicalExamination(physicalExamination.substring(0,physicalExamination.length()-",".length()));
         }
-        if (history.length()>0){
+        if (history.length() > 0){
             visitDetail.setHistory(history.substring(0,history.length()-",".length()));
         }
-        if (otherInstructions.length()>0){
+        if (otherInstructions.length() > 0){
             visitDetail.setOtherInstructions(otherInstructions.substring(0,otherInstructions.length()-",".length()));
         }
-        if (visitOutcome.length()>0){
+        if (visitOutcome.length() > 0){
             visitDetail.setVisitOutcome(visitOutcome.substring(0,visitOutcome.length()-",".length()));
         }
-        if (internalReferral.length()>0){
+        if (internalReferral.length() > 0){
             visitDetail.setInternalReferral(internalReferral.substring(0, internalReferral.length() - ",".length()));
         }
-        if (externalReferral.length()>0){
-            visitDetail.setExternalReferral(externalReferral.substring(0,externalReferral.length()- ",".length()));
+        if (externalReferral.length() > 0){
+            visitDetail.setExternalReferral(externalReferral.substring(0));
         }
 		return visitDetail;
 	}
