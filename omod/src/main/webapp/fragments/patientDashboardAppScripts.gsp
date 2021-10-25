@@ -457,7 +457,7 @@
 					for (var i in data) {
 						var result = {
 							label: data[i].name,
-							value: data[i].id
+							value: data[i].conceptId
 						};
 						results.push(result);
 					}
@@ -548,7 +548,7 @@
 				})
 				.fail(function(data) {
 					jq().toastmessage('removeToast', savingMessage);
-					jq().toastmessage('showErrorToast', "An error occurred while saving. Please contact your system administrator");
+					jq().toastmessage('showErrorToast', "Patient is not currently checked in for visit send to Registration");
 				});
 		});
 		loadExternalReferralCases();
