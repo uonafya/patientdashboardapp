@@ -11,6 +11,7 @@ import org.openmrs.Order;
 import org.openmrs.Patient;
 import org.openmrs.PersonAttribute;
 import org.openmrs.LocationAttribute;
+import org.openmrs.PersonAttributeType;
 import org.openmrs.TestOrder;
 import org.openmrs.User;
 import org.openmrs.Visit;
@@ -529,17 +530,19 @@ public class Note {
 		if (billableService.getPrice() != null && billableService.getPrice().compareTo(BigDecimal.ZERO) == 0) {
 			opdTestOrder.setBillingStatus(1);
 		}
-		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
-		List<PersonAttribute> pas = hcs.getPersonAttributes(encounter.getPatient().getPatientId());
 
-		for (PersonAttribute pa : pas) {
-			String attributeValue = pa.getValue();
-			if(attributeValue.equals("Non paying")){
-				opdTestOrder.setBillingStatus(1);
-				break;
-			}
+		PersonAttributeType patientCategoryAttributeType = Context.getPersonService().getPersonAttributeTypeByUuid(
+				"09cd268a-f0f5-11ea-99a8-b3467ddbf779");
+		PersonAttributeType payingCategoryAttributeType = Context.getPersonService().getPersonAttributeTypeByUuid(
+				"972a32aa-6159-11eb-bc2d-9785fed39154");
+
+		PersonAttribute patientCategoryAttribute = encounter.getPatient().getAttribute(patientCategoryAttributeType);
+		PersonAttribute payingCategoryAttribute = encounter.getPatient().getAttribute(payingCategoryAttributeType);
+
+		if((patientCategoryAttribute != null && patientCategoryAttribute.getValue().equals("Non paying")) ||
+				(payingCategoryAttribute != null && payingCategoryAttribute.getValue().equals("NHIF patient"))) {
+			opdTestOrder.setBillingStatus(1);
 		}
-
 
 		opdTestOrder = Context.getService(PatientDashboardService.class).saveOrUpdateOpdOrder(opdTestOrder);
 
@@ -630,15 +633,17 @@ public class Note {
 		if (billableService.getPrice() != null && billableService.getPrice().compareTo(BigDecimal.ZERO) == 0) {
 			opdTestOrder.setBillingStatus(1);
 		}
-		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
-		List<PersonAttribute> pas = hcs.getPersonAttributes(encounter.getPatient().getPatientId());
+		PersonAttributeType patientCategoryAttributeType = Context.getPersonService().getPersonAttributeTypeByUuid(
+				"09cd268a-f0f5-11ea-99a8-b3467ddbf779");
+		PersonAttributeType payingCategoryAttributeType = Context.getPersonService().getPersonAttributeTypeByUuid(
+				"972a32aa-6159-11eb-bc2d-9785fed39154");
 
-		for (PersonAttribute pa : pas) {
-			String attributeValue = pa.getValue();
-			if(attributeValue.equals("Non paying")){
-				opdTestOrder.setBillingStatus(1);
-				break;
-			}
+		PersonAttribute patientCategoryAttribute = encounter.getPatient().getAttribute(patientCategoryAttributeType);
+		PersonAttribute payingCategoryAttribute = encounter.getPatient().getAttribute(payingCategoryAttributeType);
+
+		if((patientCategoryAttribute != null && patientCategoryAttribute.getValue().equals("Non paying")) ||
+				(payingCategoryAttribute != null && payingCategoryAttribute.getValue().equals("NHIF patient"))) {
+			opdTestOrder.setBillingStatus(1);
 		}
 
 		Context.getService(PatientDashboardService.class).saveOrUpdateOpdOrder(opdTestOrder);
