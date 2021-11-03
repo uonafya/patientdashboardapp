@@ -37,7 +37,7 @@
 		<calculationVersion>1.0</calculationVersion>
 		<htmlformentryVersion>2.3</htmlformentryVersion>
 		<htmlwidgetsVersion>1.6.6</htmlwidgetsVersion>
-		<hospitalcoreVersion>1.0.0</hospitalcoreVersion>
+		<hospitalcoreVersion>1.0.6-SNAPSHOT</hospitalcoreVersion>
 		<idgenVersion>2.6</idgenVersion>
 		<reportingVersion>0.9.8.1</reportingVersion>
 		<serializationxstreamVersion>0.2.7</serializationxstreamVersion>
