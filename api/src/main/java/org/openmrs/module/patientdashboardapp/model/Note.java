@@ -11,6 +11,7 @@ import org.openmrs.Order;
 import org.openmrs.Patient;
 import org.openmrs.PersonAttribute;
 import org.openmrs.LocationAttribute;
+import org.openmrs.PersonAttributeType;
 import org.openmrs.TestOrder;
 import org.openmrs.User;
 import org.openmrs.Visit;
@@ -110,7 +111,7 @@ public class Note {
 	private String otherInstructions;
 	private String physicalExamination;
 
-	public static String PROPERTY_FACILITY = "patientdashboard.facilityConcept"; //Name of where patient was referred to
+	public static String PROPERTY_FACILITY = "161562AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"; //Name of where patient was referred to
 
 	public int getPatientId() {
 		return patientId;
@@ -270,8 +271,12 @@ public class Note {
 		Obs obsGroup = Context.getService(HospitalCoreService.class).getObsGroupCurrentDate(patient.getPersonId());
 		Encounter encounter = createEncounter(patient);
 		addObs(obsGroup, encounter);
-		encounter.setVisit(getLastVisitForPatient(patient));
-		Context.getEncounterService().saveEncounter(encounter);
+        try {
+            encounter.setVisit(getLastVisitForPatient(patient));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Context.getEncounterService().saveEncounter(encounter);
 		saveNoteDetails(encounter);
 		endEncounter(encounter);
 		return encounter;
@@ -345,8 +350,7 @@ public class Note {
 	}
 
 	private void addFacility(Encounter encounter, Obs obsGroup) {
-		Concept facilityConcept = Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(PROPERTY_FACILITY));
-		System.out.println("Facility referred to: "+facilityConcept.getUuid());
+		Concept facilityConcept = Context.getConceptService().getConceptByUuid(PROPERTY_FACILITY);
 		Obs obsFacility = new Obs();
 		obsFacility.setObsGroup(obsGroup);
 		obsFacility.setConcept(facilityConcept);
@@ -526,17 +530,19 @@ public class Note {
 		if (billableService.getPrice() != null && billableService.getPrice().compareTo(BigDecimal.ZERO) == 0) {
 			opdTestOrder.setBillingStatus(1);
 		}
-		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
-		List<PersonAttribute> pas = hcs.getPersonAttributes(encounter.getPatient().getPatientId());
 
-		for (PersonAttribute pa : pas) {
-			String attributeValue = pa.getValue();
-			if(attributeValue.equals("Non paying")){
-				opdTestOrder.setBillingStatus(1);
-				break;
-			}
+		PersonAttributeType patientCategoryAttributeType = Context.getPersonService().getPersonAttributeTypeByUuid(
+				"09cd268a-f0f5-11ea-99a8-b3467ddbf779");
+		PersonAttributeType payingCategoryAttributeType = Context.getPersonService().getPersonAttributeTypeByUuid(
+				"972a32aa-6159-11eb-bc2d-9785fed39154");
+
+		PersonAttribute patientCategoryAttribute = encounter.getPatient().getAttribute(patientCategoryAttributeType);
+		PersonAttribute payingCategoryAttribute = encounter.getPatient().getAttribute(payingCategoryAttributeType);
+
+		if((patientCategoryAttribute != null && patientCategoryAttribute.getValue().equals("Non paying")) ||
+				(payingCategoryAttribute != null && payingCategoryAttribute.getValue().equals("NHIF patient"))) {
+			opdTestOrder.setBillingStatus(1);
 		}
-
 
 		opdTestOrder = Context.getService(PatientDashboardService.class).saveOrUpdateOpdOrder(opdTestOrder);
 
@@ -627,15 +633,17 @@ public class Note {
 		if (billableService.getPrice() != null && billableService.getPrice().compareTo(BigDecimal.ZERO) == 0) {
 			opdTestOrder.setBillingStatus(1);
 		}
-		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
-		List<PersonAttribute> pas = hcs.getPersonAttributes(encounter.getPatient().getPatientId());
+		PersonAttributeType patientCategoryAttributeType = Context.getPersonService().getPersonAttributeTypeByUuid(
+				"09cd268a-f0f5-11ea-99a8-b3467ddbf779");
+		PersonAttributeType payingCategoryAttributeType = Context.getPersonService().getPersonAttributeTypeByUuid(
+				"972a32aa-6159-11eb-bc2d-9785fed39154");
 
-		for (PersonAttribute pa : pas) {
-			String attributeValue = pa.getValue();
-			if(attributeValue.equals("Non paying")){
-				opdTestOrder.setBillingStatus(1);
-				break;
-			}
+		PersonAttribute patientCategoryAttribute = encounter.getPatient().getAttribute(patientCategoryAttributeType);
+		PersonAttribute payingCategoryAttribute = encounter.getPatient().getAttribute(payingCategoryAttributeType);
+
+		if((patientCategoryAttribute != null && patientCategoryAttribute.getValue().equals("Non paying")) ||
+				(payingCategoryAttribute != null && payingCategoryAttribute.getValue().equals("NHIF patient"))) {
+			opdTestOrder.setBillingStatus(1);
 		}
 
 		Context.getService(PatientDashboardService.class).saveOrUpdateOpdOrder(opdTestOrder);
@@ -653,8 +661,11 @@ public class Note {
 		encounter.addObs(obsProcedure);
 	}
 
-	private Visit getLastVisitForPatient(Patient patient) {
+	private Visit getLastVisitForPatient(Patient patient) throws Exception {
 		VisitService visitService = Context.getVisitService();
+		if (visitService.getActiveVisitsByPatient(patient) == null){
+		    throw new Exception("patient not checked-in");
+        }
 		return visitService.getActiveVisitsByPatient(patient).get(0);
 	}
 }
