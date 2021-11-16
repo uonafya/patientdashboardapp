@@ -564,5 +564,4 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 <script>
 	var prescription = {drug: ko.observable(new Drug())};
 	ko.applyBindings(prescription, jq("#prescription-dialog")[0]);
-	console.log(" The prescription is >>>"+prescription);
 </script>
