@@ -355,14 +355,18 @@ public class Note {
 		obsFacility.setObsGroup(obsGroup);
 		obsFacility.setConcept(facilityConcept);
 		Location location = Context.getLocationService().getLocation(Integer.parseInt(facility));
-		String mflCode = " ";
-		for (LocationAttribute locationAttribute :
-				location.getAttributes()) {
-			if (locationAttribute.getAttributeType().equals(Context.getLocationService().getLocationAttributeTypeByUuid("8a845a89-6aa5-4111-81d3-0af31c45c002"))){
-				mflCode=locationAttribute.getValueReference();
+		if (location !=null){
+			String mflCode = " ";
+			for (LocationAttribute locationAttribute :
+					location.getAttributes()) {
+				if (locationAttribute.getAttributeType().equals(Context.getLocationService().getLocationAttributeTypeByUuid("8a845a89-6aa5-4111-81d3-0af31c45c002"))) {
+					mflCode = locationAttribute.getValueReference();
+				}
 			}
+			obsFacility.setValueText(location.getName() + " " + mflCode);
+		}else if ( facility.length() > 0 ){
+			obsFacility.setValueText(facility); //pass cu val
 		}
-		obsFacility.setValueText(location.getName()+" "+mflCode);
 		obsFacility.setCreator(encounter.getCreator());
 		obsFacility.setDateCreated(encounter.getDateCreated());
 		obsFacility.setEncounter(encounter);

@@ -73,6 +73,7 @@ public class VisitSummaryFragmentController {
 
 	public SimpleObject getVisitSummaryDetails(
 			@RequestParam("encounterId") Integer encounterId,UiUtils ui) {
+
 		Encounter encounter = Context.getEncounterService().getEncounter(encounterId);
 		VisitDetail visitDetail = VisitDetail.create(encounter);
 

@@ -334,7 +334,11 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 						
 						<div class="col4 last">
 							<div class="input-position-class">
+
 								<field>
+
+									<input id="cuName" type="text" />
+
 									<% fields.each { %>
 									${ ui.includeFragment("kenyaui", "widget/labeledField", it) }
 									<% } %>

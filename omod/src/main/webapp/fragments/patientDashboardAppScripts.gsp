@@ -33,18 +33,34 @@
 		return new Outcome(outcomeOption);
 	});
 
+	jQuery("#facility").hide();
+	jQuery("#cuName").hide();
+
+
 	function loadExternalReferralCases() {
 		jq('#referralReasons').empty();
 		note.referralReasonsOptions.removeAll();
 
 		if (!(jQuery("#externalReferral option:selected").text() === "Please select...")){
-			jQuery("#referralComments").attr("readonly", false);
-			jQuery("#referralComments").val("");
-			jQuery("#facility").attr("readonly", false);
-			jQuery("#facility").val("");
-			jQuery("#specify").attr("readonly", false);
-			jQuery("#specify").val("");
 
+			if(jQuery("#externalReferral option:selected").text() === "Community unit") {
+
+				jQuery("#referralComments").attr("readonly", false);
+				jQuery("#referralComments").val("");
+				jQuery("#facility").hide()
+				jQuery("#cuName").show()
+				jQuery("#specify").attr("readonly", false);
+				jQuery("#specify").val("");
+			}else {
+				jQuery("#referralComments").attr("readonly", false);
+				jQuery("#referralComments").val("");
+				jQuery("#facility").attr("readonly", false);
+				jQuery("#facility").show();
+				jQuery("#facility").val("");
+				jQuery("#cuName").hide();
+				jQuery("#specify").attr("readonly", false);
+				jQuery("#specify").val("");
+			}
 			<% config.referralReasonsSources.collect { it.toJson() }.each {%>
 				note.referralReasonsOptions.push(${it});
 			<%}%>
@@ -63,8 +79,8 @@
 			jQuery("#referralComments").val("N/A");
 			jQuery("#referralComments").attr("readonly", true);
 
-			jQuery("#facility").val("N/A");
-			jQuery("#facility").attr("readonly", true);
+			jQuery("#facility").hide();
+			jQuery("#cuName").hide();
 
 			jQuery("#specify").val("N/A");
 			jQuery("#specify").attr("readonly", true);
@@ -224,9 +240,7 @@
 				jq('#refTitle').text('External Referral');
 				jq('#refTitle').show();
 				jq('#facTitle').show();
-				
-				jq('#facility').show()
-				
+
 				jq('#refReason1').show();
 				jq('#refReason2').show();
 				jq('#refReason3').show();
@@ -518,7 +532,11 @@
 			if (note.referralReasons === "") {
 				delete note['referralReasons'];
 			}else {
-				note['facility'] = jq('#facility').val();
+				if(jq('#facility').val() ==="" ) {
+					note['facility'] = jq('#cuName').val();
+				}else if(!(jq('#cuName').val() === null )){
+					note['facility'] = jq('#facility').val();
+				}
 			}
 			
 			jq.ajax({
