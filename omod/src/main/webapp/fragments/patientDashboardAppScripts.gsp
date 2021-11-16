@@ -37,7 +37,7 @@
 		jq('#referralReasons').empty();
 		note.referralReasonsOptions.removeAll();
 
-		if (jQuery("#externalReferral option:selected").text() === "LEVEL 2" || jQuery("#externalReferral option:selected").text() === "LEVEL 3" || jQuery("#externalReferral option:selected").text() === "LEVEL 4") {
+		if (!(jQuery("#externalReferral option:selected").text() === "Please select...")){
 			jQuery("#referralComments").attr("readonly", false);
 			jQuery("#referralComments").val("");
 			jQuery("#facility").attr("readonly", false);
@@ -48,7 +48,7 @@
 			<% config.referralReasonsSources.collect { it.toJson() }.each {%>
 				note.referralReasonsOptions.push(${it});
 			<%}%>
-		} else if (jQuery("#externalReferral option:selected").text() === "Please select...") {
+		} else  {
 
 			var myOptions = {
 				'': 'N/A'
@@ -189,9 +189,10 @@
 		NavigatorController = new KeyboardController();
 		
 		jq('#referralReasons').change(function(){
-			if (jQuery("#referralReasons option:selected").text().trim() === "OTHER REASONS"){
+			if (jQuery("#referralReasons option:selected").text().trim() === "Other"){
 				jq('#specify').show();
 				jq('#specify-lbl').show();
+
 			}
 			else {
 				jq('#specify').hide();
@@ -456,7 +457,7 @@
 					for (var i in data) {
 						var result = {
 							label: data[i].name,
-							value: data[i].id
+							value: data[i].conceptId
 						};
 						results.push(result);
 					}
@@ -516,6 +517,8 @@
 						
 			if (note.referralReasons === "") {
 				delete note['referralReasons'];
+			}else {
+				note['facility'] = jq('#facility').val();
 			}
 			
 			jq.ajax({
@@ -526,7 +529,7 @@
 							"diagnoses", "illnessHistory", "referralReasons", "externalReferralComments", "physicalExamination",
 							"inpatientWarads", "investigations", "opdId",
 							"opdLogId", "otherInstructions", "patientId",
-							"procedures", "queueId", "signs", "referredTo",
+							"procedures", "queueId", "signs", "referredTo","facility",
 							"outcome", "admitTo", "followUpDate", "option",
 							"drugs", "comment", "externalReferral", "formulation", "specify", "dosage", "drugUnit", "frequency",
 							"drugName", "numberOfDays", "qualifiers","answer","freeText"
@@ -545,7 +548,7 @@
 				})
 				.fail(function(data) {
 					jq().toastmessage('removeToast', savingMessage);
-					jq().toastmessage('showErrorToast', "An error occurred while saving. Please contact your system administrator");
+					jq().toastmessage('showErrorToast', "Patient is not currently checked in for visit send to Registration");
 				});
 		});
 		loadExternalReferralCases();

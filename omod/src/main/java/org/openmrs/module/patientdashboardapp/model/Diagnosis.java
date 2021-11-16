@@ -50,7 +50,7 @@ public class Diagnosis {
     public void addObs(Encounter encounter, Obs obsGroup) {
         List<Diagnosis> previousProvisionalDiagnoses = getPreviousDiagnoses(encounter.getPatient().getPatientId());
         if (isProvisional() && !previousProvisionalDiagnoses.contains(this)) {
-            Concept diagnosisConcept = Context.getConceptService().getConceptByUuid("160250AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            Concept diagnosisConcept = Context.getConceptService().getConceptByUuid("160249AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             addObsToEncounter(encounter, obsGroup, diagnosisConcept);
         }
 
