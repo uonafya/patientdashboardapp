@@ -25,6 +25,7 @@ public class Outcome {
     static final int DIED_OPTION = 3;
     static final int REVIEWED_OPTION = 4;
     static final int CURED_OPTION = 5;
+    static final int REFERRAL_OPTION =6;
     private static Logger logger = LoggerFactory.getLogger(Outcome.class);
     private Option option;
     private String followUpDate;
@@ -60,6 +61,7 @@ public class Outcome {
         options.add(new Option(CURED_OPTION, null, "Discharged"));
         options.add(new Option(FOLLOW_UP_OPTION, null, "Next Appointment Date"));
         options.add(new Option(ADMIT_OPTION, null, "Admit"));
+        options.add(new Option(REFERRAL_OPTION,null,"Referral"));
         options.add(new Option(DIED_OPTION, null, "Died"));
         return options;
     }
