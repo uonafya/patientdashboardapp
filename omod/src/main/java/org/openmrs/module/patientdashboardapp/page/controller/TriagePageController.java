@@ -2,19 +2,11 @@ package org.openmrs.module.patientdashboardapp.page.controller;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.openmrs.Concept;
-import org.openmrs.ConceptAnswer;
-import org.openmrs.ConceptNumeric;
-import org.openmrs.Encounter;
-import org.openmrs.EncounterType;
-import org.openmrs.Location;
-import org.openmrs.Patient;
-import org.openmrs.PersonAttributeType;
-import org.openmrs.User;
-import org.openmrs.Visit;
+import org.openmrs.*;
 import org.openmrs.api.VisitService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.appui.UiSessionContext;
+import org.openmrs.module.ehrconfigs.utils.EhrConfigsUtils;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
@@ -41,8 +33,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.openmrs.Obs;
 
 import org.openmrs.module.kenyaemr.api.KenyaEmrService;
 
@@ -178,7 +168,7 @@ public class TriagePageController {
 			encounter.setEncounterDatetime(date);
 			encounter.setEncounterType(encounterType);
 			encounter.setLocation(location);
-			encounter.setProvider(user);
+			encounter.setProvider(EhrConfigsUtils.getDefaultEncounterRole(),EhrConfigsUtils.getProvider(user.getPerson()));
 			Context.getEncounterService().saveEncounter(encounter);	
 
 			if(triagePatientData.getTemperature()!=null){addObs(encounter,TEMPERATURE,triagePatientData.getTemperature().doubleValue());};
@@ -222,7 +212,7 @@ public class TriagePageController {
 			encounter.setEncounterDatetime(date);
 			encounter.setEncounterType(encounterType);
 			encounter.setLocation(location);
-			encounter.setProvider(user);
+			encounter.setProvider(EhrConfigsUtils.getDefaultEncounterRole(),EhrConfigsUtils.getProvider(user.getPerson()));
 			encounter.setVisit(getLastVisitForPatient(patient));
 			Context.getEncounterService().saveEncounter(encounter);
 			opdPatientQueue.setTriageDataId(triagePatientData);
