@@ -32,12 +32,12 @@
 	</modules>
 
 	<properties>
-		<openMRSVersion>1.12.0</openMRSVersion>
+		<openMRSVersion>2.3.3</openMRSVersion>
 		<appframeworkVersion>2.9</appframeworkVersion>
 		<calculationVersion>1.0</calculationVersion>
 		<htmlformentryVersion>2.3</htmlformentryVersion>
 		<htmlwidgetsVersion>1.6.6</htmlwidgetsVersion>
-		<hospitalcoreVersion>1.0.6-SNAPSHOT</hospitalcoreVersion>
+		<hospitalcoreVersion>1.0.7-SNAPSHOT</hospitalcoreVersion>
 		<idgenVersion>2.6</idgenVersion>
 		<reportingVersion>0.9.8.1</reportingVersion>
 		<serializationxstreamVersion>0.2.7</serializationxstreamVersion>
@@ -48,9 +48,9 @@
 		<appuiVersion>1.8.0</appuiVersion>
 		<kenyaemrVersion>17.0.3</kenyaemrVersion>
 		<jodaTimeVersion>2.9.1</jodaTimeVersion>
-		<ehrconfigisVersion>1.0.0</ehrconfigisVersion>
+		<ehrconfigisVersion>1.0.10-SNAPSHOT</ehrconfigisVersion>
 		<metadatadeployVersion>1.3</metadatadeployVersion>
-		<ehrlaboratoryVersion>1.0.1</ehrlaboratoryVersion>
+		<ehrlaboratoryVersion>1.0.2-SNAPSHOT</ehrlaboratoryVersion>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
