@@ -975,7 +975,7 @@ h2 span{
                                         <div class=" onerow ">
                                            <table>
                                                <tr>
-                                                   <td><input type="radio" name="pregnancyYes" id="pregnancyYes"/>YES</td>
+                                                   <td><input type="radio" name="triagePatientData.pregnancyStatus" id="pregnancyYes"/>YES</td>
                                                    <td><input type="radio" name="pregnancyNo" id="pregnancyNo"/> NO</td>
                                                </tr>
                                            </table>
@@ -988,7 +988,7 @@ h2 span{
                             </div>
                             <div>
                                 <p>
-                                    <input type="textarea" id="travelHistory" rows="3" cols="40"/>
+                                    <input type="textarea" name="triagePatientData.travelHistory" id="travelHistory" rows="3" cols="40"/>
                                 </p>
                             </div>
 
