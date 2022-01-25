@@ -4,7 +4,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
-import org.openmrs.ConceptNumeric;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
@@ -34,7 +33,6 @@ import org.openmrs.ui.framework.page.PageRequest;
 import org.openmrs.ui.framework.session.Session;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -57,6 +55,9 @@ public class TriagePageController {
 	private final String PULSE ="5087";
 	private final String BLOODOXYGEN ="5092";
 	private final String MUAC ="1343";
+	private final String TRAVEL_HISTORY ="162605";
+	private final String PREGNANCY_STATUS ="5272";
+
 
 
 	public String get(
@@ -189,8 +190,12 @@ public class TriagePageController {
 			if(triagePatientData.getWeight()!=null){addObs(encounter,WEIGHT,triagePatientData.getWeight().doubleValue());}
 			if(triagePatientData.getPulsRate()!=null){addObs(encounter,PULSE,triagePatientData.getPulsRate().doubleValue());}	
 			if(triagePatientData.getOxygenSaturation()!=null){addObs(encounter,BLOODOXYGEN,triagePatientData.getOxygenSaturation().doubleValue());}	
-			if(triagePatientData.getMua()!=null){addObs(encounter,MUAC,triagePatientData.getMua().doubleValue());	}
-			
+			if(triagePatientData.getMua()!=null){addObs(encounter,MUAC,triagePatientData.getMua().doubleValue()); }
+
+			if(triagePatientData.getTravelHistory()!=null){addTextObsVal(encounter,TRAVEL_HISTORY,triagePatientData.getTravelHistory()); }
+			if (patient.getGender().contains("F")){
+				if (triagePatientData.getPregnancyStatus() != null) { addObsCodedVal(encounter, PREGNANCY_STATUS, triagePatientData.getPregnancyStatus()); }
+			}
 
 			TriagePatientQueueLog triagePatientLog = logTriagePatient(
 					queueService, queue, encounter);
@@ -237,7 +242,13 @@ public class TriagePageController {
 			if(triagePatientData.getPulsRate()!=null){addObs(encounter,PULSE,triagePatientData.getPulsRate().doubleValue());}	
 			if(triagePatientData.getOxygenSaturation()!=null){addObs(encounter,BLOODOXYGEN, triagePatientData.getOxygenSaturation());}
 			if(triagePatientData.getMua()!=null){addObs(encounter,MUAC,triagePatientData.getMua().doubleValue());	}
-		
+
+			if(triagePatientData.getTravelHistory()!=null){addTextObsVal(encounter,TRAVEL_HISTORY,triagePatientData.getTravelHistory()); }
+
+			if (patient.getGender().contains("F")){
+				if (triagePatientData.getPregnancyStatus() != null) { addObsCodedVal(encounter, PREGNANCY_STATUS, triagePatientData.getPregnancyStatus()); }
+			}
+
 		}
 		
 		if (StringUtils.isBlank(returnUrl)) {
@@ -248,17 +259,32 @@ public class TriagePageController {
 		return "redirect:" + returnUrl;
 	}
 	public void addObs(Encounter encounter, String conceptGot, Double valueVital) {
-        Obs obsTriage = new Obs();
-		Location location = Context.getService(KenyaEmrService.class).getDefaultLocation();
-		obsTriage.setObsDatetime(new Date());
+        Obs obsTriage = createObs(encounter,conceptGot);
 		obsTriage.setValueNumeric(valueVital);
-		obsTriage.setConcept(Context.getConceptService().getConcept(conceptGot));
-        obsTriage.setCreator(encounter.getCreator());
-		obsTriage.setLocation(encounter.getLocation());
-        obsTriage.setDateCreated(encounter.getDateCreated());
-        obsTriage.setPerson(encounter.getPatient());
         encounter.addObs(obsTriage);
     }
+    public void addTextObsVal(Encounter encounter, String conceptGot, String valueText){
+		Obs obsTriage = createObs(encounter, conceptGot);
+		obsTriage.setValueText(valueText);
+		encounter.addObs(obsTriage);
+	}
+	public void addObsCodedVal(Encounter encounter, String conceptGot, String codedAnswerConcept){
+		Obs obsTriage = createObs(encounter, conceptGot);
+		obsTriage.setValueCoded(Context.getConceptService().getConcept(codedAnswerConcept));
+		encounter.addObs(obsTriage);
+	}
+    public Obs createObs(Encounter encounter, String conceptGot){
+		Obs obsTriage = new Obs();
+		Location location = Context.getService(KenyaEmrService.class).getDefaultLocation();
+		obsTriage.setObsDatetime(new Date());
+		obsTriage.setConcept(Context.getConceptService().getConcept(conceptGot));
+		obsTriage.setCreator(encounter.getCreator());
+		obsTriage.setLocation(encounter.getLocation());
+		obsTriage.setDateCreated(encounter.getDateCreated());
+		obsTriage.setPerson(encounter.getPatient());
+
+		return obsTriage;
+	}
 
 	private TriagePatientQueueLog logTriagePatient(PatientQueueService queueService,
 			TriagePatientQueue queue, Encounter encounter) {

@@ -36,6 +36,10 @@
         jq('#othname').html(strReplace('${patient.names.givenName}')+' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <em>other names</em>');
         jq('#agename').html('${patient.age} years ('+ moment('${patient.birthdate}').format('DD,MMM YYYY') +')');
 
+
+        jq("#travelHistoryNo").prop('checked', true);
+        jq("#travelHistory").hide();
+
         function strReplace(word) {
             var res = word.replace("[", "");
             res=res.replace("]","");
@@ -416,6 +420,31 @@
             return true;
         }
     }
+
+    VALIDATORS = {
+            historyYes: function () {
+                if (jq("#travelHistoryYes").is(":checked")) {
+                    jq("#travelHistoryNo").prop('checked', false);
+                    jq("#travelHistory").show();
+
+                    if (jq("#travelHistory").val() === 0 || jq("#travelHistory").val() === "" || jq("#travelHistory").val() == null) {
+                        jq('#travelHistory').addClass("red-border");
+                    } else {
+                        jq('#travelHistory').removeClass("red-border");
+                    }
+                } else {
+                    jq("#travelHistoryNo").prop('checked', true);
+                    jq("#travelHistory").hide();
+                }
+            },
+            historyNo: function () {
+                if (jq("#travelHistoryNo").is(":checked")) {
+                    jq("#travelHistoryYes").prop('checked', false);
+                    jq("#travelHistory").hide();
+                }
+            }
+        };
+
     function injectRequired(){
         var elements =['input[id="temperature-field"]','select[id="room-to-visit"]'];
         for(var i in elements){
@@ -839,7 +868,6 @@ h2 span{
                                 </div>
                             </div>
                             <div class="onerow">
-                                <h2>&nbsp;</h2>
                                 <h2 style="border-bottom: 1px solid #008394">Body Mass Index</h2>
 
                                 <div class="col4">
@@ -882,7 +910,7 @@ h2 span{
                                 </div>
                             </div>
 
-                            <div class="onerow" style="padding-top: 10px;">
+                            <div class="onerow" style="padding-top: 5px;">
                                 <h2 style="border-bottom: 1px solid #008394">Circumferences</h2>
 
                                 <div class="col4">
@@ -923,6 +951,47 @@ h2 span{
                                     </p>
                                 </div>
                             </div>
+
+                            <div class="onerow" style="padding-top: 5px;">
+                                <h2 style="border-bottom: 1px solid #008394">Other recording</h2>
+                                <div class="col4">
+                                    <p>
+                                        <label for="travelHistoryYes"> Travel History </label>
+                                        <div class=" onerow ">
+                                            <table>
+                                                <tr>
+                                                    <td><input type="radio" name="travelHistoryYes" onclick= VALIDATORS.historyYes()  id="travelHistoryYes"/>YES</td>
+                                                    <td><input type="radio" name="travelHistoryNo" onclick=VALIDATORS.historyNo()  id="travelHistoryNo"/> NO</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </p>
+                                </div>
+
+                                <% if (patient.gender == "F") { %>
+                                    <div class="col4">
+                                        <p>
+                                        <label for="pregnancyYes"> Currently pregnant? </label>
+                                        <div class=" onerow ">
+                                           <table>
+                                               <tr>
+                                                   <td><input type="radio" name="pregnancyYes" id="pregnancyYes"/>YES</td>
+                                                   <td><input type="radio" name="pregnancyNo" id="pregnancyNo"/> NO</td>
+                                               </tr>
+                                           </table>
+
+                                        </div>
+                                        </p>
+                                    </div>
+                                <%}%>
+
+                            </div>
+                            <div>
+                                <p>
+                                    <input type="textarea" id="travelHistory" rows="3" cols="40"/>
+                                </p>
+                            </div>
+
                             <% if (!inOpdQueue) {%>
                             <div class="onerow">
                                 <h2>Room to Visit<span>*</span></h2>
