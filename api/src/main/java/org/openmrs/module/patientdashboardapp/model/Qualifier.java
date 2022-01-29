@@ -1,16 +1,17 @@
 package org.openmrs.module.patientdashboardapp.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.Answer;
+import org.openmrs.module.hospitalcore.model.Option;
 import org.openmrs.module.hospitalcore.model.Question;
 import org.openmrs.module.hospitalcore.model.Symptom;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Qualifier {
 

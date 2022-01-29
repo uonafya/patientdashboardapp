@@ -1,9 +1,5 @@
 package org.openmrs.module.patientdashboardapp.model;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
@@ -12,7 +8,10 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.Symptom;
-import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class Sign {
 

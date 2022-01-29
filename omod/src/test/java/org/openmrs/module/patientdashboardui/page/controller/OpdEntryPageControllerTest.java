@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts.mock.MockHttpServletResponse;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openmrs.ui.framework.BasicUiUtils;
 import org.openmrs.ui.framework.UiUtils;
@@ -14,6 +15,7 @@ import org.openmrs.ui.framework.session.Session;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 
+@Ignore
 public class OpdEntryPageControllerTest {
 	
 	private static final String TEST_CONTEXT_PATH = "openmrs";

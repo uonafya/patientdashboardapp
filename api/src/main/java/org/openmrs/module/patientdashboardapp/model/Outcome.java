@@ -9,6 +9,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmission;
+import org.openmrs.module.hospitalcore.model.Option;
 import org.openmrs.module.hospitalcore.model.PatientSearch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
