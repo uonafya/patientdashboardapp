@@ -276,12 +276,13 @@ public class Note {
 		addObs(obsGroup, encounter);
         try {
             encounter.setVisit(getLastVisitForPatient(patient));
+			Context.getEncounterService().saveEncounter(encounter);
+			saveNoteDetails(encounter);
+			endEncounter(encounter);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Context.getEncounterService().saveEncounter(encounter);
-		saveNoteDetails(encounter);
-		endEncounter(encounter);
+
 		return encounter;
 	}
 
@@ -300,6 +301,7 @@ public class Note {
 			encounter.setPatient(patient);
 			encounter.setCreator(user);
 			encounter.setEncounterDatetime(new Date());
+			encounter.setProvider(EhrConfigsUtils.getDefaultEncounterRole(), EhrConfigsUtils.getProvider(user.getPerson()));
 			encounter.setEncounterType(encounterType);
 			encounter.setLocation(kenyaEmrService.getDefaultLocation());
 			encounter.setDateCreated(new Date());
@@ -485,7 +487,7 @@ public class Note {
 			Set<Obs> allPhysicalExaminationEncounterObs = physicalExaminationEncounter.getAllObs();
 
 			for (Obs ob : allPhysicalExaminationEncounterObs) {
-				if (ob.getConcept() == conceptPhysicalExamination) {
+				if (ob.getConcept().equals(conceptPhysicalExamination)) {
 					previousPhysicalExamination = ob.getValueText();
 				}
 			}
@@ -504,7 +506,7 @@ public class Note {
             Set<Obs> allPreviousIllnessHistoryObs = previousIllnessHistoryEncounter.getAllObs();
 
             for (Obs obs :allPreviousIllnessHistoryObs){
-                if (obs.getConcept() == conceptPreviousIllnessHistory ){
+                if (obs.getConcept().equals(conceptPreviousIllnessHistory )){
                     previousIllnessHistory = obs.getValueText();
                 }
             }
