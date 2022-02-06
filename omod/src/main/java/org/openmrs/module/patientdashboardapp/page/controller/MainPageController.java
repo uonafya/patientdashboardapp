@@ -35,8 +35,6 @@ public class MainPageController {
                     @RequestParam(value = "queueId", required = false) Integer queueId,
                     @RequestParam(value = "opdLogId", required = false) Integer opdLogId,
                     @RequestParam(value = "visitStatus", required = false) String visitStatus) {
-        pageRequest.getSession().setAttribute(ReferenceApplicationWebConstants.SESSION_ATTRIBUTE_REDIRECT_URL,ui.thisUrl());
-        sessionContext.requireAuthentication();
         Patient patient = Context.getPatientService().getPatient(patientId);
         HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
         PatientQueueService patientQueueService = Context.getService(PatientQueueService.class);
