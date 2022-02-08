@@ -97,7 +97,6 @@ public class Sign {
 			obsSymptom.setEncounter(encounter);
 			obsSymptom.setPerson(encounter.getPatient());
 			encounter.addObs(obsSymptom);
-			System.out.println("Return the value of this object>>"+this.id);
 			if (this.id == NON_CODED_SYMPTOM_5693) {
 				Obs nonCodedSymptom = new Obs();
 				nonCodedSymptom.setConcept(Context.getConceptService().getConcept(OTHER_NON_CODED_5622));
@@ -117,8 +116,8 @@ public class Sign {
 			previousSigns = getPreviousSigns(encounter.getPatient().getPatientId());
 		}
 		Symptom savedSymptom = null;
-		assert previousSigns != null;
-		if (!previousSigns.contains(this)) {
+
+		if (previousSigns != null && !previousSigns.contains(this)) {
 
 			Symptom symptom = new Symptom();
 			symptom.setEncounter(encounter);

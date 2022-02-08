@@ -275,7 +275,8 @@ public class Note {
 		Encounter encounter = createEncounter(patient);
 		addObs(obsGroup, encounter);
         try {
-            encounter.setVisit(getLastVisitForPatient(patient));
+			encounter.setVisit(getLastVisitForPatient(patient));
+
 			Context.getEncounterService().saveEncounter(encounter);
 			saveNoteDetails(encounter);
 			endEncounter(encounter);
@@ -326,7 +327,7 @@ public class Note {
 			addPhysicalExamination(encounter,obsGroup);
 		}
 		
-		for (Sign sign : this.signs) {
+		/*for (Sign sign : this.signs) {
 			sign.addObs(encounter, obsGroup);
 		}
 		for (Procedure procedure : this.procedures) {
@@ -351,7 +352,7 @@ public class Note {
 
 		if (this.outcome != null) {
 			this.outcome.addObs(encounter, obsGroup);
-		}
+		}*/
 	}
 
 	private void addFacility(Encounter encounter, Obs obsGroup) {
@@ -666,11 +667,15 @@ public class Note {
 		encounter.addObs(obsProcedure);
 	}
 
-	private Visit getLastVisitForPatient(Patient patient) throws Exception {
+	private Visit getLastVisitForPatient(Patient patient) {
 		VisitService visitService = Context.getVisitService();
 		if (visitService.getActiveVisitsByPatient(patient) == null){
-		    throw new Exception("patient not checked-in");
-        }
+			try {
+				throw new Exception("patient not checked-in");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		return visitService.getActiveVisitsByPatient(patient).get(0);
 	}
 }
