@@ -334,11 +334,11 @@ public class Note {
 			addObsForProcedures(encounter,obsGroup, procedure);
 		}
 
-		/*for(Investigation investigation : this.investigations) {
+		for(Investigation investigation : this.investigations) {
 			investigation.addObs(encounter,obsGroup);
 		}
 		
-		for (Diagnosis diagnosis : this.diagnoses) {
+		/*for (Diagnosis diagnosis : this.diagnoses) {
 			diagnosis.addObs(encounter, obsGroup);
 		}
 		
