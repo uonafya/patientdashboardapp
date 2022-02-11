@@ -327,10 +327,10 @@ public class Note {
 			addPhysicalExamination(encounter,obsGroup);
 		}
 		
-		/*for (Sign sign : this.signs) {
+		for (Sign sign : this.signs) {
 			sign.addObs(encounter, obsGroup);
 		}
-		for (Procedure procedure : this.procedures) {
+		/*for (Procedure procedure : this.procedures) {
 			addObsForProcedures(encounter,obsGroup, procedure);
 		}
 

@@ -88,6 +88,7 @@ public class Sign {
 			previousSigns = getPreviousSigns(encounter.getPatient().getPatientId());
 		}
 		if (!previousSigns.contains(this)) {
+			System.out.println("The concept is new so we will add it");
 			Obs obsSymptom = new Obs();
 			obsSymptom.setConcept(Context.getConceptService().getConceptByUuid("c91a7e0e-4622-4eeb-9edc-00f8ececf428"));
 			obsSymptom.setValueCoded(getSymtomConcept());
@@ -98,6 +99,7 @@ public class Sign {
 			obsSymptom.setPerson(encounter.getPatient());
 			encounter.addObs(obsSymptom);
 			if (this.id == NON_CODED_SYMPTOM_5693) {
+				System.out.println("The concept is new so we will add it non coded");
 				Obs nonCodedSymptom = new Obs();
 				nonCodedSymptom.setConcept(Context.getConceptService().getConcept(OTHER_NON_CODED_5622));
 				nonCodedSymptom.setObsGroup(obsSymptom);
