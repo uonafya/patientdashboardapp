@@ -338,11 +338,11 @@ public class Note {
 			investigation.addObs(encounter,obsGroup);
 		}
 		
-		/*for (Diagnosis diagnosis : this.diagnoses) {
+		for (Diagnosis diagnosis : this.diagnoses) {
 			diagnosis.addObs(encounter, obsGroup);
 		}
 		
-		if (referredTo != null) {
+		/*if (referredTo != null) {
 			Referral.addReferralObs(referredTo, opdId, encounter, referralComments, obsGroup);
 		}
 
