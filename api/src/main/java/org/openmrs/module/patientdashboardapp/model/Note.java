@@ -342,7 +342,7 @@ public class Note {
 			diagnosis.addObs(encounter, obsGroup);
 		}
 		
-		/*if (referredTo != null) {
+		if (referredTo != null) {
 			Referral.addReferralObs(referredTo, opdId, encounter, referralComments, obsGroup);
 		}
 
@@ -350,7 +350,7 @@ public class Note {
 			ReferralReasons.addReferralReasonsObs(referralReasons, specify, encounter, obsGroup);
 		}
 
-		if (this.outcome != null) {
+		/*if (this.outcome != null) {
 			this.outcome.addObs(encounter, obsGroup);
 		}*/
 	}
