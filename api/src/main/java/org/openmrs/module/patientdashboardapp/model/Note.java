@@ -350,9 +350,9 @@ public class Note {
 			ReferralReasons.addReferralReasonsObs(referralReasons, specify, encounter, obsGroup);
 		}
 
-		/*if (this.outcome != null) {
+		if (this.outcome != null) {
 			this.outcome.addObs(encounter, obsGroup);
-		}*/
+		}
 	}
 
 	private void addFacility(Encounter encounter, Obs obsGroup) {
