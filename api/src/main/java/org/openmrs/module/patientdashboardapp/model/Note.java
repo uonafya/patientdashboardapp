@@ -44,6 +44,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -113,6 +114,16 @@ public class Note {
     private String specify;
 	private String otherInstructions;
 	private String physicalExamination;
+
+	public String getOnSetDate() {
+		return onSetDate;
+	}
+
+	public void setOnSetDate(String onSetDate) {
+		this.onSetDate = onSetDate;
+	}
+
+	private String onSetDate;
 
 	public static String PROPERTY_FACILITY = "161562AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"; //Name of where patient was referred to
 
@@ -311,6 +322,9 @@ public class Note {
 	}
 
 	private void addObs(Obs obsGroup, Encounter encounter) {
+		if (StringUtils.isNotBlank(this.onSetDate)) {
+			addOnSetDate(encounter, obsGroup);
+		}
 		if (StringUtils.isNotBlank(this.illnessHistory)) {
 			addIllnessHistory(encounter, obsGroup);
 		}
@@ -385,6 +399,22 @@ public class Note {
 		obsIllnessHistory.setDateCreated(encounter.getDateCreated());
 		obsIllnessHistory.setEncounter(encounter);
 		encounter.addObs(obsIllnessHistory);
+	}
+
+	private void addOnSetDate(Encounter encounter, Obs obsGroup) {
+		Concept onSetConcepts = Context.getConceptService().getConceptByUuid("164428AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		Obs obsOnSetDate = new Obs();
+		obsOnSetDate.setObsGroup(obsGroup);
+		obsOnSetDate.setConcept(onSetConcepts);
+		try {
+		obsOnSetDate.setValueDatetime(Context.getDateFormat().parse(this.onSetDate));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		obsOnSetDate.setCreator(encounter.getCreator());
+		obsOnSetDate.setDateCreated(encounter.getDateCreated());
+		obsOnSetDate.setEncounter(encounter);
+		encounter.addObs(obsOnSetDate);
 	}
 
 
