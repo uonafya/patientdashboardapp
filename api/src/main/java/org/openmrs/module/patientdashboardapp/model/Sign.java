@@ -1,9 +1,5 @@
 package org.openmrs.module.patientdashboardapp.model;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
@@ -12,7 +8,10 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.Symptom;
-import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class Sign {
 
@@ -88,8 +87,10 @@ public class Sign {
 		if (previousSigns == null) {
 			previousSigns = getPreviousSigns(encounter.getPatient().getPatientId());
 		}
+		Obs obsSymptom;
+		Obs nonCodedSymptom;
 		if (!previousSigns.contains(this)) {
-			Obs obsSymptom = new Obs();
+			obsSymptom = new Obs();
 			obsSymptom.setConcept(Context.getConceptService().getConceptByUuid("c91a7e0e-4622-4eeb-9edc-00f8ececf428"));
 			obsSymptom.setValueCoded(getSymtomConcept());
 			obsSymptom.setObsGroup(obsGroup);
@@ -98,10 +99,9 @@ public class Sign {
 			obsSymptom.setEncounter(encounter);
 			obsSymptom.setPerson(encounter.getPatient());
 			encounter.addObs(obsSymptom);
-			System.out.println("Return the value of this object>>"+this.id);
 			if (this.id == NON_CODED_SYMPTOM_5693) {
-				Obs nonCodedSymptom = new Obs();
-				nonCodedSymptom.setConcept(Context.getConceptService().getConcept(OTHER_NON_CODED_5622));
+				nonCodedSymptom = new Obs();
+				nonCodedSymptom.setConcept(Context.getConceptService().getConcept(NON_CODED_SYMPTOM_5693));
 				nonCodedSymptom.setObsGroup(obsSymptom);
 				nonCodedSymptom.setValueText(this.label);
 				nonCodedSymptom.setCreator(encounter.getCreator());
@@ -118,8 +118,8 @@ public class Sign {
 			previousSigns = getPreviousSigns(encounter.getPatient().getPatientId());
 		}
 		Symptom savedSymptom = null;
-		assert previousSigns != null;
-		if (!previousSigns.contains(this)) {
+
+		if (previousSigns != null && !previousSigns.contains(this)) {
 
 			Symptom symptom = new Symptom();
 			symptom.setEncounter(encounter);

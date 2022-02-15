@@ -161,64 +161,68 @@ jq(function(){
 			
 			<div class="info-body" >
                 <label><span class="status active"></span>Temperature:</label>
-                <span>${triage?.temperature?:"Not Captured"}</span>
+                <% if (triage?.temperature > 38) {%>
+                <span style="background-color: red;" >${triage?.temperature?:"-"}</span>
+                <%} else {%>
+                <span>${triage?.temperature?:"-"}</span>
+                <%}%>
                 <br>
 
                 <label><span class="status active"></span>Blood Pressure:</label>
-                <span>${ triage?.systolic && triage?.daistolic ? triage?.systolic + "/" + triage?.daistolic : "Not Captured" }</span>
+                <span>${ triage?.systolic && triage?.daistolic ? triage?.systolic + "/" + triage?.daistolic : "-" }</span>
                 <br>
 
                 <label><span class="status active"></span>Respiratory Rate:</label>
-                <span>${triage?.respiratoryRate?:"Not Captured"}</span>
+                <span>${triage?.respiratoryRate?:"-"}</span>
                 <br>
 				
 				<label><span class="status active"></span>Pulse Rate:</label>
-                <span>${triage?.pulsRate?:"Not Captured"}</span>
+                <span>${triage?.pulsRate?:"-"}</span>
                 <br>
 
                 <% if (patient.gender == "F" && patient.age > 10) {%>
                     <label><span class="status active"></span>Last Periods:</label>
-                    <span id="lastPeriods">${triage?.lastMenstrualDate ? ui.formatDatePretty(triage?.lastMenstrualDate): "Not Captured"}</span>
+                    <span id="lastPeriods">${triage?.lastMenstrualDate ? ui.formatDatePretty(triage?.lastMenstrualDate): "-"}</span>
                     <br>
                 <% } %>
 
                 <label><span class="status active"></span>Oxygen Saturation:</label>
-                <span>${triage?.oxygenSaturation? triage.oxygenSaturation.toString() + "%": "Not Captured"}</span>
+                <span>${triage?.oxygenSaturation? triage.oxygenSaturation.toString() + "%": "-"}</span>
                 <br>
 
-				<label><span class="status active"></span>Height:</label>
-				<span>${triage?.height?:"Not Captured"}</span>
+				<label><span class="status active"></span>Height(cm):</label>
+				<span>${triage?.height?:"-"}</span>
 				<br>
 				
 				<label><span class="status active"></span>Weight:</label>
-				<span>${triage?.weight?:"Not Captured"}</span>
+				<span>${triage?.weight?:"-"}</span>
 				<br>
 				
 				<% if (patient.age >= 2)  {%>
 					<label><span class="status active"></span>BMI:</label>
-					<span>${(triage && triage.weight && triage.height) ? formatter.format(triage?.weight/((triage?.height/100) * (triage?.height/100))) : "Not Captured"}</span>
+					<span>${(triage && triage.weight && triage.height) ? formatter.format(triage?.weight/((triage?.height/100) * (triage?.height/100))) : "-"}</span>
 					<br>
 				<% } %>
 				
 				<label><span class="status active"></span>M.U.A Circum:</label>
-				<span>${triage?.mua?:"Not Captured"}</span>
+				<span>${triage?.mua?:"-"}</span>
 				<br>
 				
 				<label><span class="status active"></span>Chest Circum:</label>
-				<span>${triage?.chest?:"Not Captured"}</span>
+				<span>${triage?.chest?:"-"}</span>
 				<br>
 				
 				<label><span class="status active"></span>Abdominal Circum:</label>
-				<span>${triage?.abdominal?:"Not Captured"}</span>
+				<span>${triage?.abdominal?:"-"}</span>
 				<br>
 				
 
 				<label><span class="status active"></span>Blood Group:</label>
-				<span>${triage?.bloodGroup && triage?.rhesusFactor ? triage?.bloodGroup + "/" + triage?.rhesusFactor : "Not Captured"}</span>
+				<span>${triage?.bloodGroup && triage?.rhesusFactor ? triage?.bloodGroup + "/" + triage?.rhesusFactor : "-"}</span>
 				<br>
 				
 				<label><span class="status active"></span>HIV Status:</label>
-				<span>${triage?.pitct ?: "Not Captured"}</span>
+				<span>${triage?.pitct ?: "-"}</span>
 				<br>
 			</div>
 		</div>

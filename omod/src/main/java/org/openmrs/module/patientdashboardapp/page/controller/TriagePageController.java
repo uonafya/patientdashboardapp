@@ -4,10 +4,10 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
-import org.openmrs.ConceptNumeric;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
+import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
@@ -15,6 +15,7 @@ import org.openmrs.Visit;
 import org.openmrs.api.VisitService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.appui.UiSessionContext;
+import org.openmrs.module.ehrconfigs.utils.EhrConfigsUtils;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
@@ -27,6 +28,7 @@ import org.openmrs.module.hospitalcore.model.TriagePatientQueue;
 import org.openmrs.module.hospitalcore.model.TriagePatientQueueLog;
 import org.openmrs.module.hospitalcore.util.ConceptAnswerComparator;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
+import org.openmrs.module.kenyaemr.api.KenyaEmrService;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.annotation.BindParams;
 import org.openmrs.ui.framework.page.PageModel;
@@ -34,17 +36,12 @@ import org.openmrs.ui.framework.page.PageRequest;
 import org.openmrs.ui.framework.session.Session;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.openmrs.Obs;
-
-import org.openmrs.module.kenyaemr.api.KenyaEmrService;
 
 public class TriagePageController {
 
@@ -62,13 +59,11 @@ public class TriagePageController {
 	public String get(
 			UiSessionContext sessionContext,
 			PageModel model,
-			PageRequest pageRequest,
 			UiUtils ui,
 			@RequestParam("patientId") Patient patient,
 			@RequestParam("queueId") Integer queueId,
 			@RequestParam(value = "opdId", required = false) Integer opdId,
 			@RequestParam(value = "returnUrl", required = false) String returnUrl) {
-		pageRequest.getSession().setAttribute(ReferenceApplicationWebConstants.SESSION_ATTRIBUTE_REDIRECT_URL,ui.thisUrl());
 
 		PatientQueueService patientQueueService = Context.getService(PatientQueueService.class);
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
@@ -178,7 +173,7 @@ public class TriagePageController {
 			encounter.setEncounterDatetime(date);
 			encounter.setEncounterType(encounterType);
 			encounter.setLocation(location);
-			encounter.setProvider(user);
+			encounter.setProvider(EhrConfigsUtils.getDefaultEncounterRole(),EhrConfigsUtils.getProvider(user.getPerson()));
 			Context.getEncounterService().saveEncounter(encounter);	
 
 			if(triagePatientData.getTemperature()!=null){addObs(encounter,TEMPERATURE,triagePatientData.getTemperature().doubleValue());};
@@ -222,7 +217,7 @@ public class TriagePageController {
 			encounter.setEncounterDatetime(date);
 			encounter.setEncounterType(encounterType);
 			encounter.setLocation(location);
-			encounter.setProvider(user);
+			encounter.setProvider(EhrConfigsUtils.getDefaultEncounterRole(),EhrConfigsUtils.getProvider(user.getPerson()));
 			encounter.setVisit(getLastVisitForPatient(patient));
 			Context.getEncounterService().saveEncounter(encounter);
 			opdPatientQueue.setTriageDataId(triagePatientData);

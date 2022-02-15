@@ -547,8 +547,8 @@
 					}
 				})
 				.fail(function(data) {
+					console.log(data);
 					jq().toastmessage('removeToast', savingMessage);
-					jq().toastmessage('showErrorToast', "Patient is not currently checked in for visit send to Registration");
 				});
 		});
 		loadExternalReferralCases();

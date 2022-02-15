@@ -9,6 +9,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmission;
+import org.openmrs.module.hospitalcore.model.Option;
 import org.openmrs.module.hospitalcore.model.PatientSearch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +64,7 @@ public class Outcome {
         options.add(new Option(ADMIT_OPTION, null, "Admit"));
         options.add(new Option(REFERRAL_OPTION,null,"Referral"));
         options.add(new Option(DIED_OPTION, null, "Died"));
+        options.add(new Option(REFERRAL_OPTION, null, "Referral"));
         return options;
     }
 
@@ -80,21 +82,35 @@ public class Outcome {
         Obs obsOutcome = new Obs();
         obsOutcome.setObsGroup(obsGroup);
         obsOutcome.setConcept(outcomeConcept);
-        try {
-            obsOutcome.setValueText(this.option.getLabel());
-            if (this.option.getId() == FOLLOW_UP_OPTION) {
-                obsOutcome.setValueDatetime(Context.getDateFormat().parse(this.followUpDate));
-            } else if (this.option.getId() == ADMIT_OPTION) {
-                obsOutcome.setValueCoded(Context.getConceptService().getConcept(this.admitTo.getId()));
-            }//add the rest of the options here reviewed and cured
-
-        } catch (ParseException e) {
-            logger.error("Error saving outcome obs: {}", new Object[]{e.getMessage()});
-        }
+        obsOutcome.setValueText(this.option.getLabel());
         obsOutcome.setCreator(encounter.getCreator());
         obsOutcome.setDateCreated(encounter.getDateCreated());
         obsOutcome.setEncounter(encounter);
         encounter.addObs(obsOutcome);
+        if (this.option.getId() == FOLLOW_UP_OPTION) {
+            Concept nextAppointmentDate = Context.getConceptService().getConceptByUuid("5096AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            Obs nextAppointmentDateObs = new Obs();
+            nextAppointmentDateObs.setObsGroup(obsGroup);
+            nextAppointmentDateObs.setConcept(nextAppointmentDate);
+            try {
+                nextAppointmentDateObs.setValueDatetime(Context.getDateFormat().parse(this.followUpDate));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            nextAppointmentDateObs.setCreator(encounter.getCreator());
+            nextAppointmentDateObs.setEncounter(encounter);
+            nextAppointmentDateObs.setDateCreated(encounter.getDateCreated());
+            encounter.addObs(nextAppointmentDateObs);
+        }
+        if (this.option.getId() == ADMIT_OPTION) {
+            Obs admitObs = new Obs();
+            admitObs.setObsGroup(obsGroup);
+            admitObs.setConcept(outcomeConcept);
+            admitObs.setValueCoded(Context.getConceptService().getConcept(this.admitTo.getId()));
+            admitObs.setDateCreated(encounter.getDateCreated());
+            admitObs.setEncounter(encounter);
+            encounter.addObs(admitObs);
+        }
     }
 
     public void save(Encounter encounter) {
@@ -120,7 +136,6 @@ public class Outcome {
             patientAdmission.setBirthDate(encounter.getPatient().getBirthdate());
             patientAdmission.setGender(encounter.getPatient().getGender());
             patientAdmission.setOpdAmittedUser(encounter.getCreator());
-            //patientAdmission.setOpdLog(opdPatientLog);
             patientAdmission.setPatient(encounter.getPatient());
             patientAdmission.setPatientIdentifier(encounter.getPatient()
                     .getPatientIdentifier().getIdentifier());

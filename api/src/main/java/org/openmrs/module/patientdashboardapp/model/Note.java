@@ -34,7 +34,10 @@ import org.openmrs.module.hospitalcore.model.Lab;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.model.OpdTestOrder;
+import org.openmrs.module.hospitalcore.model.Option;
 import org.openmrs.module.hospitalcore.model.RadiologyDepartment;
+import org.openmrs.module.hospitalcore.model.Referral;
+import org.openmrs.module.hospitalcore.model.ReferralReasons;
 import org.openmrs.module.kenyaemr.api.KenyaEmrService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -272,13 +275,15 @@ public class Note {
 		Encounter encounter = createEncounter(patient);
 		addObs(obsGroup, encounter);
         try {
-            encounter.setVisit(getLastVisitForPatient(patient));
+			encounter.setVisit(getLastVisitForPatient(patient));
+
+			Context.getEncounterService().saveEncounter(encounter);
+			saveNoteDetails(encounter);
+			endEncounter(encounter);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Context.getEncounterService().saveEncounter(encounter);
-		saveNoteDetails(encounter);
-		endEncounter(encounter);
+
 		return encounter;
 	}
 
@@ -297,6 +302,7 @@ public class Note {
 			encounter.setPatient(patient);
 			encounter.setCreator(user);
 			encounter.setEncounterDatetime(new Date());
+			encounter.setProvider(EhrConfigsUtils.getDefaultEncounterRole(), EhrConfigsUtils.getProvider(user.getPerson()));
 			encounter.setEncounterType(encounterType);
 			encounter.setLocation(kenyaEmrService.getDefaultLocation());
 			encounter.setDateCreated(new Date());
@@ -482,7 +488,7 @@ public class Note {
 			Set<Obs> allPhysicalExaminationEncounterObs = physicalExaminationEncounter.getAllObs();
 
 			for (Obs ob : allPhysicalExaminationEncounterObs) {
-				if (ob.getConcept() == conceptPhysicalExamination) {
+				if (ob.getConcept().equals(conceptPhysicalExamination)) {
 					previousPhysicalExamination = ob.getValueText();
 				}
 			}
@@ -501,7 +507,7 @@ public class Note {
             Set<Obs> allPreviousIllnessHistoryObs = previousIllnessHistoryEncounter.getAllObs();
 
             for (Obs obs :allPreviousIllnessHistoryObs){
-                if (obs.getConcept() == conceptPreviousIllnessHistory ){
+                if (obs.getConcept().equals(conceptPreviousIllnessHistory )){
                     previousIllnessHistory = obs.getValueText();
                 }
             }
@@ -661,11 +667,15 @@ public class Note {
 		encounter.addObs(obsProcedure);
 	}
 
-	private Visit getLastVisitForPatient(Patient patient) throws Exception {
+	private Visit getLastVisitForPatient(Patient patient) {
 		VisitService visitService = Context.getVisitService();
 		if (visitService.getActiveVisitsByPatient(patient) == null){
-		    throw new Exception("patient not checked-in");
-        }
+			try {
+				throw new Exception("patient not checked-in");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		return visitService.getActiveVisitsByPatient(patient).get(0);
 	}
 }

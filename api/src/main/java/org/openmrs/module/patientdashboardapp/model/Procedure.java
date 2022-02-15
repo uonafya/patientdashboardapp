@@ -2,15 +2,7 @@ package org.openmrs.module.patientdashboardapp.model;
 
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
-import org.openmrs.Encounter;
-import org.openmrs.Obs;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.hospitalcore.BillingService;
-import org.openmrs.module.hospitalcore.PatientDashboardService;
-import org.openmrs.module.hospitalcore.model.BillableService;
-import org.openmrs.module.hospitalcore.model.DepartmentConcept;
-import org.openmrs.module.hospitalcore.model.OpdTestOrder;
-import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
