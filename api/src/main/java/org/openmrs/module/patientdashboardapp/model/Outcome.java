@@ -62,6 +62,7 @@ public class Outcome {
         options.add(new Option(CURED_OPTION, null, "Discharged"));
         options.add(new Option(FOLLOW_UP_OPTION, null, "Next Appointment Date"));
         options.add(new Option(ADMIT_OPTION, null, "Admit"));
+        options.add(new Option(REFERRAL_OPTION,null,"Referral"));
         options.add(new Option(DIED_OPTION, null, "Died"));
         options.add(new Option(REFERRAL_OPTION, null, "Referral"));
         return options;
