@@ -1,9 +1,5 @@
 package org.openmrs.module.patientdashboardapp.fragment.controller;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -11,6 +7,9 @@ import org.openmrs.module.patientdashboardapp.model.Note;
 import org.openmrs.ui.framework.SimpleObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 public class ClinicalNoteProcessorFragmentController {
 

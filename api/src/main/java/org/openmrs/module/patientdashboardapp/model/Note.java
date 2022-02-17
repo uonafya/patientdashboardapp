@@ -39,6 +39,7 @@ import org.openmrs.module.hospitalcore.model.RadiologyDepartment;
 import org.openmrs.module.hospitalcore.model.Referral;
 import org.openmrs.module.hospitalcore.model.ReferralReasons;
 import org.openmrs.module.kenyaemr.api.KenyaEmrService;
+import org.openmrs.module.patientdashboardapp.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,6 +78,7 @@ public class Note {
 			}
 		}
 	}
+
 
 
 	public Note () {
@@ -285,9 +287,9 @@ public class Note {
 		Obs obsGroup = Context.getService(HospitalCoreService.class).getObsGroupCurrentDate(patient.getPersonId());
 		Encounter encounter = createEncounter(patient);
 		addObs(obsGroup, encounter);
+		System.out.println("Encounter is outside>>"+encounter);
         try {
 			encounter.setVisit(getLastVisitForPatient(patient));
-
 			Context.getEncounterService().saveEncounter(getNonNullObsInEncounter(encounter));
 			saveNoteDetails(encounter);
 			endEncounter(encounter);
@@ -413,7 +415,7 @@ public class Note {
 		obsOnSetDate.setObsGroup(obsGroup);
 		obsOnSetDate.setConcept(onSetConcepts);
 		try {
-		obsOnSetDate.setValueDatetime(Context.getDateFormat().parse(this.onSetDate));
+		obsOnSetDate.setValueDatetime(Utils.getDateInddmmmyyyFromStringObject(this.onSetDate));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -542,7 +544,7 @@ public class Note {
         PatientQueueService queueService = Context.getService(PatientQueueService.class);
         Concept conceptPreviousIllnessHistory = Context.getConceptService().getConceptByUuid("1390AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         Encounter previousIllnessHistoryEncounter = queueService.getLastOPDEncounter(patient);
-        if (previousIllnessHistoryEncounter!=null){
+        if (previousIllnessHistoryEncounter != null){
             Set<Obs> allPreviousIllnessHistoryObs = previousIllnessHistoryEncounter.getAllObs();
 
             for (Obs obs :allPreviousIllnessHistoryObs){
@@ -719,14 +721,19 @@ public class Note {
 	}
 
 	private Encounter getNonNullObsInEncounter(Encounter encounter){
+		Encounter cleanedEncounter = new Encounter();
 		if(encounter != null) {
 			for (Obs obs:encounter.getAllObs()) {
-				if(obs.getValueCoded() == null) {
-					encounter.removeObs(obs);
+				if(obs.getValueCoded() != null || obs.getValueDatetime() != null || StringUtils.isNotEmpty(obs.getValueText())) {
+					cleanedEncounter.addObs(obs);
 				}
 			}
+			cleanedEncounter.setEncounterDatetime(encounter.getEncounterDatetime());
+			cleanedEncounter.setEncounterType(encounter.getEncounterType());
+			cleanedEncounter.setPatient(encounter.getPatient());
+			cleanedEncounter.setProvider(EhrConfigsUtils.getDefaultEncounterRole(), EhrConfigsUtils.getProvider(encounter.getCreator().getPerson()));
 		}
-		return encounter;
+		return cleanedEncounter;
 
 	}
 }
