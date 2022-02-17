@@ -288,7 +288,7 @@ public class Note {
         try {
 			encounter.setVisit(getLastVisitForPatient(patient));
 
-			Context.getEncounterService().saveEncounter(encounter);
+			Context.getEncounterService().saveEncounter(getNonNullObsInEncounter(encounter));
 			saveNoteDetails(encounter);
 			endEncounter(encounter);
         } catch (Exception e) {
@@ -707,5 +707,17 @@ public class Note {
 			}
 		}
 		return visitService.getActiveVisitsByPatient(patient).get(0);
+	}
+
+	private Encounter getNonNullObsInEncounter(Encounter encounter){
+		if(encounter != null) {
+			for (Obs obs:encounter.getAllObs()) {
+				if(obs == null || obs.getValueCoded() == null) {
+					encounter.removeObs(obs);
+				}
+			}
+		}
+		return encounter;
+
 	}
 }

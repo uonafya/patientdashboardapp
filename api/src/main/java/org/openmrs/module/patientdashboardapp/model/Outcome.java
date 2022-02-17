@@ -1,5 +1,6 @@
 package org.openmrs.module.patientdashboardapp.model;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Encounter;
@@ -78,37 +79,43 @@ public class Outcome {
 
     public void addObs(Encounter encounter, Obs obsGroup) {
         Concept outcomeConcept = Context.getConceptService().getConceptByUuid("160433AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        Obs obsOutcome = new Obs();
-        obsOutcome.setObsGroup(obsGroup);
-        obsOutcome.setConcept(outcomeConcept);
-        obsOutcome.setValueText(this.option.getLabel());
-        obsOutcome.setCreator(encounter.getCreator());
-        obsOutcome.setDateCreated(encounter.getDateCreated());
-        obsOutcome.setEncounter(encounter);
-        encounter.addObs(obsOutcome);
-        if (this.option.getId() == FOLLOW_UP_OPTION) {
-            Concept nextAppointmentDate = Context.getConceptService().getConceptByUuid("5096AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-            Obs nextAppointmentDateObs = new Obs();
-            nextAppointmentDateObs.setObsGroup(obsGroup);
-            nextAppointmentDateObs.setConcept(nextAppointmentDate);
-            try {
-                nextAppointmentDateObs.setValueDatetime(Context.getDateFormat().parse(this.followUpDate));
-            } catch (ParseException e) {
-                e.printStackTrace();
+        String valueText = this.option.getLabel();
+        if(StringUtils.isNotEmpty(valueText)) {
+            Obs obsOutcome = new Obs();
+            obsOutcome.setObsGroup(obsGroup);
+            obsOutcome.setConcept(outcomeConcept);
+            obsOutcome.setValueText(valueText);
+            obsOutcome.setCreator(encounter.getCreator());
+            obsOutcome.setDateCreated(encounter.getDateCreated());
+            obsOutcome.setEncounter(encounter);
+            encounter.addObs(obsOutcome);
+            if (this.option.getId() == FOLLOW_UP_OPTION && this.followUpDate != null) {
+                Concept nextAppointmentDate = Context.getConceptService().getConceptByUuid("5096AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                Obs nextAppointmentDateObs = new Obs();
+                nextAppointmentDateObs.setObsGroup(obsOutcome.getObsGroup());
+                nextAppointmentDateObs.setConcept(nextAppointmentDate);
+                try {
+                    nextAppointmentDateObs.setValueDatetime(Context.getDateFormat().parse(this.followUpDate));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                nextAppointmentDateObs.setCreator(encounter.getCreator());
+                nextAppointmentDateObs.setEncounter(encounter);
+                nextAppointmentDateObs.setDateCreated(encounter.getDateCreated());
+                encounter.addObs(nextAppointmentDateObs);
             }
-            nextAppointmentDateObs.setCreator(encounter.getCreator());
-            nextAppointmentDateObs.setEncounter(encounter);
-            nextAppointmentDateObs.setDateCreated(encounter.getDateCreated());
-            encounter.addObs(nextAppointmentDateObs);
-        }
-        if (this.option.getId() == ADMIT_OPTION) {
-            Obs admitObs = new Obs();
-            admitObs.setObsGroup(obsGroup);
-            admitObs.setConcept(outcomeConcept);
-            admitObs.setValueCoded(Context.getConceptService().getConcept(this.admitTo.getId()));
-            admitObs.setDateCreated(encounter.getDateCreated());
-            admitObs.setEncounter(encounter);
-            encounter.addObs(admitObs);
+            if (this.option.getId() == ADMIT_OPTION && this.admitTo != null) {
+                Concept valueCoded = Context.getConceptService().getConcept(this.admitTo.getId());
+                if (valueCoded != null) {
+                    Obs admitObs = new Obs();
+                    admitObs.setObsGroup(obsOutcome.getObsGroup());
+                    admitObs.setConcept(outcomeConcept);
+                    admitObs.setValueCoded(Context.getConceptService().getConcept(this.admitTo.getId()));
+                    admitObs.setDateCreated(encounter.getDateCreated());
+                    admitObs.setEncounter(encounter);
+                    encounter.addObs(admitObs);
+                }
+            }
         }
     }
 
