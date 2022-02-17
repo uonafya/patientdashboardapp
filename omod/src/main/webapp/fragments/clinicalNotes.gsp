@@ -135,8 +135,9 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 				<p>
 					<label class="label" for="history">History of present illness</label>
 					<span>
-						Date of Onset<input type="date" id="date_of_onset_for_crrent_illnes"/>
+						Date of Onset<input data-bind="value: \$root.onSetDate" type="date" id="onSetDate" name="onSetDate" />
 					</span>
+
 					<textarea data-bind="value: \$root.illnessHistory" id="history" name="history" rows="10" cols="74"></textarea>
 				</p>
 			</fieldset>

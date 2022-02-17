@@ -391,6 +391,9 @@ public class Note {
 
 	private void addIllnessHistory(Encounter encounter, Obs obsGroup) {
 		Concept conceptIllnessHistory = Context.getConceptService().getConceptByUuid("1390AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		if (conceptIllnessHistory == null) {
+			throw new NullPointerException("Illness history concept is not defined");
+		}
 		Obs obsIllnessHistory = new Obs();
 		obsIllnessHistory.setObsGroup(obsGroup);
 		obsIllnessHistory.setConcept(conceptIllnessHistory);
@@ -403,6 +406,9 @@ public class Note {
 
 	private void addOnSetDate(Encounter encounter, Obs obsGroup) {
 		Concept onSetConcepts = Context.getConceptService().getConceptByUuid("164428AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		if (onSetConcepts == null) {
+			throw new NullPointerException("Date on set  concept is not defined");
+		}
 		Obs obsOnSetDate = new Obs();
 		obsOnSetDate.setObsGroup(obsGroup);
 		obsOnSetDate.setConcept(onSetConcepts);
@@ -421,6 +427,9 @@ public class Note {
 
 	private void addOtherInstructions(Encounter encounter, Obs obsGroup) {
 		Concept conceptOtherInstructions = Context.getConceptService().getConceptByUuid("163106AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		if (conceptOtherInstructions == null) {
+			throw new NullPointerException("Other instructions concept is not defined");
+		}
 		Obs obsOtherInstructions = new Obs();
 		obsOtherInstructions.setObsGroup(obsGroup);
 		obsOtherInstructions.setConcept(conceptOtherInstructions);
@@ -712,7 +721,7 @@ public class Note {
 	private Encounter getNonNullObsInEncounter(Encounter encounter){
 		if(encounter != null) {
 			for (Obs obs:encounter.getAllObs()) {
-				if(obs == null || obs.getValueCoded() == null) {
+				if(obs.getValueCoded() == null) {
 					encounter.removeObs(obs);
 				}
 			}
