@@ -168,7 +168,7 @@ public class VisitDetail {
 				provisionalDiagnosisList.append("(Provisional)").append(obs.getValueCoded().getDisplayString()).append(", ");
 			}
 			if (obs.getConcept().equals(finalDiagnosisConcept)) {
-				finalDiagnosisList.append(obs.getValueCoded().getDisplayString()).append(", ");
+				finalDiagnosisList.append("(Final)").append(obs.getValueCoded().getDisplayString()).append(", ");
 			}
 			if (obs.getConcept().equals(investigationConcept)) {
 				investigationList.append(obs.getValueCoded().getDisplayString()).append(", ");
@@ -186,13 +186,12 @@ public class VisitDetail {
 				otherInstructions.append(obs.getValueText()).append(", ");
 			}
             if (obs.getConcept().equals(visitOutcomeConcept)){
-            	if(obs.getValueCoded().equals(nextAppointmentConcepts)) {
+            	if(obs.getValueCoded().equals(Context.getConceptService().getConceptByUuid("160523AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))) {
 
 					Set<Obs> getAllObs = encounter.getAllObs();
 					String nextApppointmentDate = "";
 					for(Obs obs1 : getAllObs){
 						if(obs1.getConcept().equals(nextAppointmentConcepts)){
-							System.out.println("Next appointment date found>>");
 							nextApppointmentDate = Utils.getDateAsString(obs1.getValueDatetime(), "dd/MM/yyyy");
 							break;
 						}
