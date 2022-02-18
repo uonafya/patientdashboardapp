@@ -95,6 +95,7 @@ public class Note {
 		this.signs = Sign.getPreviousSigns(patientId);
 		this.physicalExamination = getPreviousPhysicalExamination(patientId);
 		this.illnessHistory = getPreviousIllnessHistory(patientId);
+		this.onSetDate = getPreviousDateOfOnSetOfIlliness(patientId);
 	}
 
 	private int patientId;
@@ -287,10 +288,10 @@ public class Note {
 		Obs obsGroup = Context.getService(HospitalCoreService.class).getObsGroupCurrentDate(patient.getPersonId());
 		Encounter encounter = createEncounter(patient);
 		addObs(obsGroup, encounter);
-		System.out.println("Encounter is outside>>"+encounter);
         try {
 			encounter.setVisit(getLastVisitForPatient(patient));
-			Context.getEncounterService().saveEncounter(getNonNullObsInEncounter(encounter));
+			//save an encounter with all the other entries
+			Context.getEncounterService().saveEncounter(encounter);
 			saveNoteDetails(encounter);
 			endEncounter(encounter);
         } catch (Exception e) {
@@ -365,8 +366,7 @@ public class Note {
 		if (referralReasons != null) {
 			ReferralReasons.addReferralReasonsObs(referralReasons, specify, encounter, obsGroup);
 		}
-
-		if (this.outcome != null) {
+		if(this.outcome != null) {
 			this.outcome.addObs(encounter, obsGroup);
 		}
 	}
@@ -415,7 +415,7 @@ public class Note {
 		obsOnSetDate.setObsGroup(obsGroup);
 		obsOnSetDate.setConcept(onSetConcepts);
 		try {
-		obsOnSetDate.setValueDatetime(Utils.getDateInddmmmyyyFromStringObject(this.onSetDate));
+		obsOnSetDate.setValueDatetime(Utils.getDateInddyyyymmddFromStringObject(this.onSetDate));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -556,6 +556,24 @@ public class Note {
 
         return previousIllnessHistory;
     }
+
+    private String getPreviousDateOfOnSetOfIlliness(int patientId){
+		String previousOnSetDate = "";
+		Patient patient = Context.getPatientService().getPatient(patientId);
+		PatientQueueService queueService = Context.getService(PatientQueueService.class);
+		Concept onSetConcepts = Context.getConceptService().getConceptByUuid("164428AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		Encounter previousOnSetDateEncounter = queueService.getLastOPDEncounter(patient);
+		if(previousOnSetDateEncounter != null) {
+			Set<Obs> allPreviousObs = previousOnSetDateEncounter.getAllObs();
+			for(Obs obs :allPreviousObs) {
+				if (obs.getConcept().equals(onSetConcepts )){
+					previousOnSetDate = Utils.getDateAsString(obs.getValueDatetime());
+				}
+			}
+		}
+		return previousOnSetDate;
+
+	}
 
 	public void saveInvestigations(Encounter encounter, String departmentName, Investigation investigation) throws Exception {
 		Concept investigationConcept = Context.getConceptService().getConceptByUuid("0179f241-8c1d-47c1-8128-841f6508e251");
@@ -718,22 +736,5 @@ public class Note {
 			}
 		}
 		return visitService.getActiveVisitsByPatient(patient).get(0);
-	}
-
-	private Encounter getNonNullObsInEncounter(Encounter encounter){
-		Encounter cleanedEncounter = new Encounter();
-		if(encounter != null) {
-			for (Obs obs:encounter.getAllObs()) {
-				if(obs.getValueCoded() != null || obs.getValueDatetime() != null || StringUtils.isNotEmpty(obs.getValueText())) {
-					cleanedEncounter.addObs(obs);
-				}
-			}
-			cleanedEncounter.setEncounterDatetime(encounter.getEncounterDatetime());
-			cleanedEncounter.setEncounterType(encounter.getEncounterType());
-			cleanedEncounter.setPatient(encounter.getPatient());
-			cleanedEncounter.setProvider(EhrConfigsUtils.getDefaultEncounterRole(), EhrConfigsUtils.getProvider(encounter.getCreator().getPerson()));
-		}
-		return cleanedEncounter;
-
 	}
 }

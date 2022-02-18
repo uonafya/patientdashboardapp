@@ -34,6 +34,14 @@ public class Outcome {
     private String followUpDate;
     private Option admitTo;
 
+    final String FOLLOW_UP_OPTION_UUID = "160523AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    final String ADMIT_OPTION_UUID = "1654AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    final String DIED_OPTION_UUID = "160034AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    final String REVIEWED_OPTION_UUID = "159615AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    final String CURED_OPTION_UUID = "159791AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    final String REFERRAL_OPTION_UUID = "6b11552c-c23e-4178-984b-82b80305af36";
+    final String OTHER_UUID = "5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+
     public Option getOption() {
         return this.option;
     }
@@ -85,6 +93,7 @@ public class Outcome {
             Obs obsOutcome = new Obs();
             obsOutcome.setObsGroup(obsGroup);
             obsOutcome.setConcept(outcomeConcept);
+            obsOutcome.setValueCoded(getOptionSelected(this.option.getId()));
             obsOutcome.setValueText(valueText);
             obsOutcome.setCreator(encounter.getCreator());
             obsOutcome.setDateCreated(encounter.getDateCreated());
@@ -158,6 +167,34 @@ public class Outcome {
             patientAdmission.setAcceptStatus(0);
             Context.getService(IpdService.class).saveIpdPatientAdmission(patientAdmission);
         }
+    }
+
+
+    private Concept getRequiredConcept(String uuid){
+        return Context.getConceptService().getConceptByUuid(uuid);
+    }
+
+    private Concept getOptionSelected(Integer option) {
+        Concept concept = null;
+        if(option == FOLLOW_UP_OPTION) {
+            concept = getRequiredConcept(FOLLOW_UP_OPTION_UUID);
+        }
+        else if(option == ADMIT_OPTION) {
+            concept = getRequiredConcept(ADMIT_OPTION_UUID);
+        }else if(option == DIED_OPTION) {
+            concept = getRequiredConcept(DIED_OPTION_UUID);
+        }else if(option == REVIEWED_OPTION) {
+            concept = getRequiredConcept(REVIEWED_OPTION_UUID);
+        }else if(option == CURED_OPTION) {
+            concept = getRequiredConcept(CURED_OPTION_UUID);
+        }else if(option == REFERRAL_OPTION) {
+            concept = getRequiredConcept(REFERRAL_OPTION_UUID);
+        }
+        else {
+            concept = getRequiredConcept(OTHER_UUID);
+        }
+
+        return concept;
     }
 }
 
