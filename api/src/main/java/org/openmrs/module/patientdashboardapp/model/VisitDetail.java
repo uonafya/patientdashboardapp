@@ -1,17 +1,19 @@
 package org.openmrs.module.patientdashboardapp.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.openmrs.Concept;
 import org.openmrs.Drug;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.patientdashboardapp.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import static org.openmrs.module.patientdashboardapp.model.Note.PROPERTY_FACILITY;
 
 public class VisitDetail {
-	private static final String FINAL_DIAGNOSIS_CONCEPT_NAME = "160250AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 	private static final String OTHER_SYMPTOM = "cb46888c-586a-4ba0-98d5-f2e7e49a60f6";
 	private String history = "No History";
 	private String symptoms = "No symptoms";
@@ -23,6 +25,16 @@ public class VisitDetail {
     private String internalReferral = "No internal Referral";
     private String externalReferral = "No external Referral";
     private String otherInstructions = "No Other instructions given";
+
+	public String getDiseaseOnSetDate() {
+		return diseaseOnSetDate;
+	}
+
+	public void setDiseaseOnSetDate(String diseaseOnSetDate) {
+		this.diseaseOnSetDate = diseaseOnSetDate;
+	}
+
+	private String diseaseOnSetDate = "No disease on set date";
 
     public String getExternalReferral() {
         return externalReferral;
@@ -126,18 +138,21 @@ public class VisitDetail {
         Concept facilityReferredToConcept = Context.getConceptService().getConceptByUuid(PROPERTY_FACILITY);
 		Concept otherSymptom = Context.getConceptService().getConceptByUuid(OTHER_SYMPTOM);
 		Concept otherInstructionsConcept = Context.getConceptService().getConceptByUuid("163106AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		Concept onSetConcepts = Context.getConceptService().getConceptByUuid("164428AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		Concept nextAppointmentConcepts = Context.getConceptService().getConceptByUuid("5096AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
-		StringBuffer symptomList = new StringBuffer();
-		StringBuffer provisionalDiagnosisList = new StringBuffer();
-		StringBuffer finalDiagnosisList = new StringBuffer();
-		StringBuffer investigationList = new StringBuffer();
-		StringBuffer procedureList = new StringBuffer();
-		StringBuffer physicalExamination = new StringBuffer();
-		StringBuffer history = new StringBuffer();
-        StringBuffer visitOutcome = new StringBuffer();
-        StringBuffer internalReferral = new StringBuffer();
-        StringBuffer externalReferral = new StringBuffer();
-        StringBuffer otherInstructions = new StringBuffer();
+		StringBuilder symptomList = new StringBuilder();
+		StringBuilder provisionalDiagnosisList = new StringBuilder();
+		StringBuilder finalDiagnosisList = new StringBuilder();
+		StringBuilder investigationList = new StringBuilder();
+		StringBuilder procedureList = new StringBuilder();
+		StringBuilder physicalExamination = new StringBuilder();
+		StringBuilder history = new StringBuilder();
+		StringBuilder visitOutcome = new StringBuilder();
+		StringBuilder internalReferral = new StringBuilder();
+		StringBuilder externalReferral = new StringBuilder();
+		StringBuilder otherInstructions = new StringBuilder();
+        StringBuilder diseaseOnSetDate = new StringBuilder();
 		for (Obs obs :encounter.getAllObs()) {
 			if (obs.getConcept().equals(symptomConcept)) {
 				if (obs.getValueCoded().equals(otherSymptom)) {
@@ -171,7 +186,22 @@ public class VisitDetail {
 				otherInstructions.append(obs.getValueText()).append(", ");
 			}
             if (obs.getConcept().equals(visitOutcomeConcept)){
-                visitOutcome.append(obs.getValueText()).append(",");
+            	if(obs.getValueCoded().equals(nextAppointmentConcepts)) {
+
+					Set<Obs> getAllObs = encounter.getAllObs();
+					String nextApppointmentDate = "";
+					for(Obs obs1 : getAllObs){
+						if(obs1.getConcept().equals(nextAppointmentConcepts)){
+							System.out.println("Next appointment date found>>");
+							nextApppointmentDate = Utils.getDateAsString(obs1.getValueDatetime(), "dd/MM/yyyy");
+							break;
+						}
+					}
+					visitOutcome.append(obs.getValueText()).append(",").append(nextApppointmentDate);
+				}
+            	else {
+					visitOutcome.append(obs.getValueText()).append(",");
+				}
             }
             if (obs.getConcept().equals(internalReferralConcept)){
                 internalReferral.append(obs.getValueCoded().getDisplayString()).append(",");
@@ -181,6 +211,9 @@ public class VisitDetail {
             }
             if (obs.getConcept().equals(facilityReferredToConcept)){
 				externalReferral.append("("+obs.getValueText()+")");
+			}
+            if(obs.getConcept().equals(onSetConcepts)) {
+            	diseaseOnSetDate.append(Utils.getDateAsString(obs.getValueDatetime(), "yyyy-MM-dd"));
 			}
 
 		}
@@ -216,6 +249,9 @@ public class VisitDetail {
         if (externalReferral.length() > 0){
             visitDetail.setExternalReferral(externalReferral.substring(0));
         }
+		if (diseaseOnSetDate.length() > 0){
+			visitDetail.setDiseaseOnSetDate(diseaseOnSetDate.substring(0));
+		}
 		return visitDetail;
 	}
 

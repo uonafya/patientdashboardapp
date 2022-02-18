@@ -15,8 +15,8 @@ public class Utils {
     return  new SimpleDateFormat("yyyy-MM-dd").parse(date);
   }
 
-  public static String getDateAsString(Date date) {
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+  public static String getDateAsString(Date date, String formatString) {
+    DateFormat dateFormat = new SimpleDateFormat(formatString);
     return  dateFormat.format(date);
   }
 }

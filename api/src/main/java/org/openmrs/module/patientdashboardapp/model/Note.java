@@ -567,7 +567,7 @@ public class Note {
 			Set<Obs> allPreviousObs = previousOnSetDateEncounter.getAllObs();
 			for(Obs obs :allPreviousObs) {
 				if (obs.getConcept().equals(onSetConcepts )){
-					previousOnSetDate = Utils.getDateAsString(obs.getValueDatetime());
+					previousOnSetDate = Utils.getDateAsString(obs.getValueDatetime(), "dd/MM/yyyy");
 				}
 			}
 		}
