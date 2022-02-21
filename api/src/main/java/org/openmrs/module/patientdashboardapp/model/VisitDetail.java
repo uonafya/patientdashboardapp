@@ -180,7 +180,16 @@ public class VisitDetail {
 				physicalExamination.append(obs.getValueText()).append(", ");
 			}
 			if (obs.getConcept().equals(historyConcept)){
-				history.append(obs.getValueText()).append(", ");
+				Set<Obs> getAllObs = encounter.getAllObs();
+				String onSetDate = "";
+				if(getAllObs != null){
+					for(Obs histo : getAllObs){
+						if(histo.getConcept().equals(Context.getConceptService().getConceptByUuid("164428AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")) && histo.getValueDatetime() != null){
+
+						}
+					}
+				}
+				history.append(obs.getValueText()).append(", ").append(onSetDate);
 			}
 			if (obs.getConcept().equals(otherInstructionsConcept)){
 				otherInstructions.append(obs.getValueText()).append(", ");
