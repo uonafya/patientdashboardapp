@@ -148,7 +148,7 @@ public class TriagePageController {
 
 		TriagePatientQueue queue = queueService.getTriagePatientQueueById(queueId);
 		String triageEncounterType = "2af60550-f291-11ea-b725-9753b5f685ae";
-		EncounterType encounterType = Context.getEncounterService().getEncounterType(triageEncounterType);
+		EncounterType encounterType = Context.getEncounterService().getEncounterTypeByUuid(triageEncounterType);
 		Location location = Context.getService(KenyaEmrService.class).getDefaultLocation();
 		if (queue != null && queue.getPatient().getId().equals(patient.getId())) {
 			Encounter encounter = new Encounter();
