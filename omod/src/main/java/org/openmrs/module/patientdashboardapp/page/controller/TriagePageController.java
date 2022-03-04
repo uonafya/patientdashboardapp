@@ -27,12 +27,10 @@ import org.openmrs.module.hospitalcore.model.TriagePatientData;
 import org.openmrs.module.hospitalcore.model.TriagePatientQueue;
 import org.openmrs.module.hospitalcore.model.TriagePatientQueueLog;
 import org.openmrs.module.hospitalcore.util.ConceptAnswerComparator;
-import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.openmrs.module.kenyaemr.api.KenyaEmrService;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.annotation.BindParams;
 import org.openmrs.ui.framework.page.PageModel;
-import org.openmrs.ui.framework.page.PageRequest;
 import org.openmrs.ui.framework.session.Session;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -140,10 +138,6 @@ public class TriagePageController {
 			@RequestParam(value = "roomToVisit", required = false) Integer roomToVisit,
 			@RequestParam(value = "returnUrl", required = false) String returnUrl,
 			@BindParams ("triagePatientData") TriagePatientData triagePatientData,
-			//@BindParams("patientMedicalHistory") PatientMedicalHistory patientMedicalHistory,
-			//@BindParams("patientFamilyHistory") PatientFamilyHistory patientFamilyHistory,
-			//@BindParams("patientDrugHistory") PatientDrugHistory patientDrugHistory,
-            //@BindParams("patientPersonalHistory") PatientPersonalHistory patientPersonalHistory,
             @RequestParam("patientId") Patient patient,
             UiUtils ui,
 			Session session) {
@@ -151,18 +145,9 @@ public class TriagePageController {
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
 		triagePatientData.setPatient(patient);
 		triagePatientData.setCreatedOn(new Date());
-        //patientMedicalHistory.setCreatedOn(new Date());
-        //patientFamilyHistory.setCreatedOn(new Date());
-        //patientDrugHistory.setCreatedOn(new Date());
-        //patientPersonalHistory.setCreatedOn(new Date());
-		triagePatientData = queueService.saveTriagePatientData(triagePatientData);
-        //PatientMedicalHistorySaveHandler.save(patientMedicalHistory,patient.getId());
-		//PatientFamilyHistorySaveHandler.save(patientFamilyHistory,patient.getId());
-		//PatientDrugHistorySaveHandler.save(patientDrugHistory,patient.getId());
-        //PatientPersonalHistorySaveHandler.save(patientPersonalHistory,patient.getId());
 
 		TriagePatientQueue queue = queueService.getTriagePatientQueueById(queueId);
-		String triageEncounterType = Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_TRIAGE_ENCOUTNER_TYPE);
+		String triageEncounterType = "2af60550-f291-11ea-b725-9753b5f685ae";
 		EncounterType encounterType = Context.getEncounterService().getEncounterType(triageEncounterType);
 		Location location = Context.getService(KenyaEmrService.class).getDefaultLocation();
 		if (queue != null && queue.getPatient().getId().equals(patient.getId())) {
