@@ -151,26 +151,48 @@ public class TriagePageController {
 		EncounterType encounterType = Context.getEncounterService().getEncounterTypeByUuid(triageEncounterType);
 		Location location = Context.getService(KenyaEmrService.class).getDefaultLocation();
 		if (queue != null && queue.getPatient().getId().equals(patient.getId())) {
+
 			Encounter encounter = new Encounter();
-			Date date = new Date();
 			encounter.setPatient(queue.getPatient());
 			encounter.setCreator(user);
-			encounter.setEncounterDatetime(date);
+			encounter.setEncounterDatetime(new Date());
 			encounter.setEncounterType(encounterType);
 			encounter.setLocation(location);
 			encounter.setProvider(EhrConfigsUtils.getDefaultEncounterRole(),EhrConfigsUtils.getProvider(user.getPerson()));
-			Context.getEncounterService().saveEncounter(encounter);	
+			encounter.setVisit(getLastVisitForPatient(queue.getPatient()));
 
-			if(triagePatientData.getTemperature()!=null){addObs(encounter,TEMPERATURE,triagePatientData.getTemperature().doubleValue());};
-			if(triagePatientData.getSystolic()!=null){addObs(encounter,SYSTOLIC,triagePatientData.getSystolic().doubleValue());}
-			if(triagePatientData.getDaistolic()!=null){addObs(encounter,DIASTOLIC,triagePatientData.getDaistolic().doubleValue());}
-			if(triagePatientData.getRespiratoryRate()!=null){addObs(encounter,RESPIRATORY,triagePatientData.getRespiratoryRate().doubleValue());}
-			if(triagePatientData.getHeight()!=null){addObs(encounter,HEIGHT,triagePatientData.getHeight().doubleValue());}
-			if(triagePatientData.getWeight()!=null){addObs(encounter,WEIGHT,triagePatientData.getWeight().doubleValue());}
-			if(triagePatientData.getPulsRate()!=null){addObs(encounter,PULSE,triagePatientData.getPulsRate().doubleValue());}	
-			if(triagePatientData.getOxygenSaturation()!=null){addObs(encounter,BLOODOXYGEN,triagePatientData.getOxygenSaturation().doubleValue());}	
-			if(triagePatientData.getMua()!=null){addObs(encounter,MUAC,triagePatientData.getMua().doubleValue());	}
-			
+
+			if(triagePatientData.getTemperature() != null){
+				addObs(encounter,TEMPERATURE,triagePatientData.getTemperature().doubleValue());
+			}
+			if(triagePatientData.getSystolic() != null){
+				addObs(encounter,SYSTOLIC,triagePatientData.getSystolic().doubleValue());
+			}
+			if(triagePatientData.getDaistolic() != null){
+				addObs(encounter,DIASTOLIC,triagePatientData.getDaistolic().doubleValue());
+			}
+			if(triagePatientData.getRespiratoryRate() != null){
+				addObs(encounter,RESPIRATORY,triagePatientData.getRespiratoryRate().doubleValue());
+			}
+			if(triagePatientData.getHeight() != null){
+				addObs(encounter,HEIGHT,triagePatientData.getHeight().doubleValue());
+			}
+			if(triagePatientData.getWeight() != null){
+				addObs(encounter,WEIGHT,triagePatientData.getWeight().doubleValue());
+			}
+			if(triagePatientData.getPulsRate() != null){
+				addObs(encounter,PULSE,triagePatientData.getPulsRate().doubleValue());
+			}
+			if(triagePatientData.getOxygenSaturation() != null){
+				addObs(encounter,BLOODOXYGEN,triagePatientData.getOxygenSaturation().doubleValue());
+			}
+			if(triagePatientData.getMua() != null){
+				addObs(encounter,MUAC,triagePatientData.getMua().doubleValue());
+			}
+
+			//save the encounter here with the obs
+			Context.getEncounterService().saveEncounter(encounter);
+			queueService.saveTriagePatientData(triagePatientData);
 
 			TriagePatientQueueLog triagePatientLog = logTriagePatient(
 					queueService, queue, encounter);
@@ -180,16 +202,16 @@ public class TriagePageController {
 			} else {
 				visitStatus = false;
 			}
+
 			sendPatientToOPDQueue(triagePatientLog.getPatient(), Context
 					.getConceptService().getConcept(roomToVisit),
 					triagePatientData, visitStatus,
 					triagePatientLog.getCategory());
 		} else {
 			OpdPatientQueue opdPatientQueue = Context.getService(PatientQueueService.class).getOpdPatientQueueById(queueId);
-			Encounter encounter = new Encounter();
-			Date date = new Date();
+			Encounter encounterNew = new Encounter();
 			try {
-				encounter.setPatient(opdPatientQueue.getPatient());
+				encounterNew.setPatient(opdPatientQueue.getPatient());
 			}
 			catch(Exception ex){
 				// Handle the error when empty.
@@ -198,25 +220,27 @@ public class TriagePageController {
 				returnUrl = ui.pageLink("patientqueueapp", "triageQueue", params);
 				return "redirect:" + returnUrl;
 			}
-			encounter.setCreator(user);
-			encounter.setEncounterDatetime(date);
-			encounter.setEncounterType(encounterType);
-			encounter.setLocation(location);
-			encounter.setProvider(EhrConfigsUtils.getDefaultEncounterRole(),EhrConfigsUtils.getProvider(user.getPerson()));
-			encounter.setVisit(getLastVisitForPatient(patient));
-			Context.getEncounterService().saveEncounter(encounter);
+			encounterNew.setCreator(user);
+			encounterNew.setEncounterDatetime(new Date());
+			encounterNew.setEncounterType(encounterType);
+			encounterNew.setLocation(location);
+			encounterNew.setProvider(EhrConfigsUtils.getDefaultEncounterRole(),EhrConfigsUtils.getProvider(user.getPerson()));
+			encounterNew.setVisit(getLastVisitForPatient(patient));
+			Context.getEncounterService().saveEncounter(encounterNew);
+
+			if(triagePatientData.getTemperature()!=null){addObs(encounterNew,TEMPERATURE,triagePatientData.getTemperature().doubleValue());};
+			if(triagePatientData.getSystolic()!=null){addObs(encounterNew,SYSTOLIC,triagePatientData.getSystolic().doubleValue());}
+			if(triagePatientData.getDaistolic()!=null){addObs(encounterNew,DIASTOLIC,triagePatientData.getDaistolic().doubleValue());}
+			if(triagePatientData.getRespiratoryRate()!=null){addObs(encounterNew,RESPIRATORY,triagePatientData.getRespiratoryRate().doubleValue());}
+			if(triagePatientData.getHeight()!=null){addObs(encounterNew,HEIGHT,triagePatientData.getHeight().doubleValue());}
+			if(triagePatientData.getWeight()!=null){addObs(encounterNew,WEIGHT,triagePatientData.getWeight().doubleValue());}
+			if(triagePatientData.getPulsRate()!=null){addObs(encounterNew,PULSE,triagePatientData.getPulsRate().doubleValue());}
+			if(triagePatientData.getOxygenSaturation()!=null){addObs(encounterNew,BLOODOXYGEN, triagePatientData.getOxygenSaturation());}
+			if(triagePatientData.getMua()!=null){addObs(encounterNew,MUAC,triagePatientData.getMua().doubleValue());	}
+			//save the triage data
+			queueService.saveTriagePatientData(triagePatientData);
 			opdPatientQueue.setTriageDataId(triagePatientData);
 			Context.getService(PatientQueueService.class).saveOpdPatientQueue(opdPatientQueue);
-
-			if(triagePatientData.getTemperature()!=null){addObs(encounter,TEMPERATURE,triagePatientData.getTemperature().doubleValue());};
-			if(triagePatientData.getSystolic()!=null){addObs(encounter,SYSTOLIC,triagePatientData.getSystolic().doubleValue());}
-			if(triagePatientData.getDaistolic()!=null){addObs(encounter,DIASTOLIC,triagePatientData.getDaistolic().doubleValue());}
-			if(triagePatientData.getRespiratoryRate()!=null){addObs(encounter,RESPIRATORY,triagePatientData.getRespiratoryRate().doubleValue());}
-			if(triagePatientData.getHeight()!=null){addObs(encounter,HEIGHT,triagePatientData.getHeight().doubleValue());}
-			if(triagePatientData.getWeight()!=null){addObs(encounter,WEIGHT,triagePatientData.getWeight().doubleValue());}
-			if(triagePatientData.getPulsRate()!=null){addObs(encounter,PULSE,triagePatientData.getPulsRate().doubleValue());}	
-			if(triagePatientData.getOxygenSaturation()!=null){addObs(encounter,BLOODOXYGEN, triagePatientData.getOxygenSaturation());}
-			if(triagePatientData.getMua()!=null){addObs(encounter,MUAC,triagePatientData.getMua().doubleValue());	}
 		
 		}
 		
@@ -229,14 +253,14 @@ public class TriagePageController {
 	}
 	public void addObs(Encounter encounter, String conceptGot, Double valueVital) {
         Obs obsTriage = new Obs();
-		Location location = Context.getService(KenyaEmrService.class).getDefaultLocation();
-		obsTriage.setObsDatetime(new Date());
+		obsTriage.setObsDatetime(encounter.getEncounterDatetime());
 		obsTriage.setValueNumeric(valueVital);
 		obsTriage.setConcept(Context.getConceptService().getConcept(conceptGot));
         obsTriage.setCreator(encounter.getCreator());
 		obsTriage.setLocation(encounter.getLocation());
         obsTriage.setDateCreated(encounter.getDateCreated());
         obsTriage.setPerson(encounter.getPatient());
+		obsTriage.setEncounter(encounter);
         encounter.addObs(obsTriage);
     }
 
@@ -258,9 +282,9 @@ public class TriagePageController {
 		queueLog.setEncounter(encounter);
 		queueLog.setCategory(queue.getCategory());
 		queueLog.setVisitStatus(queue.getVisitStatus());
-		
+		TriagePatientQueueLog log = queueService.saveTriagePatientQueueLog(queueLog);
 		queueService.deleteTriagePatientQueue(queue);
-		return queueService.saveTriagePatientQueueLog(queueLog);
+		return log;
 	}
 	
 	public static void sendPatientToOPDQueue(Patient patient, Concept selectedOPDConcept, TriagePatientData triagePatientData, boolean revisit, String selectedCategory) {
