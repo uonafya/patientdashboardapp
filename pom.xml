@@ -34,12 +34,9 @@
 	<properties>
 		<openMRSVersion>2.3.3</openMRSVersion>
 		<appframeworkVersion>2.9</appframeworkVersion>
-		<htmlformentryVersion>2.3</htmlformentryVersion>
 		<htmlwidgetsVersion>1.6.6</htmlwidgetsVersion>
-		<hospitalcoreVersion>2.0.3-SNAPSHOT</hospitalcoreVersion>
-		<idgenVersion>2.6</idgenVersion>
+		<hospitalcoreVersion>2.0.2</hospitalcoreVersion>
 		<uiframeworkVersion>3.8</uiframeworkVersion>
-		<webservices.restVersion>2.1</webservices.restVersion>
 		<uilibraryVersion>2.0.4</uilibraryVersion>
 		<inventoryVersion>2.0.0</inventoryVersion>
 		<appuiVersion>1.8.0</appuiVersion>
@@ -75,14 +72,6 @@
 				<version>${appuiVersion}</version>
 				<scope>provided</scope>
 			</dependency>
-
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>htmlformentry-api</artifactId>
-				<version>${htmlformentryVersion}</version>
-				<scope>provided</scope>
-			</dependency>
-
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>hospitalcore-api</artifactId>
@@ -116,13 +105,6 @@
 				<version>${htmlwidgetsVersion}</version>
 				<scope>provided</scope>
 			</dependency>
-
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>idgen-api</artifactId>
-				<version>${idgenVersion}</version>
-				<scope>provided</scope>
-			</dependency>
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>uiframework-api</artifactId>
@@ -142,28 +124,6 @@
 				<version>${metadatadeployVersion}</version>
 				<scope>provided</scope>
 			</dependency>
-
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>webservices.rest-omod</artifactId>
-				<version>${webservicesRestVersion}</version>
-				<type>jar</type>
-				<scope>provided</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>webservices.rest-omod-common</artifactId>
-				<version>${webservicesRestVersion}</version>
-				<scope>provided</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>webservices.rest-omod-1.8</artifactId>
-				<version>${webservicesRestVersion}</version>
-				<scope>provided</scope>
-			</dependency>
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>uilibrary-api</artifactId>
@@ -178,14 +138,6 @@
 				<scope>provided</scope>
 			</dependency>
 
-
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>webservices.rest-omod-common</artifactId>
-				<version>${webservicesRestVersion}</version>
-				<classifier>tests</classifier>
-				<scope>test</scope>
-			</dependency>
 			<!-- End OpenMRS modules -->
 
 			<!-- Begin OpenMRS core -->
