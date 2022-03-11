@@ -192,7 +192,7 @@ public class TriagePageController {
 
 			//save the encounter here with the obs
 			Context.getEncounterService().saveEncounter(encounter);
-			queueService.saveTriagePatientData(triagePatientData);
+			TriagePatientData triagePatientDataToUse = queueService.saveTriagePatientData(triagePatientData);
 
 			TriagePatientQueueLog triagePatientLog = logTriagePatient(
 					queueService, queue, encounter);
@@ -205,8 +205,10 @@ public class TriagePageController {
 
 			sendPatientToOPDQueue(triagePatientLog.getPatient(), Context
 					.getConceptService().getConcept(roomToVisit),
-					triagePatientData, visitStatus,
+							triagePatientDataToUse, visitStatus,
 					triagePatientLog.getCategory());
+			//delete the queue here
+			queueService.deleteTriagePatientQueue(queue);
 		} else {
 			OpdPatientQueue opdPatientQueue = Context.getService(PatientQueueService.class).getOpdPatientQueueById(queueId);
 			Encounter encounterNew = new Encounter();
@@ -282,9 +284,9 @@ public class TriagePageController {
 		queueLog.setEncounter(encounter);
 		queueLog.setCategory(queue.getCategory());
 		queueLog.setVisitStatus(queue.getVisitStatus());
-		TriagePatientQueueLog log = queueService.saveTriagePatientQueueLog(queueLog);
-		queueService.deleteTriagePatientQueue(queue);
-		return log;
+		queueService.saveTriagePatientQueueLog(queueLog);
+		//queueService.deleteTriagePatientQueue(queue);
+		return queueService.saveTriagePatientQueueLog(queueLog);
 	}
 	
 	public static void sendPatientToOPDQueue(Patient patient, Concept selectedOPDConcept, TriagePatientData triagePatientData, boolean revisit, String selectedCategory) {

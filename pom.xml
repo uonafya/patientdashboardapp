@@ -34,13 +34,10 @@
 	<properties>
 		<openMRSVersion>2.3.3</openMRSVersion>
 		<appframeworkVersion>2.9</appframeworkVersion>
-		<calculationVersion>1.0</calculationVersion>
 		<htmlformentryVersion>2.3</htmlformentryVersion>
 		<htmlwidgetsVersion>1.6.6</htmlwidgetsVersion>
 		<hospitalcoreVersion>2.0.3-SNAPSHOT</hospitalcoreVersion>
 		<idgenVersion>2.6</idgenVersion>
-		<reportingVersion>0.9.8.1</reportingVersion>
-		<serializationxstreamVersion>0.2.7</serializationxstreamVersion>
 		<uiframeworkVersion>3.8</uiframeworkVersion>
 		<webservices.restVersion>2.1</webservices.restVersion>
 		<uilibraryVersion>2.0.4</uilibraryVersion>
@@ -72,14 +69,6 @@
 				<version>${appframeworkVersion}</version>
 				<scope>provided</scope>
 			</dependency>
-
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>calculation-api</artifactId>
-				<version>${calculationVersion}</version>
-				<scope>provided</scope>
-			</dependency>
-
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>appui-omod</artifactId>
@@ -134,21 +123,6 @@
 				<version>${idgenVersion}</version>
 				<scope>provided</scope>
 			</dependency>
-
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>reporting-api</artifactId>
-				<version>${reportingVersion}</version>
-				<scope>provided</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>serialization.xstream-api</artifactId>
-				<version>${serializationxstreamVersion}</version>
-				<scope>provided</scope>
-			</dependency>
-
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>uiframework-api</artifactId>
