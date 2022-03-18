@@ -39,11 +39,13 @@ import org.openmrs.module.hospitalcore.model.RadiologyDepartment;
 import org.openmrs.module.hospitalcore.model.Referral;
 import org.openmrs.module.hospitalcore.model.ReferralReasons;
 import org.openmrs.module.kenyaemr.api.KenyaEmrService;
+import org.openmrs.module.patientdashboardapp.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -78,6 +80,7 @@ public class Note {
 	}
 
 
+
 	public Note () {
 	}
 
@@ -92,6 +95,7 @@ public class Note {
 		this.signs = Sign.getPreviousSigns(patientId);
 		this.physicalExamination = getPreviousPhysicalExamination(patientId);
 		this.illnessHistory = getPreviousIllnessHistory(patientId);
+		this.onSetDate = getPreviousDateOfOnSetOfIlliness(patientId);
 	}
 
 	private int patientId;
@@ -113,6 +117,16 @@ public class Note {
     private String specify;
 	private String otherInstructions;
 	private String physicalExamination;
+
+	public String getOnSetDate() {
+		return onSetDate;
+	}
+
+	public void setOnSetDate(String onSetDate) {
+		this.onSetDate = onSetDate;
+	}
+
+	private String onSetDate;
 
 	public static String PROPERTY_FACILITY = "161562AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"; //Name of where patient was referred to
 
@@ -276,7 +290,7 @@ public class Note {
 		addObs(obsGroup, encounter);
         try {
 			encounter.setVisit(getLastVisitForPatient(patient));
-
+			//save an encounter with all the other entries
 			Context.getEncounterService().saveEncounter(encounter);
 			saveNoteDetails(encounter);
 			endEncounter(encounter);
@@ -311,6 +325,9 @@ public class Note {
 	}
 
 	private void addObs(Obs obsGroup, Encounter encounter) {
+		if (StringUtils.isNotBlank(this.onSetDate)) {
+			addOnSetDate(encounter, obsGroup);
+		}
 		if (StringUtils.isNotBlank(this.illnessHistory)) {
 			addIllnessHistory(encounter, obsGroup);
 		}
@@ -349,8 +366,7 @@ public class Note {
 		if (referralReasons != null) {
 			ReferralReasons.addReferralReasonsObs(referralReasons, specify, encounter, obsGroup);
 		}
-
-		if (this.outcome != null) {
+		if(this.outcome != null) {
 			this.outcome.addObs(encounter, obsGroup);
 		}
 	}
@@ -377,6 +393,9 @@ public class Note {
 
 	private void addIllnessHistory(Encounter encounter, Obs obsGroup) {
 		Concept conceptIllnessHistory = Context.getConceptService().getConceptByUuid("1390AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		if (conceptIllnessHistory == null) {
+			throw new NullPointerException("Illness history concept is not defined");
+		}
 		Obs obsIllnessHistory = new Obs();
 		obsIllnessHistory.setObsGroup(obsGroup);
 		obsIllnessHistory.setConcept(conceptIllnessHistory);
@@ -387,10 +406,32 @@ public class Note {
 		encounter.addObs(obsIllnessHistory);
 	}
 
+	private void addOnSetDate(Encounter encounter, Obs obsGroup) {
+		Concept onSetConcepts = Context.getConceptService().getConceptByUuid("164428AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		if (onSetConcepts == null) {
+			throw new NullPointerException("Date on set  concept is not defined");
+		}
+		Obs obsOnSetDate = new Obs();
+		obsOnSetDate.setObsGroup(obsGroup);
+		obsOnSetDate.setConcept(onSetConcepts);
+		try {
+		obsOnSetDate.setValueDatetime(Utils.getDateInddyyyymmddFromStringObject(this.onSetDate));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		obsOnSetDate.setCreator(encounter.getCreator());
+		obsOnSetDate.setDateCreated(encounter.getDateCreated());
+		obsOnSetDate.setEncounter(encounter);
+		encounter.addObs(obsOnSetDate);
+	}
+
 
 
 	private void addOtherInstructions(Encounter encounter, Obs obsGroup) {
 		Concept conceptOtherInstructions = Context.getConceptService().getConceptByUuid("163106AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		if (conceptOtherInstructions == null) {
+			throw new NullPointerException("Other instructions concept is not defined");
+		}
 		Obs obsOtherInstructions = new Obs();
 		obsOtherInstructions.setObsGroup(obsGroup);
 		obsOtherInstructions.setConcept(conceptOtherInstructions);
@@ -503,7 +544,7 @@ public class Note {
         PatientQueueService queueService = Context.getService(PatientQueueService.class);
         Concept conceptPreviousIllnessHistory = Context.getConceptService().getConceptByUuid("1390AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         Encounter previousIllnessHistoryEncounter = queueService.getLastOPDEncounter(patient);
-        if (previousIllnessHistoryEncounter!=null){
+        if (previousIllnessHistoryEncounter != null){
             Set<Obs> allPreviousIllnessHistoryObs = previousIllnessHistoryEncounter.getAllObs();
 
             for (Obs obs :allPreviousIllnessHistoryObs){
@@ -515,6 +556,24 @@ public class Note {
 
         return previousIllnessHistory;
     }
+
+    private String getPreviousDateOfOnSetOfIlliness(int patientId){
+		String previousOnSetDate = "";
+		Patient patient = Context.getPatientService().getPatient(patientId);
+		PatientQueueService queueService = Context.getService(PatientQueueService.class);
+		Concept onSetConcepts = Context.getConceptService().getConceptByUuid("164428AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		Encounter previousOnSetDateEncounter = queueService.getLastOPDEncounter(patient);
+		if(previousOnSetDateEncounter != null) {
+			Set<Obs> allPreviousObs = previousOnSetDateEncounter.getAllObs();
+			for(Obs obs :allPreviousObs) {
+				if (obs.getConcept().equals(onSetConcepts )){
+					previousOnSetDate = Utils.getDateAsString(obs.getValueDatetime(), "dd/MM/yyyy");
+				}
+			}
+		}
+		return previousOnSetDate;
+
+	}
 
 	public void saveInvestigations(Encounter encounter, String departmentName, Investigation investigation) throws Exception {
 		Concept investigationConcept = Context.getConceptService().getConceptByUuid("0179f241-8c1d-47c1-8128-841f6508e251");

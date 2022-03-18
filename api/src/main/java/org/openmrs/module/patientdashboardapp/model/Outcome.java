@@ -1,5 +1,6 @@
 package org.openmrs.module.patientdashboardapp.model;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Encounter;
@@ -11,6 +12,7 @@ import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmission;
 import org.openmrs.module.hospitalcore.model.Option;
 import org.openmrs.module.hospitalcore.model.PatientSearch;
+import org.openmrs.module.patientdashboardapp.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +33,14 @@ public class Outcome {
     private Option option;
     private String followUpDate;
     private Option admitTo;
+
+    final String FOLLOW_UP_OPTION_UUID = "160523AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    final String ADMIT_OPTION_UUID = "1654AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    final String DIED_OPTION_UUID = "160034AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    final String REVIEWED_OPTION_UUID = "159615AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    final String CURED_OPTION_UUID = "159791AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    final String REFERRAL_OPTION_UUID = "6b11552c-c23e-4178-984b-82b80305af36";
+    final String OTHER_UUID = "5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     public Option getOption() {
         return this.option;
@@ -79,21 +89,25 @@ public class Outcome {
 
     public void addObs(Encounter encounter, Obs obsGroup) {
         Concept outcomeConcept = Context.getConceptService().getConceptByUuid("160433AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        Obs obsOutcome = new Obs();
-        obsOutcome.setObsGroup(obsGroup);
-        obsOutcome.setConcept(outcomeConcept);
-        obsOutcome.setValueText(this.option.getLabel());
-        obsOutcome.setCreator(encounter.getCreator());
-        obsOutcome.setDateCreated(encounter.getDateCreated());
-        obsOutcome.setEncounter(encounter);
-        encounter.addObs(obsOutcome);
-        if (this.option.getId() == FOLLOW_UP_OPTION) {
+        String valueText = this.option.getLabel();
+        if(StringUtils.isNotEmpty(valueText)) {
+            Obs obsOutcome = new Obs();
+            obsOutcome.setObsGroup(obsGroup);
+            obsOutcome.setConcept(outcomeConcept);
+            obsOutcome.setValueCoded(getOptionSelected(this.option.getId()));
+            obsOutcome.setValueText(valueText);
+            obsOutcome.setCreator(encounter.getCreator());
+            obsOutcome.setDateCreated(encounter.getDateCreated());
+            obsOutcome.setEncounter(encounter);
+            encounter.addObs(obsOutcome);
+        }
+        if (this.option.getId() == FOLLOW_UP_OPTION && this.followUpDate != null) {
             Concept nextAppointmentDate = Context.getConceptService().getConceptByUuid("5096AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             Obs nextAppointmentDateObs = new Obs();
             nextAppointmentDateObs.setObsGroup(obsGroup);
             nextAppointmentDateObs.setConcept(nextAppointmentDate);
             try {
-                nextAppointmentDateObs.setValueDatetime(Context.getDateFormat().parse(this.followUpDate));
+                nextAppointmentDateObs.setValueDatetime(Utils.getDateInddmmmyyyFromStringObject(this.followUpDate));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -102,15 +116,19 @@ public class Outcome {
             nextAppointmentDateObs.setDateCreated(encounter.getDateCreated());
             encounter.addObs(nextAppointmentDateObs);
         }
-        if (this.option.getId() == ADMIT_OPTION) {
-            Obs admitObs = new Obs();
-            admitObs.setObsGroup(obsGroup);
-            admitObs.setConcept(outcomeConcept);
-            admitObs.setValueCoded(Context.getConceptService().getConcept(this.admitTo.getId()));
-            admitObs.setDateCreated(encounter.getDateCreated());
-            admitObs.setEncounter(encounter);
-            encounter.addObs(admitObs);
+        if (this.option.getId() == ADMIT_OPTION && this.admitTo != null) {
+            Concept valueCoded = Context.getConceptService().getConcept(this.admitTo.getId());
+            if (valueCoded != null) {
+                Obs admitObs = new Obs();
+                admitObs.setObsGroup(obsGroup);
+                admitObs.setConcept(outcomeConcept);
+                admitObs.setValueCoded(Context.getConceptService().getConcept(this.admitTo.getId()));
+                admitObs.setDateCreated(encounter.getDateCreated());
+                admitObs.setEncounter(encounter);
+                encounter.addObs(admitObs);
+            }
         }
+
     }
 
     public void save(Encounter encounter) {
@@ -150,6 +168,34 @@ public class Outcome {
             patientAdmission.setAcceptStatus(0);
             Context.getService(IpdService.class).saveIpdPatientAdmission(patientAdmission);
         }
+    }
+
+
+    private Concept getRequiredConcept(String uuid){
+        return Context.getConceptService().getConceptByUuid(uuid);
+    }
+
+    private Concept getOptionSelected(Integer option) {
+        Concept concept = null;
+        if(option == FOLLOW_UP_OPTION) {
+            concept = getRequiredConcept(FOLLOW_UP_OPTION_UUID);
+        }
+        else if(option == ADMIT_OPTION) {
+            concept = getRequiredConcept(ADMIT_OPTION_UUID);
+        }else if(option == DIED_OPTION) {
+            concept = getRequiredConcept(DIED_OPTION_UUID);
+        }else if(option == REVIEWED_OPTION) {
+            concept = getRequiredConcept(REVIEWED_OPTION_UUID);
+        }else if(option == CURED_OPTION) {
+            concept = getRequiredConcept(CURED_OPTION_UUID);
+        }else if(option == REFERRAL_OPTION) {
+            concept = getRequiredConcept(REFERRAL_OPTION_UUID);
+        }
+        else {
+            concept = getRequiredConcept(OTHER_UUID);
+        }
+
+        return concept;
     }
 }
 

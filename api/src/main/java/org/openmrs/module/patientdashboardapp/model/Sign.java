@@ -101,7 +101,7 @@ public class Sign {
 			encounter.addObs(obsSymptom);
 			if (this.id == NON_CODED_SYMPTOM_5693) {
 				nonCodedSymptom = new Obs();
-				nonCodedSymptom.setConcept(Context.getConceptService().getConcept(NON_CODED_SYMPTOM_5693));
+				nonCodedSymptom.setConcept(Context.getConceptService().getConcept(OTHER_NON_CODED_5622));
 				nonCodedSymptom.setObsGroup(obsSymptom);
 				nonCodedSymptom.setValueText(this.label);
 				nonCodedSymptom.setCreator(encounter.getCreator());

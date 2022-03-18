@@ -54,7 +54,7 @@ public class ClinicalNotesFragmentController {
 		Note note = new Note(patientId, queueId, opdId, opdLogId);
 		model.addAttribute("note", StringEscapeUtils.escapeJavaScript(SimpleObject.fromObject(note, ui, "signs.id", "signs.label", "diagnoses.id", "diagnoses.label",
 						"investigations", "procedures", "patientId", "queueId","specify",
-						"opdId", "opdLogId", "admitted","facility", "illnessHistory","referralComments","physicalExamination", "otherInstructions").toJson()));
+						"opdId", "opdLogId", "admitted","facility", "onSetDate", "illnessHistory","referralComments","physicalExamination", "otherInstructions").toJson()));
 	}
 
     public List<SimpleObject> getQualifiers(@RequestParam("signId") Integer signId, UiUtils ui) {

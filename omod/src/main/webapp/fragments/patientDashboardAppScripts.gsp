@@ -520,12 +520,13 @@
 			}else {
 				note['facility'] = jq('#facility').val();
 			}
+			note['onSetDate'] = jq('#onSetDate').val();
 			
 			jq.ajax({
 					type: 'POST',
 					url: '${ ui.actionLink("patientdashboardapp", "clinicalNoteProcessor", "processNote", [ successUrl: successUrl ]) }',
 					data: {
-						note: ko.toJSON(note, ["label", "id", "admitted","provisional",
+						note: ko.toJSON(note, ["label", "id", "admitted","provisional","onSetDate",
 							"diagnoses", "illnessHistory", "referralReasons", "externalReferralComments", "physicalExamination",
 							"inpatientWarads", "investigations", "opdId",
 							"opdLogId", "otherInstructions", "patientId",
@@ -699,11 +700,11 @@
             })
         });
 
-		if (!jq('.symptoms-qualifiers').text().trim() == "") {
+		if (!jq('.symptoms-qualifiers').text().trim() === "") {
 			jq('#task-symptom').show();
 		}
 		
-		if (!jq('.diagnosis-container').text().trim() == "") {
+		if (!jq('.diagnosis-container').text().trim() === "") {
 			jq('#task-diagnosis').show();
 		}
 		
