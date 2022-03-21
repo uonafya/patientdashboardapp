@@ -23,8 +23,10 @@
 	
 	var prescription = {}
 	var emrMessages = {};
+    var examinationArray = [];
 
-	emrMessages["numericRangeHigh"] = "value should be less than {0}";
+
+    emrMessages["numericRangeHigh"] = "value should be less than {0}";
 	emrMessages["numericRangeLow"] = "value should be more than {0}";
 	emrMessages["requiredField"] = "Ensure details have been filled properly";
 	emrMessages["numberField"] = "Value not a number";
@@ -483,6 +485,55 @@
 				jq(this).removeClass("ui-corner-top").addClass("ui-corner-all");
 			}
 		});
+
+        var examinations = [];
+
+
+        jq("#searchExaminations").autocomplete({
+            minLength:3,
+            source: function (request, response) {
+                jq.getJSON('${ ui.actionLink("patientdashboardapp", "ClinicalNotes", "examination") }', {
+                    findingQuery: request.term
+                }).success(function(data) {
+                    examinations = data;
+                    response(data);
+                });
+            },
+            select: function(event, ui){
+                var examination = _.find(examinations,function(exam){return exam.value === ui.item.value;});
+
+                if (!examinationArray.find(function(exam){
+                    return exam.value == examination.value;})){
+
+                    var examTemplate = _.template(jq("#examination-detail-template").html());
+                    jq("#exams-holder").append(examTemplate(examination));
+                    jq('#exams-set').val('SET');
+                    jq('#task-exams').show();
+
+                    examinationArray.push(examination);
+                }
+                else {
+                    jq().toastmessage('showErrorToast', 'The test ' + examination.label + ' has already been added.');
+                }
+
+                jq(this).val('');
+                return false;
+            }
+        });
+
+        jq("#exams-holder").on("click", "#selectedExamination",function(){
+            var uid = jq(this).data('uid');
+            examinationArray = examinationArray.filter(function(examination){
+                return examination.value != uid;
+            });
+
+            jq(this).parent("div").remove();
+
+            if (jq("#examination-detail-div").length == 0){
+                jq('#exams-set').val('');
+                jq('#task-exams').hide();
+            }
+        });
 
 		jq(".symptoms-qualifiers").on("click", "span.show-qualifiers", function() {
 			var qualifierContainer = jq(this).parents(".symptom-container").find(".qualifier-container");

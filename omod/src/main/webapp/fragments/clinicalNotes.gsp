@@ -25,6 +25,13 @@
 
 ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note: note, listOfWards: listOfWards, internalReferralSources: internalReferralSources, externalReferralSources: externalReferralSources, referralReasonsSources: referralReasonsSources, outcomeOptions: outcomeOptions ]) }
 
+<script>
+
+    var prescription = {drug: ko.observable(new Drug())};
+    ko.applyBindings(prescription, jq("#prescription-dialog")[0]);
+
+</script>
+
 <style>
 .dialog textarea{
 	resize: none;
@@ -73,7 +80,42 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 	background-color: #f8d7da;
 	border-color: #f5c6cb;
 }
+#exams-holder input[type="radio"]{
+    float: none;
+}
+#examination-detail-div .selecticon{
+    color: #f00;
+    cursor: pointer;
+    float: right;
+    margin: 7px 7px 0 0;
+}
+#examination-detail-div{
+    border-top: 1px dotted #ccc;
+    margin: 0 0 10px;
+}
+#examination-detail-div:first-child{
+    border-top: 1px none #ccc;
+    margin: 10px 0 10px;
+}
+
 </style>
+
+<script id="examination-detail-template" type="text/template">
+<div id="examination-detail-div">
+    <span id="selectedExamination" data-uid="{{=value}}" class="icon-remove selecticon"></span>
+    <label style="margin-top: 0px; width: 95%;">{{-label}}</label>
+    <input type="{{-text_type}}" name="{{-text_name}}" style="margin-left: 10px ! important; width: 95% ! important;" placeholder="SPECIFY VALUE FOR {{-label}}"/>
+    <br/>
+
+    {{ _.each(answers, function(answer, index) { }}
+    <label style="width: 95%; cursor: pointer;">
+        <input type="radio" name="concept.{{=value}}" value="{{=answer.uuid}}">
+        {{=answer.display}}
+    </label>
+    <br/>
+    {{ }); }}
+</div>
+</script>
 
 <div id="content">
 	<form method="post" id="notes-form" class="simple-form-ui">
@@ -158,7 +200,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
                 <div style="padding: 0 4px">
 
                     <div>
-                        <label for="searchExaminations" class="label title-label">Systematic Examinations <span class="important"></span></label>
+                        <label for="searchExaminations" class="label title-label">Systemic Examinations <span class="important"></span></label>
                         <input type="text" id="searchExaminations" name="" value="" placeholder="Add Examination"/>
                         <field>
                             <input type="hidden" id="exams-set" class=""/>
@@ -589,8 +631,3 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 		<label class="button cancel">Cancel</label>
 	</div>
 </div>
-
-<script>
-	var prescription = {drug: ko.observable(new Drug())};
-	ko.applyBindings(prescription, jq("#prescription-dialog")[0]);
-</script>

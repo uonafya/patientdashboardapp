@@ -150,7 +150,7 @@ public class ClinicalNotesFragmentController {
 
     public List<SimpleObject> examination(@RequestParam("findingQuery") String findingQuery) {
         List<ConceptClass> requiredConceptClasses = Arrays.asList(Context.getConceptService().getConceptClassByName(
-                "Diagnosis"), Context.getConceptService().getConceptClassByName("Anatomy"));
+                "Diagnosis"), Context.getConceptService().getConceptClassByName("Anatomy"), Context.getConceptService().getConceptClassByName("Finding"));
         List<ConceptDatatype> requiredConceptDataTypes = Arrays.asList(
                 Context.getConceptService().getConceptDatatypeByName("Coded"), Context.getConceptService()
                         .getConceptDatatypeByName("Text"));
