@@ -556,6 +556,10 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 				<input type="text" class="drug-number-of-days" data-bind="value: prescription.drug().numberOfDays">
 			</li>
 			<li>
+				<label>Route</label>
+				<select class="drug-route" data-bind="options: prescription.drug().dosageRouteOpts, value: prescription.drug().dosageRoute, optionsText: 'label',  optionsCaption: 'Select Route'"><option value=""></option></select>
+			</li>
+			<li>
 				<label>Comment</label>
 				<textarea class="drug-comment" data-bind="value: prescription.drug().comment"></textarea>
 			</li>
