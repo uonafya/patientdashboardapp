@@ -191,6 +191,8 @@ function Drug() {
 	self.dosageAndUnit = ko.computed(function(){
 		return self.dosage() + " " + (self.drugUnit() && self.drugUnit().label);
 	});
+	self.dosageRouteOpts = ko.observableArray([]);
+	self.dosageRoute = ko.observable();
 }
 
 function Frequency(freqObj) {
@@ -206,6 +208,12 @@ function Formulation(formulationObj) {
 function DrugUnit(unitObj) {
 	this.id = unitObj.id;
 	this.label = unitObj.label;
+}
+
+function DosageRoute(dosageRoutObj){
+	this.id = dosageRoutObj.id;
+	this.label = dosageRoutObj.label;
+
 }
 
 function Outcome(outcomeObj) {

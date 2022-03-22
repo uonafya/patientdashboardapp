@@ -19,6 +19,7 @@ public class Drug {
 	private String comment;
 	private String dosage;
 	private Option drugUnit;
+	private Option route;
 
 	public Option getDrugUnit() {
 		return drugUnit;
@@ -59,10 +60,10 @@ public class Drug {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	public void setDosage(String dosage){
-		this.dosage = dosage;
-	}
-	
+	public void setDosage(String dosage){ this.dosage = dosage;	}
+	public Option getRoute() {  return route;    }
+	public void setRoute(Option route) {    this.route = route; }
+
 	public void save(Encounter encounter, String referralWardName) {
 		InventoryCommonService inventoryCommonService = Context.getService(InventoryCommonService.class);
 		InventoryDrug inventoryDrug = inventoryCommonService.getDrugByName(this.drugName);
@@ -78,6 +79,8 @@ public class Drug {
 			opdDrugOrder.setNoOfDays(this.numberOfDays);
 			opdDrugOrder.setComments(this.comment);
 			opdDrugOrder.setDosage(this.dosage);
+			/* TODO immplement opdDrugOrder.route property in hospitalcore.opdDrugOrder
+			opdDrugOrder.setRoute(this.route);*/
             if (drugUnit !=null){
                 opdDrugOrder.setDosageUnit(Context.getConceptService().getConcept(this.drugUnit.getId()));
             }

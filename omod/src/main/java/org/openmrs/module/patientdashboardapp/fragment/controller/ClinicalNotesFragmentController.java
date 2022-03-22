@@ -151,4 +151,12 @@ public class ClinicalNotesFragmentController {
         }
         return SimpleObject.fromCollection(drugUnitOptions,uiUtils,"id","label", "uuid") ;
     }
+
+    public List<SimpleObject> getDosageRoutes(UiUtils uiUtils) {
+
+        Concept dosageRouteConcept = Context.getConceptService().getConceptByUuid("162394AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        List<Concept> dosageRouteConceptList = new ArrayList<Concept>();
+        dosageRouteConceptList.addAll(Context.getConceptService().getConceptsByConceptSet(dosageRouteConcept));
+        return SimpleObject.fromCollection(dosageRouteConceptList, uiUtils, "id", "name", "uuid");
+    }
 }
