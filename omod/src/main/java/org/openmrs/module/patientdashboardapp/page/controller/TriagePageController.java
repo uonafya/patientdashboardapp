@@ -240,8 +240,9 @@ public class TriagePageController {
 			if(triagePatientData.getOxygenSaturation()!=null){addObs(encounterNew,BLOODOXYGEN, triagePatientData.getOxygenSaturation());}
 			if(triagePatientData.getMua()!=null){addObs(encounterNew,MUAC,triagePatientData.getMua().doubleValue());	}
 			//save the triage data
-			queueService.saveTriagePatientData(triagePatientData);
-			opdPatientQueue.setTriageDataId(triagePatientData);
+
+			TriagePatientData patientData = queueService.saveTriagePatientData(triagePatientData);
+			opdPatientQueue.setTriageDataId(patientData);
 			Context.getService(PatientQueueService.class).saveOpdPatientQueue(opdPatientQueue);
 		
 		}
