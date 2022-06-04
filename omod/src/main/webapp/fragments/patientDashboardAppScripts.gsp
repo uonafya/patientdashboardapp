@@ -15,11 +15,7 @@
 		}
 		return dataToParse;
 	}
-	var outcomeOptions = ${
-		config.outcomeOptions.collect {
-			it.toJson()
-		}
-	}
+	var outcomeOptions = ${ config.outcomeOptions.collect { it.toJson() } }
 	
 	var prescription = {}
 	var emrMessages = {};
@@ -129,21 +125,9 @@
 		}
 	}
 
-	note.inpatientWards = ${
-		config.listOfWards.collect {
-			it.toJson()
-		}
-	};
-	note.internalReferralOptions = ${
-		config.internalReferralSources.collect {
-			it.toJson()
-		}
-	};
-	note.externalReferralOptions = ${
-		config.externalReferralSources.collect {
-			it.toJson()
-		}
-	};
+	note.inpatientWards = ${config.listOfWards.collect { it.toJson() } };
+	note.internalReferralOptions = ${ config.internalReferralSources.collect { it.toJson() } };
+	note.externalReferralOptions = ${ config.externalReferralSources.collect { it.toJson() } };
 
 	var mappedSigns = jq.map(getJSON(previousNote.signs), function(sign) {
 		return new Sign(sign);

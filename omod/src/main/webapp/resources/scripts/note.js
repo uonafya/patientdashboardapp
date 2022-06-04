@@ -36,7 +36,7 @@ function Note(noteObj) {
 	this.addSign = function(symptom) {
 		//check if the item has already been added
 		var match = ko.utils.arrayFirst(self.signs(), function(item) {
-			if (symptom.id === emrPlusConstants.OTHER_SYMPTOM_ID && symptom.id === item.id && symptom.label !== item.label) {
+			if (symptom.id == emrPlusConstants.OTHER_SYMPTOM_ID && symptom.id == item.id && symptom.label !== item.label) {
 				return false;
 			} else if (symptom.id === item.id) {
 				return true;
