@@ -751,7 +751,11 @@ h2 span{
     </div>
     <table>
         <tr>
-            <td width="15%" valign="top" style="padding-left: 5px">&nbsp;</td>
+            <td width="15%" valign="top" style="padding-left: 5px">&nbsp;
+                <button class="btn btn-sm btn-primary float-left mb-3" data-toggle="modal" data-target="#transferPatientModal">
+                    Transfer Patient
+                </button>
+            </td>
             <td>
                 <form form id="vitalRegistrationForm" method="post">
                     <div class="container">
