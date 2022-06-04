@@ -53,12 +53,14 @@ public class MainPageController {
             model.addAttribute("gender", "FEMALE");
         }
         PersonAttributeType paymentCategory = Context.getPersonService().getPersonAttributeTypeByUuid("09cd268a-f0f5-11ea-99a8-b3467ddbf779");
+        PersonAttributeType paymentSubCategory = Context.getPersonService().getPersonAttributeTypeByUuid("972a32aa-6159-11eb-bc2d-9785fed39154");
         model.addAttribute("patientId", patientId);
         model.addAttribute("opdId", opdId);
         model.addAttribute("queueId", queueId);
         model.addAttribute("opdLogId", opdLogId);
         model.addAttribute("patientIdentifier",patient.getPatientIdentifier());
         model.addAttribute("category",patient.getAttribute(paymentCategory));
+        model.addAttribute("subCategory",patient.getAttribute(paymentSubCategory));
         model.addAttribute("address",patient.getPersonAddress());
         model.addAttribute("visitStatus",visitStatus);
 

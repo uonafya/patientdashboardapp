@@ -118,8 +118,10 @@ public class TriagePageController {
 		String selectedCategory = "";
 
 		PersonAttributeType paymentCategory = Context.getPersonService().getPersonAttributeTypeByUuid("09cd268a-f0f5-11ea-99a8-b3467ddbf779");
+		PersonAttributeType paymentSubCategory = Context.getPersonService().getPersonAttributeTypeByUuid("972a32aa-6159-11eb-bc2d-9785fed39154");
 
 		 model.addAttribute("selectedCategory", patient.getAttribute(paymentCategory));
+		 model.addAttribute("selectedSubCategory", patient.getAttribute(paymentSubCategory));
 		return null;
 	}
 

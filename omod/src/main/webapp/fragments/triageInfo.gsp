@@ -223,6 +223,11 @@ jq(function(){
 			</div>
 		</div>
 	</div>
+	<div>
+		<button class="btn btn-sm btn-primary float-right mb-3" data-toggle="modal" data-target="#newVitalsModal">
+			Capture new vitals
+		</button>
+	</div>
 </div>
 
 <script id="triage-detail-template" type="text/template">
