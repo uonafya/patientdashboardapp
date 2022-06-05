@@ -15,11 +15,7 @@
 		}
 		return dataToParse;
 	}
-	var outcomeOptions = ${
-		config.outcomeOptions.collect {
-			it.toJson()
-		}
-	}
+	var outcomeOptions = ${ config.outcomeOptions.collect { it.toJson()	} };
 	
 	var prescription = {}
 	var emrMessages = {};
@@ -129,21 +125,9 @@
 		}
 	}
 
-	note.inpatientWards = ${
-		config.listOfWards.collect {
-			it.toJson()
-		}
-	};
-	note.internalReferralOptions = ${
-		config.internalReferralSources.collect {
-			it.toJson()
-		}
-	};
-	note.externalReferralOptions = ${
-		config.externalReferralSources.collect {
-			it.toJson()
-		}
-	};
+	note.inpatientWards = ${ config.listOfWards.collect { it.toJson() } };
+	note.internalReferralOptions = ${ config.internalReferralSources.collect { it.toJson() } };
+	note.externalReferralOptions = ${ config.externalReferralSources.collect { it.toJson() } };
 
 	var mappedSigns = jq.map(getJSON(previousNote.signs), function(sign) {
 		return new Sign(sign);
@@ -169,7 +153,7 @@
 		var anyUnchecked = false;
 		
 		jq('.diagnosis-container').children('div').each(function () {
-			if (jq(this).find('input:checked').length === 0){
+			if (jq(this).find('input:checked').length == 0){
 				anyUnchecked = true;
 				jq("#diagnosis-set").val('');
 				return;
@@ -700,30 +684,30 @@
             })
         });
 
-		if (!jq('.symptoms-qualifiers').text().trim() === "") {
+		if (jq('.symptoms-qualifiers').text().trim()) {
 			jq('#task-symptom').show();
 		}
-		
-		if (!jq('.diagnosis-container').text().trim() === "") {
+
+		if (jq('.diagnosis-container').text().trim()) {
 			jq('#task-diagnosis').show();
 		}
-		
-		if (note.signs().length > 0){
+
+		if (note.signs){
 			jq('#symptoms-set').val('symptoms-set');
 		}
-		
-		if (note.diagnoses().length > 0){
+
+		if (note.diagnoses){
 			verifyDiagnosis();
 		}
-		
+
 		if (note.procedures().length > 0){
 			jq('#procedure-set').val('procedure-set');
 		}
-		
+
 		if (note.investigations().length > 0){
 			jq('#investigation-set').val('investigation-set');
 		}
-		
+
 		if (note.drugs().length > 0){
 			jq('#drug-set').val('drug-set');
 		}
