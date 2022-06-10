@@ -75,6 +75,9 @@ public class ClinicalNotesFragmentController {
             model.addAttribute("gender", "FEMALE");
         }
 
+
+        KenyaEmrService service =Context.getService(KenyaEmrService.class);
+        String mfl =service.getDefaultLocationMflCode();
 		model.addAttribute("outcomeOptions", SimpleObject.fromCollection(Outcome.getAvailableOutcomes(), ui, "label", "id"));
 		model.addAttribute("listOfWards", SimpleObject.fromCollection(Outcome.getInpatientWards(), ui, "label", "id"));
 		model.addAttribute("internalReferralSources", SimpleObject.fromCollection(Referral.getInternalReferralOptions(), ui, "label", "id"));
