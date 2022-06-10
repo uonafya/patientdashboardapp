@@ -27,6 +27,13 @@
 
 <script>
 	function printReferraInfo() {
+		jq.getJSON('${ ui.actionLink("patientdashboardapp", "visitSummary" ,"getVisitSummaryDetails") }',
+				{ 'encounterId' : jq(visitSummary).find(".encounter-id").val() }
+		).success(function (data) {
+			var visitDetailTemplate =  _.template(jq("#referral-template").html());
+
+			jq("#info-body").html(visitDetailTemplate(data.notes));
+		})
 		var printDiv = jQuery("#printDiv").html();
 		var printWindow = window.open('', '', 'height=500,width=400');
 		//printWindow.document.write('<html><head><title>Patient Information</title>');
@@ -39,7 +46,6 @@
 		printWindow.close();
 	}
 </script>
-
 
 
 ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note: note, listOfWards: listOfWards, internalReferralSources: internalReferralSources, externalReferralSources: externalReferralSources, referralReasonsSources: referralReasonsSources, outcomeOptions: outcomeOptions ]) }
