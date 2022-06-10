@@ -682,11 +682,11 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
             <br>
 
             <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Referral Reasons</label>
-            <span>Reasons for Referral</span>
+            <span>Referral Reasons</span>
             <br>
 
             <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Comments</label>
-            <span>Referral Comment</span>
+            <span>Comments on Referral</span>
             <br>
 
         </div>
