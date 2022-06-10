@@ -57,6 +57,14 @@ public class ClinicalNotesFragmentController {
 		if (config.containsKey("opdLogId") && config.get("opdLogId") != null) {
 			opdLogId = Integer.parseInt(config.get("opdLogId").toString());
 		}
+
+        if (patient.getGender().equals("M")){
+            model.addAttribute("gender", "MALE");
+        }
+        else{
+            model.addAttribute("gender", "FEMALE");
+        }
+
 		model.addAttribute("outcomeOptions", SimpleObject.fromCollection(Outcome.getAvailableOutcomes(), ui, "label", "id"));
 		model.addAttribute("listOfWards", SimpleObject.fromCollection(Outcome.getInpatientWards(), ui, "label", "id"));
 		model.addAttribute("internalReferralSources", SimpleObject.fromCollection(Referral.getInternalReferralOptions(), ui, "label", "id"));
