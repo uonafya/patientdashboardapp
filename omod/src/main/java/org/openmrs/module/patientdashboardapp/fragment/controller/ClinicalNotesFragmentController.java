@@ -4,10 +4,19 @@ package org.openmrs.module.patientdashboardapp.fragment.controller;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
+import org.openmrs.EncounterType;
+import org.openmrs.Encounter;
+import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.apache.commons.lang.StringUtils;
+import org.openmrs.module.kenyaemr.api.KenyaEmrService;
 import org.openmrs.ConceptSet;
 import org.openmrs.Patient;
 import org.openmrs.Location;
+
+import org.openmrs.module.patientdashboardapp.model.VisitDetail;
+import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
+
+
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.InventoryCommonService;
@@ -17,6 +26,7 @@ import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
 import org.openmrs.module.hospitalcore.model.Option;
 import org.openmrs.module.hospitalcore.model.Referral;
+import org.openmrs.module.patientdashboardapp.model.VisitSummary;
 import org.openmrs.module.hospitalcore.model.ReferralReasons;
 import org.openmrs.module.patientdashboardapp.model.Note;
 import org.openmrs.module.patientdashboardapp.model.Outcome;
@@ -70,7 +80,14 @@ public class ClinicalNotesFragmentController {
 		model.addAttribute("internalReferralSources", SimpleObject.fromCollection(Referral.getInternalReferralOptions(), ui, "label", "id"));
         model.addAttribute("externalReferralSources", SimpleObject.fromCollection(Referral.getExternalReferralOptions(), ui, "label", "id"));
 		model.addAttribute("referralReasonsSources", SimpleObject.fromCollection(ReferralReasons.getReferralReasonsOptions(), ui, "label", "id"));
+        model.addAttribute("userLocation",service.getDefaultLocation());
+        model.addAttribute("mfl",mfl);
+        model.addAttribute("visitSummaries", visitSummaries);
+        model.addAttribute("patient", patient);
+
 		Note note = new Note(patientId, queueId, opdId, opdLogId);
+
+
 		model.addAttribute("note", StringEscapeUtils.escapeJavaScript(SimpleObject.fromObject(note, ui, "signs.id", "signs.label", "diagnoses.id", "diagnoses.label",
 						"investigations", "procedures", "patientId", "queueId","specify",
 						"opdId", "opdLogId", "admitted","facility", "onSetDate", "illnessHistory","referralComments","physicalExamination", "otherInstructions").toJson()));
@@ -165,5 +182,17 @@ public class ClinicalNotesFragmentController {
             drugUnitOptions.add(new Option(conceptSet.getConcept()));
         }
         return SimpleObject.fromCollection(drugUnitOptions,uiUtils,"id","label", "uuid") ;
+    }
+
+    public SimpleObject getVisitSummaryDetails(
+            @RequestParam("encounterId") Integer encounterId,UiUtils ui) {
+        Encounter encounter = Context.getEncounterService().getEncounter(encounterId);
+        VisitDetail visitDetail = VisitDetail.create(encounter);
+
+        SimpleObject detail = SimpleObject.fromObject(visitDetail, ui, "history","diagnosis", "symptoms", "procedures", "investigations","physicalExamination","visitOutcome","internalReferral","externalReferral","otherInstructions");
+        List<OpdDrugOrder> opdDrugs = Context.getService(PatientDashboardService.class).getOpdDrugOrder(encounter);
+        List<SimpleObject> drugs = SimpleObject.fromCollection(opdDrugs, ui, "inventoryDrug.name",
+                "inventoryDrug.unit.name", "inventoryDrugFormulation.name", "inventoryDrugFormulation.dozage","dosage", "dosageUnit.name");
+        return SimpleObject.create("notes", detail, "drugs", drugs);
     }
 }
