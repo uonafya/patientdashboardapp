@@ -658,7 +658,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
         <div class="info-body">
 
             <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Physical Examination:</label>
-            <span></span>
+            <span>{{-physicalExamination}}</span>
             <br>
 
             <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Symptoms:</label>
@@ -666,19 +666,19 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
             <br>
 
             <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Diagnosis:</label>
-            <span></span>
+            <span>{{-diagnosis}}</span>
             <br>
 
             <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Investigations:</label>
-            <span></span>
+            <span> {{-investigations}}</span>
             <br>
 
             <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Procedures:</label>
-            <span></span>
+            <span>{{-procedures}}</span>
             <br>
 
             <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Referred To:</label>
-            <span></span>
+            <span>facility</span>
             <br>
 
             <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Referral Reasons</label>

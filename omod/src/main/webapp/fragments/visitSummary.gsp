@@ -193,7 +193,7 @@
 	<span>{{-investigations}}</span>
 	<br>
 
-	<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Procedures:</label>
+	<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>`Procedures`:</label>
 	<span>{{-procedures}}</span>
 	<br>
 
