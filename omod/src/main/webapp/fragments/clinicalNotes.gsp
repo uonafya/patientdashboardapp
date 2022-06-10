@@ -597,7 +597,9 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 		<label class="button cancel">Cancel</label>
 	</div>
 
-	<div id="printDiv">
+
+
+	<div id="printDiv" >
 		<div id="person-referral-detail">
 			<center>
 				<img width="100" height="100" align="center" title="Integrated KenyaEMR" alt="Integrated KenyaEMR" src="${ui.resourceLink('ehrinventoryapp', 'images/kenya_logo.bmp')}">
@@ -633,7 +635,71 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 			<span>${gender}</span>
 			<br/>
 		</div>
+
+		<div class="info-section" id="visit-detail">
+
+		</div>
+
+		<div class="info-sections" id="drugs-detail" style="margin: 0px 10px 0px 5px;">
+
+		</div>
+
+
+	</script id="referral-template" type="text/template">
+		<div class="main-content" style="border-top: 1px none #cccccc;">
+			<div id=""></div>
+		</div>
+
+		<div class="info-header">
+			<i class="icon-user-md"></i>
+			<h3>CLINICAL HISTORY SUMMARY INFORMATION</h3>
+		</div>
+
+        <div class="info-body">
+
+            <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Physical Examination:</label>
+            <span></span>
+            <br>
+
+            <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Symptoms:</label>
+            <span>{{-symptoms}}</span>
+            <br>
+
+            <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Diagnosis:</label>
+            <span></span>
+            <br>
+
+            <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Investigations:</label>
+            <span></span>
+            <br>
+
+            <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Procedures:</label>
+            <span></span>
+            <br>
+
+            <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Referred To:</label>
+            <span></span>
+            <br>
+
+            <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Referral Reasons</label>
+            <span>Reasons for Referral</span>
+            <br>
+
+            <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Comments</label>
+            <span>Referral Comment</span>
+            <br>
+
+        </div>
+	</script>
+
+
+
+
 	</div>
+
+
+
+
 
 </div>
 
