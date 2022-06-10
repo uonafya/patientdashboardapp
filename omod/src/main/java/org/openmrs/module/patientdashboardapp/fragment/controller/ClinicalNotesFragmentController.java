@@ -37,7 +37,9 @@ import java.util.List;
  */
 public class ClinicalNotesFragmentController {
 
-	public void controller(FragmentConfiguration config, FragmentModel model,
+	public void controller(FragmentConfiguration config,
+                           FragmentModel model,
+                           @RequestParam("patientId") Integer patientId,
 			UiUtils ui) {
         Patient patient = Context.getPatientService().getPatient(patientId);
 
