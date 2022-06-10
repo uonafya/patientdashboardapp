@@ -46,7 +46,7 @@ public class ClinicalNotesFragmentController {
 		config.require("patientId");
 		config.require("opdId");
 
-		Integer patientId = Integer
+		patientId = Integer
 				.parseInt(config.get("patientId").toString());
 		Integer opdId = Integer.parseInt(config.get("opdId").toString());
 		Integer queueId = null;
