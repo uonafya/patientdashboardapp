@@ -39,6 +39,8 @@ public class ClinicalNotesFragmentController {
 
 	public void controller(FragmentConfiguration config, FragmentModel model,
 			UiUtils ui) {
+        Patient patient = Context.getPatientService().getPatient(patientId);
+
 		config.require("patientId");
 		config.require("opdId");
 
