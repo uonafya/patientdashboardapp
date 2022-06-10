@@ -413,6 +413,13 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 								<label for="referralComments" style="margin-top:20px;">Comments</label>
 								<textarea type="text" id="referralComments"   name="referralComments" data-bind="value: \$root.referralComments" placeholder="COMMENTS"  style="height: 80px; width: 650px;"></textarea>
 							</div>
+
+							<div class="col2">
+								<span class="button confirm" onclick="printReferraInfo()" style="float:left; display:inline-block; margin-left: 5px;">
+									<a><i class="icon-print small"></i>&nbsp; Print</a>
+								</span>
+							</div>
+
 						</span>
 
 					</div>
