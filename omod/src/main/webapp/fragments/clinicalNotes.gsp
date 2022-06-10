@@ -590,6 +590,45 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 		<label class="button confirm right">Confirm</label>
 		<label class="button cancel">Cancel</label>
 	</div>
+
+	<div id="printDiv">
+		<div id="person-referral-detail">
+			<center>
+				<img width="100" height="100" align="center" title="Integrated KenyaEMR" alt="Integrated KenyaEMR" src="${ui.resourceLink('ehrinventoryapp', 'images/kenya_logo.bmp')}">
+				<h2>${userLocation}(${mfl}) </h2>
+			</center>
+			<h3>PATIENT SUMMARY INFORMATION</h3>
+
+			<label>
+				<span class='status active'></span>
+				Identifier:
+			</label>
+			<span>${patient.getPatientIdentifier()}</span>
+			<br/>
+
+			<label>
+				<span class='status active'></span>
+				Full Names:
+			</label>
+			<span>${patient.givenName} ${patient.familyName} ${patient.middleName?patient.middleName:''}</span>
+			<br/>
+
+			<label>
+				<span class='status active'></span>
+				Age:
+			</label>
+			<span>${patient.age} (${ui.formatDatePretty(patient.birthdate)})</span>
+			<br/>
+
+			<label>
+				<span class='status active'></span>
+				Gender:
+			</label>
+			<span>${gender}</span>
+			<br/>
+		</div>
+	</div>
+
 </div>
 
 <script>
