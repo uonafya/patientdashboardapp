@@ -74,6 +74,25 @@ public class ClinicalNotesFragmentController {
         else{
             model.addAttribute("gender", "FEMALE");
         }
+        Location location = Context.getService(KenyaEmrService.class).getDefaultLocation();
+        PatientDashboardService dashboardService = Context.getService(PatientDashboardService.class);
+        EncounterType labOPDType = Context.getEncounterService().getEncounterTypeByUuid("ba45c278-f290-11ea-9666-1b3e6e848887");
+        List<Encounter> encounters = dashboardService.getEncounter(patient, location, labOPDType, null);
+        List<VisitSummary> visitSummaries = new ArrayList<VisitSummary>();
+       // EncounterType labOPDType = Context.getEncounterService().getEncounterTypeByUuid("ba45c278-f290-11ea-9666-1b3e6e848887");
+
+        //tO GET THE VISIT SUMMARY
+        for (Encounter enc : encounters) {
+            VisitSummary visitSummary = new VisitSummary();
+            visitSummary.setVisitDate(enc.getDateCreated());
+            visitSummary.setEncounterId(enc.getEncounterId());
+            Concept outcomeConcept = Context.getConceptService().getConceptByUuid("160433AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            for (Obs obs : enc.getAllObs()) {
+                if (obs.getConcept().equals(outcomeConcept)) {
+                    visitSummary.setOutcome(obs.getValueText());
+                }
+            }
+            visitSummaries.add(visitSummary);
 
 
         KenyaEmrService service =Context.getService(KenyaEmrService.class);
