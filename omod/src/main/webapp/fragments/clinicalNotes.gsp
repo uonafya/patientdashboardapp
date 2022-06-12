@@ -29,12 +29,12 @@
 	function printReferraInfo() {
 
 		var printDiv = jQuery("#printDiv").html();
-		var summaryDetails = jQuery("#printSummaryDetails").html();
+		//var summaryDetails = jQuery("#printSummaryDetails").html();
 		var printWindow = window.open('', '', 'height=500,width=400','stylesheet: 	'${ui.resourceLink("patientdashboardapp", "styles/printout.css")}');
 		//printWindow.document.write('<html><head><title>Patient Information</title>');
 		printWindow.document.write('<body style="font-family: Dot Matrix Normal,Arial,Helvetica,sans-serif; font-size: 12px; font-style: normal;">');
 		printWindow.document.write(printDiv);
-		printWindow.document.write(summaryDetails);
+		/printWindow.document.write(summaryDetails);
 		printWindow.document.write('</body>');
 		printWindow.document.write('</html>');
 		printWindow.document.getElementById("printSlip").style.visibility = "hidden";
@@ -373,11 +373,11 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 
 								<div class="col4">
 									<div class="input-position-class">
-										<select id="internalReferral" name="internalReferral" data-bind="options: \$root.internalReferralOptions, optionsText: 'label', value: \$root.referredTo, optionsCaption: 'Please select...'">
-										</select>
+											<select id="internalReferral" name="internalReferral" data-bind="options: \$root.internalReferralOptions, optionsText: 'label', value: \$root.referredTo, optionsCaption: 'Please select...'">
+											</select>
 
-										<select id="externalReferral" name="externalReferral" onchange="loadExternalReferralCases();" data-bind="options: \$root.externalReferralOptions, optionsText: 'label', value: \$root.referredTo, optionsCaption: 'Please select...'">
-										</select>
+											<select id="externalReferral" name="externalReferral" onchange="loadExternalReferralCases();" data-bind="options: \$root.externalReferralOptions, optionsText: 'label', value: \$root.referredTo, optionsCaption: 'Please select...'">
+											</select>
 									</div>
 								</div>
 
@@ -593,8 +593,8 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 		<label class="button cancel">Cancel</label>
 	</div>
 </div>
-
-    <div id="printDiv" >
+<div style="display: none">
+    <div class="opdRecordsPrintDiv" id="printDiv">
         <div id="person-referral-detail">
             <center>
                 <img width="100" height="100" align="center" title="Integrated KenyaEMR" alt="Integrated KenyaEMR" src="${ui.resourceLink('ehrinventoryapp', 'images/kenya_logo.bmp')}">
@@ -642,9 +642,10 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
         <h3>VISIT SUMMARY INFORMATION</h3>
 
     </div>
-
+</div>
 
 <script>
 	var prescription = {drug: ko.observable(new Drug())};
 	ko.applyBindings(prescription, jq("#prescription-dialog")[0]);
+
 </script>
