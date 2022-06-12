@@ -27,18 +27,14 @@
 
 <script>
 	function printReferraInfo() {
-		jq.getJSON('${ ui.actionLink("patientdashboardapp", "visitSummary" ,"getVisitSummaryDetails") }',
-				{ 'encounterId' : jq(visitSummary).find(".encounter-id").val() }
-		).success(function (data) {
-			var visitDetailTemplate =  _.template(jq("#referral-template").html());
 
-			jq("#info-body").html(visitDetailTemplate(data.notes));
-		})
 		var printDiv = jQuery("#printDiv").html();
-		var printWindow = window.open('', '', 'height=500,width=400');
+		var summaryDetails = jQuery("#printSummaryDetails").html();
+		var printWindow = window.open('', '', 'height=500,width=400','stylesheet: 	'${ui.resourceLink("patientdashboardapp", "styles/printout.css")}');
 		//printWindow.document.write('<html><head><title>Patient Information</title>');
 		printWindow.document.write('<body style="font-family: Dot Matrix Normal,Arial,Helvetica,sans-serif; font-size: 12px; font-style: normal;">');
 		printWindow.document.write(printDiv);
+		printWindow.document.write(summaryDetails);
 		printWindow.document.write('</body>');
 		printWindow.document.write('</html>');
 		printWindow.document.getElementById("printSlip").style.visibility = "hidden";
@@ -449,7 +445,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 						<h3>OPD SUMMARY & CONFIRMATION</h3>
 					</div>
 
-					<div class="info-body">
+					<div class="info-body" id="printSummaryDetails" >
 						<table id="summaryTable">
 							<tr>
 								<td><span class="status active"></span>Symptoms</td>
@@ -596,111 +592,6 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 		<label class="button confirm right">Confirm</label>
 		<label class="button cancel">Cancel</label>
 	</div>
-
-
-
-	<div id="printDiv" >
-		<div id="person-referral-detail">
-			<center>
-				<img width="100" height="100" align="center" title="Integrated KenyaEMR" alt="Integrated KenyaEMR" src="${ui.resourceLink('ehrinventoryapp', 'images/kenya_logo.bmp')}">
-				<h2>${userLocation}(${mfl}) </h2>
-			</center>
-			<h3>PATIENT SUMMARY INFORMATION</h3>
-
-			<label>
-				<span class='status active'></span>
-				Identifier:
-			</label>
-			<span>${patient.getPatientIdentifier()}</span>
-			<br/>
-
-			<label>
-				<span class='status active'></span>
-				Full Names:
-			</label>
-			<span>${patient.givenName} ${patient.familyName} ${patient.middleName?patient.middleName:''}</span>
-			<br/>
-
-			<label>
-				<span class='status active'></span>
-				Age:
-			</label>
-			<span>${patient.age} (${ui.formatDatePretty(patient.birthdate)})</span>
-			<br/>
-
-			<label>
-				<span class='status active'></span>
-				Gender:
-			</label>
-			<span>${gender}</span>
-			<br/>
-		</div>
-
-		<div class="info-section" id="visit-detail">
-
-		</div>
-
-		<div class="info-sections" id="drugs-detail" style="margin: 0px 10px 0px 5px;">
-
-		</div>
-
-
-	</script id="referral-template" type="text/template">
-		<div class="main-content" style="border-top: 1px none #cccccc;">
-			<div id=""></div>
-		</div>
-
-		<div class="info-header">
-			<i class="icon-user-md"></i>
-			<h3>CLINICAL HISTORY SUMMARY INFORMATION</h3>
-		</div>
-
-        <div class="info-body">
-
-            <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Physical Examination:</label>
-            <span>{{-physicalExamination}}</span>
-            <br>
-
-            <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Symptoms:</label>
-            <span>{{-symptoms}}</span>
-            <br>
-
-            <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Diagnosis:</label>
-            <span>{{-diagnosis}}</span>
-            <br>
-
-            <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Investigations:</label>
-            <span> {{-investigations}}</span>
-            <br>
-
-            <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Procedures:</label>
-            <span>{{-procedures}}</span>
-            <br>
-
-            <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Referred To:</label>
-            <span>facility</span>
-            <br>
-
-            <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Referral Reasons</label>
-            <span>Referral Reasons</span>
-            <br>
-
-            <label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Comments</label>
-            <span>Comments on Referral</span>
-            <br>
-
-        </div>
-	</script>
-
-
-
-
-	</div>
-
-
-
-
-
 </div>
 
 <script>
