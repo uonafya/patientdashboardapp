@@ -33,7 +33,7 @@
 		jq('#referralReasons').empty();
 		note.referralReasonsOptions.removeAll();
 
-		if (!(jQuery("#externalReferral option:selected").text() === "Please select...")){
+		if (!(jQuery("#externalReferral option:selected").text().equals("Please select..."))){
 			jQuery("#referralComments").attr("readonly", false);
 			jQuery("#referralComments").val("");
 			jQuery("#facility").attr("readonly", false);
@@ -41,14 +41,10 @@
 			jQuery("#specify").attr("readonly", false);
 			jQuery("#specify").val("");
 
-			<% config.referralReasonsSources.collect { it.toJson() }.each {%>
-				note.referralReasonsOptions.push(${it});
-			<%}%>
+			<% config.referralReasonsSources.collect { it.toJson() }.each {%> note.referralReasonsOptions.push(${it});<%}%>
 		} else  {
 
-			var myOptions = {
-				'': 'N/A'
-			};
+			var myOptions = {'': 'N/A' };
 			var mySelect = jQuery('#referralReasons');
 			jQuery.each(myOptions, function(val, text) {
 				mySelect.append(
@@ -188,7 +184,7 @@
 			var option = jq('#availableReferral').val();
 			var outcom = note.outcome()? note.outcome().option.label : '';
 			
-			if (option == 1){
+			if (option === 1){
 				jq('#refTitle').text('Internal Referral');
 				jq('#refTitle').show();
 				jq('#facTitle').hide();
@@ -204,7 +200,7 @@
 
 				jq("select#externalReferral")[0].selectedIndex = 0;
 			}
-			else if (option == 2){
+			else if (option === 2){
 				jq('#refTitle').text('External Referral');
 				jq('#refTitle').show();
 				jq('#facTitle').show();
@@ -237,13 +233,13 @@
 				jq("select#externalReferral")[0].selectedIndex = 0;				
 			}
 			
-			if (option == 0){
+			if (option === 0){
 				if (outcom == ''){
 					outcom = 'N/A'
 				}
 			}
 			else{
-				if (outcom == ''){
+				if (outcom === ''){
 					outcom = jq("#availableReferral option:selected").text();
 				}
 				else{
@@ -256,7 +252,7 @@
 		}).change();
 		
 		jq('.dialog-content input').on('keydown', function(e){
-			if (e.keyCode == 9 || e.which == 9) {
+			if (e.keyCode == 9 || e.which = = 9) {
 				e.preventDefault();
 				e.stopImmediatePropagation();
 			}
