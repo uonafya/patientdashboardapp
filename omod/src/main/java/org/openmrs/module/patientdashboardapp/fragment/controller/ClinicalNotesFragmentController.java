@@ -12,6 +12,7 @@ import org.openmrs.module.kenyaemr.api.KenyaEmrService;
 import org.openmrs.ConceptSet;
 import org.openmrs.Patient;
 import org.openmrs.Location;
+import org.openmrs.Obs;
 
 import org.openmrs.module.patientdashboardapp.model.VisitDetail;
 import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
