@@ -61,6 +61,7 @@ public class ClinicalNotesFragmentController {
 				.parseInt(config.get("patientId").toString());
 		Integer opdId = Integer.parseInt(config.get("opdId").toString());
 		Integer queueId = null;
+        int i=0;
 		if (config.containsKey("queueId") && config.get("queueId") != null) {
 			queueId = Integer.parseInt(config.get("queueId").toString());
 		}
@@ -95,6 +96,12 @@ public class ClinicalNotesFragmentController {
             }
             visitSummaries.add(visitSummary);
 
+            i++;
+
+            if (i >=20){
+                break;
+            }
+        }
 
         KenyaEmrService service =Context.getService(KenyaEmrService.class);
         String mfl =service.getDefaultLocationMflCode();
