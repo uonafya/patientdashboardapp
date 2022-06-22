@@ -286,8 +286,8 @@
 	
 	<div class="dashboard-tabs">
 		<ul>
-			<li id="ti"><a href="#triage-info">Triage Information</a></li>
 			<li id="cn"><a href="#notes">Clinical Notes</a></li>
+			<li id="ti"><a href="#triage-info">Triage Information</a></li>
 			<li id="ch"><a href="#summary">Clinical History</a></li>
 			<li id="lr"><a href="#investigations">Lab Reports</a></li>
             <li id="rr"><a href="#radiology">Radiology Reports</a></li>

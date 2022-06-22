@@ -15,8 +15,8 @@ import java.util.List;
 
 public class Sign {
 
-	private static final int OTHER_NON_CODED_5622 = 5622;
-	private static final int NON_CODED_SYMPTOM_5693 = 1000033;
+	private static final String  OTHER_NON_CODED_5622 = "5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+	private static final String NON_CODED_SYMPTOM_1000033 = "cb46888c-586a-4ba0-98d5-f2e7e49a60f6";
 
 	public Sign() {
 	}
@@ -57,7 +57,7 @@ public class Sign {
 		this.qualifiers = qualifiers;
 	}
 
-	private Concept getSymtomConcept() {
+	private Concept getSymptomConcept() {
 		return this.symptomConcept == null ?
 				Context.getConceptService().getConcept(this.id) : this.symptomConcept;
 	}
@@ -67,15 +67,15 @@ public class Sign {
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
 		List<Obs> symptomObs = queueService.getAllSymptom(patientId);
 		for (Obs signObs : symptomObs) {
-			if (signObs.getValueCoded().getConceptId() == NON_CODED_SYMPTOM_5693) {
-				if (signObs.getGroupMembers() != null) {
-					for (Obs nonCodedSignObs : signObs.getGroupMembers()) {
-						Sign nonCodedSign = new Sign();
-						nonCodedSign.id = signObs.getValueCoded().getConceptId();
-						nonCodedSign.label = nonCodedSignObs.getValueText();
-						previousSigns.add(nonCodedSign);
+			if (signObs.getValueCoded().equals(Context.getConceptService().getConceptByUuid(NON_CODED_SYMPTOM_1000033))) {
+					for (Obs obsForThisEncounter : signObs.getEncounter().getAllObs()) {
+						if(obsForThisEncounter.getConcept() != null && obsForThisEncounter.getConcept().equals(Context.getConceptService().getConceptByUuid(OTHER_NON_CODED_5622))) {
+							Sign nonCodedSign = new Sign();
+							nonCodedSign.id = signObs.getValueCoded().getConceptId();
+							nonCodedSign.label = obsForThisEncounter.getValueText();
+							previousSigns.add(nonCodedSign);
+						}
 					}
-				}
 			} else {
 				previousSigns.add(new Sign(signObs.getValueCoded()));
 			}
@@ -92,17 +92,16 @@ public class Sign {
 		if (!previousSigns.contains(this)) {
 			obsSymptom = new Obs();
 			obsSymptom.setConcept(Context.getConceptService().getConceptByUuid("c91a7e0e-4622-4eeb-9edc-00f8ececf428"));
-			obsSymptom.setValueCoded(getSymtomConcept());
+			obsSymptom.setValueCoded(getSymptomConcept());
 			obsSymptom.setObsGroup(obsGroup);
 			obsSymptom.setCreator(encounter.getCreator());
 			obsSymptom.setDateCreated(encounter.getDateCreated());
 			obsSymptom.setEncounter(encounter);
 			obsSymptom.setPerson(encounter.getPatient());
 			encounter.addObs(obsSymptom);
-			if (this.id == NON_CODED_SYMPTOM_5693) {
+			if (this.id.equals(Context.getConceptService().getConceptByUuid(NON_CODED_SYMPTOM_1000033).getConceptId())) {
 				nonCodedSymptom = new Obs();
-				nonCodedSymptom.setConcept(Context.getConceptService().getConcept(OTHER_NON_CODED_5622));
-				nonCodedSymptom.setObsGroup(obsSymptom);
+				nonCodedSymptom.setConcept(Context.getConceptService().getConceptByUuid(OTHER_NON_CODED_5622));
 				nonCodedSymptom.setValueText(this.label);
 				nonCodedSymptom.setCreator(encounter.getCreator());
 				nonCodedSymptom.setDateCreated(encounter.getDateCreated());
@@ -123,7 +122,7 @@ public class Sign {
 
 			Symptom symptom = new Symptom();
 			symptom.setEncounter(encounter);
-			symptom.setSymptomConcept(getSymtomConcept());
+			symptom.setSymptomConcept(getSymptomConcept());
 			symptom.setCreatedDate(new Date());
 			symptom.setCreator(Context.getAuthenticatedUser());
 	
@@ -134,7 +133,7 @@ public class Sign {
 			if (symptomObs.size() > 0) {
 				List<Symptom> symptoms = Context.getService(PatientDashboardService.class).getSymptom(symptomObs.get(0).getEncounter());
 				for (Symptom symptom : symptoms) {
-					if (symptom.getSymptomConcept().equals(this.getSymtomConcept())) {
+					if (symptom.getSymptomConcept().equals(this.getSymptomConcept())) {
 						savedSymptom = symptom;
 						break;
 					}
@@ -167,7 +166,7 @@ public class Sign {
 			return false;
 		}
 		Sign otherSign = (Sign) obj;
-		if (this.id.equals(NON_CODED_SYMPTOM_5693)) {
+		if (this.id.equals(Context.getConceptService().getConceptByUuid(NON_CODED_SYMPTOM_1000033).getConceptId())) {
 			return this.label == null ? otherSign.label == null : StringUtils.equalsIgnoreCase(this.label, otherSign.label);
 		} else {
 			return this.id.equals(otherSign.id);

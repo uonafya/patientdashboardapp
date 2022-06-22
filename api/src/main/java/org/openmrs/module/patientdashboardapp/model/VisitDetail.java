@@ -156,8 +156,10 @@ public class VisitDetail {
 		for (Obs obs :encounter.getAllObs()) {
 			if (obs.getConcept().equals(symptomConcept)) {
 				if (obs.getValueCoded().equals(otherSymptom)) {
-					for (Obs nonCodedObs: obs.getGroupMembers()) {
-						symptomList.append(nonCodedObs.getValueText());
+					for (Obs obsFromAll: obs.getEncounter().getAllObs()) {
+						if(obsFromAll.getConcept() != null && obsFromAll.getConcept().equals(Context.getConceptService().getConceptByUuid("5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))) {
+							symptomList.append(obsFromAll.getValueText());
+						}
 					}
 				} else {
 					symptomList.append(obs.getValueCoded().getDisplayString());
