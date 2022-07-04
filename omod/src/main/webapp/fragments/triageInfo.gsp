@@ -32,6 +32,32 @@ jq(function(){
 			jq('#cs').hide();
 			}
 	});
+//Add dialog function
+var jq = jQuery;
+jq(function () {
+	var addvitalsDialog = emr.setupConfirmationDialog({
+		dialogOpts: {
+			overlayClose: false,
+			close: true
+		},
+		selector: '#new-room-dialog',
+		actions: {
+			reset: function () {
+
+//make an ajax call to initiate the posting
+					addvitalsDialog.close();
+
+			},
+			finish: function () {
+				addvitalsDialog.close();
+			}
+		}
+	});
+	jq("#newVitalsModal").on("click", function (e) {
+		e.preventDefault();
+		addvitalsDialog.show();
+	});
+});
 
 </script>
 
@@ -224,8 +250,8 @@ jq(function(){
 		</div>
 	</div>
 </div>
-<div style="display: none">
-	<button class="btn btn-sm btn-primary float-right mb-3" data-toggle="modal" data-target="#newVitalsModal">
+<div >
+	<button class="btn btn-sm btn-primary float-right mb-3" data-toggle="modal" data-target="#newVitalsModal" id="newVitalsModal">
 		Capture new vitals
 	</button>
 </div>
@@ -310,4 +336,199 @@ jq(function(){
 
 <div class="clear">&nbsp; </div>
 
+<div id="new-room-dialog" class="dialog" style="display:none; width: 1009px;">
+	<div class="dialog-header">
+		<i class="icon-folder-open"></i>
 
+		<h3>Capture New Vitals</h3>
+	</div>
+
+	<div class="dialog-content">
+		<form form id="vitalRegistrationForm" method="post">
+			<div class="container">
+				<div>
+					<div id="errorAlert" class="alert" style="display: none"><b>Please correct the following errors:</b><hr>
+						<ul id="errorsHere"></ul>
+					</div>
+				</div>
+				<section>
+					<div class="onerow" style="padding-top: 10px;">
+						<h2 style="border-bottom: 1px solid #008394">Vital Summary</h2>
+
+						<div class="col4">
+							<label for="temperature-field"> Temperature <span style="color: #f00 !important;
+							padding-left: 5px;">*</span></label>
+						</div>
+
+						<div class="col4">
+							<label for="systolic-bp-field">Blood Pressure (Systolic)<span style="color: #f00 !important;
+							padding-left: 5px;"></span></label>
+						</div>
+
+						<div class="col4 last">
+							<label for="diastolic-bp-field">Blood Pressure (Diastolic)<span style="color: #f00 !important;
+							padding-left: 5px;"></span></label>
+						</div>
+					</div>
+					<div class="onerow">
+						<div class="col4">
+							<p>
+								<input id="temperature-field" class="numeric-range" type="text" max="999" min="0" maxlength="7"  name="triagePatientData.temperature" >
+								<span class="append-to-value">..&#8451;</span>
+								<span id="fr89981" class="field-error" style="display: none"></span>
+							</p>
+						</div>
+
+						<div class="col4">
+							<p>
+								<input id="systolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4"  name="triagePatientData.systolic" >
+								<span id="fr5882" class="field-error" style="display: none"></span>
+							</p>
+						</div>
+
+						<div class="col4 last">
+							<p>
+								<input id="diastolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" name="triagePatientData.daistolic" >
+								<span id="fr9945" class="field-error" style="display: none"></span>
+							</p>
+						</div>
+					</div>
+					<div class="onerow" style="padding-top: 10px;">
+						<div class="col4">
+							<label for="resp-rate-field"> Respiratory Rate </label>
+						</div>
+
+						<div class="col4">
+							<label for="pulse-rate-field"> Pulse Rate </label>
+						</div>
+
+						<div class="col4 last">
+							<label for="oxygenSaturation-field">Oxygen Saturation </label>
+						</div>
+					</div>
+					<div class="onerow">
+						<div class="col4">
+							<p>
+								<input id="resp-rate-field" class="numeric-range focused" type="text" max="999" min="0" maxlength="7" name="triagePatientData.respiratoryRate">
+								<span id="fr1753" class="field-error" style="display: none"></span>
+							</p>
+						</div>
+
+						<div class="col4">
+							<p>
+								<input id="pulse-rate-field" class="numeric-range" type="text" max="999" min="0" maxlength="7"  name="triagePatientData.pulsRate">
+								<span id="fr8917" class="field-error" style="display: none"></span>
+							</p>
+						</div>
+
+						<div class="col4 last">
+							<p>
+								<input id="oxygenSaturation-field" class="numeric-range" type="text" max="100" min="0"  name="triagePatientData.oxygenSaturation">
+								<span class="append-to-value">%</span>
+								<span id="fr8998" class="field-error" style="display: none"></span>
+							</p>
+						</div>
+					</div>
+					<div class="onerow">
+						<h2>&nbsp;</h2>
+						<h2 style="border-bottom: 1px solid #008394">Body Mass Index</h2>
+
+						<div class="col4">
+							<label for="weight-field"> Weight </label>
+						</div>
+
+						<div class="col4">
+							<label for="height-field"> Height </label>
+						</div>
+
+						<div class="col4 last">
+							<% if (patient.age >= 2) { %>
+							<label for="bmi">BMI:</label>
+							<% } %>
+						</div>
+					</div>
+					<div class="onerow">
+						<div class="col4">
+							<p class="left">
+								<input id="weight-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7"  name="triagePatientData.weight">
+								<span class="append-to-value">kg</span>
+								<span id="fr1139" class="field-error" style="display: none"></span>
+							</p>
+						</div>
+
+						<div class="col4">
+							<p class="left">
+								<input id="height-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" name="triagePatientData.height">
+								<span class="append-to-value">cm</span>
+								<span id="fr9875" class="field-error" style="display: none"></span>
+							</p>
+						</div>
+
+						<div class="col4 last">
+							<% if (patient.age >= 2) { %>
+							<p>
+							<div class="bmi" id="bmi"></div>
+						</p>
+							<% } %>
+						</div>
+					</div>
+
+					<div class="onerow" style="padding-top: 10px;">
+						<h2 style="border-bottom: 1px solid #008394">Circumferences</h2>
+
+						<div class="col4">
+							<label for="muac-field"> M.U.A.C </label>
+						</div>
+
+						<div class="col4">
+							<label for="chest-circum-field"> Chest </label>
+						</div>
+
+						<div class="col4 last">
+							<label for="abdominal-circum-field"> Abdominal </label>
+						</div>
+					</div>
+
+					<div class="onerow">
+						<div class="col4">
+							<p>
+								<input id="muac-field" class="number numeric-range" type="text" max="999" min="0" maxlength="3" name="triagePatientData.mua">
+								<span class="append-to-value">cm</span>
+								<span id="fr801" class="field-error" style="display: none"></span>
+							</p>
+						</div>
+
+						<div class="col4">
+							<p>
+								<input id="chest-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="3"  name="triagePatientData.chest">
+								<span class="append-to-value">cm</span>
+								<span id="fr3193" class="field-error" style="display: none"></span>
+							</p>
+						</div>
+
+						<div class="col4 last">
+							<p>
+								<input id="abdominal-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="3"  name="triagePatientData.abdominal">
+								<span class="append-to-value">cm</span>
+								<span id="fr76" class="field-error" style="display: none"></span>
+							</p>
+						</div>
+					</div>
+
+				</section>
+				<div class="onerow" style="margin-top: 100px">
+
+					<a class="button confirm" onclick="PAGE.submit();"
+					   style="float:right; display:inline-block; margin-left: 5px;">
+						<span>FINISH</span>
+					</a>
+
+					<a class="button cancel" onclick="window.location.href = window.location.href"
+					   style="float:right; display:inline-block;"/>
+					<span>RESET</span>
+				</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
