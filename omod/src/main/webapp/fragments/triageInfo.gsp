@@ -7,6 +7,12 @@
 %>
 
 <script>
+	var emrMessages = {};
+	emrMessages["numericRangeHigh"] = "value should be less than {0}";
+	emrMessages["numericRangeLow"] = "value should be more than {0}";
+	emrMessages["requiredField"] = "Required Field";
+	emrMessages["numberField"] = "Value not a number";
+	var errorList ={};
 jq(function(){
 	jq("#triage-left-menu").on("click", ".triage-summary", function(){
 		jq("#triage-detail").html("<i class=\"icon-spinner icon-spin icon-2x pull-left\"></i>")
@@ -40,24 +46,394 @@ jq(function () {
 			overlayClose: false,
 			close: true
 		},
-		selector: '#new-room-dialog',
+		selector: '#new-vitals-dialog',
 		actions: {
-			reset: function () {
+			confirm: function () {
 
 //make an ajax call to initiate the posting
-					addvitalsDialog.close();
+				checkFilled();
 
 			},
-			finish: function () {
+			cancel: function () {
 				addvitalsDialog.close();
 			}
 		}
 	});
 	jq("#newVitalsModal").on("click", function (e) {
 		e.preventDefault();
+		onDialogLoad();
 		addvitalsDialog.show();
 	});
 });
+function isNombre(numb){
+	return !isNaN(parseFloat(numb));
+}
+
+function onDialogLoad() {
+	injectRequired();
+	checkFilled();
+	jq(".button.confirm").addClass("disabled");
+	jq(".button.confirm").attr("onclick","");
+
+	function strReplace(word) {
+		var res = word.replace("[", "");
+		res=res.replace("]","");
+		return res;
+	}
+
+	jq('input:text[id]').on('input',function(event){
+		var idd = jq(event.target).attr('id');
+		var txt = jq(event.target).val();
+
+		if (idd === 'weight-field'){
+			if (txt === ''){
+				jq('#li01').hide();
+			}
+			else {
+				jq('#li01').show();
+				jq('#summ_01').text(jq(event.target).val() +' kgs');
+			}
+		}
+
+		else if (idd === 'height-field'){
+			if (txt === ''){
+				jq('#li02').hide();
+			}
+			else {
+				jq('#li02').show();
+				jq('#summ_02').text(jq(event.target).val() +' cm');
+			}
+		}
+
+		else if (idd === 'muac-field'){
+			if (txt === ''){
+				jq('#li03').hide();
+			}
+			else {
+				jq('#li03').show();
+				jq('#summ_03').text(jq(event.target).val() +' cm');
+			}
+		}
+
+		else if (idd === 'chest-circum-field'){
+			if (txt === ''){
+				jq('#li04').hide();
+			}
+			else {
+				jq('#li04').show();
+				jq('#summ_04').text(jq(event.target).val() +' cm');
+			}
+		}
+
+		else if (idd === 'abdominal-circum-field'){
+			if (txt === ''){
+				jq('#li05').hide();
+			}
+			else {
+				jq('#li05').show();
+				jq('#summ_05').text(jq(event.target).val() +' cm');
+			}
+		}
+
+		else if (idd === 'temperature-field'){
+			if (txt === ''){
+				jq('#li06').hide();
+			}
+			else {
+				jq('#li06').show();
+				jq('#summ_06').html(jq(event.target).val() +' &#8451;');
+			}
+		}
+
+		else if (idd === 'systolic-bp-field'){
+			if (txt === ''){
+				jq('#li07').hide();
+			}
+			else {
+				jq('#li07').show();
+				jq('#summ_07').text(jq(event.target).val());
+			}
+		}
+
+		else if (idd === 'diastolic-bp-field'){
+			if (txt === ''){
+				jq('#li08').hide();
+			}
+			else {
+				jq('#li08').show();
+				jq('#summ_08').text(jq(event.target).val());
+			}
+		}
+
+		else if (idd === 'resp-rate-field'){
+			if (txt === ''){
+				jq('#li09').hide();
+			}
+			else {
+				jq('#li09').show();
+				jq('#summ_09').text(jq(event.target).val());
+			}
+		}
+
+		else if (idd === 'pulse-rate-field'){
+			if (txt === ''){
+				jq('#li10').hide();
+			}
+			else {
+				jq('#li10').show();
+				jq('#summ_10').text(jq(event.target).val());
+			}
+		}
+
+		else if (idd === 'oxygenSaturation-field'){
+			if (txt === ''){
+				jq('#li16').hide();
+			}
+			else {
+				jq('#li16').show();
+				jq('#summ_16').text(formatToAccounting(jq(event.target).val())+'%');
+			}
+		}
+	});
+
+	jq('#datetime-display').on("change", function (dateText) {
+		jq('#li11').show();
+		jq('#summ_11').text(jq('#datetime-display').val());
+	});
+
+	jq("input[type='text']").on("keyup", function() {
+		var inputText = jq(this).val();
+		inputText = inputText.replace(/[^0-9.]/g, '');
+		jq(this).val(inputText);
+	});
+
+	jq('#temperature-field').on("focusout", function(){
+		var maxVal =43;
+		var minVal=25;
+		var fieldTypeVal="Temperature";
+		var idVal = jq(this).attr("id");
+		var localid ="fr89981";
+		checkError(minVal,maxVal,idVal,localid,fieldTypeVal);
+	});
+
+	jq('#systolic-bp-field').on("focusout", function() {
+		var maxVal = 250;
+		var minVal = 0;
+		var fieldTypeVal = "Blood Pressure (Systolic)";
+		var idVal = jq(this).attr("id");
+		var localid = "fr5882";
+		checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
+	});
+
+	jq('#diastolic-bp-field').on("focusout", function() {
+		var maxVal = 150;
+		var minVal = 0;
+		var fieldTypeVal = "Blood Pressure (Diastolic)";
+		var idVal = jq(this).attr("id")
+		var localid = "fr9945";
+		checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
+	});
+
+	jq('#resp-rate-field').on("focusout", function() {
+		var maxVal = 99;
+		var minVal = 0;
+		var fieldTypeVal = "Respiratory Rate";
+		var idVal = jq(this).attr("id")
+		var localid = "fr1753";
+		checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
+	});
+
+	jq('#oxygenSaturation-field').on("focusout", function() {
+		var maxVal = 100;
+		var minVal = 0;
+		var fieldTypeVal = "Oxygen Saturation";
+		var idVal = jq(this).attr("id")
+		var localid = "fr8998";
+		checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
+	});
+
+	jq('#pulse-rate-field').on("focusout", function() {
+		var maxVal = 230;
+		var minVal = 0;
+		var fieldTypeVal = "Pulse Rate";
+		var idVal = jq(this).attr("id")
+		var localid = "fr8917";
+		checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
+	});
+
+	jq('#weight-field').on("focusout", function() {
+		var maxVal = 250;
+		var minVal = 0;
+		var fieldTypeVal = "Weight";
+		var idVal = jq(this).attr("id")
+		var localid = "fr1139";
+		checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
+	});
+
+	jq('#height-field').on("focusout", function() {
+		var maxVal = 272;
+		var minVal = 10;
+		var fieldTypeVal = "Height";
+		var idVal = jq(this).attr("id")
+		var localid = "fr9875";
+		checkError(minVal, maxVal, idVal, localid, fieldTypeVal);
+	});
+}
+
+function checkError(minVal, maxVal, idField, idError, fieldType) {
+	var tempVal = jq('#'+idField).val();
+	var errorLocal = '';
+	var valTemp = 0;
+	if (isNaN(tempVal) && tempVal !== "") {
+		jq("#"+idError).html('<span style="color:#ff0000">' + fieldType + ' must be a number!</span>');
+		jq("#"+idError).show();
+		jq('#'+idField).attr("validation","false");
+		errorList[fieldType]= "<i>"+fieldType+" must be a number</i><br>";
+	} else if (tempVal > maxVal && !isNaN(tempVal)) {
+		errorLocal = 'greater';
+		valTemp = maxVal;
+		jq('#'+idField).attr("validation","false");
+	} else if (tempVal < minVal && !isNaN(tempVal)) {
+		errorLocal = 'lower';
+		valTemp = minVal;
+		jq('#'+idField).attr("validation","false");
+	} else {
+		if (tempVal === "" && jq('#'+idField).attr("required")==="required") {
+			jq("#"+idField).prop("style", "border-color:red");
+			jq("#"+idError).html('<span style="color:#ff0000">' + fieldType + ' must be filled in!</span>');
+			jq("#"+idError).show();
+			jq("#"+idField).prop("style", "background-color: #f2bebe;");
+			jq('#'+idField).attr("validation","false");
+			errorList[fieldType]= "<i>"+fieldType+" must be filled in!</i><br/>";
+		} else {
+			delete errorList[fieldType];
+			noError(idError, idField);
+		}
+		checkFilled();
+		return;
+	}
+	jq("#"+idField).prop("style", "border-color:red");
+	jq("#"+idError).html('<span style="color:#ff0000">' + fieldType + ' cannot be ' + errorLocal + ' than ' + valTemp + '</span>');
+	jq("#"+idError).show();
+	jq("#"+idField).prop("style", "background-color: #f2bebe;");
+	errorList[fieldType]= '<i>'+fieldType+' cannot be ' + errorLocal + ' than ' + valTemp + '</i></br>';
+	checkFilled();
+}
+
+function noError(idField, fieldTypeid) {
+	jq('#'+idField).attr("validation","true");
+	jq("#"+fieldTypeid).prop("style", "background-color: #ddffdd;");
+	jq("#"+idField).hide();
+	jq('#'+fieldTypeid).attr("validation","true");
+}
+
+function checkFilled() {
+	var checkComplete = true;
+	jq("input[required]").map(function(idx, elem) {
+		if(jq(elem).val()==''){
+			checkComplete=false;
+		}
+	}).get();
+	jq("input[validation='false']").map(function(idx, elem) {
+		if(jq(elem).attr("validation")==='false'){
+			checkComplete=false;
+		}
+	}).get();
+	if(!checkTempFilled()){checkComplete = false;}
+	if (checkComplete) {
+		jq(".button.confirm").removeClass("disabled");
+		jq(".button.confirm").attr("onclick", "PAGE.submit();");
+		jq("#errorsHere").html("");
+		jq("#errorAlert").hide();
+		errorList={};
+	}
+	else{
+		jq(".button.confirm").addClass("disabled");
+		jq(".button.confirm").attr("onclick", "");
+		var count = 0;
+		var i;
+		var allErrors='';
+		for (i in errorList) {
+			if (errorList.hasOwnProperty(i)) {
+				count++;
+				allErrors+=errorList[i];
+			}
+		}
+		if(count!==0) {
+			jq("#errorsHere").html(allErrors);
+			jq("#errorAlert").show();
+		}
+	}
+	console.log(checkComplete);
+}
+
+function checkTempFilled(){
+	jq.fn.exists = function(){ return this.length > 0; }
+	if(jq("input[id='temperature-field']").exists() && jq("input[id='temperature-field']").val()==="" ){
+		return false;
+	}
+	else{
+		return true;
+	}
+}
+function injectRequired(){
+	var elements =['input[id="temperature-field"]'];
+	for(var i in elements){
+		jq(elements[i]).attr("required","");
+	}
+}
+function getFloatValue(source) {
+	return isNaN(parseFloat(source)) ? 0 : parseFloat(source);
+}
+
+jq(function(){
+	emrMessages["numericRangeHigh"] = "value should be less than {0}";
+	emrMessages["numericRangeLow"] = "value should be more than {0}";
+
+	jq("#height-field,#weight-field").change(function () {
+		console.log("Value changed.")
+		var height = getFloatValue(jq("#height-field").val())/100;
+		var weight = getFloatValue(jq("#weight-field").val());
+		var bmi = weight/(height * height);
+		console.log("BMI " + bmi);
+		jq(".bmi").html(formatToAccounting(String(bmi)));
+
+		console.log(isNombre(bmi));
+
+		if (isNombre(bmi)){
+			jq('#li17').show();
+			jq('#summ_17').text(formatToAccounting(String(bmi)));
+		}
+
+	});
+});
+
+function strReplace(word) {
+	var res = word.replace("null", "");
+	res=res.replace("null","");
+	return res;
+}
+
+function formatToAccounting(nStr) {
+	nStr = parseFloat(nStr).toFixed(2);
+	nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\\d+)(\\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '\$1' + ',' + '\$2');
+	}
+	return x1 + x2;
+}
+PAGE = {
+	/** SUBMIT */
+	submit: function () {
+		jq("#vitalRegistrationForm").submit();
+	}
+};
+
+
 
 </script>
 
@@ -142,6 +518,20 @@ jq(function () {
 	.menu-title a{
 		text-decoration: none;
 	}
+	select, .bmi {
+		border: 1px solid #aaa;
+		border-radius: 3px !important;
+		box-shadow: none !important;
+		box-sizing: border-box !important;
+		height: 38px !important;
+		line-height: 18px !important;
+		padding: 8px 10px !important;
+		width: 100% !important;
+	}
+	.bmi{
+		background: #fff none repeat scroll 0 0;
+		margin-top: 2px;
+	}
 </style>
 
 
@@ -173,7 +563,7 @@ jq(function () {
         </li>
         <% } %>
         
-            <li style="height: 295px;" class="menu-item" ">
+            <li style="height: 295px;" class="menu-item" >
             </li>
         </ul>    
     </div>
@@ -336,7 +726,7 @@ jq(function () {
 
 <div class="clear">&nbsp; </div>
 
-<div id="new-room-dialog" class="dialog" style="display:none; width: 1009px;">
+<div id="new-vitals-dialog" class="dialog" style="display:none; width: 1009px;">
 	<div class="dialog-header">
 		<i class="icon-folder-open"></i>
 
@@ -467,7 +857,7 @@ jq(function () {
 						<div class="col4 last">
 							<% if (patient.age >= 2) { %>
 							<p>
-							<div class="bmi" id="bmi"></div>
+							<div class="bmi"></div>
 						</p>
 							<% } %>
 						</div>
@@ -525,7 +915,7 @@ jq(function () {
 
 					<a class="button cancel" onclick="window.location.href = window.location.href"
 					   style="float:right; display:inline-block;"/>
-					<span>RESET</span>
+					<span>CANCEL</span>
 				</a>
 				</div>
 			</div>
