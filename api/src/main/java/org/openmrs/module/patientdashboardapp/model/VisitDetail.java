@@ -197,20 +197,25 @@ public class VisitDetail {
 				otherInstructions.append(obs.getValueText()).append(", ");
 			}
             if (obs.getConcept().equals(visitOutcomeConcept)){
-            	if(obs.getValueCoded().equals(Context.getConceptService().getConceptByUuid("160523AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))) {
 
-					Set<Obs> getAllObs = encounter.getAllObs();
-					String nextApppointmentDate = "";
-					for(Obs obs1 : getAllObs){
-						if(obs1.getConcept().equals(nextAppointmentConcepts)){
-							nextApppointmentDate = Utils.getDateAsString(obs1.getValueDatetime(), "dd/MM/yyyy");
-							break;
+            	if ((obs.getValueCoded() != null) ){
+					System.out.println("Obs value coded not null" + obs.getValueCoded() );
+					if (obs.getValueCoded().equals(Context.getConceptService().getConceptByUuid("160523AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))) {
+
+						Set<Obs> getAllObs = encounter.getAllObs();
+						String nextApppointmentDate = "";
+						for (Obs obs1 : getAllObs) {
+							if (obs1.getConcept().equals(nextAppointmentConcepts)) {
+								nextApppointmentDate = Utils.getDateAsString(obs1.getValueDatetime(), "dd/MM/yyyy");
+								break;
+							}
 						}
+						visitOutcome.append(obs.getValueText()).append(",").append(nextApppointmentDate);
+					} else {
+						visitOutcome.append(obs.getValueText()).append(",");
 					}
-					visitOutcome.append(obs.getValueText()).append(",").append(nextApppointmentDate);
-				}
-            	else {
-					visitOutcome.append(obs.getValueText()).append(",");
+				}else {
+					System.out.println("obs.getValueCoded() is currently null");
 				}
             }
             if (obs.getConcept().equals(internalReferralConcept)){
