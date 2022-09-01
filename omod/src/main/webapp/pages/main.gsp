@@ -286,22 +286,22 @@
 	
 	<div class="dashboard-tabs">
 		<ul>
-			<li id="cn"><a href="#notes">Clinical Notes</a></li>
-			<li id="ti"><a href="#triage-info">Triage Information</a></li>
-			<li id="ch"><a href="#summary">Clinical History</a></li>
+            <li id="ti"><a href="#triage-info">Triage Information</a></li>
+            <li id="ch"><a href="#summary">Clinical History</a></li>
+            <li id="cn"><a href="#notes">Clinical Notes</a></li>
 			<li id="lr"><a href="#investigations">Lab Reports</a></li>
             <li id="rr"><a href="#radiology">Radiology Reports</a></li>
 		</ul>
+        <div id="triage-info">
+            ${ ui.includeFragment("patientdashboardapp", "triageInfo", [patientId: patientId, opdId: opdId, queueId: queueId]) }
+        </div>
+
+        <div id="summary">
+            ${ ui.includeFragment("patientdashboardapp", "visitSummary", [patientId: patientId]) }
+        </div>
+
 		<div id="notes">
 			${ ui.includeFragment("patientdashboardapp", "clinicalNotes", [patientId: patientId, opdId: opdId, queueId: queueId, opdLogId: opdLogId]) }
-		</div>
-
-		<div id="triage-info">
-			${ ui.includeFragment("patientdashboardapp", "triageInfo", [patientId: patientId, opdId: opdId, queueId: queueId]) }
-		</div>
-
-		<div id="summary">
-			${ ui.includeFragment("patientdashboardapp", "visitSummary", [patientId: patientId]) }
 		</div>
 
 		<div id="investigations">

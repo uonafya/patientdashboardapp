@@ -153,6 +153,30 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 				</p>
 			</fieldset>
 
+            <fieldset class="no-confirmation">
+                <legend>Systemic Examinations</legend>
+                <div style="padding: 0 4px">
+
+                    <div>
+                        <label for="searchExaminations" class="label title-label">Systematic Examinations <span class="important"></span></label>
+                        <input type="text" id="searchExaminations" name="" value="" placeholder="Add Examination"/>
+                        <field>
+                            <input type="hidden" id="exams-set" class=""/>
+                            <span id="exams-lbl" class="field-error" style="display: none"></span>
+                        </field>
+
+                        <div class="tasks" id="task-exams" style="display:none;">
+                            <header class="tasks-header">
+                                <span id="title-symptom" class="tasks-title">PATIENT'S EXAMINATIONS</span>
+                                <a class="tasks-lists"></a>
+                            </header>
+
+                            <div id="exams-holder"></div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
 			<fieldset class="no-confirmation">
 				<legend>Diagnosis</legend>
 				<div>
