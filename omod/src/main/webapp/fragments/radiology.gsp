@@ -17,6 +17,7 @@ jq(function(){
                     radiologyResult["Start Date"] = item["startDate"];
                     radiologyResult["Test Name"] = item["testName"];
                     radiologyResult["Investigation"] = item["investigation"];
+                    radiologyResult["Notes"] = item["results"];
                     results.push(radiologyResult);
                 });
                 radiologyTable('#radiologyData', results);

@@ -197,7 +197,7 @@ public class VisitDetail {
 				otherInstructions.append(obs.getValueText()).append(", ");
 			}
             if (obs.getConcept().equals(visitOutcomeConcept)){
-            	if(obs.getValueCoded().equals(Context.getConceptService().getConceptByUuid("160523AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))) {
+            	if(obs.getValueCoded() != null && obs.getValueCoded().equals(Context.getConceptService().getConceptByUuid("160523AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))) {
 
 					Set<Obs> getAllObs = encounter.getAllObs();
 					String nextApppointmentDate = "";
