@@ -21,10 +21,10 @@ public class VisitDetail {
 	private String investigations = "No Investigations requested";
 	private String procedures = "No procedures";
 	private String physicalExamination = "No physicalExamination";
-    private String visitOutcome = "No Outcome Of Visit";
-    private String internalReferral = "No internal Referral";
-    private String externalReferral = "No external Referral";
-    private String otherInstructions = "No Other instructions given";
+	private String visitOutcome = "No Outcome Of Visit";
+	private String internalReferral = "No internal Referral";
+	private String externalReferral = "No external Referral";
+	private String otherInstructions = "No Other instructions given";
 
 	public String getDiseaseOnSetDate() {
 		return diseaseOnSetDate;
@@ -36,29 +36,29 @@ public class VisitDetail {
 
 	private String diseaseOnSetDate = "No disease on set date";
 
-    public String getExternalReferral() {
-        return externalReferral;
-    }
+	public String getExternalReferral() {
+		return externalReferral;
+	}
 
-    public void setExternalReferral(String externalReferral) {
-        this.externalReferral = externalReferral;
-    }
+	public void setExternalReferral(String externalReferral) {
+		this.externalReferral = externalReferral;
+	}
 
-    public String getInternalReferral() {
-        return internalReferral;
-    }
+	public String getInternalReferral() {
+		return internalReferral;
+	}
 
-    public void setInternalReferral(String internalReferral) {
-        this.internalReferral = internalReferral;
-    }
+	public void setInternalReferral(String internalReferral) {
+		this.internalReferral = internalReferral;
+	}
 
-    public String getVisitOutcome() {
-        return visitOutcome;
-    }
+	public String getVisitOutcome() {
+		return visitOutcome;
+	}
 
-    public void setVisitOutcome(String visitOutcome) {
-        this.visitOutcome = visitOutcome;
-    }
+	public void setVisitOutcome(String visitOutcome) {
+		this.visitOutcome = visitOutcome;
+	}
 
 	public String getPhysicalExamination() {
 		return physicalExamination;
@@ -122,20 +122,20 @@ public class VisitDetail {
 	public void setDrugs(List<Drug> drugs) {
 		this.drugs = drugs;
 	}
-	
+
 	public static VisitDetail create(Encounter encounter) {
-		
+
 		Concept symptomConcept = Context.getConceptService().getConceptByUuid("c91a7e0e-4622-4eeb-9edc-00f8ececf428");
 		Concept provisionalDiagnosisConcept = Context.getConceptService().getConceptByUuid("160249AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		Concept finalDiagnosisConcept = Context.getConceptService().getConceptByUuid("160250AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		Concept investigationConcept = Context.getConceptService().getConceptByUuid("0179f241-8c1d-47c1-8128-841f6508e251");
 		Concept procedureConcept = Context.getConceptService().getConceptByUuid("1651AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		Concept physicalExaminationConcept = Context.getConceptService().getConceptByUuid("1391AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        Concept historyConcept = Context.getConceptService().getConceptByUuid("1390AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        Concept visitOutcomeConcept = Context.getConceptService().getConceptByUuid("160433AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        Concept internalReferralConcept = Context.getConceptService().getConceptByUuid("cf37b5f8-d2a8-4185-9a0d-cebe996d9b80");
-        Concept externalReferralConcept = Context.getConceptService().getConceptByUuid("477a7484-0f99-4026-b37c-261be587a70b");
-        Concept facilityReferredToConcept = Context.getConceptService().getConceptByUuid(PROPERTY_FACILITY);
+		Concept historyConcept = Context.getConceptService().getConceptByUuid("1390AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		Concept visitOutcomeConcept = Context.getConceptService().getConceptByUuid("160433AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		Concept internalReferralConcept = Context.getConceptService().getConceptByUuid("cf37b5f8-d2a8-4185-9a0d-cebe996d9b80");
+		Concept externalReferralConcept = Context.getConceptService().getConceptByUuid("477a7484-0f99-4026-b37c-261be587a70b");
+		Concept facilityReferredToConcept = Context.getConceptService().getConceptByUuid(PROPERTY_FACILITY);
 		Concept otherSymptom = Context.getConceptService().getConceptByUuid(OTHER_SYMPTOM);
 		Concept otherInstructionsConcept = Context.getConceptService().getConceptByUuid("163106AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		Concept onSetConcepts = Context.getConceptService().getConceptByUuid("164428AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
@@ -152,7 +152,7 @@ public class VisitDetail {
 		StringBuilder internalReferral = new StringBuilder();
 		StringBuilder externalReferral = new StringBuilder();
 		StringBuilder otherInstructions = new StringBuilder();
-        StringBuilder diseaseOnSetDate = new StringBuilder();
+		StringBuilder diseaseOnSetDate = new StringBuilder();
 		for (Obs obs :encounter.getAllObs()) {
 			if (obs.getConcept().equals(symptomConcept)) {
 				if (obs.getValueCoded().equals(otherSymptom)) {
@@ -196,38 +196,43 @@ public class VisitDetail {
 			if (obs.getConcept().equals(otherInstructionsConcept)){
 				otherInstructions.append(obs.getValueText()).append(", ");
 			}
-            if (obs.getConcept().equals(visitOutcomeConcept)){
-            	if(obs.getValueCoded() != null && obs.getValueCoded().equals(Context.getConceptService().getConceptByUuid("160523AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))) {
+			if (obs.getConcept().equals(visitOutcomeConcept)){
 
-					Set<Obs> getAllObs = encounter.getAllObs();
-					String nextApppointmentDate = "";
-					for(Obs obs1 : getAllObs){
-						if(obs1.getConcept().equals(nextAppointmentConcepts)){
-							nextApppointmentDate = Utils.getDateAsString(obs1.getValueDatetime(), "dd/MM/yyyy");
-							break;
+				if ((obs.getValueCoded() != null) ){
+					System.out.println("Obs value coded not null" + obs.getValueCoded() );
+					if (obs.getValueCoded().equals(Context.getConceptService().getConceptByUuid("160523AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))) {
+
+						Set<Obs> getAllObs = encounter.getAllObs();
+						String nextApppointmentDate = "";
+						for (Obs obs1 : getAllObs) {
+							if (obs1.getConcept().equals(nextAppointmentConcepts)) {
+								nextApppointmentDate = Utils.getDateAsString(obs1.getValueDatetime(), "dd/MM/yyyy");
+								break;
+							}
 						}
+						visitOutcome.append(obs.getValueText()).append(",").append(nextApppointmentDate);
+					} else {
+						visitOutcome.append(obs.getValueText()).append(",");
 					}
-					visitOutcome.append(obs.getValueText()).append(",").append(nextApppointmentDate);
+				}else {
+					System.out.println("obs.getValueCoded() is currently null");
 				}
-            	else {
-					visitOutcome.append(obs.getValueText()).append(",");
-				}
-            }
-            if (obs.getConcept().equals(internalReferralConcept)){
-                internalReferral.append(obs.getValueCoded().getDisplayString()).append(",");
-            }
-            if(obs.getConcept().equals(externalReferralConcept)){
-                externalReferral.append(obs.getValueCoded().getDisplayString());
-            }
-            if (obs.getConcept().equals(facilityReferredToConcept)){
+			}
+			if (obs.getConcept().equals(internalReferralConcept)){
+				internalReferral.append(obs.getValueCoded().getDisplayString()).append(",");
+			}
+			if(obs.getConcept().equals(externalReferralConcept)){
+				externalReferral.append(obs.getValueCoded().getDisplayString());
+			}
+			if (obs.getConcept().equals(facilityReferredToConcept)){
 				externalReferral.append("("+obs.getValueText()+")");
 			}
-            if(obs.getConcept().equals(onSetConcepts)) {
-            	diseaseOnSetDate.append(Utils.getDateAsString(obs.getValueDatetime(), "yyyy-MM-dd"));
+			if(obs.getConcept().equals(onSetConcepts)) {
+				diseaseOnSetDate.append(Utils.getDateAsString(obs.getValueDatetime(), "yyyy-MM-dd"));
 			}
 
 		}
-		
+
 		VisitDetail visitDetail = new VisitDetail();
 		if (provisionalDiagnosisList.length() > 0 || finalDiagnosisList.length() > 0) {
 			visitDetail.setDiagnosis(provisionalDiagnosisList.append(finalDiagnosisList).substring(0, provisionalDiagnosisList.length() - ", ".length()));
@@ -241,24 +246,24 @@ public class VisitDetail {
 		if (investigationList.length() > 0) {
 			visitDetail.setInvestigations(investigationList.substring(0, investigationList.length() - ", ".length()));
 		}
-        if (physicalExamination.length() > 0){
-            visitDetail.setPhysicalExamination(physicalExamination.substring(0,physicalExamination.length()-",".length()));
-        }
-        if (history.length() > 0){
-            visitDetail.setHistory(history.substring(0,history.length()-",".length()));
-        }
-        if (otherInstructions.length() > 0){
-            visitDetail.setOtherInstructions(otherInstructions.substring(0,otherInstructions.length()-",".length()));
-        }
-        if (visitOutcome.length() > 0){
-            visitDetail.setVisitOutcome(visitOutcome.substring(0,visitOutcome.length()-",".length()));
-        }
-        if (internalReferral.length() > 0){
-            visitDetail.setInternalReferral(internalReferral.substring(0, internalReferral.length() - ",".length()));
-        }
-        if (externalReferral.length() > 0){
-            visitDetail.setExternalReferral(externalReferral.substring(0));
-        }
+		if (physicalExamination.length() > 0){
+			visitDetail.setPhysicalExamination(physicalExamination.substring(0,physicalExamination.length()-",".length()));
+		}
+		if (history.length() > 0){
+			visitDetail.setHistory(history.substring(0,history.length()-",".length()));
+		}
+		if (otherInstructions.length() > 0){
+			visitDetail.setOtherInstructions(otherInstructions.substring(0,otherInstructions.length()-",".length()));
+		}
+		if (visitOutcome.length() > 0){
+			visitDetail.setVisitOutcome(visitOutcome.substring(0,visitOutcome.length()-",".length()));
+		}
+		if (internalReferral.length() > 0){
+			visitDetail.setInternalReferral(internalReferral.substring(0, internalReferral.length() - ",".length()));
+		}
+		if (externalReferral.length() > 0){
+			visitDetail.setExternalReferral(externalReferral.substring(0));
+		}
 		if (diseaseOnSetDate.length() > 0){
 			visitDetail.setDiseaseOnSetDate(diseaseOnSetDate.substring(0));
 		}
