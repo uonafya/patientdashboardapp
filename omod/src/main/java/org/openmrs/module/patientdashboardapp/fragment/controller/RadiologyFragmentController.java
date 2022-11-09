@@ -54,7 +54,7 @@ public class RadiologyFragmentController {
 					simplifiedRadiologyResults = new SimplifiedRadiologyResults();
 					simplifiedRadiologyResults.setStartDate(model.getStartDate());
 					simplifiedRadiologyResults.setTestName(model.getTestName());
-					simplifiedRadiologyResults.setResults(getObs(model.getTestName(), model.getGivenEncounterId()));
+					simplifiedRadiologyResults.setResults(getObs(model.getGivenEncounterId(), model.getOrderId()));
 					simplifiedRadiologyResults.setInvestigation(model.getInvestigation());
 
 					simplifiedRadiologyResultsList.add(simplifiedRadiologyResults);
@@ -92,15 +92,15 @@ public class RadiologyFragmentController {
         return allowedInvestigations;
     }
 
-    private String getObs(String testName, Integer encounterId) {
+    private String getObs(Integer encounterId, Integer orderId) {
 		Encounter encounter = Context.getEncounterService().getEncounter(encounterId);
-		Concept concept = Context.getConceptService().getConcept(testName);
+		Concept concept = Context.getConceptService().getConceptByUuid("f03affcf-67d7-4bf6-944b-03449b0d0412");
 		String results = "";
 		if(encounter != null) {
 			Set<Obs> obsSet = encounter.getAllObs();
 			if(obsSet != null && concept != null) {
 				for(Obs obs: obsSet) {
-					if(obs.getConcept() != null && obs.getConcept().equals(concept) && obs.getValueText() != null) {
+					if(obs.getConcept() != null && obs.getConcept().equals(concept) && obs.getValueText() != null && obs.getOrder().equals(Context.getOrderService().getOrder(orderId))) {
 						results = obs.getValueText();
 					}
 				}
