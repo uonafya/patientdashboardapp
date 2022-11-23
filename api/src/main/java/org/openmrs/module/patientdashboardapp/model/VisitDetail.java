@@ -26,6 +26,16 @@ public class VisitDetail {
 	private String externalReferral = "No external Referral";
 	private String otherInstructions = "No Other instructions given";
 
+	public String getProviderName() {
+		return providerName;
+	}
+
+	public void setProviderName(String providerName) {
+		this.providerName = providerName;
+	}
+
+	private String providerName = "";
+
 	public String getDiseaseOnSetDate() {
 		return diseaseOnSetDate;
 	}
@@ -234,6 +244,7 @@ public class VisitDetail {
 		}
 
 		VisitDetail visitDetail = new VisitDetail();
+		visitDetail.setProviderName(encounter.getCreator().getPersonName().getFullName());
 		if (provisionalDiagnosisList.length() > 0 || finalDiagnosisList.length() > 0) {
 			visitDetail.setDiagnosis(provisionalDiagnosisList.append(finalDiagnosisList).substring(0, provisionalDiagnosisList.length() - ", ".length()));
 		}

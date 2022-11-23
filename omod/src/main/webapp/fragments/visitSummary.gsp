@@ -12,7 +12,6 @@
 					{ 'encounterId' : jq(visitSummary).find(".encounter-id").val() }
 			).success(function (data) {
 				var visitDetailTemplate =  _.template(jq("#visit-detail-template").html());
-				console.log(data.notes);
 				jq("#visit-detail").html(visitDetailTemplate(data.notes));
 
 				if (data.drugs.length > 0) {
@@ -167,11 +166,14 @@
 </div>
 
 <script id="visit-detail-template" type="text/template">
+<div>
+	<h4>Doctor Name:</h3> <span><b>{{-providerName}}</b></span>
+</div>
+<br />
 <div class="info-header">
 	<i class="icon-user-md"></i>
 	<h3>CLINICAL HISTORY SUMMARY INFORMATION</h3>
 </div>
-
 <div class="info-body">
 	<label style="display: inline-block; font-weight: bold; width: 190px"><span class='status active'></span>History:</label>
 	<span>{{-history}}</span>
