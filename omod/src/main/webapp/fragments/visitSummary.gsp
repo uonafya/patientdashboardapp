@@ -167,7 +167,8 @@
 
 <script id="visit-detail-template" type="text/template">
 <div>
-	<h4>Doctor Name:</h3> <span><b>{{-providerName}}</b></span>
+	<h4>Doctor Name:</h3><b>{{-providerName}}</b><br />
+	<h4>Date of Service:</h3><b>{{-dateOfService}}</b>
 </div>
 <br />
 <div class="info-header">

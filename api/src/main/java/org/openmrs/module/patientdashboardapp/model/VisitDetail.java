@@ -36,6 +36,16 @@ public class VisitDetail {
 
 	private String providerName = "";
 
+	public String getDateOfService() {
+		return dateOfService;
+	}
+
+	public void setDateOfService(String dateOfService) {
+		this.dateOfService = dateOfService;
+	}
+
+	private String dateOfService = "";
+
 	public String getDiseaseOnSetDate() {
 		return diseaseOnSetDate;
 	}
@@ -245,6 +255,7 @@ public class VisitDetail {
 
 		VisitDetail visitDetail = new VisitDetail();
 		visitDetail.setProviderName(encounter.getCreator().getPersonName().getFullName());
+		visitDetail.setDateOfService(Utils.getDateAsString(encounter.getEncounterDatetime(), "dd/MM/yyyy hh:mm"));
 		if (provisionalDiagnosisList.length() > 0 || finalDiagnosisList.length() > 0) {
 			visitDetail.setDiagnosis(provisionalDiagnosisList.append(finalDiagnosisList).substring(0, provisionalDiagnosisList.length() - ", ".length()));
 		}
