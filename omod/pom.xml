@@ -70,6 +70,18 @@
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>ehrlaboratory-api</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>kenyaui-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>fhir2-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>fhir2-omod</artifactId>
+		</dependency>
 						
 		<!-- End OpenMRS modules -->
 		

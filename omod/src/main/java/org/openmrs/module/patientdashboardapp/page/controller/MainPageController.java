@@ -13,6 +13,7 @@ import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.util.ConceptAnswerComparator;
 import org.openmrs.module.hospitalcore.util.PatientUtils;
+import org.openmrs.module.kenyaui.annotation.AppPage;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Date;
 
+@AppPage("patientqueueapp.opdqueue")
 public class MainPageController {
 
     public String get(UiSessionContext sessionContext,

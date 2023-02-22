@@ -187,8 +187,9 @@
 		jq('#availableReferral').change(function(){
 			var option = jq('#availableReferral').val();
 			var outcom = note.outcome()? note.outcome().option.label : '';
-			
+			console.log("Change event worked!", option);
 			if (option == 1){
+				console.log(1,option,outcom);
 				jq('#refTitle').text('Internal Referral');
 				jq('#refTitle').show();
 				jq('#facTitle').hide();
@@ -205,6 +206,7 @@
 				jq("select#externalReferral")[0].selectedIndex = 0;
 			}
 			else if (option == 2){
+				console.log(1,option,outcom);
 				jq('#refTitle').text('External Referral');
 				jq('#refTitle').show();
 				jq('#facTitle').show();

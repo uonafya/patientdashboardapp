@@ -28,6 +28,7 @@
 		<require_module version="${ehrconfigisVersion}">org.openmrs.module.ehrconfigs</require_module>
 		<require_module>org.openmrs.module.metadatadeploy</require_module>
 		<require_module>org.openmrs.module.ehrlaboratory</require_module>
+		<require_module>org.openmrs.module.fhir2</require_module>
 	</require_modules>
 	<!-- / Required Modules -->
 	
@@ -101,6 +102,35 @@
 		<defaultValue>symptom</defaultValue>
 		<description>
 			symptom concept name
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>patientdashboard.symptomConcept</property>
+		<defaultValue>symptom</defaultValue>
+		<description>
+			symptom concept name
+		</description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>patientdashboardapp.shr.serverUrl</property>
+		<defaultValue>https://fhir-staging.health.go.ke/fhir-server/api/v4/</defaultValue>
+		<description>
+			SHR server URL
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>patientdashboardapp.shr.username</property>
+		<defaultValue>fhirtestpartner</defaultValue>
+		<description>
+			User name
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>patientdashboardapp.shr.password</property>
+		<defaultValue>P@ssword!!!</defaultValue>
+		<description>
+			Password
 		</description>
 	</globalProperty>
 	<!-- /Required Global Properties -->

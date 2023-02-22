@@ -37,6 +37,9 @@
 				height:			700
 			});
 		});
+		jq('#opdRecordsSummaryFromSHRButton').click(function(){
+        			kenyaui.openPanelDialog({ templateId: 'shr-visit-summary', width: 85, height: 70, scrolling: true });
+        		});
 
 		var visitSummaries = jq(".visit-summary");
 
@@ -106,7 +109,17 @@
 			</li>
 		</ul>
 	</div>
+	<button id="opdRecordsSummaryFromSHRButton" class="task" style="float: right; margin: 10px;">
+        			<i class="icon-folder-open"></i>
+        			View SHR Visit Summary
+        </button>
 
+    <div id="shr-visit-summary" title="Shared Health Record Visit Summary" style="display: none">
+        ${ ui.includeFragment("patientdashboardapp", "shr/shrVisitSummary", [ patient: currentPatient]) }
+        	<div align="center">
+        		<button type="button" onclick="kenyaui.closeDialog();"><img src="${ ui.resourceLink("kenyaui", "images/glyphs/cancel.png") }" /> Close</button>
+        	</div>
+    </div>
 	<div class="col16 dashboard opdRecordsPrintDiv" style="min-width: 78%">
 		<div id="printSection">
 			<div id="person-detail">

@@ -297,7 +297,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 				</p>
 			</fieldset>
 			<fieldset class="no-confirmation">
-				<legend>Other Instructions</legend>
+				<legend>Notes/Instructions</legend>
 				<p class="input-position-class">
 					<label class="label">Other Instructions</label>
 					<textarea data-bind="value: \$root.otherInstructions" id="instructions" name="instructions" rows="10" cols="74"></textarea>
