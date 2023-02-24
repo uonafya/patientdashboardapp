@@ -171,7 +171,7 @@
 	jq(function() {
 		ko.applyBindings(note, jq("#notes-form")[0]);
 		NavigatorController = new KeyboardController();
-		
+
 		jq('#referralReasons').change(function(){
 			if (jQuery("#referralReasons option:selected").text().trim() === "Other"){
 				jq('#specify').show();
@@ -184,12 +184,12 @@
 			}
 		}).change();
 		
-		jq('#availableReferral').change(function(){
+		jq("#availableReferral").on('change', function(){
 			var option = jq('#availableReferral').val();
 			var outcom = note.outcome()? note.outcome().option.label : '';
-			console.log("Change event worked!", option);
+			console.log("We got the change event working");
 			if (option == 1){
-				console.log(1,option,outcom);
+				
 				jq('#refTitle').text('Internal Referral');
 				jq('#refTitle').show();
 				jq('#facTitle').hide();
@@ -206,7 +206,6 @@
 				jq("select#externalReferral")[0].selectedIndex = 0;
 			}
 			else if (option == 2){
-				console.log(1,option,outcom);
 				jq('#refTitle').text('External Referral');
 				jq('#refTitle').show();
 				jq('#facTitle').show();
@@ -255,7 +254,7 @@
 			
 			jq('#summaryTable tr:eq(8) td:eq(1)').text(outcom);
 			
-		}).change();
+		});
 		
 		jq('.dialog-content input').on('keydown', function(e){
 			if (e.keyCode == 9 || e.which == 9) {

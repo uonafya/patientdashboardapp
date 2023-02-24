@@ -24,7 +24,6 @@
 %>
 
 ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note: note, listOfWards: listOfWards, internalReferralSources: internalReferralSources, externalReferralSources: externalReferralSources, referralReasonsSources: referralReasonsSources, outcomeOptions: outcomeOptions ]) }
-
 <style>
 .dialog textarea{
 	resize: none;
@@ -334,9 +333,9 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 							<h2>Referral information</h2>
 
 							<div class="onerow">
-								<div class="col4"><label for="internalReferral"						>Referral Available</label></div>
-								<div class="col4"><label for="internalReferral" id="refTitle"		>Internal Referral</label></div>
-								<div class="col4 last"><label for="internalReferral" id="facTitle"	>Facility</label></div>
+								<div class="col4"><label for="internalReferral">Referral Available</label></div>
+								<div class="col4" style="display:none;"><label for="internalReferral" id="refTitle"		>Internal Referral</label></div>
+								<div class="col4 last" style="display:none;"><label for="internalReferral" id="facTitle"	>Facility</label></div>
 							</div>
 
 							<div class="onerow">
@@ -352,16 +351,19 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 
 								<div class="col4">
 									<div class="input-position-class">
-										<select id="internalReferral" name="internalReferral" data-bind="options: \$root.internalReferralOptions, optionsText: 'label', value: \$root.referredTo, optionsCaption: 'Please select...'">
-										</select>
-
-										<select id="externalReferral" name="externalReferral" onchange="loadExternalReferralCases();" data-bind="options: \$root.externalReferralOptions, optionsText: 'label', value: \$root.referredTo, optionsCaption: 'Please select...'">
-										</select>
+										<div style="display:none;">
+											<select id="internalReferral" name="internalReferral" data-bind="options: \$root.internalReferralOptions, optionsText: 'label', value: \$root.referredTo, optionsCaption: 'Please select...'">
+											</select>
+										</div>		
+										<div style="display:none;">
+											<select id="externalReferral" name="externalReferral" onchange="loadExternalReferralCases();" data-bind="options: \$root.externalReferralOptions, optionsText: 'label', value: \$root.referredTo, optionsCaption: 'Please select...'">
+											</select>
+										</div>		
 									</div>
 								</div>
 
 								<div class="col4 last">
-									<div class="input-position-class">
+									<div class="input-position-class" id="facilityDiv" style="display:none;">
 										<field>
 											<% fields.each { %>
 											${ ui.includeFragment("kenyaui", "widget/labeledField", it) }
@@ -371,7 +373,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 								</div>
 							</div>
 
-							<div class="onerow" style="padding-top:2px;" id="refReason1">
+							<div class="onerow" style="padding-top:2px; display:none;" id="refReason1">
 								<div class="col4">
 									<label for="referralReasons" style="margin-top:20px;">Referral Reasons</label>
 								</div>
@@ -379,7 +381,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 								<label id="specify-lbl" for="specify" style="margin-top:20px;">If Other, Please Specify</label>
 							</div>
 
-							<div class="onerow" style="padding-top:2px;" id="refReason2">
+							<div class="onerow" style="padding-top:2px; display:none;" id="refReason2">
 								<div class="col4">
 									<select id="referralReasons" name="referralReasons" data-bind="options: \$root.referralReasonsOptions, optionsText: 'label', value: \$root.referralReasons, optionsCaption: 'Please select...'" style="margin-top: 5px;">
 									</select>
@@ -390,7 +392,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 								</div>
 							</div>
 
-							<div class="onerow" style="padding-top:2px;" id="refReason3">
+							<div class="onerow" style="padding-top:2px; display:none;" id="refReason3">
 								<label for="referralComments" style="margin-top:20px;">Comments</label>
 								<textarea type="text" id="referralComments"   name="referralComments" data-bind="value: \$root.referralComments" placeholder="COMMENTS"  style="height: 80px; width: 650px;"></textarea>
 							</div>
