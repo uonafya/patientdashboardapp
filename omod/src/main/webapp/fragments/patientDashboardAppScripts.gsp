@@ -30,10 +30,8 @@
 	});
 
 	function loadExternalReferralCases() {
-		jq('#referralReasons').empty();
-		note.referralReasonsOptions.removeAll();
 
-		if (!(jQuery("#externalReferral option:selected").text() === "Please select...")){
+		if (!(jQuery("#internalReferral option:selected").text() === "Please select...")){
 			jQuery("#referralComments").attr("readonly", false);
 			jQuery("#referralComments").val("");
 			jQuery("#facility").attr("readonly", false);
@@ -57,13 +55,13 @@
 			});
 
 			jQuery("#referralComments").val("N/A");
-			jQuery("#referralComments").attr("readonly", true);
+			jQuery("#referralComments").attr("readonly", false);
 
 			jQuery("#facility").val("N/A");
 			jQuery("#facility").attr("readonly", true);
 
 			jQuery("#specify").val("N/A");
-			jQuery("#specify").attr("readonly", true);
+			jQuery("#specify").attr("readonly", false);
 		}
 		
 		jq('#referralReasons').change();
@@ -184,10 +182,9 @@
 			}
 		}).change();
 		
-		jq("#availableReferral").on('change', function(){
+		jq('#availableReferral').change(function(e){
 			var option = jq('#availableReferral').val();
 			var outcom = note.outcome()? note.outcome().option.label : '';
-			console.log("We got the change event working");
 			if (option == 1){
 				
 				jq('#refTitle').text('Internal Referral');
@@ -254,7 +251,7 @@
 			
 			jq('#summaryTable tr:eq(8) td:eq(1)').text(outcom);
 			
-		});
+		}).change();
 		
 		jq('.dialog-content input').on('keydown', function(e){
 			if (e.keyCode == 9 || e.which == 9) {
