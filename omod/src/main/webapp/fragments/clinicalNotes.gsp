@@ -393,8 +393,12 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 							</div>
 
 							<div class="onerow" id="refReason3">
-								<label for="referralComments" style="margin-top:20px;">Comments</label>
-								<textarea type="text" id="referralComments"   name="referralComments" data-bind="value: \$root.referralComments" placeholder="COMMENTS"  style="height: 80px; width: 650px;"></textarea>
+								<div class="col4">
+									<label for="referralComments" style="margin-top:20px;">Comments</label>
+								</div>
+								<div class="col4">		
+									<textarea type="text" id="referralComments"   name="referralComments" data-bind="value: \$root.referralComments" placeholder="COMMENTS"  style="height: 80px; width: 650px;"></textarea>
+								</div>
 							</div>
 						</span>
 
