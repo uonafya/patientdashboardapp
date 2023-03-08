@@ -34,12 +34,24 @@ public class FhirConfig {
     public Bundle fetchPatientResource(String identifier) {
         try {
             IGenericClient client = getFhirClient();
-            Bundle resource = client.search().forResource("Patient").where(Patient.IDENTIFIER.exactly().code(identifier))
+            Bundle patientResource = client.search().forResource("Patient").where(Patient.IDENTIFIER.exactly().code(identifier))
                     .returnBundle(Bundle.class).execute();
-            return resource;
+            return patientResource;
         }
         catch (Exception e) {
-            log.error(String.format("Failed fetching FHIR resource %s", e));
+            log.error(String.format("Failed fetching FHIR patient resource %s", e));
+            return null;
+        }
+    }
+
+    public Bundle fetchEncounterResource(String nupi) {
+        try {
+            IGenericClient client = getFhirClient();
+            Bundle encounterResource = client.search().forResource("Encounter").where(Patient.IDENTIFIER.exactly().code(nupi)).returnBundle(Bundle.class).execute();
+            return encounterResource;
+        }
+        catch (Exception e) {
+            log.error(String.format("Failed fetching FHIR encounter resource %s", e));
             return null;
         }
     }
