@@ -24,7 +24,7 @@ public class ShrVisitSummaryFragmentController {
         Bundle patientResourceBundle;
         Bundle encounterResourceBundle;
         org.hl7.fhir.r4.model.Resource fhirResource;
-        org.hl7.fhir.r4.model.Resource fhirEncounterResource;
+        org.hl7.fhir.r4.model.Resource fhirEncounterResource = null;
         org.hl7.fhir.r4.model.Patient fhirPatient = null;
         org.hl7.fhir.r4.model.Encounter fhirEncounter = null;
         if(patientIdentifier != null) {
@@ -34,9 +34,11 @@ public class ShrVisitSummaryFragmentController {
             if(fhirResource.getResourceType().toString().equals("Patient")) {
                 fhirPatient = (org.hl7.fhir.r4.model.Patient) fhirResource;
             }
-            fhirEncounterResource = encounterResourceBundle.getEntry().get(0).getResource();
-            if(fhirEncounterResource.getResourceType().toString().equals("Encounter")) {
-                fhirEncounter = (Encounter) fhirEncounterResource;
+            if(!encounterResourceBundle.getEntry().isEmpty()) {
+                fhirEncounterResource = encounterResourceBundle.getEntry().get(0).getResource();
+                if (fhirEncounterResource.getResourceType().toString().equals("Encounter")) {
+                    fhirEncounter = (Encounter) fhirEncounterResource;
+                }
             }
 
         }
