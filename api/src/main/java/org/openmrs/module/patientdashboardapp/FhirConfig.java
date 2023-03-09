@@ -5,6 +5,7 @@ import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.client.interceptor.BasicAuthInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.Encounter;
 import org.hl7.fhir.r4.model.Patient;
 import org.openmrs.module.patientdashboardapp.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +45,13 @@ public class FhirConfig {
         }
     }
 
-    public Bundle fetchEncounterResource(String nupi) {
+    public Bundle fetchEncounterResource(Patient patient) {
         try {
             IGenericClient client = getFhirClient();
-            Bundle encounterResource = client.search().forResource("Encounter").where(Patient.IDENTIFIER.exactly().code(nupi)).returnBundle(Bundle.class).execute();
+            Bundle encounterResource = client.search()
+                    .forResource(Encounter.class)
+                    .where(Encounter.PATIENT.hasId(patient.getIdElement().getIdPart()))
+                    .returnBundle(Bundle.class).execute();
             return encounterResource;
         }
         catch (Exception e) {

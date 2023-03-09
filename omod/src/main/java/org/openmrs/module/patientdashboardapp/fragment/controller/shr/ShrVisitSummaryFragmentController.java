@@ -1,5 +1,6 @@
 package org.openmrs.module.patientdashboardapp.fragment.controller.shr;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Encounter;
 import org.openmrs.Patient;
@@ -11,6 +12,7 @@ import org.openmrs.ui.framework.annotation.FragmentParam;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 
 
+@Slf4j
 public class ShrVisitSummaryFragmentController {
 
     public void controller(@FragmentParam("patient") Patient patient, FragmentModel model) {
@@ -29,11 +31,12 @@ public class ShrVisitSummaryFragmentController {
         org.hl7.fhir.r4.model.Encounter fhirEncounter = null;
         if(patientIdentifier != null) {
             patientResourceBundle = fhirConfig.fetchPatientResource(patientIdentifier.getIdentifier());
-            encounterResourceBundle = fhirConfig.fetchEncounterResource(patientIdentifier.getIdentifier());
+
             fhirResource = patientResourceBundle.getEntry().get(0).getResource();
             if(fhirResource.getResourceType().toString().equals("Patient")) {
                 fhirPatient = (org.hl7.fhir.r4.model.Patient) fhirResource;
             }
+            encounterResourceBundle = fhirConfig.fetchEncounterResource(fhirPatient);
             if(!encounterResourceBundle.getEntry().isEmpty()) {
                 fhirEncounterResource = encounterResourceBundle.getEntry().get(0).getResource();
                 if (fhirEncounterResource.getResourceType().toString().equals("Encounter")) {
@@ -43,6 +46,6 @@ public class ShrVisitSummaryFragmentController {
 
         }
         model.addAttribute("patient", fhirPatient != null? fhirPatient.getBirthDate() : "Not found");
-        model.addAttribute("encounter", fhirEncounter != null? fhirEncounter.getText() : "Not found");
+        model.addAttribute("encounter", fhirEncounter != null? fhirEncounter.getText().getDiv() : "Not found");
     }
 }
