@@ -6,6 +6,13 @@ import org.openmrs.module.patientdashboardapp.PatientDashboardAppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.hl7.fhir.r4.model.Quantity;
+import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.DateTimeType;
+import org.hl7.fhir.r4.model.IntegerType;
+import org.hl7.fhir.r4.model.StringType;
+import org.hl7.fhir.r4.model.BooleanType;
+
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -46,5 +53,24 @@ public class Utils {
 
   public String getShrPassword() {
     return administrationService.getGlobalProperty(PatientDashboardAppConstants.GP_SHR_PASSWORD);
+  }
+
+  public static String getObservationValue(org.hl7.fhir.r4.model.Observation fhirObservation) {
+    if (fhirObservation != null) {
+      if (fhirObservation.getValue() instanceof Quantity) {
+        return fhirObservation.getValueQuantity().getValue().toString();
+      } else if (fhirObservation.getValue() instanceof CodeableConcept) {
+        return fhirObservation.getValueCodeableConcept().getCodingFirstRep().getDisplay();
+      } else if (fhirObservation.getValue() instanceof DateTimeType) {
+        return fhirObservation.getValueDateTimeType().getValue().toString();
+      } else if (fhirObservation.getValue() instanceof IntegerType) {
+        return fhirObservation.getValueIntegerType().getValue().toString();
+      } else if (fhirObservation.getValue() instanceof BooleanType) {
+        return fhirObservation.getValueBooleanType().getValue().toString();
+      } else if (fhirObservation.getValue() instanceof StringType) {
+        return fhirObservation.getValueStringType().getValue();
+      }
+    }
+    return "";
   }
 }
