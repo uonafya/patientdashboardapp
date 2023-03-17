@@ -17,7 +17,9 @@ import org.hl7.fhir.r4.model.BooleanType;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class Utils {
@@ -72,5 +74,25 @@ public class Utils {
       }
     }
     return "";
+  }
+
+  public static List<String> vitalConceptNames() {
+    return Arrays.asList("Temperature (C)".toLowerCase(),
+            "Weight (kg)".toLowerCase(),
+            "Height (cm)".toLowerCase(),
+            "Systolic blood pressure".toLowerCase(),
+            "Diastolic blood pressure".toLowerCase());
+  }
+  public static List<String> diagnosisConceptNames() {
+    return Arrays.asList("Final diagnosis".toLowerCase(),
+            "Provisional diagnosis".toLowerCase(),
+            "PROBLEM ADDED".toLowerCase(),
+            "DIAGNOSIS ADDED".toLowerCase(),
+            "PROBLEM LIST".toLowerCase());
+  }
+  public static List<String> proceduresConceptNames() {
+    return Arrays.asList("Procedure performed".toLowerCase(),
+            "Procedure outcome".toLowerCase(),
+            "Procedure performed (text)".toLowerCase());
   }
 }

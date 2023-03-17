@@ -6,44 +6,120 @@
     <div class="container">
         <div id="content" class="container">
             <div class="dashboard clear">
-                 <% if (vitals) { %>
-                    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                    <table border="0" cellpadding="0" cellspacing="0">
                         <tr>
-                            <td>
-                                <fieldset>
-                                 <legend>Vitals</legend>
-                                 <table>
-                                     <% vitals.each { it -> %>
-                                     <tr>
-                                         <td>${it.display}</td>
-                                         <td colspan="2">${it.value}</td>
-                                     </tr>
-                                     <% } %>
-                                 </table>
-                                </fieldset>
-                            <td>
-                            <td>
-                                <fieldset>
-                                 <legend>Conditions</legend>
-                                </fieldset>
-                            <td>
+                            <% if (vitals) { %>
+                                <td valign="top">
+                                    <fieldset>
+                                     <legend>Vitals</legend>
+                                     <table>
+                                         <% vitals.each { it -> %>
+                                         <tr>
+                                             <td>${it.display}</td>
+                                             <td>${it.value}</td>
+                                         </tr>
+                                         <% } %>
+                                     </table>
+                                    </fieldset>
+                                <td>
+                             <% } else { %>
+                                <p>No vitals recorded found</p>
+                            <%}%>
+                            <% if (conditions) { %>
+                                <td valign="top">
+                                    <fieldset>
+                                     <legend>Conditions</legend>
+                                     <table>
+                                         <% conditions.each { it -> %>
+                                         <tr>
+                                             <td>${it.display}</td>
+                                             <td>${it.value}</td>
+                                         </tr>
+                                         <% } %>
+                                     </table>
+
+                                    </fieldset>
+                                <td>
+                             <% } else { %>
+                                <p>No vitals conditions found</p>
+                            <%}%>
                         </tr>
                         <tr>
-                            <td>
-                                <fieldset>
-                                 <legend>Investigations</legend>
-                                </fieldset>
-                            <td>
-                            <td>
-                                <fieldset>
-                                 <legend>Diagnosis/Medications</legend>
-                                </fieldset>
-                            <td>
+                            <% if (investigations) { %>
+                                    <td valign="top">
+                                        <fieldset>
+                                         <legend>Investigations</legend>
+                                         <table>
+                                           <% investigations.each { it -> %>
+                                           <tr>
+                                               <td>${it.display}</td>
+                                               <td>${it.value}</td>
+                                           </tr>
+                                           <% } %>
+                                       </table>
+                                        </fieldset>
+                                    <td>
+                            <% } else { %>
+                                <p>No vitals investigations found</p>
+                            <%}%>
+
+                            <% if (diagnosis) { %>
+                                <td valign="top">
+                                    <fieldset>
+                                     <legend>Diagnosis</legend>
+                                     <table>
+                                          <% diagnosis.each { it -> %>
+                                          <tr>
+                                              <td>${it.display}</td>
+                                              <td>${it.value}</td>
+                                          </tr>
+                                          <% } %>
+                                      </table>
+                                    </fieldset>
+                                <td>
+                                <% } else { %>
+                                    <p>No vitals diagnosis found</p>
+                                <%}%>
+                        </tr>
+                        <tr>
+                            <% if (appointments) { %>
+                                    <td valign="top">
+                                        <fieldset>
+                                         <legend>Appointments</legend>
+                                         <table>
+                                           <% appointments.each { it -> %>
+                                           <tr>
+                                               <td>${it.display}</td>
+                                               <td>${it.value}</td>
+                                           </tr>
+                                           <% } %>
+                                       </table>
+                                        </fieldset>
+                                    <td>
+                            <% } else { %>
+                                <p>No vitals appointments found</p>
+                            <%}%>
+
+                            <% if (procedures) { %>
+                                <td valign="top">
+                                    <fieldset>
+                                     <legend>Procedures</legend>
+                                     <table>
+                                          <% procedures.each { it -> %>
+                                          <tr>
+                                              <td>${it.display}</td>
+                                              <td>${it.value}</td>
+                                          </tr>
+                                          <% } %>
+                                      </table>
+                                    </fieldset>
+                                <td>
+                                <% } else { %>
+                                    <p>No vitals procedures found</p>
+                                <%}%>
                         </tr>
                     </table>
-                 <% } else { %>
-                    <p>No records found</p>
-                 <%}%>
+
             </div>
         </div>
     </div>
