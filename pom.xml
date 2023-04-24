@@ -35,18 +35,18 @@
 		<openMRSVersion>2.3.3</openMRSVersion>
 		<appframeworkVersion>2.9</appframeworkVersion>
 		<htmlwidgetsVersion>1.6.6</htmlwidgetsVersion>
-		<hospitalcoreVersion>2.0.2</hospitalcoreVersion>
+		<hospitalcoreVersion>2.0.3-SNAPSHOT</hospitalcoreVersion>
 		<uiframeworkVersion>3.8</uiframeworkVersion>
 		<uilibraryVersion>2.0.4</uilibraryVersion>
-		<inventoryVersion>2.0.0</inventoryVersion>
+		<inventoryVersion>2.0.1-SNAPSHOT</inventoryVersion>
 		<appuiVersion>1.8.0</appuiVersion>
-		<kenyaemrVersion>17.0.3</kenyaemrVersion>
+		<kenyaemrVersion>18.5.1</kenyaemrVersion>
 		<jodaTimeVersion>2.9.1</jodaTimeVersion>
-		<ehrconfigisVersion>2.0.0</ehrconfigisVersion>
+		<ehrconfigisVersion>2.0.1-SNAPSHOT</ehrconfigisVersion>
 		<metadatadeployVersion>1.3</metadatadeployVersion>
-		<ehrlaboratoryVersion>2.0.0</ehrlaboratoryVersion>
+		<ehrlaboratoryVersion>2.0.1-SNAPSHOT</ehrlaboratoryVersion>
 		<fhir2Version>1.4.0</fhir2Version>
-		<kenyauiVersion>2.1.1</kenyauiVersion>
+		<kenyauiVersion>3.0.0</kenyauiVersion>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
