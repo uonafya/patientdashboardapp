@@ -942,9 +942,16 @@ h2 span{
                                         <span id="fr3417" class="field-error" style="display: none"></span>
                                     </p>
                                 </div>
-
+                                <h2>Provider to Visit</h2>
                                 <div class="col4">
-                                    &nbsp;
+                                    <p>
+                                        <select id="provider-to-visit" name="providerToVisit">
+                                                <option value="">-Please select-</option>
+                                                <% listProviders.each { prod -> %>
+                                                <option value="${prod.providerId }">${prod.names}</option>
+                                                <% } %>
+                                            </select>
+                                    </p>
                                 </div>
 
                                 <div class="col4 last">

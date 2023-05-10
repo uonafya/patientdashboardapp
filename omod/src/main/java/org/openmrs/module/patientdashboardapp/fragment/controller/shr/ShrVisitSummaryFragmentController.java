@@ -46,7 +46,7 @@ public class ShrVisitSummaryFragmentController {
         if(patientIdentifier != null) {
             patientResourceBundle = fhirConfig.fetchPatientResource(patientIdentifier.getIdentifier());
 
-            if(patientResourceBundle.getEntry() != null && !patientResourceBundle.getEntry().isEmpty()) {
+            if(patientResourceBundle.getEntry() != null && !patientResourceBundle.getEntry().isEmpty() && patientResourceBundle.getEntry().get(0) != null) {
                 fhirResource = patientResourceBundle.getEntry().get(0).getResource();
             }
             if(fhirResource != null && fhirResource.getResourceType().toString().equals("Patient")) {

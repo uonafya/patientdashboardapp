@@ -2,16 +2,7 @@ package org.openmrs.module.patientdashboardapp.page.controller;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.openmrs.Concept;
-import org.openmrs.ConceptAnswer;
-import org.openmrs.Encounter;
-import org.openmrs.EncounterType;
-import org.openmrs.Location;
-import org.openmrs.Obs;
-import org.openmrs.Patient;
-import org.openmrs.PersonAttributeType;
-import org.openmrs.User;
-import org.openmrs.Visit;
+import org.openmrs.*;
 import org.openmrs.api.VisitService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.appui.UiSessionContext;
@@ -29,6 +20,7 @@ import org.openmrs.module.hospitalcore.model.TriagePatientQueueLog;
 import org.openmrs.module.hospitalcore.util.ConceptAnswerComparator;
 import org.openmrs.module.kenyaemr.api.KenyaEmrService;
 import org.openmrs.module.kenyaui.annotation.AppPage;
+import org.openmrs.module.patientdashboardapp.model.ProviderSimplifier;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.annotation.BindParams;
 import org.openmrs.ui.framework.page.PageModel;
@@ -117,6 +109,23 @@ public class TriagePageController {
 			Collections.sort(oList, new ConceptAnswerComparator());
 		}
 		model.addAttribute("listOPD", oList);
+		List<Provider> allProvidersList = Context.getProviderService().getAllProviders();
+		List<ProviderSimplifier> simplifiedProviderList = new ArrayList<ProviderSimplifier>();
+		ProviderSimplifier providerSimplifier;
+
+		for(Provider provider : allProvidersList) {
+			providerSimplifier = new ProviderSimplifier();
+			providerSimplifier.setProviderId(provider.getProviderId());
+			providerSimplifier.setIdentifier(provider.getIdentifier());
+			providerSimplifier.setPersonId(provider.getPerson().getPersonId());
+			if(!(Context.getUserService().getUsersByPerson(provider.getPerson(), false).isEmpty())) {
+				providerSimplifier.setUserId(Context.getUserService().getUsersByPerson(provider.getPerson(), false).get(0).getUserId());
+			}
+			providerSimplifier.setNames(provider.getIdentifier()+"-"+provider.getPerson().getGivenName()+" "+provider.getPerson().getFamilyName());
+			simplifiedProviderList.add(providerSimplifier);
+		}
+
+		model.addAttribute("listProviders", simplifiedProviderList);
 		String selectedCategory = "";
 
 		PersonAttributeType paymentCategory = Context.getPersonService().getPersonAttributeTypeByUuid("09cd268a-f0f5-11ea-99a8-b3467ddbf779");
@@ -143,6 +152,7 @@ public class TriagePageController {
 			@RequestParam(value = "returnUrl", required = false) String returnUrl,
 			@BindParams ("triagePatientData") TriagePatientData triagePatientData,
             @RequestParam("patientId") Patient patient,
+            @RequestParam("providerToVisit") Provider provider,
             UiUtils ui,
 			Session session) {
 		User user = Context.getAuthenticatedUser();
@@ -199,7 +209,7 @@ public class TriagePageController {
 			TriagePatientData triagePatientDataToUse = queueService.saveTriagePatientData(triagePatientData);
 
 			TriagePatientQueueLog triagePatientLog = logTriagePatient(
-					queueService, queue, encounter);
+					queueService, queue, encounter, provider);
 			boolean visitStatus = false;
 			if (triagePatientLog.getVisitStatus().equalsIgnoreCase("Revisit patient")) {
 				visitStatus = true;
@@ -210,7 +220,7 @@ public class TriagePageController {
 			sendPatientToOPDQueue(triagePatientLog.getPatient(), Context
 					.getConceptService().getConcept(roomToVisit),
 							triagePatientDataToUse, visitStatus,
-					triagePatientLog.getCategory());
+					triagePatientLog.getCategory(), provider);
 			//delete the queue here
 			queueService.deleteTriagePatientQueue(queue);
 		} else {
@@ -272,7 +282,7 @@ public class TriagePageController {
     }
 
 	private TriagePatientQueueLog logTriagePatient(PatientQueueService queueService,
-			TriagePatientQueue queue, Encounter encounter) {
+			TriagePatientQueue queue, Encounter encounter, Provider provider) {
 		TriagePatientQueueLog queueLog = new TriagePatientQueueLog();
 		queueLog.setTriageConcept(queue.getTriageConcept());
 		queueLog.setTriageConceptName(queue.getTriageConceptName());
@@ -289,12 +299,13 @@ public class TriagePageController {
 		queueLog.setEncounter(encounter);
 		queueLog.setCategory(queue.getCategory());
 		queueLog.setVisitStatus(queue.getVisitStatus());
+		queueLog.setProvider(provider.getIdentifier());
 		queueService.saveTriagePatientQueueLog(queueLog);
 		//queueService.deleteTriagePatientQueue(queue);
 		return queueService.saveTriagePatientQueueLog(queueLog);
 	}
 	
-	public static void sendPatientToOPDQueue(Patient patient, Concept selectedOPDConcept, TriagePatientData triagePatientData, boolean revisit, String selectedCategory) {
+	public static void sendPatientToOPDQueue(Patient patient, Concept selectedOPDConcept, TriagePatientData triagePatientData, boolean revisit, String selectedCategory, Provider provider) {
 		Concept visitStatus = null;
 		if (!revisit) {
 			visitStatus = Context.getConceptService().getConceptByUuid("164144AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
@@ -321,6 +332,7 @@ public class TriagePageController {
 			queue.setTriageDataId(triagePatientData);
 			queue.setCategory(selectedCategory);
 			queue.setVisitStatus(visitStatus.getName().getName());
+			queue.setProvider(provider.getIdentifier());
 			PatientQueueService queueService = Context.getService(PatientQueueService.class);
 			queueService.saveOpdPatientQueue(queue);
 			
