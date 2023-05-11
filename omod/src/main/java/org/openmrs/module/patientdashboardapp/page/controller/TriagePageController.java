@@ -299,7 +299,12 @@ public class TriagePageController {
 		queueLog.setEncounter(encounter);
 		queueLog.setCategory(queue.getCategory());
 		queueLog.setVisitStatus(queue.getVisitStatus());
-		queueLog.setProvider(provider.getIdentifier());
+		if(provider != null) {
+			queueLog.setProvider(provider.getIdentifier());
+		}
+		else {
+			queueLog.setProvider("");
+		}
 		queueService.saveTriagePatientQueueLog(queueLog);
 		//queueService.deleteTriagePatientQueue(queue);
 		return queueService.saveTriagePatientQueueLog(queueLog);
@@ -332,7 +337,12 @@ public class TriagePageController {
 			queue.setTriageDataId(triagePatientData);
 			queue.setCategory(selectedCategory);
 			queue.setVisitStatus(visitStatus.getName().getName());
-			queue.setProvider(provider.getIdentifier());
+			if(provider != null) {
+				queue.setProvider(provider.getIdentifier());
+			}
+			else {
+				queue.setProvider("");
+			}
 			PatientQueueService queueService = Context.getService(PatientQueueService.class);
 			queueService.saveOpdPatientQueue(queue);
 			
