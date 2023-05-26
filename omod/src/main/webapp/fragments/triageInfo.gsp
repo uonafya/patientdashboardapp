@@ -49,22 +49,30 @@ jq(function () {
 		selector: '#new-vitals-dialog',
 		actions: {
 			confirm: function () {
-
-//make an ajax call to initiate the posting
-				checkFilled();
-
+               addVitals();
 			},
 			cancel: function () {
-				addvitalsDialog.close();
+				location.reload();
 			}
 		}
 	});
 	jq("#newVitalsModal").on("click", function (e) {
 		e.preventDefault();
-		onDialogLoad();
+		//onDialogLoad();
 		addvitalsDialog.show();
 	});
 });
+function addVitals() {
+        jq.getJSON('${ ui.actionLink("patientdashboardapp", "triageInfo", "addNewTriageInfo") }', {
+            queueId:jq("#queueValue").val(),
+            servicePoint: jq("#servicePointValue").val(),
+            rooms2: jq("#rooms2").val(),
+            rooms1: jq("#rooms1").val(),
+        }).success(function(data) {
+            jq().toastmessage('showSuccessToast', "Patient's Queue updated successfully");
+            location.reload();
+        });
+    }
 function isNombre(numb){
 	return !isNaN(parseFloat(numb));
 }
@@ -908,15 +916,15 @@ PAGE = {
 				</section>
 				<div class="onerow" style="margin-top: 100px">
 
-					<a class="button confirm" onclick="PAGE.submit();"
+					<a class="button confirm"
 					   style="float:right; display:inline-block; margin-left: 5px;">
 						<span>FINISH</span>
 					</a>
 
-					<a class="button cancel" onclick="window.location.href = window.location.href"
-					   style="float:right; display:inline-block;"/>
-					<span>CANCEL</span>
-				</a>
+					<a class="button cancel"
+                           style="float:right; display:inline-block;"/>
+                        <span>CANCEL</span>
+				    </a>
 				</div>
 			</div>
 		</form>

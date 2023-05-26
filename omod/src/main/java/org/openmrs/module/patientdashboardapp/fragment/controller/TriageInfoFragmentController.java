@@ -55,4 +55,8 @@ public class TriageInfoFragmentController {
 		TriagePatientData triad = Context.getService(PatientQueueService.class).getPatientTriageData(Id);
 		return SimpleObject.fromObject(triad, ui, "temperature" ,"weight" ,"height" ,"BMI" ,"mua" ,"chest" ,"abdominal", "systolic" ,"daistolic", "respiratoryRate" ,"pulsRate" ,"bloodGroup","lastMenstrualDate", "rhesusFactor","pitct", "createdOn", "encounterOpd","oxygenSaturation");
 	}
+
+	public void addNewTriageInfo() {
+
+	}
 }
