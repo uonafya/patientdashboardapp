@@ -28,6 +28,7 @@ function Note(noteObj) {
 	self.referredTo;
 	self.referralReasons;
 	self.onSetDate = noteObj.onSetDate;
+	self.investigationNotes = noteObj.investigationNotes;
 
 
 	self.outcome = ko.observable();

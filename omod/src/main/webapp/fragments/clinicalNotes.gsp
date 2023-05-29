@@ -251,6 +251,18 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 						<input type="hidden" id="investigation-set" />
 					</p>
 				</div>
+				<div>
+                    <p class="input-position-class">
+                        <label class="label">Investigation Notes</label>
+                        <field>
+                            <textarea data-bind="value: \$root.investigationNotes" id="investigationNotes" name="investigationNotes" rows="10" cols="74"></textarea>
+                            <span id="investigationNotes-lbl" class="field-error" style="display: none"></span>
+                        </field>
+                    </p>
+                    <p>
+                        <input type="hidden" id="investigationsNotes-set" />
+                    </p>
+				</div>
 			</fieldset>
 			<fieldset class="no-confirmation">
 				<legend>Prescription</legend>
@@ -471,6 +483,10 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 									</span>
 									<span data-bind="if: (investigations().length === 0)">N/A</span>
 								</td>
+							</tr>
+							<tr>
+								<td><span class="status active"></span>Investigations Notes</td>
+								<td>N/A</td>
 							</tr>
 
 							<tr>

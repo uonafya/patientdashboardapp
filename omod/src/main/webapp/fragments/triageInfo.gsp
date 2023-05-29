@@ -64,12 +64,21 @@ jq(function () {
 });
 function addVitals() {
         jq.getJSON('${ ui.actionLink("patientdashboardapp", "triageInfo", "addNewTriageInfo") }', {
-            queueId:jq("#queueValue").val(),
-            servicePoint: jq("#servicePointValue").val(),
-            rooms2: jq("#rooms2").val(),
-            rooms1: jq("#rooms1").val(),
+            patient:jq("#patient").val(),
+            temperature:jq("#temperature").val(),
+            daistolicBp: jq("#daistolicBp").val(),
+            systolicBp: jq("#systolicBp").val(),
+            respiratoryRate: jq("#respiratoryRate").val(),
+            pulsRate: jq("#pulsRate").val(),
+            oxygenSaturation: jq("#oxygenSaturation").val(),
+            weight: jq("#weight").val(),
+            height: jq("#height").val(),
+            mua: jq("#mua").val(),
+            chestCircum: jq("#chestCircum").val(),
+            abdominalCircum: jq("#abdominalCircum").val(),
         }).success(function(data) {
-            jq().toastmessage('showSuccessToast', "Patient's Queue updated successfully");
+            console.log("The data is ", data);
+            jq().toastmessage('showSuccessToast', "Patient's new triage information captured successfully");
             location.reload();
         });
     }
@@ -649,7 +658,7 @@ PAGE = {
 	</div>
 </div>
 <div >
-	<button class="btn btn-sm btn-primary float-right mb-3" data-toggle="modal" data-target="#newVitalsModal" id="newVitalsModal">
+	<button class="btn btn-sm btn-primary float-right mb-3" id="newVitalsModal">
 		Capture new vitals
 	</button>
 </div>
@@ -710,11 +719,11 @@ PAGE = {
 		<span>{{-height}}</span>
 		<br>
 
-				<% if (patient.age >= 2)  {%>
-					<label><span class="status active"></span>BMI:</label>
-					<span>{{-(weight/((height/100)*(height/100)))}}</span>
-					<br>
-				<% } %>
+        <% if (patient.age >= 2)  {%>
+            <label><span class="status active"></span>BMI:</label>
+            <span>{{-(weight/((height/100)*(height/100)))}}</span>
+            <br>
+        <% } %>
 		
 
 		<label><span class="status active"></span>M.U.A.Circum:</label>
@@ -735,6 +744,7 @@ PAGE = {
 <div class="clear">&nbsp; </div>
 
 <div id="new-vitals-dialog" class="dialog" style="display:none; width: 1009px;">
+<input type="hidden" id="patient" name="patientId" value="${patientId}" />
 	<div class="dialog-header">
 		<i class="icon-folder-open"></i>
 
@@ -742,7 +752,6 @@ PAGE = {
 	</div>
 
 	<div class="dialog-content">
-		<form form id="vitalRegistrationForm" method="post">
 			<div class="container">
 				<div>
 					<div id="errorAlert" class="alert" style="display: none"><b>Please correct the following errors:</b><hr>
@@ -771,7 +780,7 @@ PAGE = {
 					<div class="onerow">
 						<div class="col4">
 							<p>
-								<input id="temperature-field" class="numeric-range" type="text" max="999" min="0" maxlength="7"  name="triagePatientData.temperature" >
+								<input id="temperature" class="numeric-range" type="text" max="999" min="0" maxlength="7"  name="temperature" >
 								<span class="append-to-value">..&#8451;</span>
 								<span id="fr89981" class="field-error" style="display: none"></span>
 							</p>
@@ -779,14 +788,14 @@ PAGE = {
 
 						<div class="col4">
 							<p>
-								<input id="systolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4"  name="triagePatientData.systolic" >
+								<input id="systolicBp" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4"  name="systolicBp" >
 								<span id="fr5882" class="field-error" style="display: none"></span>
 							</p>
 						</div>
 
 						<div class="col4 last">
 							<p>
-								<input id="diastolic-bp-field" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" name="triagePatientData.daistolic" >
+								<input id="diastolicBp" class="numeric-range" type="text" max="999" min="0" maxlength="3" size="4" name="daistolicBp" >
 								<span id="fr9945" class="field-error" style="display: none"></span>
 							</p>
 						</div>
@@ -807,21 +816,21 @@ PAGE = {
 					<div class="onerow">
 						<div class="col4">
 							<p>
-								<input id="resp-rate-field" class="numeric-range focused" type="text" max="999" min="0" maxlength="7" name="triagePatientData.respiratoryRate">
+								<input id="respiratoryRate" class="numeric-range focused" type="text" max="999" min="0" maxlength="7" name="respiratoryRate">
 								<span id="fr1753" class="field-error" style="display: none"></span>
 							</p>
 						</div>
 
 						<div class="col4">
 							<p>
-								<input id="pulse-rate-field" class="numeric-range" type="text" max="999" min="0" maxlength="7"  name="triagePatientData.pulsRate">
+								<input id="pulseRate" class="numeric-range" type="text" max="999" min="0" maxlength="7"  name="pulsRate">
 								<span id="fr8917" class="field-error" style="display: none"></span>
 							</p>
 						</div>
 
 						<div class="col4 last">
 							<p>
-								<input id="oxygenSaturation-field" class="numeric-range" type="text" max="100" min="0"  name="triagePatientData.oxygenSaturation">
+								<input id="oxygenSaturation" class="numeric-range" type="text" max="100" min="0"  name="oxygenSaturation">
 								<span class="append-to-value">%</span>
 								<span id="fr8998" class="field-error" style="display: none"></span>
 							</p>
@@ -848,7 +857,7 @@ PAGE = {
 					<div class="onerow">
 						<div class="col4">
 							<p class="left">
-								<input id="weight-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7"  name="triagePatientData.weight">
+								<input id="weight" class="number numeric-range" type="text" max="999" min="0" maxlength="7"  name="weight">
 								<span class="append-to-value">kg</span>
 								<span id="fr1139" class="field-error" style="display: none"></span>
 							</p>
@@ -856,7 +865,7 @@ PAGE = {
 
 						<div class="col4">
 							<p class="left">
-								<input id="height-field" class="number numeric-range" type="text" max="999" min="0" maxlength="7" name="triagePatientData.height">
+								<input id="height" class="number numeric-range" type="text" max="999" min="0" maxlength="7" name="height">
 								<span class="append-to-value">cm</span>
 								<span id="fr9875" class="field-error" style="display: none"></span>
 							</p>
@@ -890,7 +899,7 @@ PAGE = {
 					<div class="onerow">
 						<div class="col4">
 							<p>
-								<input id="muac-field" class="number numeric-range" type="text" max="999" min="0" maxlength="3" name="triagePatientData.mua">
+								<input id="muac" class="number numeric-range" type="text" max="999" min="0" maxlength="3" name="mua">
 								<span class="append-to-value">cm</span>
 								<span id="fr801" class="field-error" style="display: none"></span>
 							</p>
@@ -898,7 +907,7 @@ PAGE = {
 
 						<div class="col4">
 							<p>
-								<input id="chest-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="3"  name="triagePatientData.chest">
+								<input id="chestCircum" class="number numeric-range" type="text" max="999" min="0" maxlength="3"  name="chestCircum">
 								<span class="append-to-value">cm</span>
 								<span id="fr3193" class="field-error" style="display: none"></span>
 							</p>
@@ -906,7 +915,7 @@ PAGE = {
 
 						<div class="col4 last">
 							<p>
-								<input id="abdominal-circum-field" class="number numeric-range" type="text" max="999" min="0" maxlength="3"  name="triagePatientData.abdominal">
+								<input id="abdominalCircum" class="number numeric-range" type="text" max="999" min="0" maxlength="3"  name="abdominalCircum">
 								<span class="append-to-value">cm</span>
 								<span id="fr76" class="field-error" style="display: none"></span>
 							</p>
@@ -917,7 +926,7 @@ PAGE = {
 				<div class="onerow" style="margin-top: 100px">
 
 					<a class="button confirm"
-					   style="float:right; display:inline-block; margin-left: 5px;">
+					   style="faloat:right; display:inline-block; margin-left: 5px;">
 						<span>FINISH</span>
 					</a>
 
@@ -927,6 +936,5 @@ PAGE = {
 				    </a>
 				</div>
 			</div>
-		</form>
 	</div>
 </div>

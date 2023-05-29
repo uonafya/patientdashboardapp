@@ -21,6 +21,7 @@ import org.openmrs.module.ehrconfigs.metadata.EhrCommonMetadata;
 import org.openmrs.module.ehrconfigs.utils.EhrConfigsUtils;
 import org.openmrs.module.hospitalcore.BillingConstants;
 import org.openmrs.module.hospitalcore.BillingService;
+import org.openmrs.module.hospitalcore.EhrAppointmentService;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.LabService;
@@ -29,6 +30,7 @@ import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.RadiologyCoreService;
 import org.openmrs.module.hospitalcore.model.BillableService;
 import org.openmrs.module.hospitalcore.model.DepartmentConcept;
+import org.openmrs.module.hospitalcore.model.EhrAppointment;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
 import org.openmrs.module.hospitalcore.model.Lab;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
@@ -96,6 +98,7 @@ public class Note {
 		this.physicalExamination = getPreviousPhysicalExamination(patientId);
 		this.illnessHistory = getPreviousIllnessHistory(patientId);
 		this.onSetDate = getPreviousDateOfOnSetOfIlliness(patientId);
+		this.investigationNotes = getPreviousInvestigationNotes(patientId);
 	}
 
 	private int patientId;
@@ -117,6 +120,16 @@ public class Note {
     private String specify;
 	private String otherInstructions;
 	private String physicalExamination;
+
+	public String getInvestigationNotes() {
+		return investigationNotes;
+	}
+
+	public void setInvestigationNotes(String investigationNotes) {
+		this.investigationNotes = investigationNotes;
+	}
+
+	private String investigationNotes;
 
 	public String getOnSetDate() {
 		return onSetDate;
@@ -294,6 +307,7 @@ public class Note {
 			Context.getEncounterService().saveEncounter(encounter);
 			saveNoteDetails(encounter);
 			endEncounter(encounter);
+			updateAppointmentIfAny(patient);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -353,6 +367,9 @@ public class Note {
 
 		for(Investigation investigation : this.investigations) {
 			investigation.addObs(encounter,obsGroup);
+		}
+		if(StringUtils.isNotBlank(this.investigationNotes)){
+			addInvestigationNotes(encounter,obsGroup);
 		}
 		
 		for (Diagnosis diagnosis : this.diagnoses) {
@@ -460,6 +477,22 @@ public class Note {
 		encounter.addObs(obsPhysicalExamination);
 	}
 
+	public void addInvestigationNotes(Encounter encounter, Obs obsGroup)
+	{
+		Concept conceptInvestigationNotes = Context.getConceptService().getConceptByUuid("162749AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		if (conceptInvestigationNotes == null) {
+			throw new NullPointerException("Investigation notes concept is not defined");
+		}
+		Obs obsInvestigationNotes = new Obs();
+		obsInvestigationNotes.setObsGroup(obsGroup);
+		obsInvestigationNotes.setConcept(conceptInvestigationNotes);
+		obsInvestigationNotes.setValueText(this.investigationNotes);
+		obsInvestigationNotes.setCreator(encounter.getCreator());
+		obsInvestigationNotes.setDateCreated(encounter.getDateCreated());
+		obsInvestigationNotes.setEncounter(encounter);
+		encounter.addObs(obsInvestigationNotes);
+	}
+
 	private void saveNoteDetails(Encounter encounter) {
 		for (Drug drug : this.drugs) {
 			String referralWardName = Context.getService(PatientQueueService.class).getOpdPatientQueueById(this.queueId)
@@ -536,6 +569,27 @@ public class Note {
 		}
 
 		return  previousPhysicalExamination;
+	}
+
+	private String getPreviousInvestigationNotes(int patientId){
+		String previousInvestigationNotes = "";
+		Patient patient = Context.getPatientService().getPatient(patientId);
+		PatientQueueService queueService = Context.getService(PatientQueueService.class);
+		Concept conceptInvestigationNotes = Context.getConceptService().getConceptByUuid("162749AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		Encounter investigationNotesEncounter = queueService.getLastOPDEncounter(patient);
+
+		if(investigationNotesEncounter!=null) {
+
+			Set<Obs> allInvestigationCommentsEncounterObs = investigationNotesEncounter.getAllObs();
+
+			for (Obs ob : allInvestigationCommentsEncounterObs) {
+				if (ob.getConcept().equals(conceptInvestigationNotes)) {
+					previousInvestigationNotes = ob.getValueText();
+				}
+			}
+		}
+
+		return  previousInvestigationNotes;
 	}
 
     private String getPreviousIllnessHistory(int patientId){
@@ -736,5 +790,16 @@ public class Note {
 			}
 		}
 		return visitService.getActiveVisitsByPatient(patient).get(0);
+	}
+
+	private void updateAppointmentIfAny(Patient patient){
+		EhrAppointmentService ehrAppointmentService = Context.getService(EhrAppointmentService.class);
+		EhrAppointment ehrAppointment = ehrAppointmentService.getLastEhrAppointment(patient);
+		if(ehrAppointment != null && ehrAppointment.getStatus() != null && (ehrAppointment.getStatus().equals(EhrAppointment.EhrAppointmentStatus.SCHEDULED)
+			|| ehrAppointment.getStatus().equals(EhrAppointment.EhrAppointmentStatus.RESCHEDULED)
+			|| ehrAppointment.getStatus().equals(EhrAppointment.EhrAppointmentStatus.INCONSULTATION))) {
+			ehrAppointment.setStatus(EhrAppointment.EhrAppointmentStatus.COMPLETED);
+			ehrAppointmentService.saveEhrAppointment(ehrAppointment);
+		}
 	}
 }

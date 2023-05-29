@@ -503,14 +503,15 @@
 				note['facility'] = jq('#facility').val();
 			}
 			note['onSetDate'] = jq('#onSetDate').val();
-			
+			note['investigationNotes'] = jq('#investigationNotes').val();
+
 			jq.ajax({
 					type: 'POST',
 					url: '${ ui.actionLink("patientdashboardapp", "clinicalNoteProcessor", "processNote", [ successUrl: successUrl ]) }',
 					data: {
 						note: ko.toJSON(note, ["label", "id", "admitted","provisional","onSetDate",
 							"diagnoses", "illnessHistory", "referralReasons", "externalReferralComments", "physicalExamination",
-							"inpatientWarads", "investigations", "opdId",
+							"inpatientWarads", "investigations", "investigationNotes", "opdId",
 							"opdLogId", "otherInstructions", "patientId",
 							"procedures", "queueId", "signs", "referredTo","facility",
 							"outcome", "admitTo", "followUpDate", "option",
@@ -705,7 +706,6 @@
 		if (note.investigations().length > 0){
 			jq('#investigation-set').val('investigation-set');
 		}
-
 		if (note.drugs().length > 0){
 			jq('#drug-set').val('drug-set');
 		}

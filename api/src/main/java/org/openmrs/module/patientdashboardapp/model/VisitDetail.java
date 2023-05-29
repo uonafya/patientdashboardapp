@@ -5,6 +5,7 @@ import org.openmrs.Drug;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.hospitalcore.util.DateUtils;
 import org.openmrs.module.patientdashboardapp.utils.Utils;
 
 import java.util.ArrayList;
@@ -19,6 +20,16 @@ public class VisitDetail {
 	private String symptoms = "No symptoms";
 	private String diagnosis = "No diagnosis";
 	private String investigations = "No Investigations requested";
+
+	public String getInvestigationNotes() {
+		return investigationNotes;
+	}
+
+	public void setInvestigationNotes(String investigationNotes) {
+		this.investigationNotes = investigationNotes;
+	}
+
+	private String investigationNotes = "No Investigations Notes recorded";
 	private String procedures = "No procedures";
 	private String physicalExamination = "No physicalExamination";
 	private String visitOutcome = "No Outcome Of Visit";
@@ -160,6 +171,7 @@ public class VisitDetail {
 		Concept otherInstructionsConcept = Context.getConceptService().getConceptByUuid("163106AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		Concept onSetConcepts = Context.getConceptService().getConceptByUuid("164428AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		Concept nextAppointmentConcepts = Context.getConceptService().getConceptByUuid("5096AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		Concept investigationNotes = Context.getConceptService().getConceptByUuid("162749AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
 		StringBuilder symptomList = new StringBuilder();
 		StringBuilder provisionalDiagnosisList = new StringBuilder();
@@ -173,6 +185,7 @@ public class VisitDetail {
 		StringBuilder externalReferral = new StringBuilder();
 		StringBuilder otherInstructions = new StringBuilder();
 		StringBuilder diseaseOnSetDate = new StringBuilder();
+		StringBuilder investigationsNotes = new StringBuilder();
 		for (Obs obs :encounter.getAllObs()) {
 			if (obs.getConcept().equals(symptomConcept)) {
 				if (obs.getValueCoded().equals(otherSymptom)) {
@@ -207,11 +220,14 @@ public class VisitDetail {
 				if(getAllObs != null){
 					for(Obs histo : getAllObs){
 						if(histo.getConcept().equals(Context.getConceptService().getConceptByUuid("164428AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")) && histo.getValueDatetime() != null){
-
+							onSetDate = Utils.getDateAsString(histo.getValueDatetime(), "yyyy-MM-dd");
 						}
 					}
 				}
 				history.append(obs.getValueText()).append(", ").append(onSetDate);
+			}
+			if (obs.getConcept().equals(investigationNotes)){
+				investigationsNotes.append(obs.getValueText()).append(", ");
 			}
 			if (obs.getConcept().equals(otherInstructionsConcept)){
 				otherInstructions.append(obs.getValueText()).append(", ");
@@ -276,6 +292,9 @@ public class VisitDetail {
 		}
 		if (otherInstructions.length() > 0){
 			visitDetail.setOtherInstructions(otherInstructions.substring(0,otherInstructions.length()-",".length()));
+		}
+		if (investigationsNotes.length() > 0){
+			visitDetail.setInvestigationNotes(investigationsNotes.substring(0,investigationsNotes.length()-",".length()));
 		}
 		if (visitOutcome.length() > 0){
 			visitDetail.setVisitOutcome(visitOutcome.substring(0,visitOutcome.length()-",".length()));

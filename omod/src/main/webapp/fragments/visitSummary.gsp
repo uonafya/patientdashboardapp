@@ -178,6 +178,9 @@
 	<h3>CLINICAL HISTORY SUMMARY INFORMATION</h3>
 </div>
 <div class="info-body">
+    <label style="display: inline-block; font-weight: bold; width: 190px"><span class='status active'></span>Disease Onset Date:</label>
+    <span>{{-diseaseOnSetDate}}</span>
+    <br>
 	<label style="display: inline-block; font-weight: bold; width: 190px"><span class='status active'></span>History:</label>
 	<span>{{-history}}</span>
 	<br>
@@ -197,6 +200,9 @@
 	<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Investigations:</label>
 	<span>{{-investigations}}</span>
 	<br>
+	<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Investigations Notes:</label>
+    <span>{{-investigationNotes}}</span>
+    <br>
 
 	<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Procedures:</label>
 	<span>{{-procedures}}</span>
