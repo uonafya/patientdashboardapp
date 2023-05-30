@@ -587,7 +587,6 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 		<label class="button cancel">Cancel</label>
 	</div>
 </div>
-
 <script>
 	var prescription = {drug: ko.observable(new Drug())};
 	ko.applyBindings(prescription, jq("#prescription-dialog")[0]);

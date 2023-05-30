@@ -224,7 +224,7 @@ function Outcome(outcomeObj) {
 			outcomes = outcomes+' ('+ jq("#availableReferral option:selected").text()+')'
 		}
 		
-		jq('#summaryTable tr:eq(8) td:eq(1)').text(outcomes);
+		jq('#summaryTable tr:eq(9) td:eq(1)').text(outcomes);
 		return true;
 	}
 }

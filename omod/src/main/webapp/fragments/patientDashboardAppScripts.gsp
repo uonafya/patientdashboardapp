@@ -249,7 +249,7 @@
 				}
 			}
 			
-			jq('#summaryTable tr:eq(8) td:eq(1)').text(outcom);
+			jq('#summaryTable tr:eq(9) td:eq(1)').text(outcom);
 			
 		}).change();
 		
@@ -260,7 +260,7 @@
 			}
 		});
 		
-		jq('#examination, #history, #instructions').change(function(){
+		jq('#examination, #history, #instructions, #investigationNotes').change(function(){
 			var idnt = jq(this).attr('id');
 			var rows = -1;
 			var text = jq(this).val();
@@ -272,8 +272,12 @@
 				rows = 2;
 			}
 			else if (idnt == 'instructions'){
-				rows = 7;
+				rows = 8;
 			}
+
+			else if (idnt == 'investigationNotes'){
+                rows = 6;
+            }
 			
 			if (text == ''){
 				text = 'N/A';
