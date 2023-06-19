@@ -152,7 +152,7 @@ public class TriagePageController {
 			@RequestParam(value = "returnUrl", required = false) String returnUrl,
 			@BindParams ("triagePatientData") TriagePatientData triagePatientData,
             @RequestParam("patientId") Patient patient,
-            @RequestParam("providerToVisit") Provider provider,
+            @RequestParam(value = "providerToVisit", required = false) Provider provider,
             UiUtils ui,
 			Session session) {
 		User user = Context.getAuthenticatedUser();
