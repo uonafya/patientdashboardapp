@@ -7,7 +7,6 @@ import org.openmrs.module.ehrconfigs.EHRConfigurationConstants;
 import org.openmrs.module.kenyaemr.api.KenyaEmrService;
 import org.openmrs.ui.framework.annotation.FragmentParam;
 import org.openmrs.ui.framework.fragment.FragmentModel;
-import org.springframework.web.bind.annotation.RequestParam;
 
 public class PrintHeaderFragmentController {
 
@@ -17,7 +16,9 @@ public class PrintHeaderFragmentController {
         model.addAttribute("userLocation",service.getDefaultLocation());
         model.addAttribute("mfl",mfl);
         model.addAttribute("currentPatient", currentPatient);
-        model.addAttribute("names", currentPatient.getPerson().getGivenName()+" "+currentPatient.getPerson().getFamilyName());
+        if(currentPatient != null) {
+            model.addAttribute("names", currentPatient.getPerson().getGivenName() + " " + currentPatient.getPerson().getFamilyName());
+        }
 
         AdministrationService administrationService = Context.getAdministrationService();
         model.addAttribute("countyCode", administrationService.getGlobalProperty(EHRConfigurationConstants.GP_PROPERTY_COUNTY_CODE, ""));
