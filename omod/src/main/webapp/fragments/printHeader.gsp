@@ -6,10 +6,34 @@
     </center>
     <hr />
     <center>
-        <h4>Website: ${website}</h4>
-        <h4>Address: ${address}</h4>
-        <h4>Email: ${email}</h4>
-        <h4>Phone: ${phone}</h4>
+        <table>
+            <tr>
+                <td>Website</td>
+                <td>${website}</td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>${address}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>${email}</td>
+            </tr>
+            <tr>
+                <td>Phone</td>
+                <td>${phone}</td>
+            </tr>
+        </table>
     <center>
     <hr />
+    <div background-color: #B2BEB5;">
+    <center>
+        <h3>OFFICIAL RECEIPT</h3>
+    </center>
+   </div>
+   <% if(currentPatient) {%>
+       <div id="biodata">
+         <p>${names} - ${currentPatient.age} yrs (${ui.formatDatePretty(currentPatient.birthdate)}) - ${currentPatient.gender}</p>
+        </div>
+   <%}%>
 </div>
