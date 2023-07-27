@@ -274,7 +274,7 @@
 
 		<div class="identifiers">
 			<em>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Patient ID</em>
-			<span>${patient.getPatientIdentifier()}</span>
+			<span>${opdNumber}</span>
 			<br>
 			
 			<div class="catg">

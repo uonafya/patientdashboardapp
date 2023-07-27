@@ -5,9 +5,11 @@ import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Encounter;
 import org.openmrs.Patient;
+import org.openmrs.PatientIdentifier;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.appui.UiSessionContext;
+import org.openmrs.module.ehrconfigs.metadata.EhrCommonMetadata;
 import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
@@ -65,6 +67,9 @@ public class MainPageController {
         model.addAttribute("subCategory",patient.getAttribute(paymentSubCategory));
         model.addAttribute("address",patient.getPersonAddress());
         model.addAttribute("visitStatus",visitStatus);
+        PatientIdentifier opdNumber = patient.getPatientIdentifier(Context.getPatientService()
+                .getPatientIdentifierTypeByUuid(EhrCommonMetadata._EhrIdenifiers.OPD_NUMBER));
+        model.addAttribute("opdNumber",opdNumber);
 
         Encounter lastEncounter = patientQueueService.getLastOPDEncounter(patient);
         Date lastVisitDate = null;
