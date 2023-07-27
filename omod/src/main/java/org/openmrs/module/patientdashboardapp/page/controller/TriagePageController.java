@@ -6,6 +6,7 @@ import org.openmrs.*;
 import org.openmrs.api.VisitService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.appui.UiSessionContext;
+import org.openmrs.module.ehrconfigs.metadata.EhrCommonMetadata;
 import org.openmrs.module.ehrconfigs.utils.EhrConfigsUtils;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
@@ -91,6 +92,9 @@ public class TriagePageController {
 		OpdPatientQueue opdPatientQueue = patientQueueService.getOpdPatientQueueById(queueId);
 		model.addAttribute("inOpdQueue", opdPatientQueue != null && opdPatientQueue.getPatient().equals(patient));
 		model.addAttribute("returnUrl", returnUrl);
+		PatientIdentifier opdNumber = patient.getPatientIdentifier(Context.getPatientService()
+				.getPatientIdentifierTypeByUuid(EhrCommonMetadata._EhrIdenifiers.OPD_NUMBER));
+		model.addAttribute("opdNumber",opdNumber);
 
 		if (opdPatientQueue != null){
 			model.addAttribute("visitStatus", opdPatientQueue.getVisitStatus());
