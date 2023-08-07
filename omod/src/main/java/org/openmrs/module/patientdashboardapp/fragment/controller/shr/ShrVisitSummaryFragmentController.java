@@ -23,7 +23,7 @@ public class ShrVisitSummaryFragmentController {
     @Autowired
    EncounterTranslator encounterTranslator;
 
-    public void controller(@FragmentParam("patient") Patient patient, FragmentModel model) {
+    public void controller(@FragmentParam("patientId") Patient patient, FragmentModel model) {
 
 
         PatientIdentifier patientIdentifier = patient.getPatientIdentifier(Context.getPatientService().getPatientIdentifierTypeByUuid(PatientDashboardAppConstants.GP_CLIENT_REGISTRY_IDENTIFIER_ROOT));

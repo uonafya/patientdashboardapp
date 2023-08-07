@@ -289,8 +289,9 @@
 			<li id="ti"><a href="#triage-info">Triage Information</a></li>
 			<li id="cn"><a href="#notes">Clinical Notes</a></li>
 			<li id="ch"><a href="#summary">Clinical History</a></li>
+			<li id="sh"><a href="#shr">SHR History</a></li>
 			<li id="lr"><a href="#investigations">Lab Reports</a></li>
-            <li id="rr"><a href="#radiology">Radiology Reports</a></li>
+      <li id="rr"><a href="#radiology">Radiology Reports</a></li>
 		</ul>
 		<div id="notes">
 			${ ui.includeFragment("patientdashboardapp", "clinicalNotes", [patientId: patientId, opdId: opdId, queueId: queueId, opdLogId: opdLogId]) }
@@ -310,6 +311,9 @@
 		<div id="radiology">
 			${ ui.includeFragment("patientdashboardapp", "radiology", [patientId: patientId]) }
 		</div>
+		<div id="shr">
+      ${ ui.includeFragment("patientdashboardapp", "shrVisitSummary", [patientId: patientId]) }
+    </div>
 
 	</div>
 </div>
