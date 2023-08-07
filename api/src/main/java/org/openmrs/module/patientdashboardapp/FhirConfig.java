@@ -8,6 +8,7 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Encounter;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Patient;
+import org.hl7.fhir.r4.model.ServiceRequest;
 import org.openmrs.module.patientdashboardapp.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -72,6 +73,21 @@ public class FhirConfig {
         }
         catch (Exception e) {
             log.error(String.format("Failed fetching FHIR Observation resource %s", e));
+            return null;
+        }
+    }
+
+    public Bundle fetchServiceRequestResource(Patient patient) {
+        try {
+            IGenericClient client = getFhirClient();
+            Bundle serviceRequestResource = client.search()
+                    .forResource(ServiceRequest.class)
+                    .where(ServiceRequest.PATIENT.hasId(patient.getIdElement().getIdPart()))
+                    .returnBundle(Bundle.class).execute();
+            return serviceRequestResource;
+        }
+        catch (Exception e) {
+            log.error(String.format("Failed fetching FHIR Service Request  resource %s", e));
             return null;
         }
     }

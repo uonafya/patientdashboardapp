@@ -15,7 +15,9 @@ import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 
 @Slf4j
@@ -25,18 +27,25 @@ public class ShrVisitSummaryFragmentController {
 
     public void controller(@FragmentParam("patientId") Patient patient, FragmentModel model) {
 
-
-        PatientIdentifier patientIdentifier = patient.getPatientIdentifier(Context.getPatientService().getPatientIdentifierTypeByUuid(PatientDashboardAppConstants.GP_CLIENT_REGISTRY_IDENTIFIER_ROOT));
+        PatientIdentifier patientIdentifier = null;
+        List<PatientIdentifier> patientIdentifierSet = new ArrayList<PatientIdentifier>(Context.getPatientService().getPatientIdentifiers(null, Arrays.asList(Context.getPatientService().getPatientIdentifierTypeByUuid(PatientDashboardAppConstants.GP_CLIENT_REGISTRY_IDENTIFIER_ROOT)), null, Arrays.asList(patient), false));
+        if(!patientIdentifierSet.isEmpty()) {
+            patientIdentifier = patientIdentifierSet.get(0);
+        }
         FhirConfig fhirConfig = Context.getRegisteredComponents(FhirConfig.class).get(0);
-
-
         // get the patient encounters based on this unique ID
         Bundle patientResourceBundle;
         Bundle observationResourceBundle;
+        Bundle serviceRequestResourceBundle;
+        Bundle encounterResourceBundle;
         org.hl7.fhir.r4.model.Resource fhirResource = null;
         org.hl7.fhir.r4.model.Patient fhirPatient = null;
-        org.hl7.fhir.r4.model.Resource fhirObservationResource;
-        org.hl7.fhir.r4.model.Observation fhirObservation;
+        org.hl7.fhir.r4.model.Resource fhirObservationResource = null;
+        org.hl7.fhir.r4.model.Resource fhirServiceRequestResource = null;
+        org.hl7.fhir.r4.model.Resource fhirEncounterResource = null;
+        org.hl7.fhir.r4.model.Observation fhirObservation = null;
+        org.hl7.fhir.r4.model.ServiceRequest fhirServiceRequest = null;
+        org.hl7.fhir.r4.model.Encounter fhirEncounter = null;
         List<SimpleObject> vitalObs = new ArrayList<SimpleObject>();
         List<SimpleObject> diagnosisObs = new ArrayList<SimpleObject>();
         List<SimpleObject> conditionsObs = new ArrayList<SimpleObject>();
@@ -52,10 +61,12 @@ public class ShrVisitSummaryFragmentController {
             if(fhirResource != null && fhirResource.getResourceType().toString().equals("Patient")) {
                 fhirPatient = (org.hl7.fhir.r4.model.Patient) fhirResource;
             }
-
         }
         if(fhirPatient != null) {
+            System.out.println("The patient resource is NOT NULL >>"+fhirPatient);
             observationResourceBundle = fhirConfig.fetchObservationResource(fhirPatient);
+            serviceRequestResourceBundle = fhirConfig.fetchServiceRequestResource(fhirPatient);
+            encounterResourceBundle = fhirConfig.fetchEncounterResource(fhirPatient);
             if (observationResourceBundle != null && observationResourceBundle.getEntry() != null) {
                 for (int i = 0; i < observationResourceBundle.getEntry().size(); i++) {
                     fhirObservationResource = observationResourceBundle.getEntry().get(i).getResource();
@@ -77,14 +88,29 @@ public class ShrVisitSummaryFragmentController {
                     }
                 }
             }
+            if(serviceRequestResourceBundle != null && serviceRequestResourceBundle.getEntry() != null) {
+                for (int i = 0; i < serviceRequestResourceBundle.getEntry().size(); i++) {
+                    fhirServiceRequestResource = serviceRequestResourceBundle.getEntry().get(i).getResource();
+                    fhirServiceRequest = (org.hl7.fhir.r4.model.ServiceRequest) fhirServiceRequestResource;
+                }
+            }
+            if(encounterResourceBundle != null && encounterResourceBundle.getEntry() != null) {
+                for (int i = 0; i < encounterResourceBundle.getEntry().size(); i++) {
+                    fhirEncounterResource = encounterResourceBundle.getEntry().get(i).getResource();
+                    fhirEncounter = (org.hl7.fhir.r4.model.Encounter) fhirEncounterResource;
+                }
+            }
         }
 
-        model.addAttribute("patient", fhirPatient != null? fhirPatient.getBirthDate() : "Not found");
+        model.addAttribute("patient", fhirPatient);
         model.addAttribute("vitals", vitalObs);
         model.addAttribute("diagnosis", diagnosisObs);
         model.addAttribute("conditions", conditionsObs);
         model.addAttribute("investigations", investigationObs);
         model.addAttribute("appointments", appointmentObs);
         model.addAttribute("procedures", procedureObs);
+        model.addAttribute("fhirObs", fhirObservation);
+        model.addAttribute("fhirServiceRequest", fhirServiceRequest);
+        model.addAttribute("fhirEncounter", fhirEncounter);
     }
 }

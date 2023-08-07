@@ -16,6 +16,7 @@ import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.util.ConceptAnswerComparator;
 import org.openmrs.module.hospitalcore.util.PatientUtils;
 import org.openmrs.module.kenyaui.annotation.AppPage;
+import org.openmrs.module.patientdashboardapp.PatientDashboardAppConstants;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
@@ -69,7 +70,13 @@ public class MainPageController {
         model.addAttribute("visitStatus",visitStatus);
         PatientIdentifier opdNumber = patient.getPatientIdentifier(Context.getPatientService()
                 .getPatientIdentifierTypeByUuid(EhrCommonMetadata._EhrIdenifiers.OPD_NUMBER));
-        model.addAttribute("opdNumber",opdNumber);
+        PatientIdentifier nupiNumber = patient.getPatientIdentifier(Context.getPatientService()
+                .getPatientIdentifierTypeByUuid(PatientDashboardAppConstants.GP_CLIENT_REGISTRY_IDENTIFIER_ROOT));
+        PatientIdentifier overallIdentifier = opdNumber;
+        if(overallIdentifier == null) {
+            overallIdentifier = nupiNumber;
+        }
+        model.addAttribute("opdNumber",overallIdentifier);
 
         Encounter lastEncounter = patientQueueService.getLastOPDEncounter(patient);
         Date lastVisitDate = null;
