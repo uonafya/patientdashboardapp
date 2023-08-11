@@ -140,7 +140,6 @@
                       <p>No Encounters filled</p>
                     </div>
                   <%}%>
-              <%}%>
               <%} else {%>
                 <div>
                   <p>This patient does NOT have a record on the SHR</p>
