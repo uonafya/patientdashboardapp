@@ -6,7 +6,7 @@ import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.fhir2.api.translators.EncounterTranslator;
-import org.openmrs.module.patientdashboardapp.FhirConfig;
+import org.openmrs.module.patientdashboardapp.EhrFhirConfig;
 import org.openmrs.module.patientdashboardapp.PatientDashboardAppConstants;
 import org.openmrs.module.patientdashboardapp.utils.Utils;
 import org.openmrs.ui.framework.SimpleObject;
@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 
 @Slf4j
@@ -32,7 +31,7 @@ public class ShrVisitSummaryFragmentController {
         if(!patientIdentifierSet.isEmpty()) {
             patientIdentifier = patientIdentifierSet.get(0);
         }
-        FhirConfig fhirConfig = Context.getRegisteredComponents(FhirConfig.class).get(0);
+        EhrFhirConfig fhirConfig = Context.getRegisteredComponents(EhrFhirConfig.class).get(0);
         // get the patient encounters based on this unique ID
         Bundle patientResourceBundle;
         Bundle observationResourceBundle;
@@ -67,6 +66,9 @@ public class ShrVisitSummaryFragmentController {
             observationResourceBundle = fhirConfig.fetchObservationResource(fhirPatient);
             serviceRequestResourceBundle = fhirConfig.fetchServiceRequestResource(fhirPatient);
             encounterResourceBundle = fhirConfig.fetchEncounterResource(fhirPatient);
+            System.out.println("The encounter resource is >>"+encounterResourceBundle);
+            System.out.println("The service request resource is >>"+serviceRequestResourceBundle);
+            System.out.println("The observation  resource is >>"+observationResourceBundle);
             if (observationResourceBundle != null && observationResourceBundle.getEntry() != null) {
                 for (int i = 0; i < observationResourceBundle.getEntry().size(); i++) {
                     fhirObservationResource = observationResourceBundle.getEntry().get(i).getResource();
