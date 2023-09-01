@@ -6,7 +6,7 @@ import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.fhir2.api.translators.EncounterTranslator;
-import org.openmrs.module.patientdashboardapp.FhirConfig;
+import org.openmrs.module.patientdashboardapp.EhrFhirConfig;
 import org.openmrs.module.patientdashboardapp.PatientDashboardAppConstants;
 import org.openmrs.module.patientdashboardapp.utils.Utils;
 import org.openmrs.ui.framework.SimpleObject;
@@ -27,7 +27,7 @@ public class ShrVisitSummaryFragmentController {
 
 
         PatientIdentifier patientIdentifier = patient.getPatientIdentifier(Context.getPatientService().getPatientIdentifierTypeByUuid(PatientDashboardAppConstants.GP_CLIENT_REGISTRY_IDENTIFIER_ROOT));
-        FhirConfig fhirConfig = Context.getRegisteredComponents(FhirConfig.class).get(0);
+        EhrFhirConfig ehrFhirConfig = Context.getRegisteredComponents(EhrFhirConfig.class).get(0);
 
 
         // get the patient encounters based on this unique ID
@@ -44,7 +44,7 @@ public class ShrVisitSummaryFragmentController {
         List<SimpleObject> appointmentObs = new ArrayList<SimpleObject>();
         List<SimpleObject> procedureObs = new ArrayList<SimpleObject>();
         if(patientIdentifier != null) {
-            patientResourceBundle = fhirConfig.fetchPatientResource(patientIdentifier.getIdentifier());
+            patientResourceBundle = ehrFhirConfig.fetchPatientResource(patientIdentifier.getIdentifier());
 
             if(patientResourceBundle.getEntry() != null && !patientResourceBundle.getEntry().isEmpty() && patientResourceBundle.getEntry().get(0) != null) {
                 fhirResource = patientResourceBundle.getEntry().get(0).getResource();
@@ -55,7 +55,7 @@ public class ShrVisitSummaryFragmentController {
 
         }
         if(fhirPatient != null) {
-            observationResourceBundle = fhirConfig.fetchObservationResource(fhirPatient);
+            observationResourceBundle = ehrFhirConfig.fetchObservationResource(fhirPatient);
             if (observationResourceBundle != null && observationResourceBundle.getEntry() != null) {
                 for (int i = 0; i < observationResourceBundle.getEntry().size(); i++) {
                     fhirObservationResource = observationResourceBundle.getEntry().get(i).getResource();

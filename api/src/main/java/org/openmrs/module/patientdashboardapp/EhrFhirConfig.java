@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 @Slf4j
 @Component
-public class FhirConfig {
+public class EhrFhirConfig {
 
     @Autowired
     private Utils utils;
