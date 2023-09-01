@@ -24,7 +24,12 @@
 				}
 
 				jq("#opdRecordsPrintButton").show(100);
-			})
+			});
+			jq("#refresher").on("click", function (e) {
+          e.preventDefault();
+          enrollBodyDialog.show();
+      });
+
 		});
 
 		jq('#opdRecordsPrintButton').click(function(){
@@ -77,9 +82,25 @@
 .visit-summary{
 
 }
+#refresher {
+    border: 1px none #88af28;
+    color: #fff !important;
+    float: right;
+    margin-top: 5px;
+}
 </style>
 
 <div class="onerow">
+  <div>
+    <ul>
+        <li id="refresher" class="ui-state-default">
+            <a class="button confirm" style="color:#fff">
+                <i class="icon-refresh"></i>
+                SHR History
+            </a>
+        </li>
+        </ul>
+  </div>
 	<div id="div-left-menu" style="padding-top: 15px;" class="col15 clear">
 		<ul id="ul-left-menu" class="left-menu">
 			<% visitSummaries.each { summary -> %>
