@@ -17,6 +17,9 @@ import org.openmrs.User;
 import org.openmrs.Visit;
 import org.openmrs.api.VisitService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.appointments.model.Appointment;
+import org.openmrs.module.appointments.model.AppointmentStatus;
+import org.openmrs.module.appointments.service.AppointmentsService;
 import org.openmrs.module.ehrconfigs.metadata.EhrCommonMetadata;
 import org.openmrs.module.ehrconfigs.utils.EhrConfigsUtils;
 import org.openmrs.module.hospitalcore.BillingConstants;
@@ -794,12 +797,13 @@ public class Note {
 
 	private void updateAppointmentIfAny(Patient patient){
 		EhrAppointmentService ehrAppointmentService = Context.getService(EhrAppointmentService.class);
-		EhrAppointment ehrAppointment = ehrAppointmentService.getLastEhrAppointment(patient);
-		if(ehrAppointment != null && ehrAppointment.getStatus() != null && (ehrAppointment.getStatus().equals(EhrAppointment.EhrAppointmentStatus.SCHEDULED)
-			|| ehrAppointment.getStatus().equals(EhrAppointment.EhrAppointmentStatus.RESCHEDULED)
-			|| ehrAppointment.getStatus().equals(EhrAppointment.EhrAppointmentStatus.INCONSULTATION))) {
-			ehrAppointment.setStatus(EhrAppointment.EhrAppointmentStatus.COMPLETED);
-			ehrAppointmentService.saveEhrAppointment(ehrAppointment);
+		AppointmentsService appointmentService = Context.getService(AppointmentsService.class);
+		Appointment ehrAppointment = ehrAppointmentService.getLastEhrAppointment(patient);
+		if(ehrAppointment != null && ehrAppointment.getStatus() != null && (ehrAppointment.getStatus().equals(AppointmentStatus.CheckedIn)
+				|| ehrAppointment.getStatus().equals(AppointmentStatus.Rescheduled)
+				|| ehrAppointment.getStatus().equals(AppointmentStatus.Scheduled))) {
+			ehrAppointment.setStatus(AppointmentStatus.Completed);
+			appointmentService.validateAndSave(ehrAppointment);
 		}
 	}
 }
