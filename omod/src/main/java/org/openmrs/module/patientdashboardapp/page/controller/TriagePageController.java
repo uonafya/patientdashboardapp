@@ -347,6 +347,7 @@ public class TriagePageController {
 			else {
 				queue.setProvider("");
 			}
+			queue.setClearedToNextServicePoint(1);
 			PatientQueueService queueService = Context.getService(PatientQueueService.class);
 			queueService.saveOpdPatientQueue(queue);
 			
