@@ -25,10 +25,6 @@
 
 				jq("#opdRecordsPrintButton").show(100);
 			});
-			jq("#refresher").on("click", function (e) {
-          e.preventDefault();
-          enrollBodyDialog.show();
-      });
 
 		});
 
@@ -64,6 +60,28 @@
 
 		jq('#ul-left-menu').scrollTop(0);
 		jq('#slimScrollDiv').scrollTop(0);
+	});
+	//Add dialog
+	jq(function () {
+		var shrDialog = emr.setupConfirmationDialog({
+			dialogOpts: {
+				overlayClose: false,
+				close: true
+			},
+			selector: '#shr-history-dialog',
+			actions: {
+				confirm: function () {
+					shrDialog.close();
+				},
+				cancel: function () {
+					shrDialog.close();
+				}
+			}
+		});
+		jq("#refresher").on("click", function (e) {
+			e.preventDefault();
+			shrDialog.show();
+		});
 	});
 </script>
 
@@ -305,3 +323,16 @@
 <div></div>
 <div style="clear: both;"></div>
 <div style="clear: both;"></div>
+<div id="shr-history-dialog" class="dialog">
+	<div class="dialog-header">
+		<i class="icon-folder-open"></i>
+
+		<h3>SHR History</h3>
+	</div>
+	<div class="dialog-content">
+	</div>
+	<div class="onerow">
+		<button class="button confirm right">Confirm</button>
+		<button class="button cancel">Cancel</button>
+	</div>
+</div>
