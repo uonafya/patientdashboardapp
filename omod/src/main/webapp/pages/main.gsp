@@ -291,7 +291,7 @@
 			<li id="ch"><a href="#summary">Clinical History</a></li>
 			<li id="lr"><a href="#investigations">Lab Reports</a></li>
       <li id="rr"><a href="#radiology">Radiology Reports</a></li>
-      <li id="sl"><a href="#sl">Sick Leave</a></li>
+      <li id="sl"><a href="#sls">Sick Leave</a></li>
 		</ul>
 		<div id="notes">
 			${ ui.includeFragment("patientdashboardapp", "clinicalNotes", [patientId: patientId, opdId: opdId, queueId: queueId, opdLogId: opdLogId]) }
@@ -311,7 +311,7 @@
 		<div id="radiology">
 			${ ui.includeFragment("patientdashboardapp", "radiology", [patientId: patientId]) }
 		</div>
-		<div id="shr">
+		<div id="sls">
       ${ ui.includeFragment("patientdashboardapp", "sickLeave", [patientId: patientId]) }
     </div>
 
