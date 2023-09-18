@@ -38,7 +38,7 @@
                     <td>${it.patientNames}</td>
                     <td>${it.appointmentService}</td>
                     <td>${it.appointmentServiceType}</td>
-                    <td>${it.Status}</td>
+                    <td>${it.status}</td>
                     <td>${it.startTime}</td>
                     <td>${it.endTime}</td>
                 </tr>
