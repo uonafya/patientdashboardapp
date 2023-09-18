@@ -1,5 +1,6 @@
 package org.openmrs.module.patientdashboardapp.fragment.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.Provider;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
@@ -30,12 +31,20 @@ public class ProviderAppointmentsFragmentController {
                 ehrAppointmentSimplifier.setAppointmentNumber(ehrAppointment.getAppointmentNumber());
                 ehrAppointmentSimplifier.setPatientIdentifier(EhrConfigsUtils.getPreferredPatientIdentifier(ehrAppointment.getPatient()));
                 ehrAppointmentSimplifier.setPatientNames(PatientUtils.getFullName(ehrAppointment.getPatient()));
-                ehrAppointmentSimplifier.setAppointmentService(ehrAppointment.getService().getName());
-                ehrAppointmentSimplifier.setAppointmentServiceType(ehrAppointment.getServiceType().getName());
+                if(ehrAppointment.getService() != null && StringUtils.isNotBlank(ehrAppointment.getService().getName())) {
+                    ehrAppointmentSimplifier.setAppointmentService(ehrAppointment.getService().getName());
+                }
+                if(ehrAppointment.getServiceType() != null && StringUtils.isNotBlank(ehrAppointment.getServiceType().getName())) {
+                    ehrAppointmentSimplifier.setAppointmentServiceType(ehrAppointment.getServiceType().getName());
+               }
                 ehrAppointmentSimplifier.setStartTime(Utils.getDateAsString(ehrAppointment.getStartDateTime(), "yyyy-MM-dd HH:mm"));
-                ehrAppointmentSimplifier.setAppointmentReason(ehrAppointment.getComments());
+                if(StringUtils.isNotBlank(ehrAppointment.getComments())) {
+                    ehrAppointmentSimplifier.setAppointmentReason(ehrAppointment.getComments());
+                }
                 ehrAppointmentSimplifier.setEndTime(Utils.getDateAsString(ehrAppointment.getEndDateTime(), "yyyy-MM-dd HH:mm"));
-                ehrAppointmentSimplifier.setStatus(ehrAppointment.getStatus().name());
+                if(ehrAppointment.getStatus() != null && StringUtils.isNotBlank(ehrAppointment.getStatus().name())) {
+                    ehrAppointmentSimplifier.setStatus(ehrAppointment.getStatus().name());
+                }
                 ehrAppointmentSimplifierList.add(ehrAppointmentSimplifier);
 
             }
