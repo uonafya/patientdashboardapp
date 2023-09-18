@@ -37,7 +37,6 @@
 		<htmlwidgetsVersion>1.6.6</htmlwidgetsVersion>
 		<hospitalcoreVersion>2.0.3-SNAPSHOT</hospitalcoreVersion>
 		<uiframeworkVersion>3.8</uiframeworkVersion>
-		<uilibraryVersion>2.0.4</uilibraryVersion>
 		<inventoryVersion>2.0.1-SNAPSHOT</inventoryVersion>
 		<appuiVersion>1.8.0</appuiVersion>
 		<kenyaemrVersion>18.5.1</kenyaemrVersion>
@@ -127,13 +126,6 @@
 				<version>${metadatadeployVersion}</version>
 				<scope>provided</scope>
 			</dependency>
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>uilibrary-api</artifactId>
-				<version>${uilibraryVersion}</version>
-				<scope>provided</scope>
-			</dependency>
-
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>ehrlaboratory-api</artifactId>
