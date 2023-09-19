@@ -68,9 +68,6 @@
 			actions: {
 				confirm: function () {
 					shrDialog.close();
-				},
-				cancel: function () {
-					shrDialog.close();
 				}
 			}
 		});
@@ -329,9 +326,32 @@
 		<h3>SHR History</h3>
 	</div>
 	<div class="dialog-content">
+	  <table border="0" cellpadding="0" cellspacing="0">
+	    <tr>
+	      <td>
+          <fieldset>
+           <legend>Vitals</legend>
+           <table>
+              <tr>
+                <td>&nbsp;</td>
+              <tr>
+           </table>
+          </fieldset>
+        </td>
+        <td>
+          <fieldset>
+           <legend>Conditions</legend>
+           <table>
+              <tr>
+                <td>&nbsp;</td>
+              <tr>
+           </table>
+          </fieldset>
+        </td>
+      </tr>
+	  </table>
 	</div>
 	<div class="onerow">
-		<button class="button confirm right">Confirm</button>
-		<button class="button cancel">Cancel</button>
+		<button class="button confirm right">Close</button>
 	</div>
 </div>
