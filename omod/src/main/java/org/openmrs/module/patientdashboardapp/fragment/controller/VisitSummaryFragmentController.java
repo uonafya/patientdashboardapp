@@ -10,6 +10,7 @@ import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
+import org.openmrs.PatientIdentifier;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
@@ -63,11 +64,17 @@ public class VisitSummaryFragmentController {
         }
         KenyaEmrService service =Context.getService(KenyaEmrService.class);
         String mfl =service.getDefaultLocationMflCode();
+        boolean hasNupi = false;
+        PatientIdentifier patientIdentifier = patient.getPatientIdentifier(Context.getPatientService().getPatientIdentifierTypeByUuid("f85081e2-b4be-4e48-b3a4-7994b69bb101"));
+        if(patientIdentifier != null) {
+            hasNupi = true;
+        }
 
         model.addAttribute("userLocation",service.getDefaultLocation());
         model.addAttribute("mfl",mfl);
         model.addAttribute("patient", patient);
         model.addAttribute("visitSummaries", visitSummaries);
+        model.addAttribute("hasNupi", hasNupi);
 
 	}
 

@@ -38,10 +38,6 @@
 				height:			700
 			});
 		});
-		jq('#opdRecordsSummaryFromSHRButton').click(function(){
-        			kenyaui.openPanelDialog({ templateId: 'shr-visit-summary', width: 85, height: 70, scrolling: true });
-        		});
-
 		var visitSummaries = jq(".visit-summary");
 
 		if (visitSummaries.length > 0) {
@@ -109,16 +105,18 @@
 </style>
 
 <div class="onerow">
-  <div>
-    <ul>
-        <li id="refresher" class="ui-state-default">
-            <a class="button confirm" style="color:#fff">
-                <i class="icon-refresh"></i>
-                SHR History
-            </a>
-        </li>
-        </ul>
-  </div>
+  <% if(hasNupi) {%>
+    <div>
+      <ul>
+          <li id="refresher" class="ui-state-default">
+              <a class="button confirm" style="color:#fff">
+                  <i class="icon-refresh"></i>
+                  SHR History
+              </a>
+          </li>
+      </ul>
+    </div>
+  <%}%>
 	<div id="div-left-menu" style="padding-top: 15px;" class="col15 clear">
 		<ul id="ul-left-menu" class="left-menu">
 			<% visitSummaries.each { summary -> %>
@@ -323,6 +321,7 @@
 <div></div>
 <div style="clear: both;"></div>
 <div style="clear: both;"></div>
+
 <div id="shr-history-dialog" class="dialog">
 	<div class="dialog-header">
 		<i class="icon-folder-open"></i>
