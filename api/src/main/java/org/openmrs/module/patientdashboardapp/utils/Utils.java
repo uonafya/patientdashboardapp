@@ -2,6 +2,7 @@ package org.openmrs.module.patientdashboardapp.utils;
 
 import org.apache.commons.lang.StringUtils;
 import org.openmrs.api.AdministrationService;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.patientdashboardapp.PatientDashboardAppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -45,16 +46,16 @@ public class Utils {
     return StringUtils.isNotBlank(getShrServerUrl());
   }
 
-  public String getShrServerUrl() {
-    return administrationService.getGlobalProperty(PatientDashboardAppConstants.GP_SHR_SERVER_URL);
+  public static String getShrServerUrl() {
+    return Context.getAdministrationService().getGlobalProperty(PatientDashboardAppConstants.GP_SHR_SERVER_URL);
   }
 
-  public String getShrUserName() {
-    return administrationService.getGlobalProperty(PatientDashboardAppConstants.GP_SHR_USER_NAME);
+  public static String getShrUserName() {
+    return Context.getAdministrationService().getGlobalProperty(PatientDashboardAppConstants.GP_SHR_USER_NAME);
   }
 
-  public String getShrPassword() {
-    return administrationService.getGlobalProperty(PatientDashboardAppConstants.GP_SHR_PASSWORD);
+  public static String getShrPassword() {
+    return Context.getAdministrationService().getGlobalProperty(PatientDashboardAppConstants.GP_SHR_PASSWORD);
   }
 
   public static String getObservationValue(org.hl7.fhir.r4.model.Observation fhirObservation) {

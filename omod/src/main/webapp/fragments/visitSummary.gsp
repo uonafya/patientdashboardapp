@@ -73,11 +73,66 @@
 		});
 		jq("#refresher").on("click", function (e) {
 			e.preventDefault();
+			getPatientShrDetails(jq("#patientUuid").val());
 			shrDialog.show();
 		});
 	});
-</script>
 
+
+  function getPatientShrDetails(uuid) {
+  jq.getJSON('${ ui.actionLink("patientdashboardapp", "shr/shrVisitSummary", "constructOpdSHrSummary") }', {
+                patientUuid:uuid
+            }).success(function(data) {
+                populateSummaryArea(data);
+            }).error(function(data) {
+              jq().toastmessage('showErrorToast', 'Error Occurred.');
+            });
+  }
+  function populateSummaryArea(response) {
+              if(response.allergies.length > 0){
+                  console.log("Allergies found");
+              }
+              else {
+                console.log("Allergies NOT found");
+              }
+              if(response.complaints.length > 0){
+                  console.log("Complaints found");
+              }
+              else {
+                console.log("Complains NOT found");
+              }
+              if(response.conditions.length > 0){
+                  console.log("Conditions found");
+              }
+              else {
+                console.log("Conditions NOT found");
+              }
+              if(response.diagnosis.length > 0){
+                  console.log("Diagnosis found");
+              }
+              else {
+                console.log("Diagnosis NOT found");
+              }
+              if(response.labResults.length > 0){
+                  console.log("LabResults found");
+              }
+              else {
+                console.log("LabResults NOT found");
+              }
+              if(response.referrals.length > 0){
+                  console.log("Referrals found", response);
+              }
+              else {
+                console.log("Referrals NOT found");
+              }
+              if(response.vitals.length > 0){
+                  console.log("Vitals found");
+              }
+              else {
+                console.log("Vitals NOT found");
+              }
+    }
+</script>
 <style>
 #ul-left-menu {
 	border-top: medium none #fff;
@@ -289,7 +344,7 @@
 	</tbody>
 </table>
 </script>
-
+<input type="hidden" id="patientUuid" value="${patient.person.uuid}" />
 <script id="empty-template" type="text/template">
 <div class="info-header">
 	<i class="icon-medicine"></i>
@@ -319,7 +374,7 @@
 <div style="clear: both;"></div>
 <div style="clear: both;"></div>
 
-<div id="shr-history-dialog" class="dialog">
+<div id="shr-history-dialog" class="dialog" style="display:none;  height: auto !important; width: auto !important;">
 	<div class="dialog-header">
 		<i class="icon-folder-open"></i>
 
@@ -327,6 +382,8 @@
 	</div>
 	<div class="dialog-content">
 	  <table border="0" cellpadding="0" cellspacing="0">
+	    <thead></thead>
+	    <tbody id="tbodyShr"></tbody>
 	    <tr>
 	      <td>
           <fieldset>

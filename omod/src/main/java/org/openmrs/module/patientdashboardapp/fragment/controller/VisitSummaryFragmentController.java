@@ -1,9 +1,6 @@
 package org.openmrs.module.patientdashboardapp.fragment.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
+import org.hl7.fhir.r4.model.Bundle;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
@@ -11,19 +8,22 @@ import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
-import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
-import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.openmrs.module.kenyaemr.api.KenyaEmrService;
+import org.openmrs.module.patientdashboardapp.PatientDashboardAppConstants;
 import org.openmrs.module.patientdashboardapp.model.VisitDetail;
 import org.openmrs.module.patientdashboardapp.model.VisitSummary;
 import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.ui.framework.UiUtils;
+import org.openmrs.ui.framework.annotation.FragmentParam;
 import org.openmrs.ui.framework.fragment.FragmentConfiguration;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class VisitSummaryFragmentController {
 
@@ -73,6 +73,7 @@ public class VisitSummaryFragmentController {
         model.addAttribute("userLocation",service.getDefaultLocation());
         model.addAttribute("mfl",mfl);
         model.addAttribute("patient", patient);
+        //model.addAttribute("patientUuid", patient.getPerson().getUuid());
         model.addAttribute("visitSummaries", visitSummaries);
         model.addAttribute("hasNupi", hasNupi);
 

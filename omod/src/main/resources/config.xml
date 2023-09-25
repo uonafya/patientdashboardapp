@@ -114,21 +114,21 @@
 
 	<globalProperty>
 		<property>patientdashboardapp.shr.serverUrl</property>
-		<defaultValue>https://fhir-staging.health.go.ke/fhir-server/api/v4/</defaultValue>
+		<defaultValue>https://fhir-staging.health.go.ke/test/fhir-server/api/v4/</defaultValue>
 		<description>
 			SHR server URL
 		</description>
 	</globalProperty>
 	<globalProperty>
 		<property>patientdashboardapp.shr.username</property>
-		<defaultValue>fhirtestpartner</defaultValue>
+		<defaultValue>fhiruser</defaultValue>
 		<description>
 			User name
 		</description>
 	</globalProperty>
 	<globalProperty>
 		<property>patientdashboardapp.shr.password</property>
-		<defaultValue>P@ssword!!!</defaultValue>
+		<defaultValue>Test123</defaultValue>
 		<description>
 			Password
 		</description>

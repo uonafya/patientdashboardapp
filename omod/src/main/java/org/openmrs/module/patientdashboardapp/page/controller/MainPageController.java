@@ -11,6 +11,7 @@ import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.appui.UiSessionContext;
 import org.openmrs.module.ehrconfigs.metadata.EhrCommonMetadata;
+import org.openmrs.module.ehrconfigs.utils.EhrConfigsUtils;
 import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
@@ -71,9 +72,7 @@ public class MainPageController {
         model.addAttribute("subCategory",patient.getAttribute(paymentSubCategory));
         model.addAttribute("address",patient.getPersonAddress());
         model.addAttribute("visitStatus",visitStatus);
-        PatientIdentifier opdNumber = patient.getPatientIdentifier(Context.getPatientService()
-                .getPatientIdentifierTypeByUuid(EhrCommonMetadata._EhrIdenifiers.OPD_NUMBER));
-        model.addAttribute("opdNumber",opdNumber);
+        model.addAttribute("opdNumber", EhrConfigsUtils.getPreferredPatientIdentifier(patient));
 
         Encounter lastEncounter = patientQueueService.getLastOPDEncounter(patient);
         Date lastVisitDate = null;
@@ -97,27 +96,6 @@ public class MainPageController {
                 model.addAttribute("patientStatus" ,"Unknown");
             }
         }
-        ProviderService providerService = Context.getProviderService();
-
-        SickOffSimplifier sickOffSimplifier;
-        List<SickOffSimplifier> patientSearchList = new ArrayList<SickOffSimplifier>();
-        for (SickOff sickOff : hcs.getPatientSickOffs(patient, null, null)) {
-            sickOffSimplifier = new SickOffSimplifier();
-            sickOffSimplifier.setSickOffId(sickOff.getSickOffId());
-            sickOffSimplifier.setNotes(sickOff.getClinicianNotes());
-            sickOffSimplifier.setUser(sickOff.getCreator().getGivenName() + " " + sickOff.getCreator().getFamilyName());
-            sickOffSimplifier.setProvider(sickOff.getProvider().getName());
-            sickOffSimplifier.setPatientName(sickOff.getPatient().getGivenName() + " "
-                    + sickOff.getPatient().getFamilyName());
-            sickOffSimplifier.setPatientIdentifier(sickOff.getPatient().getActiveIdentifiers().get(0).getIdentifier());
-            sickOffSimplifier.setSickOffStartDate(Utils.getDateAsString(sickOff.getSickOffStartDate(), "yyyy-MM-dd"));
-            sickOffSimplifier.setSickOffEndDate(Utils.getDateAsString(sickOff.getSickOffEndDate(), "yyyy-MM-dd"));
-            sickOffSimplifier.setCreatedOn(Utils.getDateAsString(sickOff.getCreatedOn(), "yyyy-MM-dd"));
-
-            patientSearchList.add(sickOffSimplifier);
-        }
-        model.addAttribute("sickOffs", patientSearchList);
-        model.addAttribute("providerList", providerService.getAllProviders());
         model.addAttribute("patientId", patient.getPatientId());
 
         return null;
