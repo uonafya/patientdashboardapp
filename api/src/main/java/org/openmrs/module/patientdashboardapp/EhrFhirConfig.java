@@ -3,6 +3,7 @@ package org.openmrs.module.patientdashboardapp;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.client.interceptor.BasicAuthInterceptor;
+import ca.uhn.fhir.rest.client.interceptor.BearerTokenAuthInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Appointment;
 import org.hl7.fhir.r4.model.Bundle;
@@ -29,6 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static org.hibernate.search.util.AnalyzerUtils.log;
 
@@ -43,10 +45,19 @@ public class EhrFhirConfig {
     @Qualifier("fhirR4")
     private FhirContext fhirContext;
 
+    public IGenericClient getFhirClientOauth() throws Exception {
+        FhirContext fhirContextNew = FhirContext.forR4();
+        fhirContextNew.getRestfulClientFactory().setSocketTimeout(200 * 1000);
+        BearerTokenAuthInterceptor authInterceptor = new BearerTokenAuthInterceptor(Objects.requireNonNull(Utils.getShrToken()));
+        IGenericClient client = fhirContextNew.getRestfulClientFactory().newGenericClient(Utils.getShrServerUrl());
+        client.registerInterceptor(authInterceptor);
+        return client;
+    }
+
     public IGenericClient getFhirClient() throws Exception {
-        IGenericClient fhirClient = fhirContext.newRestfulGenericClient(utils.getShrServerUrl());
+        IGenericClient fhirClient = fhirContext.newRestfulGenericClient(Utils.getShrServerUrl());
         if (!utils.getShrUserName().isEmpty()) {
-            BasicAuthInterceptor authInterceptor = new BasicAuthInterceptor(utils.getShrUserName(),
+            BasicAuthInterceptor authInterceptor = new BasicAuthInterceptor(Utils.getShrUserName(),
                     utils.getShrPassword());
             fhirClient.registerInterceptor(authInterceptor);
         }
@@ -78,11 +89,9 @@ public class EhrFhirConfig {
     public Bundle fetchPatientReferrals(String identifier) {
         String url = Utils.getShrServerUrl() + "ServiceRequest/?subject:identifier="
                 + identifier;
-        System.out.println("Fhir: fetch All Referrals ==>"+url);
         try {
-            IGenericClient client = getFhirClient();
+            IGenericClient client = getFhirClientOauth();
             if (client != null) {
-                System.out.println("Fhir: Service Request found ==>");
                 Bundle referrals = client.search()
                         .byUrl(url)
                         .returnBundle(Bundle.class).count(10000).execute();

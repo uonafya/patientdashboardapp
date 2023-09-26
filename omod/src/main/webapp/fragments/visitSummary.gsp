@@ -92,44 +92,30 @@
               if(response.allergies.length > 0){
                   console.log("Allergies found");
               }
-              else {
-                console.log("Allergies NOT found");
-              }
+
               if(response.complaints.length > 0){
                   console.log("Complaints found");
               }
-              else {
-                console.log("Complains NOT found");
-              }
+
               if(response.conditions.length > 0){
                   console.log("Conditions found");
               }
-              else {
-                console.log("Conditions NOT found");
-              }
+
               if(response.diagnosis.length > 0){
                   console.log("Diagnosis found");
               }
-              else {
-                console.log("Diagnosis NOT found");
-              }
+
               if(response.labResults.length > 0){
                   console.log("LabResults found");
               }
-              else {
-                console.log("LabResults NOT found");
-              }
+
               if(response.referrals.length > 0){
-                  console.log("Referrals found", response);
+                  jq("#serviceRequestData").append(response);
+                  jq("#serviceRequestData");
               }
-              else {
-                console.log("Referrals NOT found");
-              }
+
               if(response.vitals.length > 0){
                   console.log("Vitals found");
-              }
-              else {
-                console.log("Vitals NOT found");
               }
     }
 </script>
@@ -381,31 +367,11 @@
 		<h3>SHR History</h3>
 	</div>
 	<div class="dialog-content">
-	  <table border="0" cellpadding="0" cellspacing="0">
-	    <thead></thead>
-	    <tbody id="tbodyShr"></tbody>
-	    <tr>
-	      <td>
-          <fieldset>
-           <legend>Vitals</legend>
-           <table>
-              <tr>
-                <td>&nbsp;</td>
-              <tr>
-           </table>
-          </fieldset>
-        </td>
-        <td>
-          <fieldset>
-           <legend>Conditions</legend>
-           <table>
-              <tr>
-                <td>&nbsp;</td>
-              <tr>
-           </table>
-          </fieldset>
-        </td>
-      </tr>
+	  <table border="0" cellpadding="0" cellspacing="0" width="70%">
+	    <tbody id="tbodyShr">
+	        <div id="serviceRequestData" style="display:none;">
+	        </div>
+	    </tbody>
 	  </table>
 	</div>
 	<div class="onerow">

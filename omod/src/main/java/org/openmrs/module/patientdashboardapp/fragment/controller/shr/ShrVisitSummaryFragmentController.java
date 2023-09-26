@@ -72,32 +72,10 @@ public class ShrVisitSummaryFragmentController {
         Bundle allergyBundle = fhirConfig.fetchPatientAllergies(patientUniqueNumber);
 
         Bundle referralsBundle = fhirConfig.fetchPatientReferrals(patientUniqueNumber);
-        Bundle referralsBundleAll = fhirConfig.fetchAllReferrals();
 
         Bundle allObs = fhirConfig.fetchObservationResource(patientUniqueNumber);
 
-        if(fhirConfig.fetchAllReferrals() != null && fhirConfig.fetchAllReferrals().getEntry() != null){
-            for (Bundle.BundleEntryComponent resource : referralsBundleAll.getEntry()) {
-                ServiceRequest serviceRequest = (ServiceRequest) resource.getResource();
-                if(serviceRequest != null) {
-                    System.out.println("The Patient category first rep  >> "+serviceRequest.getCategoryFirstRep().getText());
-                    System.out.println("The Patient Identifier first rep  >> "+serviceRequest.getIdentifierFirstRep().getValue());
-                    System.out.println("The Patient performer  >> "+serviceRequest.getPerformer().get(0).getDisplay()+" >>"+serviceRequest.getPerformer().get(0).getIdentifier().getValue());
-                    System.out.println("The Patient Requester  >> "+serviceRequest.getRequester().getDisplay());
-                    System.out.println("The Patient subject  >> "+serviceRequest.getSubject().getDisplay());
-                    System.out.println("The Patient status  >> "+serviceRequest.getStatus().getDisplay());
-                    System.out.println("The code  >> "+serviceRequest.getCode().getText());
-                    System.out.println("The authored on  >> "+serviceRequest.getAuthoredOn().toString());
-                    System.out.println("+++++++++++++++++++++++++++++++");
-                }
-
-            }
-
-
-        }
-
-
-        if (!allObs.getEntry().isEmpty()) {
+        if (allObs != null && !allObs.getEntry().isEmpty()) {
             for (Bundle.BundleEntryComponent resource : allObs.getEntry()) {
                 Observation observation = (Observation) resource.getResource();
 
@@ -141,7 +119,7 @@ public class ShrVisitSummaryFragmentController {
             }
         }
 
-        if (!conditionsBundle.getEntry().isEmpty()) {
+        if (conditionsBundle != null && !conditionsBundle.getEntry().isEmpty()) {
             for (Bundle.BundleEntryComponent resource : conditionsBundle.getEntry()) {
                 Condition condition = (Condition) resource.getResource();
                 if (condition.hasCode() && condition.getCode().hasCoding()) {
@@ -160,7 +138,7 @@ public class ShrVisitSummaryFragmentController {
             }
         }
 
-        if (!diagnosisBundle.getEntry().isEmpty()) {
+        if (diagnosisBundle != null && !diagnosisBundle.getEntry().isEmpty()) {
             for (Bundle.BundleEntryComponent resource : diagnosisBundle.getEntry()) {
                 Condition condition = (Condition) resource.getResource();
                 if (condition.hasCode() && condition.getCode().hasCoding()) {
@@ -175,7 +153,7 @@ public class ShrVisitSummaryFragmentController {
             }
         }
 
-        if (!allergyBundle.getEntry().isEmpty()) {
+        if (allergyBundle != null && !allergyBundle.getEntry().isEmpty()) {
             for (Bundle.BundleEntryComponent resource : allergyBundle.getEntry()) {
                 AllergyIntolerance allergyIntolerance = (AllergyIntolerance) resource.getResource();
                 if (allergyIntolerance.hasCode() && allergyIntolerance.getCode().hasCoding() && allergyIntolerance.hasReaction()
@@ -194,7 +172,7 @@ public class ShrVisitSummaryFragmentController {
             }
         }
 
-        if (!referralsBundle.getEntry().isEmpty()) {
+        if (referralsBundle != null && !referralsBundle.getEntry().isEmpty()) {
             for (Bundle.BundleEntryComponent resource : referralsBundle.getEntry()) {
                 ServiceRequest serviceRequest = (ServiceRequest) resource.getResource();
                 String category = "";
