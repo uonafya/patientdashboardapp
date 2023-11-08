@@ -29,6 +29,7 @@ public class Outcome {
     static final int REVIEWED_OPTION = 4;
     static final int CURED_OPTION = 5;
     static final int REFERRAL_OPTION =6;
+    static final int EXTERNAL_REFERRAL_OPTION =7;
     private static Logger logger = LoggerFactory.getLogger(Outcome.class);
     private Option option;
     private String followUpDate;
@@ -74,6 +75,7 @@ public class Outcome {
         options.add(new Option(ADMIT_OPTION, null, "Admit"));
         options.add(new Option(DIED_OPTION, null, "Died"));
         options.add(new Option(REFERRAL_OPTION, null, "Internal Referral"));
+        options.add(new Option(EXTERNAL_REFERRAL_OPTION, null, "External Referral"));
         return options;
     }
 

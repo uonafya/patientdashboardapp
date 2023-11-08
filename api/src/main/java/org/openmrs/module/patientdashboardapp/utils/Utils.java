@@ -71,7 +71,7 @@ public class Utils {
   }
 
   public static String getShrServerUrl() {
-    return Context.getAdministrationService().getGlobalProperty(PatientDashboardAppConstants.GP_SHR_SERVER_URL);
+    return Context.getAdministrationService().getGlobalProperty("kenyaemril.fhir.server.url");
   }
 
   public static String getShrUserName() {

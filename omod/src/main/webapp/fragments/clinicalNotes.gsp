@@ -342,7 +342,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 							</div>
 						</div>
 						<span data-bind="if: \$root.outcome() && \$root.outcome().option.id ===6">
-							<h2>Referral information</h2>
+							<h2>Internal Referral information</h2>
 
 							<div class="onerow">
 								<div class="col4"><label for="internalReferral">Referral Available</label></div>
@@ -377,8 +377,8 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 									<div class="input-position-class" id="facilityDiv" style="display:none;">
 										<field>
 											<% fields.each { %>
-											${ ui.includeFragment("kenyaui", "widget/labeledField", it) }
-	refReason2										<% } %>
+											  ${ ui.includeFragment("kenyaui", "widget/labeledField", it) }
+                      <% } %>
 										</field>
 									</div>
 								</div>
@@ -413,6 +413,9 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 								</div>
 							</div>
 						</span>
+						<span data-bind="if: \$root.outcome() && \$root.outcome().option.id ===7">
+              <h2>External Referral information</h2>
+            </span>
 
 					</div>
 

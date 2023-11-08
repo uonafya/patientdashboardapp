@@ -67,7 +67,7 @@ public class MainPageController {
         model.addAttribute("opdId", opdId);
         model.addAttribute("queueId", queueId);
         model.addAttribute("opdLogId", opdLogId);
-        model.addAttribute("patientIdentifier",patient.getPatientIdentifier());
+        model.addAttribute("patientIdentifier",EhrConfigsUtils.getPreferredPatientIdentifier(patient));
         model.addAttribute("category",patient.getAttribute(paymentCategory));
         model.addAttribute("subCategory",patient.getAttribute(paymentSubCategory));
         model.addAttribute("address",patient.getPersonAddress());

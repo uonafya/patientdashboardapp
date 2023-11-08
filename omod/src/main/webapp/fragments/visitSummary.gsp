@@ -110,12 +110,15 @@
               }
 
               if(response.referrals.length > 0){
-                  jq("#serviceRequestData").append(response);
-                  jq("#serviceRequestData");
+                  for (var i = 0; i < response.referrals.length; i++) {
+                    jQuery("#referralCategory").text(response.referrals[i].Category);
+                    jQuery("#referralReason").text(response.referrals[i].reasons);
+                  }
+
               }
 
               if(response.vitals.length > 0){
-                  console.log("Vitals found");
+                  jQuery("#referralDataArea").html("No service request found");
               }
     }
 </script>
@@ -367,14 +370,26 @@
 		<h3>SHR History</h3>
 	</div>
 	<div class="dialog-content">
-	  <table border="0" cellpadding="0" cellspacing="0" width="70%">
+	  <table border="0" cellpadding="0" cellspacing="0" width="100%">
 	    <tbody id="tbodyShr">
-	        <div id="serviceRequestData" style="display:none;">
-	        </div>
+	      <tr>
+	        <td>
+            <div id="referralDataArea">
+                <h4>Referral Information</h4>
+                <div>Category:<span id="referralCategory"></span></div>
+                <div>Referral Reason(s):<span id="referralReason"></span></div>
+            </div>
+	        </td>
+	        <td>
+	          <div id="vitals">
+	              <h4>Vitals</h4>
+	          </div>
+	        </td>
+	      </tr>
 	    </tbody>
 	  </table>
 	</div>
 	<div class="onerow">
-		<button class="button confirm right">Close</button>
-	</div>
+  		<button class="button confirm right">Close</button>
+  </div>
 </div>

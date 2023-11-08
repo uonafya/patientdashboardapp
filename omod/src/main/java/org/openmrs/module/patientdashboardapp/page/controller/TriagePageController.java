@@ -2,8 +2,17 @@ package org.openmrs.module.patientdashboardapp.page.controller;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.openmrs.*;
-import org.openmrs.api.VisitService;
+import org.openmrs.Concept;
+import org.openmrs.ConceptAnswer;
+import org.openmrs.Encounter;
+import org.openmrs.EncounterType;
+import org.openmrs.Location;
+import org.openmrs.Obs;
+import org.openmrs.Patient;
+import org.openmrs.PatientIdentifier;
+import org.openmrs.PersonAttributeType;
+import org.openmrs.Provider;
+import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.appui.UiSessionContext;
 import org.openmrs.module.ehrconfigs.metadata.EhrCommonMetadata;
@@ -34,6 +43,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.openmrs.module.ehrconfigs.utils.EhrConfigsUtils.getLastVisitForPatient;
 
 @AppPage("patientqueueapp.triage")
 public class TriagePageController {
@@ -353,9 +364,5 @@ public class TriagePageController {
 			
 		}
 		
-	}
-	private Visit getLastVisitForPatient(Patient patient) {
-		VisitService visitService = Context.getVisitService();
-		return visitService.getActiveVisitsByPatient(patient).get(0);
 	}
 }

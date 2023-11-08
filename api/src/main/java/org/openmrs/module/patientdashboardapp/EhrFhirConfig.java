@@ -72,7 +72,7 @@ public class EhrFhirConfig {
                 + identifier;
         System.out.println("Fhir: fetchAllergies ==>");
         try {
-            IGenericClient client = getFhirClient();
+            IGenericClient client = getFhirClientOauth();
             if (client != null) {
                 System.out.println("Fhir: client is not null ==>");
                 Bundle allergies = client.search()
@@ -98,14 +98,14 @@ public class EhrFhirConfig {
                 return referrals;
             }
         } catch (Exception e) {
-            log.error(String.format("Failed fetching FHIR patient resource %s", e));
+            log.error(String.format("Failed fetching FHIR Referral service request resource %s", e));
         }
         return null;
     }
 
     public Bundle fetchEncounterResource(Patient patient) {
         try {
-            IGenericClient client = getFhirClient();
+            IGenericClient client = getFhirClientOauth();
             Bundle encounterResource = client.search()
                     .forResource(Encounter.class)
                     .where(Encounter.PATIENT.hasId(patient.getIdElement().getIdPart()))
@@ -126,7 +126,7 @@ public class EhrFhirConfig {
                     + patientId;
             URL localUrl = new URL(url);
 
-            IGenericClient client = getFhirClient();
+            IGenericClient client = getFhirClientOauth();
             Bundle obsBundle = client.search()
                     .byUrl(localUrl.toString())
                     .count(1000)
@@ -148,7 +148,7 @@ public class EhrFhirConfig {
      */
     public Bundle fetchObservationResource(Patient patient, Date fromDate) {
         try {
-            IGenericClient client = getFhirClient();
+            IGenericClient client = getFhirClientOauth();
             Bundle observationResource = client.search()
                     .forResource(Observation.class)
                     .where(Observation.PATIENT.hasId(patient.getIdElement().getIdPart()))
@@ -171,7 +171,7 @@ public class EhrFhirConfig {
         URL localUrl = new URL(url);
 
         try {
-            IGenericClient client = getFhirClient();
+            IGenericClient client = getFhirClientOauth();
             Bundle conditionsBundle = client.search()
                     .byUrl(localUrl.toString())
                     .count(1000)
@@ -186,7 +186,7 @@ public class EhrFhirConfig {
 
     public Bundle fetchAppointments(Patient patient) {
         try {
-            IGenericClient client = getFhirClient();
+            IGenericClient client = getFhirClientOauth();
             Bundle conditionsBundle = client.search()
                     .forResource(Appointment.class)
                     .where(Condition.PATIENT.hasId(patient.getIdElement().getIdPart()))
@@ -203,7 +203,7 @@ public class EhrFhirConfig {
         String url = Utils.getShrServerUrl() + "ServiceRequest?performer=" + performer + "&status=active";
         System.out.println("Fhir: fetchReferrals ==>");
         try {
-            IGenericClient client = getFhirClient();
+            IGenericClient client = getFhirClientOauth();
             if (client != null) {
                 System.out.println("Fhir: client is not null ==>");
                 Bundle serviceRequestResource = client.search()
@@ -221,7 +221,7 @@ public class EhrFhirConfig {
         String url = Utils.getShrServerUrl() + "ServiceRequest?status=active";
         System.out.println("Fhir: fetchReferrals ==>");
         try {
-            IGenericClient client = getFhirClient();
+            IGenericClient client = getFhirClientOauth();
             if (client != null) {
                 System.out.println("Fhir: client is not null ==>");
                 Bundle serviceRequestResource = client.search()
@@ -237,7 +237,7 @@ public class EhrFhirConfig {
 
     public void updateReferral(ServiceRequest request) throws Exception {
         System.out.println("Fhir: Update Referral Data ==>");
-        IGenericClient client = getFhirClient();
+        IGenericClient client = getFhirClientOauth();
         if (client != null) {
             System.out.println("Fhir: client is not null ==>");
             client.update().resource(request).execute();

@@ -173,8 +173,10 @@ public class ShrVisitSummaryFragmentController {
         }
 
         if (referralsBundle != null && !referralsBundle.getEntry().isEmpty()) {
+            System.out.println("The service request bundle got some DATA");
             for (Bundle.BundleEntryComponent resource : referralsBundle.getEntry()) {
                 ServiceRequest serviceRequest = (ServiceRequest) resource.getResource();
+                System.out.println("The service request is >>"+serviceRequest);
                 String category = "";
                 List<String> reasons = new ArrayList<>();
                 if (serviceRequest.hasCategory() && serviceRequest.getCategoryFirstRep().hasCoding()) {
