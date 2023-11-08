@@ -305,7 +305,7 @@ public class Note {
 		Encounter encounter = createEncounter(patient);
 		addObs(obsGroup, encounter);
         try {
-			encounter.setVisit(getLastVisitForPatient(patient));
+			encounter.setVisit(EhrConfigsUtils.getLastVisitForPatient(patient));
 			//save an encounter with all the other entries
 			Context.getEncounterService().saveEncounter(encounter);
 			saveNoteDetails(encounter);
@@ -783,17 +783,6 @@ public class Note {
 		encounter.addObs(obsProcedure);
 	}
 
-	private Visit getLastVisitForPatient(Patient patient) {
-		VisitService visitService = Context.getVisitService();
-		if (visitService.getActiveVisitsByPatient(patient) == null){
-			try {
-				throw new Exception("patient not checked-in");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return visitService.getActiveVisitsByPatient(patient).get(0);
-	}
 
 	private void updateAppointmentIfAny(Patient patient){
 		EhrAppointmentService ehrAppointmentService = Context.getService(EhrAppointmentService.class);

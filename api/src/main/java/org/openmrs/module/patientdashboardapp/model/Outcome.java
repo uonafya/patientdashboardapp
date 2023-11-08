@@ -169,6 +169,9 @@ public class Outcome {
             patientAdmission.setAcceptStatus(0);
             Context.getService(IpdService.class).saveIpdPatientAdmission(patientAdmission);
         }
+        if(this.option.getId() == EXTERNAL_REFERRAL_OPTION) {
+            System.out.println("External Referral DONE through here");
+        }
     }
 
 

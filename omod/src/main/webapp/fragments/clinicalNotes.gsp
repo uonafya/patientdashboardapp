@@ -13,11 +13,11 @@
 	ui.includeJavascript("uicommons", "navigator/exitHandlers.js")
 	ui.includeJavascript("patientdashboardapp", "knockout-3.4.0.js")
 
-	def fields = [
+	def referredToFacilityFields = [
 			[
-					id: "facility",
-					label: "",
-					formFieldName: "facility",
+					id: "referredToFacility",
+					label: "Referred to",
+					formFieldName: "referredToFacility",
 					class: org.openmrs.Location
 			]
 	]
@@ -346,8 +346,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 
 							<div class="onerow">
 								<div class="col4"><label for="internalReferral">Referral Available</label></div>
-								<div class="col4"><label for="internalReferral" id="refTitle"		>Internal Referral</label></div>
-								<div class="col4 last" style="display:none;"><label for="facilityDiv" id="facTitle"	>Facility</label></div>
+								<div class="col4"><label for="internalReferral" id="refTitle">Internal Referral</label></div>
 							</div>
 
 							<div class="onerow">
@@ -365,21 +364,7 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 										<div>
 											<select id="internalReferral" name="internalReferral" onchange="loadExternalReferralCases();"  data-bind="options: \$root.internalReferralOptions, optionsText: 'label', value: \$root.referredTo, optionsCaption: 'Please select...'">
 											</select>
-										</div>		
-										<div style="display:none;">
-											<select id="externalReferral" name="externalReferral" onchange="loadExternalReferralCases();" data-bind="options: \$root.externalReferralOptions, optionsText: 'label', value: \$root.referredTo, optionsCaption: 'Please select...'">
-											</select>
-										</div>		
-									</div>
-								</div>
-
-								<div class="col4 last">
-									<div class="input-position-class" id="facilityDiv" style="display:none;">
-										<field>
-											<% fields.each { %>
-											  ${ ui.includeFragment("kenyaui", "widget/labeledField", it) }
-                      <% } %>
-										</field>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -415,6 +400,31 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 						</span>
 						<span data-bind="if: \$root.outcome() && \$root.outcome().option.id ===7">
               <h2>External Referral information</h2>
+              <div class="onerow">
+                <div class="col4"><label for="externalReferralReasonCoded">Referral Reasons</label></div>
+              </div>
+              <div class="col4 last">
+                  <field>
+                    <% referredToFacilityFields.each { %>
+                          ${it}
+                      ${ ui.includeFragment("kenyaui", "widget/labeledField", it) }
+                    <% } %>
+                  </field>
+              </div>
+              <div class="onerow" id="refReasonCoded">
+                <div class="col4">
+                  <select id="externalReferralReasonCoded" name="externalReferralReasonCoded" data-bind="options: \$root.referralReasonsOptions, optionsText: 'label', value: \$root.referralReasons, optionsCaption: 'Please select...'" style="margin-top: 5px;">
+                  </select>
+                </div>
+              </div>
+              <div class="onerow" id="externalReferralNotes">
+                  <div class="col4">
+                    <label for="externalReferralReasonText" style="margin-top:20px;">Clinical notes</label>
+                  </div>
+                  <div class="col4">
+                    <textarea type="text" id="referralComments"   name="referralComments" data-bind="value: \$root.referralComments" placeholder="Clinical notes"  style="height: 80px; width: 650px;"></textarea>
+                  </div>
+                </div>
             </span>
 
 					</div>
