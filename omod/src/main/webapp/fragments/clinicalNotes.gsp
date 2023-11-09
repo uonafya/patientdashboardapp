@@ -12,15 +12,6 @@
 	ui.includeJavascript("uicommons", "navigator/navigatorTemplates.js")
 	ui.includeJavascript("uicommons", "navigator/exitHandlers.js")
 	ui.includeJavascript("patientdashboardapp", "knockout-3.4.0.js")
-
-	def referredToFacilityFields = [
-			[
-					id: "referredToFacility",
-					label: "Referred to",
-					formFieldName: "referredToFacility",
-					class: org.openmrs.Location
-			]
-	]
 %>
 
 ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note: note, listOfWards: listOfWards, internalReferralSources: internalReferralSources, externalReferralSources: externalReferralSources, referralReasonsSources: referralReasonsSources, outcomeOptions: outcomeOptions ]) }
@@ -401,30 +392,26 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 						<span data-bind="if: \$root.outcome() && \$root.outcome().option.id ===7">
               <h2>External Referral information</h2>
               <div class="onerow">
-                <div class="col4"><label for="externalReferralReasonCoded">Referral Reasons</label></div>
-              </div>
-              <div class="col4 last">
-                  <field>
-                    <% referredToFacilityFields.each { %>
-                          ${it}
-                      ${ ui.includeFragment("kenyaui", "widget/labeledField", it) }
-                    <% } %>
-                  </field>
+                <div class="col3"><label for="healthFacilities">Referred to facility</label></div>
+                <div class="col3">
+                    <input type="text" id="healthFacilities" name="healthFacilities" size="100" />
+                </div>
               </div>
               <div class="onerow" id="refReasonCoded">
-                <div class="col4">
+                <div class="col3"><label for="externalReferralReasonCoded">Referral reasons</label></div>
+                <div class="col3">
                   <select id="externalReferralReasonCoded" name="externalReferralReasonCoded" data-bind="options: \$root.referralReasonsOptions, optionsText: 'label', value: \$root.referralReasons, optionsCaption: 'Please select...'" style="margin-top: 5px;">
                   </select>
                 </div>
               </div>
               <div class="onerow" id="externalReferralNotes">
-                  <div class="col4">
+                  <div class="col3">
                     <label for="externalReferralReasonText" style="margin-top:20px;">Clinical notes</label>
                   </div>
-                  <div class="col4">
-                    <textarea type="text" id="referralComments"   name="referralComments" data-bind="value: \$root.referralComments" placeholder="Clinical notes"  style="height: 80px; width: 650px;"></textarea>
+                  <div class="col3">
+                    <textarea type="text" id="externalReferralReasonText"   name="externalReferralReasonText" data-bind="value: \$root.referralComments" placeholder="Clinical notes"  style="height: 80px; width: 650px;"></textarea>
                   </div>
-                </div>
+              </div>
             </span>
 
 					</div>

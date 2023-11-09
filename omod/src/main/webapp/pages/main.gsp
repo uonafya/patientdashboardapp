@@ -10,34 +10,9 @@
 	ui.includeCss("ehrconfigs", "referenceapplication.css")
 %>
 <script>
-	var confirmdialog
     jq(document).ready(function () {
-
-    	confirmdialog = emr.setupConfirmationDialog({
-            dialogOpts: {
-                overlayClose: false,
-                close: true
-            },
-            selector: '#confirmDialog',
-            actions: {
-                confirm: function () {
-                    confirmdialog.close();
-                    window.location.href = '${ui.pageLink("patientqueueapp", "opdQueue", [app: "patientdashboardapp.opdqueue"])}';
-										},
-										cancel : function() {
-											confirmdialog.close();
-										}
-									}
-								});
-
-						jq(".dashboard-tabs").tabs();
-						jq(".cancelButton").on("click", function(e) {
-							e.preventDefault();
-							confirmdialog.show();
-
-						});
-
-					});
+      jq(".dashboard-tabs").tabs();
+    });
 </script>
 
 <style>

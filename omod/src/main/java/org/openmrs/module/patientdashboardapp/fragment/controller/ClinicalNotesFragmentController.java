@@ -51,6 +51,7 @@ public class ClinicalNotesFragmentController {
 			opdLogId = Integer.parseInt(config.get("opdLogId").toString());
 		}
 		model.addAttribute("outcomeOptions", SimpleObject.fromCollection(Outcome.getAvailableOutcomes(), ui, "label", "id"));
+		model.addAttribute("referredToFacilityFields", SimpleObject.fromCollection(Outcome.getAvailableOutcomes(), ui, "label", "id"));
 		model.addAttribute("listOfWards", SimpleObject.fromCollection(Outcome.getInpatientWards(), ui, "label", "id"));
 		model.addAttribute("internalReferralSources", SimpleObject.fromCollection(Referral.getInternalReferralOptions(), ui, "label", "id"));
         model.addAttribute("externalReferralSources", SimpleObject.fromCollection(Referral.getExternalReferralOptions(), ui, "label", "id"));
