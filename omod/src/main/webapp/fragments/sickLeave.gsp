@@ -86,10 +86,10 @@
                         </button>
 
                         <button id="resetSickOff" class="cancel" type="reset" style="float:right; display:inline-block;"/>
-                        <span>RESET</span>
-                    </button>
+                            <span>RESET</span>
+                        </button>
                     </div>
-
+                    <div></div>
             </div>
         </div>
 
@@ -111,13 +111,12 @@
                             <th>Start Date</th>
                             <th>End Date</th>
                             <th style="width:200px">Notes</th>
-                            <th style="width: 60px">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <% if (sickOffs.empty) { %>
                             <tr align="center">
-                                <td colspan="10">
+                                <td colspan="9">
                                     No records found for specified period
                                 </td>
                             </tr>
@@ -134,9 +133,6 @@
                                     <td>${it.sickOffStartDate}</td>
                                     <td>${it.sickOffEndDate}</td>
                                     <td>${it.notes}</td>
-                                    <td>
-                                        <button id="printSickOff" class="button task">Print</button>
-                                    </td>
                                 </tr>
                             <%}%>
                         <%}%>

@@ -289,7 +289,6 @@
 		<div id="sls">
       ${ ui.includeFragment("patientdashboardapp", "sickLeave", [patientId: patientId]) }
     </div>
-
 	</div>
 </div>
 
