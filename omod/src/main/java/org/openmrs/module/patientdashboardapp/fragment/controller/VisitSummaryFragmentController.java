@@ -34,11 +34,10 @@ public class VisitSummaryFragmentController {
 		config.require("patientId");
 		Integer patientId = Integer.parseInt(config.get("patientId").toString());
         PatientDashboardService dashboardService = Context.getService(PatientDashboardService.class);
-        Location location = Context.getService(KenyaEmrService.class).getDefaultLocation();
         Patient patient = Context.getPatientService().getPatient(patientId);
 
         EncounterType labOPDType = Context.getEncounterService().getEncounterTypeByUuid("ba45c278-f290-11ea-9666-1b3e6e848887");
-        List<Encounter> encounters = dashboardService.getEncounter(patient, location, labOPDType, null);
+        List<Encounter> encounters = dashboardService.getEncounter(patient, null, labOPDType, null);
         
         List<VisitSummary> visitSummaries = new ArrayList<VisitSummary>();
 
@@ -58,7 +57,7 @@ public class VisitSummaryFragmentController {
 
             i++;
 
-            if (i >=20){
+            if (i >=10){
                 break;
             }
         }
