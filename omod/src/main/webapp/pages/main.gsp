@@ -12,7 +12,57 @@
 <script>
     jq(document).ready(function () {
       jq(".dashboard-tabs").tabs();
+      jq("#referralType").on('change', function() {
+        var response = jq(this).val();
+        if(response === 'Community') {
+            jq("#communityDiv").show();
+            jq("#facilityDiv").hide();
+        }
+        if(response === 'Facility') {
+          jq("#communityDiv").hide();
+          jq("#facilityDiv").show();
+        }
+      });
+      jq("#referralFacilityLocation").on("focus.autocomplete", function () {
+          jq(this).autocomplete({
+              source: function(request, response) {
+                      jq.getJSON('${ ui.actionLink("patientqueueapp", "referral/actualReferral", "getEncounterLocation") }', {
+                        q: request.term
+                      }).success(function(data) {
+                        var results = [];
+                        for (var i in data) {
+                            var result = {
+                              label: data[i].name,
+                              value: data[i].uuid
+                            };
+                            results.push(result);
+                        }
+                        response(results);
+                      });
+                    },
+                    minLength: 3,
+                    select: function(event, ui) {
+                      event.preventDefault();
+                      jq(this).val(ui.item.label);
+                    }
+          });
+      });
+      jq("#confirmReferralBtn").on('click', function () {
+          confirmReferral();
+          jq().toastmessage('showSuccessToast', 'Patient referral creaated successfully!');
+      });
     });
+    function confirmReferral() {
+      jq.getJSON('${ ui.actionLink("patientqueueapp", "referral/actualReferral", "savePatientReferral") }', {
+            referralType: jq("#referralType").val(),
+            referralCommunityUnit: jq("#referralCommunityUnit").val(),
+            referralCommunityName: jq("#referralCommunityName").val(),
+            referralFacilityLocation: jq("#referralFacilityLocation").val(),
+            referralReason: jq("#referralReason").val(),
+            referralNotes: jq("#referralNotes").val()
+        }).success(function (data) {
+        });
+    }
 </script>
 
 <style>
@@ -267,7 +317,7 @@
 			<li id="lr"><a href="#investigations">Lab Reports</a></li>
       <li id="rr"><a href="#radiology">Radiology Reports</a></li>
       <li id="sl"><a href="#sls">Sick Leave</a></li>
-      <li id="rfrrals"><a href="#referrals">Sick Leave</a></li>
+      <li id="rfrrals"><a href="#referrals">Referrals</a></li>
 		</ul>
 		<div id="notes">
 			${ ui.includeFragment("patientdashboardapp", "clinicalNotes", [patientId: patientId, opdId: opdId, queueId: queueId, opdLogId: opdLogId]) }
