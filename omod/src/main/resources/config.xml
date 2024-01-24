@@ -28,7 +28,7 @@
 		<require_module>org.openmrs.module.metadatadeploy</require_module>
 		<require_module>org.openmrs.module.ehrlaboratory</require_module>
 		<require_module>org.openmrs.module.fhir2</require_module>
-		<require_module>org.bahmni.module.appointments</require_module>
+		<require_module>org.kenyahmis.module.appointments</require_module>
 	</require_modules>
 	<!-- / Required Modules -->
 	

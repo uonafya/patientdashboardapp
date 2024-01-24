@@ -46,7 +46,7 @@
 		<ehrlaboratoryVersion>2.0.1-SNAPSHOT</ehrlaboratoryVersion>
 		<fhir2Version>1.4.0</fhir2Version>
 		<kenyauiVersion>3.0.0</kenyauiVersion>
-		<bahmniAppointmentsVersion>1.5.0-SNAPSHOT</bahmniAppointmentsVersion>
+		<bahmniAppointmentsVersion>1.6.0</bahmniAppointmentsVersion>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -151,7 +151,7 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.bahmni.module</groupId>
+				<groupId>org.kenyahmis.module</groupId>
 				<artifactId>appointments-api</artifactId>
 				<version>${bahmniAppointmentsVersion}</version>
 				<scope>provided</scope>

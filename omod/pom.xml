@@ -132,7 +132,7 @@
 			<artifactId>appui-omod</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.bahmni.module</groupId>
+			<groupId>org.kenyahmis.module</groupId>
 			<artifactId>appointments-api</artifactId>
 		</dependency>
 
