@@ -33,6 +33,7 @@ jq(function(){
                 if (cellValue == null) { cellValue = "";}
                 row.append(jq('<td/>').html(cellValue));
             }
+            jq('#radiologyData').find('tbody').empty();
             jq(selector).append(row);
         }
     }
@@ -65,6 +66,12 @@ jq(function(){
     }
 </style>
 <table id="radiologyData">
+    <thead>
+      <th>Start Date</th>
+      <th>Test Name</th>
+      <th>Investigation</th>
+      <th>Notes</th>
+    </thead>
     <tbody>
     </tbody>
 </table>
