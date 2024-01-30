@@ -1,11 +1,24 @@
-
-<script type="text/javascript">
-   var jq = jQuery.noConflict();
-</script>
 <script type="text/javascript">
     var jq = jQuery;
         jq(function () {
-            jq("#providerAppointmentCalendar").DataTable();
+            jq("#providerAppointmentCalendar").DataTable({
+                   sPaginationType: "full_numbers",
+                   bJQueryUI: true,
+                   "fnDrawCallback": function ( oSettings ) {
+                       /* Need to redo the counters if filtered or sorted */
+                       if ( oSettings.bSorted || oSettings.bFiltered )
+                       {
+                           for ( var i=0, iLen=oSettings.aiDisplay.length ; i<iLen ; i++ )
+                           {
+                               jq('td:eq(0)', oSettings.aoData[ oSettings.aiDisplay[i] ].nTr ).html( i+1 );
+                           }
+                       }
+                   },
+                   "aoColumnDefs": [
+                       { "bSortable": false, "aTargets": [ 0 ] }
+                   ],
+                   "aaSorting": [[ 1, 'asc' ]]
+               });
         });
 </script>
 <table border="0" cellpadding="0" cellspacing="0" id="providerAppointmentCalendar" width="100%">

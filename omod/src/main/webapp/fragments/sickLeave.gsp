@@ -9,18 +9,25 @@
               jq('#resetSickOff').on( 'click',function () {
                   location.reload();
               });
-             var tbl =  jq("#sickOffTbl").DataTable({
-                 searchPanes: true,
-                 searching: true,
-                 "pagingType": 'simple_numbers',
-                 'dom': 'flrtip',
-                 "oLanguage": {
-                     "oPaginate": {
-                         "sNext": '<i class="fa fa-chevron-right py-1" ></i>',
-                         "sPrevious": '<i class="fa fa-chevron-left py-1" ></i>'
+             var tbl = jq("#sickOffTbl").DataTable({
+                 sPaginationType: "full_numbers",
+                 bJQueryUI: true,
+                 "fnDrawCallback": function ( oSettings ) {
+                     /* Need to redo the counters if filtered or sorted */
+                     if ( oSettings.bSorted || oSettings.bFiltered )
+                     {
+                         for ( var i=0, iLen=oSettings.aiDisplay.length ; i<iLen ; i++ )
+                         {
+                             jq('td:eq(0)', oSettings.aoData[ oSettings.aiDisplay[i] ].nTr ).html( i+1 );
+                         }
                      }
-                 }
-             });
+                 },
+                 "aoColumnDefs": [
+                     { "bSortable": false, "aTargets": [ 0 ] }
+                 ],
+                 "aaSorting": [[ 1, 'asc' ]]
+             } );
+
 
               jq('#sickOffTbl tbody').on( 'click', 'tr', function () {
                         var trData = tbl.row(this).data();
@@ -92,54 +99,47 @@
                     <div></div>
             </div>
         </div>
-
     </div>
+    <br />
     <div>
-    <br />
-    <br />
-        <section>
-            <div>
-                <table border="0" cellpadding="0" cellspacing="0" width="100%" id="sickOffTbl">
-                    <thead>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" id="sickOffTbl">
+            <thead>
+                <tr>
+                    <th>Sick off ID</th>
+                    <th>Patient ID</th>
+                    <th>Patient Name</th>
+                    <th>Authorised Provider</th>
+                    <th>Created on</th>
+                    <th>Created By</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th style="width:200px">Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (sickOffs.empty) { %>
+                    <tr align="center">
+                        <td colspan="9">
+                            No records found for specified period
+                        </td>
+                    </tr>
+                <% } %>
+                <% if (sickOffs) { %>
+                    <% sickOffs.each {%>
                         <tr>
-                            <th>Sick off ID</th>
-                            <th>Patient ID</th>
-                            <th>Patient Name</th>
-                            <th>Authorised Provider</th>
-                            <th>Created on</th>
-                            <th>Created By</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th style="width:200px">Notes</th>
+                            <td>${it.sickOffId}</td>
+                            <td>${it.patientIdentifier}</td>
+                            <td>${it.patientName}</td>
+                            <td>${it.provider}</td>
+                            <td>${it.createdOn}</td>
+                            <td>${it.user}</td>
+                            <td>${it.sickOffStartDate}</td>
+                            <td>${it.sickOffEndDate}</td>
+                            <td>${it.notes}</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <% if (sickOffs.empty) { %>
-                            <tr align="center">
-                                <td colspan="9">
-                                    No records found for specified period
-                                </td>
-                            </tr>
-                        <% } %>
-                        <% if (sickOffs) { %>
-                            <% sickOffs.each {%>
-                                <tr>
-                                    <td>${it.sickOffId}</td>
-                                    <td>${it.patientIdentifier}</td>
-                                    <td>${it.patientName}</td>
-                                    <td>${it.provider}</td>
-                                    <td>${it.createdOn}</td>
-                                    <td>${it.user}</td>
-                                    <td>${it.sickOffStartDate}</td>
-                                    <td>${it.sickOffEndDate}</td>
-                                    <td>${it.notes}</td>
-                                </tr>
-                            <%}%>
-                        <%}%>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
+                    <%}%>
+                <%}%>
+            </tbody>
+        </table>
     </div>
 </div>

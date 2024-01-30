@@ -5,9 +5,13 @@
 	ui.includeJavascript("patientdashboardapp", "jq.slimscroll.js")
 	ui.includeJavascript("ehrconfigs", "emr.js")
 	ui.includeJavascript("uicommons", "jquery.simplemodal.1.4.4.min.js")
+	ui.includeJavascript("ehrconfigs", "datetimepicker/bootstrap-datetimepicker.min.js")
+  ui.includeJavascript("ehrconfigs", "bootstrap.min.js")
 
 	ui.includeCss("patientdashboardapp", "patientdashboardapp.css");
 	ui.includeCss("ehrconfigs", "referenceapplication.css")
+	ui.includeCss("financials", "bootstrap.min.css")
+  ui.includeCss("financials", "bootstrap-datetimepicker.min.css")
 %>
 <script>
     jq(document).ready(function () {
