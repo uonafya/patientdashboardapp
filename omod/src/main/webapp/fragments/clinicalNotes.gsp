@@ -185,6 +185,14 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 							</field>
 						</p>
 					</div>
+					<div>
+              <p class="input-position-class">
+                  <label class="label">Diagnosis Notes</label>
+                  <field>
+                      <textarea data-bind="value: \$root.diagnosisNotes" id="diagnosisNotes" name="diagnosisNotes" rows="10" cols="74"></textarea>
+                  </field>
+              </p>
+          </div>
 				</div>
 			</fieldset>
 
@@ -243,16 +251,16 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 					</p>
 				</div>
 				<div>
-                    <p class="input-position-class">
-                        <label class="label">Investigation Notes</label>
-                        <field>
-                            <textarea data-bind="value: \$root.investigationNotes" id="investigationNotes" name="investigationNotes" rows="10" cols="74"></textarea>
-                            <span id="investigationNotes-lbl" class="field-error" style="display: none"></span>
-                        </field>
-                    </p>
-                    <p>
-                        <input type="hidden" id="investigationsNotes-set" />
-                    </p>
+            <p class="input-position-class">
+                <label class="label">Investigation Notes</label>
+                <field>
+                    <textarea data-bind="value: \$root.investigationNotes" id="investigationNotes" name="investigationNotes" rows="10" cols="74"></textarea>
+                    <span id="investigationNotes-lbl" class="field-error" style="display: none"></span>
+                </field>
+            </p>
+            <p>
+                <input type="hidden" id="investigationsNotes-set" />
+            </p>
 				</div>
 			</fieldset>
 			<fieldset class="no-confirmation">

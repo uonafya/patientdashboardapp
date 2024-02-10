@@ -274,6 +274,9 @@
 	<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Diagnosis:</label>
 	<span>{{-diagnosis}}</span>
 	<br>
+	<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Diagnosis Notes:</label>
+    <span>{{-diagnosisNotes}}</span>
+  <br>
 
 	<label style="display: inline-block; font-weight: bold; width: 190px"><span class="status active"></span>Investigations:</label>
 	<span>{{-investigations}}</span>

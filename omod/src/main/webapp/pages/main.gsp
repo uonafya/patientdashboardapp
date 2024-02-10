@@ -318,10 +318,10 @@
 			<li id="ti"><a href="#triage-info">Triage Information</a></li>
 			<li id="cn"><a href="#notes">Clinical Notes</a></li>
 			<li id="ch"><a href="#summary">Clinical History</a></li>
+			<li id="enDia"><a href="#enDiagnosis">Encounter Diagnosis History</a></li>
 			<li id="lr"><a href="#investigations">Lab Reports</a></li>
       <li id="rr"><a href="#radiology">Radiology Reports</a></li>
       <li id="sl"><a href="#sls">Sick Leave</a></li>
-      <li id="rfrrals"><a href="#referrals">Referrals</a></li>
 		</ul>
 		<div id="notes">
 			${ ui.includeFragment("patientdashboardapp", "clinicalNotes", [patientId: patientId, opdId: opdId, queueId: queueId, opdLogId: opdLogId]) }
@@ -330,11 +330,12 @@
 		<div id="triage-info">
 			${ ui.includeFragment("patientdashboardapp", "triageInfo", [patientId: patientId, opdId: opdId, queueId: queueId]) }
 		</div>
-
 		<div id="summary">
 			${ ui.includeFragment("patientdashboardapp", "visitSummary", [patientId: patientId]) }
 		</div>
-
+		<div id="enDiagnosis">
+      ${ ui.includeFragment("patientdashboardapp", "diagnosis", [patientId: patientId]) }
+    </div>
 		<div id="investigations">
 			${ ui.includeFragment("patientdashboardapp", "investigations", [patientId: patientId]) }
 		</div>
@@ -344,9 +345,6 @@
 		<div id="sls">
       ${ ui.includeFragment("patientdashboardapp", "sickLeave", [patientId: patientId]) }
     </div>
-    <div id="referrals">
-          ${ ui.includeFragment("patientqueueapp", "referral/actualReferral", [patientId: patientId]) }
-        </div>
 	</div>
 </div>
 
