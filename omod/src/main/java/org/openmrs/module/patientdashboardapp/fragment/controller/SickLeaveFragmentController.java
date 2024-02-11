@@ -8,7 +8,6 @@ import org.openmrs.module.hospitalcore.model.SickOff;
 import org.openmrs.module.hospitalcore.model.SickOffSimplifier;
 import org.openmrs.module.patientdashboardapp.utils.Utils;
 import org.openmrs.ui.framework.fragment.FragmentModel;
-import org.openmrs.ui.framework.page.PageModel;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;

@@ -9,42 +9,40 @@
               jq('#resetSickOff').on( 'click',function () {
                   location.reload();
               });
-             var tbl = jq("#sickOffTbl").DataTable({
-                 sPaginationType: "full_numbers",
-                 bJQueryUI: true,
-                 "fnDrawCallback": function ( oSettings ) {
-                     /* Need to redo the counters if filtered or sorted */
-                     if ( oSettings.bSorted || oSettings.bFiltered )
-                     {
-                         for ( var i=0, iLen=oSettings.aiDisplay.length ; i<iLen ; i++ )
-                         {
-                             jq('td:eq(0)', oSettings.aoData[ oSettings.aiDisplay[i] ].nTr ).html( i+1 );
-                         }
-                     }
-                 },
-                 "aoColumnDefs": [
-                     { "bSortable": false, "aTargets": [ 0 ] }
-                 ],
-                 "aaSorting": [[ 1, 'asc' ]]
-             } );
-
-
-              jq('#sickOffTbl tbody').on( 'click', 'tr', function () {
-                        var trData = tbl.row(this).data();
-                  ui.navigate('initialpatientqueueapp', 'sickOffDetailsForPatient', {sickOffId:trData[0]});
-              });
+             sickLeaveTable = jq('#sickOffTbl').DataTable({
+               searching: false,
+               lengthChange: false,
+               pageLength: 15,
+               jQueryUI: true,
+               pagingType: 'full_numbers',
+               sort: false,
+               dom: 't<"fg-toolbar ui-toolbar ui-corner-bl ui-corner-br ui-helper-clearfix datatables-info-and-pg"ip>',
+               language: {
+                   zeroRecords: 'No Sick leave recorded.',
+                   paginate: {
+                       first: 'First',
+                       previous: 'Previous',
+                       next: 'Next',
+                       last: 'Last'
+                   }
+               }
+           });
+            jq('#sickOffTbl tbody').on('click', 'tr', function () {
+                      var trData = tbl.row(this).data();
+                ui.navigate('initialpatientqueueapp', 'sickOffDetailsForPatient', {sickOffId:trData[0]});
+            });
           });
           function saveSickOff() {
-                  jq.getJSON('${ ui.actionLink("initialpatientqueueapp", "scheduleAppointment", "saveSickOff") }', {
-                      patientId:jq("#patientId").val(),
-                      provider: jq("#provider").val(),
-                      sickOffStartDate: jq("#sickOffStartDate").val(),
-                      sickOffEndDate: jq("#sickOffEndDate").val(),
-                      clinicianNotes: jq("#clinicianNotes").val(),
-                  }).success(function(data) {
-                      jq().toastmessage('showSuccessToast', "Patient's Sick leave created successfully");
-                      location.reload();
-                  });
+            jq.getJSON('${ ui.actionLink("initialpatientqueueapp", "scheduleAppointment", "saveSickOff") }', {
+                patientId:jq("#patientId").val(),
+                provider: jq("#provider").val(),
+                sickOffStartDate: jq("#sickOffStartDate").val(),
+                sickOffEndDate: jq("#sickOffEndDate").val(),
+                clinicianNotes: jq("#clinicianNotes").val(),
+            }).success(function(data) {
+                jq().toastmessage('showSuccessToast', "Patient's Sick leave created successfully");
+                location.reload();
+            });
       }
   </script>
 <div class="ke-page-content">
@@ -85,24 +83,21 @@
                             </div>
                         </div>
                     </div>
-                    <div class="onerow" style="margin-top: 100px">
-
+                    <div class="onerow">
                         <button id="submitSickOff" class="confirm" type="submit"
                                 style="float:right; display:inline-block; margin-left: 5px;">
                             <span>FINISH</span>
                         </button>
-
                         <button id="resetSickOff" class="cancel" type="reset" style="float:right; display:inline-block;"/>
                             <span>RESET</span>
                         </button>
                     </div>
-                    <div></div>
             </div>
         </div>
     </div>
     <br />
     <div>
-        <table border="0" cellpadding="0" cellspacing="0" width="100%" id="sickOffTbl">
+        <table id="sickOffTbl">
             <thead>
                 <tr>
                     <th>Sick off ID</th>
@@ -113,17 +108,10 @@
                     <th>Created By</th>
                     <th>Start Date</th>
                     <th>End Date</th>
-                    <th style="width:200px">Notes</th>
+                    <th style="width:120px">Notes</th>
                 </tr>
             </thead>
             <tbody>
-                <% if (sickOffs.empty) { %>
-                    <tr align="center">
-                        <td colspan="9">
-                            No records found for specified period
-                        </td>
-                    </tr>
-                <% } %>
                 <% if (sickOffs) { %>
                     <% sickOffs.each {%>
                         <tr>
