@@ -14,11 +14,11 @@
           <td valign="top">
             <table>
               <tr>
-                <th style="font-size: 26px!important; color: #5b57a6">Patients Served</th>
+                <th style="font-size: 18px!important; color: #5b57a6">Patients Served</th>
               </tr>
               <tr>
                 <td>
-                  <div id="patientTbody" style="display: inline;float: none;font-weight: bold;font-size: 50px;">
+                  <div id="patientTbody" style="display: inline;float: none;font-weight: bold;font-size: 16px;">
                 </td>
               </tr>
             </table>
@@ -26,7 +26,7 @@
           <td valign="top">
             <table>
               <tr>
-                <th style="font-size: 26px!important; color: #5b57a6">Final Diagnosis</th>
+                <th style="font-size: 18px!important; color: #5b57a6">Final Diagnosis</th>
               </tr>
               <tr>
                 <td>
@@ -40,7 +40,7 @@
          <td valign="top">
            <table>
              <tr>
-               <th style="font-size: 26px!important; color: #5b57a6">Procedures</th>
+               <th style="font-size: 18px!important; color: #5b57a6">Procedures</th>
              </tr>
              <tr>
                <td>
@@ -54,7 +54,7 @@
          <td valign="top">
            <table>
               <tr>
-                <th style="font-size: 26px!important; color: #5b57a6">Laboratory Investigations</th>
+                <th style="font-size: 18px!important; color: #5b57a6">Laboratory Investigations</th>
               </tr>
               <tr>
                 <td>
@@ -68,7 +68,7 @@
          <td valign="top">
             <table>
               <tr>
-                <th style="font-size: 26px!important; color: #5b57a6">Radiology Orders</th>
+                <th style="font-size: 18px!important; color: #5b57a6">Radiology Orders</th>
               </tr>
               <tr>
                 <td>
@@ -82,7 +82,7 @@
          <td valign="top">
             <table>
                <tr>
-                 <th style="font-size: 26px!important; color: #5b57a6">Pharmacy Orders</th>
+                 <th style="font-size: 18px!important; color: #5b57a6">Pharmacy Orders</th>
                </tr>
                <tr>
                  <td>
