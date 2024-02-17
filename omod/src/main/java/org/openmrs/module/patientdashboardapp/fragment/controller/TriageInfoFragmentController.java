@@ -71,7 +71,7 @@ public class TriageInfoFragmentController {
 								 @RequestParam(value = "chestCircum", required = false) Double chestCircum,
 								 @RequestParam(value = "abdominalCircum", required = false) Double abdominalCircum
 								 ) {
-		//System.out.println("The data captured are as follows>> Temp"+temperature+">>Diastolic"+daistolicBp+">>Systolic"+systolicBp+">>Respiratory"+respiratoryRate+">>Pulse"+pulsRate+">> Oxgyen"+oxygenSaturation+">> Weight"+weight+">>Height"+height+">>"+mua);
+		System.out.println("The data captured are as follows>> Temp"+temperature+">>Diastolic"+daistolicBp+">>Systolic"+systolicBp+">>Respiratory"+respiratoryRate+">>Pulse"+pulsRate+">> Oxgyen"+oxygenSaturation+">> Weight"+weight+">>Height"+height+">>"+mua);
 		TriagePatientData  triagePatientData = new TriagePatientData();
 		triagePatientData.setPatient(patient);
 		triagePatientData.setCreatedOn(new Date());

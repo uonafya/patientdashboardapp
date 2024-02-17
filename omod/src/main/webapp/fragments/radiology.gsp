@@ -33,6 +33,7 @@ jq(function(){
                 if (cellValue == null) { cellValue = "";}
                 row.append(jq('<td/>').html(cellValue));
             }
+            jq('#radiologyData').find('tbody').empty();
             jq(selector).append(row);
         }
     }
