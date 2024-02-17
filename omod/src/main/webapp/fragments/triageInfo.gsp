@@ -644,15 +644,6 @@ PAGE = {
 				<label><span class="status active"></span>Abdominal Circum:</label>
 				<span>${triage?.abdominal?:"Not Captured"}</span>
 				<br>
-				
-
-				<label><span class="status active"></span>Blood Group:</label>
-				<span>${triage?.bloodGroup && triage?.rhesusFactor ? triage?.bloodGroup + "/" + triage?.rhesusFactor : "Not Captured"}</span>
-				<br>
-				
-				<label><span class="status active"></span>HIV Status:</label>
-				<span>${triage?.pitct ?: "Not Captured"}</span>
-				<br>
 			</div>
 		</div>
 	</div>
@@ -689,24 +680,6 @@ PAGE = {
 		<label><span class="status active"></span>Pulse Rate:</label>
 		<span>{{-pulsRate}}</span>
 		<br>
-
-		<label><span class="status active"></span>Blood Group:</label>
-		<span>{{-bloodGroup}}</span>
-		<br>
-
-		<% if (patient.gender == "F" && patient.age > 10) {%>
-		<label><span class="status active"></span>Last Menstrual Date:</label>
-		<span>{{-lastMenstrualDate}}</span>
-		<br>
-        <% } %>
-		
-		<label><span class="status active"></span>Rhesus Factor:</label>
-		<span>{{-rhesusFactor}}</span>
-		<br>
-
-        <label><span class="status active"></span>HIV Status:</label>
-        <span>{{-pitct}}</span>
-        <br>
 		<label><span class='status active'></span>Oxygen Saturation:</label>
 		<span>{{-oxygenSaturation}}</span>
 		<br>
@@ -926,13 +899,13 @@ PAGE = {
 				<div class="onerow" style="margin-top: 100px">
 
 					<a class="button confirm"
-					   style="faloat:right; display:inline-block; margin-left: 5px;">
+					   style="float:right; display:inline-block; margin-left: 5px;">
 						<span>FINISH</span>
 					</a>
 
 					<a class="button cancel"
-                           style="float:right; display:inline-block;"/>
-                        <span>CANCEL</span>
+               style="float:left; display:inline-block;"/>
+            <span>CANCEL</span>
 				    </a>
 				</div>
 			</div>
