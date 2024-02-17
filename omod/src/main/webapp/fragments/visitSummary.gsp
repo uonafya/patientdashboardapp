@@ -150,10 +150,10 @@
     <div>
       <ul>
           <li id="refresher" class="ui-state-default">
-              <a class="button confirm" style="color:#fff">
+              <button class="confirm" type="submit" style="float:right; display:inline-block;">
                   <i class="icon-refresh"></i>
                   SHR History
-              </a>
+              </button>
           </li>
       </ul>
     </div>

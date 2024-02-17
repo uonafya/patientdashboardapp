@@ -2,9 +2,9 @@
     var jq = jQuery;
         jq(function () {
             jq('#providerAppointmentCalendar').DataTable({
-                 searching: false,
+                 searching: true,
                  lengthChange: false,
-                 pageLength: 15,
+                 pageLength: 10,
                  jQueryUI: true,
                  pagingType: 'full_numbers',
                  sort: false,
@@ -24,11 +24,11 @@
 <table id="providerAppointmentCalendar">
     <thead>
         <tr>
-            <th>Appointment Number</th>
-            <th>Patient Identifier</th>
+            <th>Appointment #</th>
+            <th>Identifier</th>
             <th>Patient Names</th>
-            <th>Appointment Service</th>
-            <th>Appointment Service type</th>
+            <th>Service</th>
+            <th>Service type</th>
             <th>Status</th>
             <th>Appointment reason</th>
             <th>Start time</th>

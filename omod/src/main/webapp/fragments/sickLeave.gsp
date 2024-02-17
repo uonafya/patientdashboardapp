@@ -10,9 +10,9 @@
                   location.reload();
               });
              sickLeaveTable = jq('#sickOffTbl').DataTable({
-               searching: false,
+               searching: true,
                lengthChange: false,
-               pageLength: 15,
+               pageLength: 10,
                jQueryUI: true,
                pagingType: 'full_numbers',
                sort: false,
@@ -100,7 +100,7 @@
         <table id="sickOffTbl">
             <thead>
                 <tr>
-                    <th>Sick off ID</th>
+                    <th>Sickoff ID</th>
                     <th>Patient ID</th>
                     <th>Patient Name</th>
                     <th>Authorised Provider</th>

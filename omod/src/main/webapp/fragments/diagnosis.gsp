@@ -25,9 +25,9 @@
 var diagnosisTable;
 jq(function(){
     diagnosisTable = jq('#diagnosis-table').DataTable({
-        searching: false,
+        searching: true,
         lengthChange: false,
-        pageLength: 15,
+        pageLength: 10,
         jQueryUI: true,
         pagingType: 'full_numbers',
         sort: false,

@@ -41,7 +41,7 @@ jq(function(){
 //Add dialog function
 var jq = jQuery;
 jq(function () {
-	var addvitalsDialog = emr.setupConfirmationDialog({
+	var addVitalsDialog = emr.setupConfirmationDialog({
 		dialogOpts: {
 			overlayClose: false,
 			close: true
@@ -58,8 +58,7 @@ jq(function () {
 	});
 	jq("#newVitalsModal").on("click", function (e) {
 		e.preventDefault();
-		//onDialogLoad();
-		addvitalsDialog.show();
+		addVitalsDialog.show();
 	});
 });
 function addVitals() {
@@ -605,15 +604,9 @@ PAGE = {
                 <span>${triage?.respiratoryRate?:"Not Captured"}</span>
                 <br>
 				
-				<label><span class="status active"></span>Pulse Rate:</label>
+				        <label><span class="status active"></span>Pulse Rate:</label>
                 <span>${triage?.pulsRate?:"Not Captured"}</span>
                 <br>
-
-                <% if (patient.gender == "F" && patient.age > 10) {%>
-                    <label><span class="status active"></span>Last Periods:</label>
-                    <span id="lastPeriods">${triage?.lastMenstrualDate ? ui.formatDatePretty(triage?.lastMenstrualDate): "Not Captured"}</span>
-                    <br>
-                <% } %>
 
                 <label><span class="status active"></span>Oxygen Saturation:</label>
                 <span>${triage?.oxygenSaturation? triage.oxygenSaturation.toString() + "%": "Not Captured"}</span>
@@ -644,25 +637,10 @@ PAGE = {
 				<label><span class="status active"></span>Abdominal Circum:</label>
 				<span>${triage?.abdominal?:"Not Captured"}</span>
 				<br>
-				
-
-				<label><span class="status active"></span>Blood Group:</label>
-				<span>${triage?.bloodGroup && triage?.rhesusFactor ? triage?.bloodGroup + "/" + triage?.rhesusFactor : "Not Captured"}</span>
-				<br>
-				
-				<label><span class="status active"></span>HIV Status:</label>
-				<span>${triage?.pitct ?: "Not Captured"}</span>
-				<br>
 			</div>
 		</div>
 	</div>
 </div>
-<div >
-	<button class="btn btn-sm btn-primary float-right mb-3" id="newVitalsModal">
-		Capture new vitals
-	</button>
-</div>
-
 <script id="triage-detail-template" type="text/template">
 	<div class="info-header">
 		<i class="icon-user-md"></i>
@@ -689,24 +667,6 @@ PAGE = {
 		<label><span class="status active"></span>Pulse Rate:</label>
 		<span>{{-pulsRate}}</span>
 		<br>
-
-		<label><span class="status active"></span>Blood Group:</label>
-		<span>{{-bloodGroup}}</span>
-		<br>
-
-		<% if (patient.gender == "F" && patient.age > 10) {%>
-		<label><span class="status active"></span>Last Menstrual Date:</label>
-		<span>{{-lastMenstrualDate}}</span>
-		<br>
-        <% } %>
-		
-		<label><span class="status active"></span>Rhesus Factor:</label>
-		<span>{{-rhesusFactor}}</span>
-		<br>
-
-        <label><span class="status active"></span>HIV Status:</label>
-        <span>{{-pitct}}</span>
-        <br>
 		<label><span class='status active'></span>Oxygen Saturation:</label>
 		<span>{{-oxygenSaturation}}</span>
 		<br>
@@ -743,8 +703,8 @@ PAGE = {
 
 <div class="clear">&nbsp; </div>
 
-<div id="new-vitals-dialog" class="dialog" style="display:none; width: 1009px;">
-<input type="hidden" id="patient" name="patientId" value="${patientId}" />
+<div id="new-vitals-dialog" class="dialog" style="display:none;">
+  <input type="hidden" id="patient" name="patientId" value="${patientId}" />
 	<div class="dialog-header">
 		<i class="icon-folder-open"></i>
 
