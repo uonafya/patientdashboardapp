@@ -102,6 +102,7 @@ public class Note {
 		this.illnessHistory = getPreviousIllnessHistory(patientId);
 		this.onSetDate = getPreviousDateOfOnSetOfIlliness(patientId);
 		this.investigationNotes = getPreviousInvestigationNotes(patientId);
+		this.diagnosisNotes = getPreviousDiagnosisNotes(patientId);
 	}
 
 	private int patientId;
@@ -123,6 +124,15 @@ public class Note {
     private String specify;
 	private String otherInstructions;
 	private String physicalExamination;
+	public String getDiagnosisNotes() {
+		return diagnosisNotes;
+	}
+
+	public void setDiagnosisNotes(String diagnosisNotes) {
+		this.diagnosisNotes = diagnosisNotes;
+	}
+
+	private String diagnosisNotes;
 
 	public String getInvestigationNotes() {
 		return investigationNotes;
@@ -378,6 +388,9 @@ public class Note {
 		for (Diagnosis diagnosis : this.diagnoses) {
 			diagnosis.addObs(encounter, obsGroup);
 		}
+		if(StringUtils.isNotBlank(this.diagnosisNotes)){
+			addDiagnosisNotes(encounter,obsGroup);
+		}
 		
 		if (referredTo != null) {
 			Referral.addReferralObs(referredTo, opdId, encounter, referralComments, obsGroup);
@@ -631,7 +644,41 @@ public class Note {
 		return previousOnSetDate;
 
 	}
+	public void addDiagnosisNotes(Encounter encounter, Obs obsGroup)
+	{
+		Concept conceptDiagnosisNotes = Context.getConceptService().getConceptByUuid("162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		if (conceptDiagnosisNotes == null) {
+			throw new NullPointerException("Diagnosis notes concept is not defined - text of encounter note");
+		}
+		Obs obsDiagnosisNotes = new Obs();
+		obsDiagnosisNotes.setObsGroup(obsGroup);
+		obsDiagnosisNotes.setConcept(conceptDiagnosisNotes);
+		obsDiagnosisNotes.setValueText(this.diagnosisNotes);
+		obsDiagnosisNotes.setCreator(encounter.getCreator());
+		obsDiagnosisNotes.setDateCreated(encounter.getDateCreated());
+		obsDiagnosisNotes.setEncounter(encounter);
+		encounter.addObs(obsDiagnosisNotes);
+	}
+	private String getPreviousDiagnosisNotes(int patientId){
+		String previousDiagnosisNotes = "";
+		Patient patient = Context.getPatientService().getPatient(patientId);
+		PatientQueueService queueService = Context.getService(PatientQueueService.class);
+		Concept conceptDiagnosisNotes = Context.getConceptService().getConceptByUuid("162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		Encounter diagnosisNotesEncounter = queueService.getLastOPDEncounter(patient);
 
+		if(diagnosisNotesEncounter!=null) {
+
+			Set<Obs> allDiagnosisCommentsEncounterObs = diagnosisNotesEncounter.getAllObs();
+
+			for (Obs ob : allDiagnosisCommentsEncounterObs) {
+				if (ob.getConcept().equals(conceptDiagnosisNotes)) {
+					previousDiagnosisNotes = ob.getValueText();
+				}
+			}
+		}
+
+		return  previousDiagnosisNotes;
+	}
 	public void saveInvestigations(Encounter encounter, String departmentName, Investigation investigation) throws Exception {
 		Concept investigationConcept = Context.getConceptService().getConceptByUuid("0179f241-8c1d-47c1-8128-841f6508e251");
 		if (investigationConcept == null) {

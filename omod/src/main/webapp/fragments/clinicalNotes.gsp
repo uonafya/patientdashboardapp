@@ -184,6 +184,12 @@ ${ ui.includeFragment("patientdashboardapp", "patientDashboardAppScripts", [note
 								<span id="diagnosis-lbl" class="field-error" style="display: none"></span>
 							</field>
 						</p>
+						<p class="input-position-class">
+                <label class="label">Diagnosis Notes</label>
+                <field>
+                    <textarea data-bind="value: \$root.diagnosisNotes" id="diagnosisNotes" name="diagnosisNotes" rows="5" cols="74"></textarea>
+                </field>
+            </p>
 					</div>
 				</div>
 			</fieldset>

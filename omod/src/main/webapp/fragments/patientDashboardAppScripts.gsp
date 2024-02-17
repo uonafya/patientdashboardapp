@@ -508,6 +508,7 @@
 			}
 			note['onSetDate'] = jq('#onSetDate').val();
 			note['investigationNotes'] = jq('#investigationNotes').val();
+			note['diagnosisNotes'] = jq('#diagnosisNotes').val();
 
 			jq.ajax({
 					type: 'POST',
@@ -515,7 +516,7 @@
 					data: {
 						note: ko.toJSON(note, ["label", "id", "admitted","provisional","onSetDate",
 							"diagnoses", "illnessHistory", "referralReasons", "externalReferralComments", "physicalExamination",
-							"inpatientWarads", "investigations", "investigationNotes", "opdId",
+							"inpatientWarads", "investigations", "investigationNotes", "opdId","diagnosisNotes",
 							"opdLogId", "otherInstructions", "patientId",
 							"procedures", "queueId", "signs", "referredTo","facility",
 							"outcome", "admitTo", "followUpDate", "option",

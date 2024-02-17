@@ -31,6 +31,15 @@ public class VisitDetail {
 
 	private String investigationNotes = "No Investigations Notes recorded";
 	private String procedures = "No procedures";
+	public String getDiagnosisNotes() {
+		return diagnosisNotes;
+	}
+
+	public void setDiagnosisNotes(String diagnosisNotes) {
+		this.diagnosisNotes = diagnosisNotes;
+	}
+
+	private String diagnosisNotes = "No Diagnosis Notes recorded";
 	private String physicalExamination = "No physicalExamination";
 	private String visitOutcome = "No Outcome Of Visit";
 	private String internalReferral = "No internal Referral";
@@ -172,7 +181,7 @@ public class VisitDetail {
 		Concept onSetConcepts = Context.getConceptService().getConceptByUuid("164428AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		Concept nextAppointmentConcepts = Context.getConceptService().getConceptByUuid("5096AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		Concept investigationNotes = Context.getConceptService().getConceptByUuid("162749AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-
+		Concept diagnosisNotes = Context.getConceptService().getConceptByUuid("162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		StringBuilder symptomList = new StringBuilder();
 		StringBuilder provisionalDiagnosisList = new StringBuilder();
 		StringBuilder finalDiagnosisList = new StringBuilder();
@@ -186,6 +195,7 @@ public class VisitDetail {
 		StringBuilder otherInstructions = new StringBuilder();
 		StringBuilder diseaseOnSetDate = new StringBuilder();
 		StringBuilder investigationsNotes = new StringBuilder();
+		StringBuilder diagnosesNotes = new StringBuilder();
 		for (Obs obs :encounter.getAllObs()) {
 			if (obs.getConcept().equals(symptomConcept)) {
 				if (obs.getValueCoded().equals(otherSymptom)) {
@@ -231,6 +241,9 @@ public class VisitDetail {
 			}
 			if (obs.getConcept().equals(otherInstructionsConcept)){
 				otherInstructions.append(obs.getValueText()).append(", ");
+			}
+			if (obs.getConcept().equals(diagnosisNotes)){
+				diagnosesNotes.append(obs.getValueText()).append(", ");
 			}
 			if (obs.getConcept().equals(visitOutcomeConcept)){
 
@@ -298,6 +311,9 @@ public class VisitDetail {
 		}
 		if (visitOutcome.length() > 0){
 			visitDetail.setVisitOutcome(visitOutcome.substring(0,visitOutcome.length()-",".length()));
+		}
+		if (diagnosesNotes.length() > 0){
+			visitDetail.setDiagnosisNotes(diagnosesNotes.substring(0,diagnosesNotes.length()-",".length()));
 		}
 		if (internalReferral.length() > 0){
 			visitDetail.setInternalReferral(internalReferral.substring(0, internalReferral.length() - ",".length()));
