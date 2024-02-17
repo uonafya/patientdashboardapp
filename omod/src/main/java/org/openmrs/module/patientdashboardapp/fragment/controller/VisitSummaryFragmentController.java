@@ -1,10 +1,8 @@
 package org.openmrs.module.patientdashboardapp.fragment.controller;
 
-import org.hl7.fhir.r4.model.Bundle;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
-import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
@@ -12,12 +10,10 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
 import org.openmrs.module.kenyaemr.api.KenyaEmrService;
-import org.openmrs.module.patientdashboardapp.PatientDashboardAppConstants;
 import org.openmrs.module.patientdashboardapp.model.VisitDetail;
 import org.openmrs.module.patientdashboardapp.model.VisitSummary;
 import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.ui.framework.UiUtils;
-import org.openmrs.ui.framework.annotation.FragmentParam;
 import org.openmrs.ui.framework.fragment.FragmentConfiguration;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,7 +53,7 @@ public class VisitSummaryFragmentController {
 
             i++;
 
-            if (i >=10){
+            if (i >=20){
                 break;
             }
         }
