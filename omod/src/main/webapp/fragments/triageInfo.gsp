@@ -64,16 +64,16 @@ jq(function () {
 });
 function addVitals() {
         jq.getJSON('${ ui.actionLink("patientdashboardapp", "triageInfo", "addNewTriageInfo") }', {
-            patient:jq("#patient").val(),
+            traigePatient:jq("#traigePatient").val(),
             temperature:jq("#temperature").val(),
-            daistolicBp: jq("#daistolicBp").val(),
+            daistolicBp: jq("#diastolicBp").val(),
             systolicBp: jq("#systolicBp").val(),
             respiratoryRate: jq("#respiratoryRate").val(),
-            pulsRate: jq("#pulsRate").val(),
+            pulsRate: jq("#pulseRate").val(),
             oxygenSaturation: jq("#oxygenSaturation").val(),
             weight: jq("#weight").val(),
             height: jq("#height").val(),
-            mua: jq("#mua").val(),
+            mua: jq("#muac").val(),
             chestCircum: jq("#chestCircum").val(),
             abdominalCircum: jq("#abdominalCircum").val(),
         }).success(function(data) {
@@ -717,7 +717,7 @@ PAGE = {
 <div class="clear">&nbsp; </div>
 
 <div id="new-vitals-dialog" class="dialog" style="display:none; width: 1009px;">
-<input type="hidden" id="patient" name="patientId" value="${patientId}" />
+<input type="text" id="traigePatient" name="traigePatient" value="${patientId}" />
 	<div class="dialog-header">
 		<i class="icon-folder-open"></i>
 
@@ -895,19 +895,20 @@ PAGE = {
 						</div>
 					</div>
 
-				</section>
-				<div class="onerow" style="margin-top: 100px">
 
-					<a class="button confirm"
-					   style="float:right; display:inline-block; margin-left: 5px;">
-						<span>FINISH</span>
-					</a>
+          <div class="onerow">
 
-					<a class="button cancel"
-               style="float:left; display:inline-block;"/>
-            <span>CANCEL</span>
-				    </a>
-				</div>
+            <a class="button confirm"
+               style="float:right; display:inline-block; margin-left: 5px;">
+              <span>FINISH</span>
+            </a>
+
+            <a class="button cancel"
+                 style="float:left; display:inline-block;"/>
+              <span>CANCEL</span>
+              </a>
+          </div>
+        </section>
 			</div>
 	</div>
 </div>

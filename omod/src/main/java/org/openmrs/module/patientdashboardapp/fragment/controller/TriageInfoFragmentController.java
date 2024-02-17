@@ -58,7 +58,7 @@ public class TriageInfoFragmentController {
 		return SimpleObject.fromObject(triad, ui, "temperature" ,"weight" ,"height" ,"BMI" ,"mua" ,"chest" ,"abdominal", "systolic" ,"daistolic", "respiratoryRate" ,"pulsRate" ,"bloodGroup","lastMenstrualDate", "rhesusFactor","pitct", "createdOn", "encounterOpd","oxygenSaturation");
 	}
 
-	public void addNewTriageInfo(@RequestParam(value = "patientId", required = false) Patient patient,
+	public void addNewTriageInfo(@RequestParam(value = "traigePatient", required = false) Patient traigePatient,
 								 @RequestParam(value = "temperature", required = false) Double temperature,
 								 @RequestParam(value = "daistolicBp", required = false) Integer daistolicBp,
 								 @RequestParam(value = "systolicBp", required = false) Integer systolicBp,
@@ -71,9 +71,9 @@ public class TriageInfoFragmentController {
 								 @RequestParam(value = "chestCircum", required = false) Double chestCircum,
 								 @RequestParam(value = "abdominalCircum", required = false) Double abdominalCircum
 								 ) {
-		System.out.println("The data captured are as follows>> Temp"+temperature+">>Diastolic"+daistolicBp+">>Systolic"+systolicBp+">>Respiratory"+respiratoryRate+">>Pulse"+pulsRate+">> Oxgyen"+oxygenSaturation+">> Weight"+weight+">>Height"+height+">>"+mua);
+
 		TriagePatientData  triagePatientData = new TriagePatientData();
-		triagePatientData.setPatient(patient);
+		triagePatientData.setPatient(traigePatient);
 		triagePatientData.setCreatedOn(new Date());
 		if(temperature != null){
 			triagePatientData.setTemperature(BigDecimal.valueOf(temperature));
