@@ -717,7 +717,7 @@ PAGE = {
 <div class="clear">&nbsp; </div>
 
 <div id="new-vitals-dialog" class="dialog" style="display:none; width: 1009px;">
-<input type="text" id="traigePatient" name="traigePatient" value="${patientId}" />
+<input type="hidden" id="traigePatient" name="traigePatient" value="${patientId}" />
 	<div class="dialog-header">
 		<i class="icon-folder-open"></i>
 
